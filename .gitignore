@@ -1,0 +1,80 @@
+# ===============================
+# Environment & Secrets
+# ===============================
+.env
+.env.local
+.env.*.local
+
+# ===============================
+# Java / Spring Boot
+# ===============================
+.gradle/
+build/
+out/
+*.class
+*.jar
+*.war
+*.ear
+.idea/
+*.iml
+*.iws
+*.ipr
+local.properties
+spring-app.log
+
+# Gradle wrapper (keep gradlew, ignore cache)
+.gradle/
+
+# ===============================
+# Python (RPA / 분석)
+# ===============================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+*.egg-info/
+dist/
+.pytest_cache/
+.mypy_cache/
+rpa/outputs/
+rpa/logs/
+
+# Playwright
+playwright/.auth/
+
+# ===============================
+# Frontend (HTML/CSS/JS)
+# ===============================
+node_modules/
+*.log
+npm-debug.log*
+
+# ===============================
+# Outputs & Artifacts
+# ===============================
+outputs/
+logs/
+*.jsonl
+
+# ===============================
+# 문서 생성 도구 (로컬 전용)
+# ===============================
+generate_db_design_pdf.py
+DB_DESIGN.pdf
+*_extracted.txt
+
+# ===============================
+# Claude Code 세션 파일 (로컬 전용)
+# ===============================
+memory/
+
+# ===============================
+# IDE & OS
+# ===============================
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
