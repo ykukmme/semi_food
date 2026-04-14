@@ -50,8 +50,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()
                 // 관리자 API — ADMIN 역할 필수
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                // 정적 파일 허용
-                .requestMatchers("/*.html", "/css/**", "/js/**").permitAll()
+                // 정적 파일 허용 (루트 + 하위 디렉토리 HTML 모두 포함)
+                .requestMatchers("/*.html", "/**/*.html", "/css/**", "/js/**").permitAll()
                 .anyRequest().authenticated()
             )
             // 401 응답을 일관된 JSON 형식으로 반환
