@@ -1,6 +1,5 @@
 // 로그인 API 요청 및 폼 유효성 검사
-
-const API_BASE = 'http://localhost:8080';
+// API_BASE는 api.js에서 환경에 따라 자동 주입됨 (localhost → 8080 직접, EC2 → Nginx 상대경로)
 
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
