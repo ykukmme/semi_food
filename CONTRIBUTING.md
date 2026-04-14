@@ -47,16 +47,23 @@ chore:  빌드, 설정 등 기타
 
 ## 백엔드 실행
 
+프로젝트 루트(`D:\study\semi`)에서 실행:
 ```bash
-cd backend
 ./gradlew bootRun   # Windows: .\gradlew.bat bootRun
 ```
 
+실행 후 브라우저에서 `http://localhost:8080/login.html` 접속
+
 ## DB 마이그레이션
 
-TiDB Cloud에 수동으로 SQL 실행 (Flyway 자동 적용 전):
+Flyway가 서버 시작 시 자동 실행합니다. SQL 파일 위치:
 ```
-backend/src/main/resources/db/migration/V1__create_member_table.sql
+src/main/resources/db/migration/V1__create_member_table.sql
+```
+
+수동으로 마이그레이션만 실행하려면:
+```bash
+./gradlew flywayMigrate
 ```
 
 ## 자동발주 기능 관련 주의사항
