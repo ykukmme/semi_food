@@ -23,7 +23,7 @@
 | 백엔드 테스트 | `./gradlew test` |
 | Python RPA 실행 | `python rpa/main.py` |
 | Python 테스트 | `pytest rpa/tests/ -q` |
-| 프론트 확인 | `frontend/index.html` 브라우저 직접 열기 |
+| 프론트 확인 | `http://localhost:8080/login.html` (백엔드 실행 후) |
 | DB 마이그레이션 | `./gradlew flywayMigrate` (Flyway 사용 시) |
 
 ---
