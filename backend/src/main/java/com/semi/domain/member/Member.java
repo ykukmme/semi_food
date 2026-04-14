@@ -38,7 +38,7 @@ public class Member {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 10)
+    @Column(name = "`role`", nullable = false, length = 10)  // role은 MySQL 8.0 예약어 — 백틱 필수
     private MemberRole role;
 
     @Column(name = "created_at", nullable = false, updatable = false)

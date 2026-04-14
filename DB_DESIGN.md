@@ -51,7 +51,7 @@ id, member_id, password, email, phone, name, role, created_at
 
 - `member_id`는 로그인 아이디 (닉네임처럼 사용자가 직접 정함)
 - `password`는 BCrypt로 해시 저장 — 원문은 DB에 절대 저장하지 않음
-- `role`은 `USER` / `ADMIN` 두 가지만 존재
+- `role`은 `USER` / `ADMIN` 두 가지만 존재 (**MySQL 8.0 예약어** — DDL에서 백틱 필수, JPA에서 @Column(name="`role`") 적용)
   - 일반 사용자는 상품 조회 + 발주만 가능
   - 관리자는 회원 관리 + 자동발주 설정 가능
 
@@ -66,7 +66,7 @@ id, keyword, rank, frequency, collected_at, is_active
 **왜 이렇게?**
 
 - RPA가 6시간마다 네이버 쇼핑 식품 카테고리 1~10위 키워드를 수집
-- `rank`: 몇 위인지 (1~10)
+- `rank`: 몇 위인지 (1~10) (**MySQL 8.0 예약어** — DDL에서 백틱 필수, JPA에서 @Column(name="`rank`") 적용)
 - `frequency`: 이 키워드가 얼마나 자주 등장했는지 (대시보드 그래프용)
 - `collected_at`: 언제 수집됐는지 — 시간이 지난 데이터와 최신 데이터를 구분하기 위해
 - `is_active`: 새로 수집하면 기존 키워드를 비활성화(false)하고 새 키워드를 활성(true)으로 설정
@@ -242,7 +242,87 @@ rpa_log (독립 — 다른 테이블과 연결 없음)
 
 ---
 
-## 6. Flyway 마이그레이션 순서
+## 6. TiDB에 테이블이 자동으로 만들어지는 원리
+
+### 전체 흐름
+
+```
+./gradlew bootRun
+      │
+      ▼
+.env 파일 로드 (build.gradle bootRun 태스크)
+  TIDB_URL / TIDB_USERNAME / TIDB_PASSWORD 환경변수 주입
+      │
+      ▼
+Spring Boot 애플리케이션 시작
+      │
+      ▼
+Flyway 자동 실행 (application.yml: flyway.enabled=true)
+  1. TiDB에 접속
+  2. flyway_schema_history 테이블 확인 (없으면 생성)
+  3. 아직 실행되지 않은 V*.sql 파일만 순서대로 실행
+  4. 실행 완료된 파일은 flyway_schema_history에 기록 (재실행 방지)
+      │
+      ▼
+JPA/Hibernate 엔티티 로드 (ddl-auto: none — 스키마 변경 없음)
+      │
+      ▼
+서버 준비 완료 (포트 8080)
+```
+
+### 핵심 설정 파일
+
+**`application.yml`** — Flyway 동작 설정
+
+```yaml
+spring:
+  datasource:
+    url: ${TIDB_URL}          # 환경변수에서만 로드 (하드코딩 금지)
+    username: ${TIDB_USERNAME}
+    password: ${TIDB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: none          # JPA가 스키마를 건드리지 않음 — Flyway에 위임
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration   # SQL 파일 위치
+    baseline-on-migrate: true           # 기존 DB에 처음 적용 시 baseline 자동 생성
+```
+
+**`build.gradle`** — `.env` 파일 자동 로드
+
+```groovy
+tasks.named('bootRun') {
+    def envFile = file('../.env')
+    if (envFile.exists()) {
+        envFile.readLines()
+            .findAll { it.trim() && !it.startsWith('#') }
+            .each { line ->
+                def parts = line.split('=', 2)
+                if (parts.length == 2) {
+                    environment parts[0].trim(), parts[1].trim()
+                }
+            }
+    }
+}
+```
+
+> `.env` 파일의 `TIDB_URL`, `TIDB_USERNAME`, `TIDB_PASSWORD`가 `application.yml`의 `${...}` 자리에 자동으로 들어갑니다.
+
+### 마이그레이션 파일 명명 규칙
+
+```
+V{버전}__{설명}.sql
+ │         │
+ │         └── 언더바 2개 (필수)
+ └── 숫자 버전 (Flyway가 오름차순으로 실행)
+```
+
+파일 위치: `backend/src/main/resources/db/migration/`
+
+### Flyway 마이그레이션 순서
 
 | 파일 | 내용 |
 |------|------|
@@ -256,3 +336,136 @@ rpa_log (독립 — 다른 테이블과 연결 없음)
 
 > V3에서 product가 supplier와 trend_keyword를 참조하므로, V2보다 반드시 나중에 실행되어야 합니다.
 > Flyway가 버전 번호 순서대로 자동 실행하므로 직접 신경 쓸 필요는 없습니다.
+
+### 자주 쓰는 Flyway 명령어
+
+| 상황 | 명령어 |
+|------|--------|
+| 서버 시작 시 자동 마이그레이션 | `./gradlew bootRun` |
+| 마이그레이션만 별도 실행 | `./gradlew flywayMigrate` |
+| SQL 파일 수정 후 체크섬 오류 발생 시 | `./gradlew flywayRepair` |
+| 어디까지 실행됐는지 확인 | `./gradlew flywayInfo` |
+
+### SQL 예약어 주의사항
+
+TiDB는 MySQL 8.0 문법을 따릅니다. 아래 컬럼명은 MySQL 8.0 예약어이므로 DDL에서 반드시 백틱으로 감싸야 합니다.
+
+| 컬럼 | 테이블 | 이유 |
+|------|--------|------|
+| `role` | member | MySQL 8.0 역할 관리 예약어 |
+| `rank` | trend_keyword | MySQL 8.0 윈도우 함수 예약어 |
+
+JPA 엔티티에서도 @Column(name="`role`") / @Column(name="`rank`") 형태로 백틱을 명시합니다.
+
+---
+
+## 7. 테이블 컬럼 상세
+
+### member — 회원
+
+| 컬럼 | 타입 | NOT NULL | 기본값 | 설명 |
+|------|------|:--------:|--------|------|
+| `id` | BIGINT | ✓ | AUTO_INCREMENT | PK |
+| `member_id` | VARCHAR(50) | ✓ | — | 로그인용 아이디 (UNIQUE) |
+| `password` | VARCHAR(255) | ✓ | — | BCrypt 해시 |
+| `email` | VARCHAR(100) | ✓ | — | 이메일 (UNIQUE) |
+| `phone` | VARCHAR(20) | — | NULL | 전화번호 |
+| `name` | VARCHAR(50) | ✓ | — | 이름 |
+| `role` | ENUM | ✓ | USER | 권한 (USER / ADMIN) ★예약어 |
+| `created_at` | DATETIME | ✓ | CURRENT_TIMESTAMP | 가입일시 |
+
+### trend_keyword — 트렌드 키워드
+
+| 컬럼 | 타입 | NOT NULL | 기본값 | 설명 |
+|------|------|:--------:|--------|------|
+| `id` | BIGINT | ✓ | AUTO_INCREMENT | PK |
+| `keyword` | VARCHAR(100) | ✓ | — | 키워드명 |
+| `rank` | TINYINT | — | NULL | 순위 1~10위 ★예약어 |
+| `frequency` | INT | ✓ | 0 | 키워드 빈도수 |
+| `collected_at` | DATETIME | ✓ | — | 수집 시간 |
+| `is_active` | BOOLEAN | ✓ | TRUE | 현재 활성 여부 |
+
+### supplier — 공급업체
+
+| 컬럼 | 타입 | NOT NULL | 기본값 | 설명 |
+|------|------|:--------:|--------|------|
+| `id` | BIGINT | ✓ | AUTO_INCREMENT | PK |
+| `name` | VARCHAR(100) | ✓ | — | 구매처명 (UNIQUE) |
+| `url` | VARCHAR(500) | — | NULL | 구매처 홈 링크 |
+| `created_at` | DATETIME | ✓ | CURRENT_TIMESTAMP | 등록일시 |
+
+### product — 상품
+
+| 컬럼 | 타입 | NOT NULL | 기본값 | 설명 |
+|------|------|:--------:|--------|------|
+| `id` | BIGINT | ✓ | AUTO_INCREMENT | PK |
+| `keyword_id` | BIGINT | ✓ | — | FK → trend_keyword |
+| `supplier_id` | BIGINT | ✓ | — | FK → supplier |
+| `name` | VARCHAR(200) | ✓ | — | 상품명 |
+| `description` | TEXT | — | NULL | 상품 설명 |
+| `price` | INT | ✓ | — | 가격 (원) |
+| `image_url` | VARCHAR(500) | — | NULL | 이미지 주소 |
+| `product_url` | VARCHAR(500) | — | NULL | 상품 구매처 링크 |
+| `auto_order` | BOOLEAN | ✓ | FALSE | 자동발주 플래그 (기본 OFF) |
+| `crawled_at` | DATETIME | ✓ | — | 크롤링 시간 |
+
+### cart_item — 장바구니
+
+| 컬럼 | 타입 | NOT NULL | 기본값 | 설명 |
+|------|------|:--------:|--------|------|
+| `id` | BIGINT | ✓ | AUTO_INCREMENT | PK |
+| `member_id` | BIGINT | ✓ | — | FK → member |
+| `product_id` | BIGINT | ✓ | — | FK → product |
+| `quantity` | INT | ✓ | 1 | 수량 |
+| `created_at` | DATETIME | ✓ | CURRENT_TIMESTAMP | 담은 일시 |
+
+> UNIQUE(member_id, product_id) — 동일 상품 중복 방지
+
+### purchase_order — 발주
+
+| 컬럼 | 타입 | NOT NULL | 기본값 | 설명 |
+|------|------|:--------:|--------|------|
+| `id` | BIGINT | ✓ | AUTO_INCREMENT | PK |
+| `order_number` | VARCHAR(20) | ✓ | — | 발주번호 PO-YYYYMMDD-NNNN (UNIQUE) |
+| `member_id` | BIGINT | ✓ | — | FK → member (발주자) |
+| `supplier_id` | BIGINT | ✓ | — | FK → supplier (구매처) |
+| `status` | VARCHAR(20) | ✓ | RECEIVED | 발주 상태 |
+| `total_price` | INT | ✓ | — | 총 가격 (원) |
+| `shipping_fee` | INT | ✓ | 0 | 배송비 (원) |
+| `is_auto` | BOOLEAN | ✓ | FALSE | 자동발주 여부 |
+| `ordered_at` | DATETIME | ✓ | CURRENT_TIMESTAMP | 발주일시 |
+
+### purchase_order_item — 발주 상품 명세
+
+| 컬럼 | 타입 | NOT NULL | 기본값 | 설명 |
+|------|------|:--------:|--------|------|
+| `id` | BIGINT | ✓ | AUTO_INCREMENT | PK |
+| `order_id` | BIGINT | ✓ | — | FK → purchase_order |
+| `product_id` | BIGINT | ✓ | — | FK → product |
+| `product_name` | VARCHAR(200) | ✓ | — | 상품명 스냅샷 (발주 시점) |
+| `price` | INT | ✓ | — | 단가 스냅샷 (발주 시점) |
+| `quantity` | INT | ✓ | — | 수량 |
+
+### rpa_log — RPA 실행 로그
+
+| 컬럼 | 타입 | NOT NULL | 기본값 | 설명 |
+|------|------|:--------:|--------|------|
+| `id` | BIGINT | ✓ | AUTO_INCREMENT | PK |
+| `status` | VARCHAR(10) | ✓ | — | RPA 상태 (RUNNING / COMPLETED / FAILED) |
+| `started_at` | DATETIME | ✓ | — | 시작 시간 |
+| `ended_at` | DATETIME | — | NULL | 종료 시간 (RUNNING 중 NULL) |
+| `keyword_count` | INT | — | NULL | 수집된 키워드 수 |
+| `product_count` | INT | — | NULL | 수집된 상품 수 |
+| `message` | TEXT | — | NULL | 오류 메시지 또는 요약 |
+
+### auto_order_audit — 자동발주 플래그 변경 이력
+
+| 컬럼 | 타입 | NOT NULL | 기본값 | 설명 |
+|------|------|:--------:|--------|------|
+| `id` | BIGINT | ✓ | AUTO_INCREMENT | PK |
+| `product_id` | BIGINT | ✓ | — | FK → product (대상 상품) |
+| `changed_by` | BIGINT | ✓ | — | FK → member (변경한 관리자) |
+| `old_value` | BOOLEAN | ✓ | — | 변경 전 값 |
+| `new_value` | BOOLEAN | ✓ | — | 변경 후 값 |
+| `changed_at` | DATETIME | ✓ | CURRENT_TIMESTAMP | 변경 일시 |
+| `reason` | VARCHAR(200) | — | NULL | 변경 사유 |

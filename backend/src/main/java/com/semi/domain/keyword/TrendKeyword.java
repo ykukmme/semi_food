@@ -25,7 +25,7 @@ public class TrendKeyword {
     @Column(nullable = false, length = 100)
     private String keyword;
 
-    @Column
+    @Column(name = "`rank`")  // rank는 MySQL 8.0 예약어 — 백틱 필수
     private Integer rank;  // 1~10위 (Byte는 null 언박싱 시 NPE 위험)
 
     @Column(nullable = false)

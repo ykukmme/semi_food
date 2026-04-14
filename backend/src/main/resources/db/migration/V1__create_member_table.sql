@@ -6,6 +6,6 @@ CREATE TABLE member (
     email       VARCHAR(100) NOT NULL UNIQUE COMMENT '이메일',
     phone       VARCHAR(20)  COMMENT '전화번호',
     name        VARCHAR(50)  NOT NULL COMMENT '이름',
-    role        ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER' COMMENT '권한',
+    `role`      ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER' COMMENT '권한',
     created_at  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '가입일시'
 );
