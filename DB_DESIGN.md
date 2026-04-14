@@ -320,7 +320,7 @@ V{버전}__{설명}.sql
  └── 숫자 버전 (Flyway가 오름차순으로 실행)
 ```
 
-파일 위치: `backend/src/main/resources/db/migration/`
+파일 위치: `src/main/resources/db/migration/`
 
 ### Flyway 마이그레이션 순서
 

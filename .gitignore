@@ -45,7 +45,7 @@ rpa/logs/
 playwright/.auth/
 
 # ===============================
-# Frontend (HTML/CSS/JS)
+# Web / Node (빌드 도구 사용 시)
 # ===============================
 node_modules/
 *.log
