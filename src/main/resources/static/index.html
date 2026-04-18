@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Work+Sans:wght@300;400;500;600&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#ff642d",
+                    "on-tertiary-fixed": "#131f01",
+                    "surface-container-high": "#eae8e7",
+                    "error-container": "#ffdad6",
+                    "on-primary-container": "#00433f",
+                    "on-secondary-container": "#5a1600",
+                    "tertiary-fixed": "#d7e9b6",
+                    "inverse-primary": "#6fd8cd",
+                    "on-background": "#1b1c1c",
+                    "inverse-on-surface": "#f2f0f0",
+                    "surface-container-highest": "#e4e2e2",
+                    "primary": "#006a63",
+                    "surface-tint": "#006a63",
+                    "on-primary-fixed-variant": "#00504a",
+                    "on-tertiary": "#ffffff",
+                    "surface-bright": "#fbf9f8",
+                    "error": "#ba1a1a",
+                    "primary-fixed": "#8cf4e9",
+                    "tertiary-fixed-dim": "#bccd9c",
+                    "primary-fixed-dim": "#6fd8cd",
+                    "on-surface-variant": "#3d4947",
+                    "outline": "#6d7a77",
+                    "tertiary-container": "#9bac7d",
+                    "primary-container": "#4bb6ac",
+                    "on-primary": "#ffffff",
+                    "inverse-surface": "#303030",
+                    "on-secondary": "#ffffff",
+                    "surface-container": "#efeded",
+                    "secondary-fixed": "#ffdbd0",
+                    "on-primary-fixed": "#00201d",
+                    "surface-variant": "#e4e2e2",
+                    "surface-dim": "#dbdad9",
+                    "secondary-fixed-dim": "#ffb59e",
+                    "on-secondary-fixed": "#3a0b00",
+                    "outline-variant": "#bcc9c6",
+                    "on-tertiary-container": "#32401b",
+                    "on-secondary-fixed-variant": "#842500",
+                    "surface-container-low": "#f5f3f3",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#3d4c26",
+                    "surface": "#fbf9f8",
+                    "on-surface": "#1b1c1c",
+                    "on-error": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "background": "#fbf9f8",
+                    "tertiary": "#54643b",
+                    "secondary": "#ad3300"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Work Sans"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .editorial-shadow {
+            box-shadow: 0 24px 48px -12px rgba(27, 28, 28, 0.04);
+        }
+        .glass-nav {
+            background: rgba(251, 249, 248, 0);
+            backdrop-filter: blur(0px);
+        }
+        .glass-nav.scrolled {
+            background: rgba(251, 249, 248, 0.85);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300" id="main-header">
+<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+<div class="flex items-center gap-12">
+<a class="text-2xl font-bold tracking-tighter text-teal-900 dark:text-white font-headline" href="index.html">Heritage Namhae</a>
+<nav class="hidden md:flex items-center gap-8 font-plus-jakarta text-sm tracking-tight">
+<a class="text-teal-700 dark:text-teal-300 font-bold border-b-2 border-teal-700 pb-1 transition-opacity duration-300" href="#">Best</a>
+<a class="text-zinc-600 dark:text-zinc-400 hover:text-teal-600 hover:opacity-80 transition-opacity duration-300" href="#">New</a>
+<a class="text-zinc-600 dark:text-zinc-400 hover:text-teal-600 hover:opacity-80 transition-opacity duration-300" href="#">Namhae Pack</a>
+<a class="text-zinc-600 dark:text-zinc-400 hover:text-teal-600 hover:opacity-80 transition-opacity duration-300" href="#">MD's Pick</a>
+<a class="text-zinc-600 dark:text-zinc-400 hover:text-teal-600 hover:opacity-80 transition-opacity duration-300" href="#">Review</a>
+<a class="text-zinc-600 dark:text-zinc-400 hover:text-teal-600 hover:opacity-80 transition-opacity duration-300" href="#">Community</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center bg-surface-container/50 rounded-full px-4 py-1.5 border border-outline-variant/20 focus-within:border-primary focus-within:bg-white transition-all">
+<span class="material-symbols-outlined text-outline text-lg" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48 font-label" placeholder="Search heritage products..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<a class="p-2 text-on-surface-variant hover:text-primary transition-colors scale-95 active:scale-90" href="cart.html">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+</a>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors scale-95 active:scale-90">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</button>
+<button class="md:hidden p-2 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-0">
+<!-- Hero Section -->
+<section class="relative h-[870px] overflow-hidden bg-surface-container-low">
+<div class="absolute inset-0">
+<img alt="Namhae Winter Spinach" class="w-full h-full object-cover object-center scale-105" data-alt="Close-up of vibrant green organic spinach leaves with dew drops in a sun-drenched coastal field of Namhae island at dawn" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCewXvdNEluXrX_ptA0lh3Q9dIkXMP__IJb6BNdazMSZSSGXL-q29RAd7OrG4IZdVi-nqkHWw4LUsVqSUFy2enS5fH4etAP45twTc1Wy5pbYbU4oVsIRXAa2h5f7qPJ5t6TbvynJ2Tm-XqA47pCo9WhFPlU1J0Fn0CDmht-aydrLGvYkbwRaadeQf0JnVS4MWZ7UhtY6nQCCkmM1wDREZUCJVr-rXfmp2PRUeGMAclzWZOpbO9-dXuUEKLx_C3AoqFPOO9Y62ZD9Ns"/>
+<div class="absolute inset-0 bg-gradient-to-r from-on-background/40 to-transparent"></div>
+</div>
+<div class="relative max-w-7xl mx-auto px-6 h-full flex items-center">
+<div class="max-w-2xl text-on-primary">
+<span class="inline-block px-3 py-1 rounded-full bg-secondary text-on-secondary text-xs font-bold mb-6 font-label uppercase tracking-widest">Seasonal Focus</span>
+<h1 class="text-6xl md:text-8xl font-headline font-extrabold tracking-tighter leading-[0.9] mb-8">Namhae<br/>Bomee<br/>Spinach.</h1>
+<p class="text-xl text-white/90 font-body leading-relaxed mb-10 max-w-lg">Grown by the sea breeze and southern sun, our heritage spinach carries a sweetness only winter in Namhae can provide.</p>
+<div class="flex gap-4">
+<a class="px-8 py-4 bg-primary text-on-primary rounded-xl font-semibold flex items-center gap-2 editorial-shadow hover:bg-primary/90 transition-all" href="product_detail.html">
+                            Explore Collection
+                            <span class="material-symbols-outlined text-lg" data-icon="arrow_forward">arrow_forward</span>
+</a>
+<button class="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-xl font-semibold hover:bg-white/20 transition-all">
+                            View Story
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Best Products Grid -->
+<section class="py-24 bg-surface">
+<div class="max-w-7xl mx-auto px-6">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+<div>
+<h2 class="text-4xl font-headline font-bold text-on-surface mb-4 tracking-tight">Best Curations</h2>
+<p class="text-on-surface-variant max-w-md">Our community's most loved treasures from the coastal fields and deep waters of Namhae.</p>
+</div>
+<div class="flex flex-wrap gap-2" id="category-tabs">
+<button class="tab-btn px-6 py-2 rounded-full bg-primary text-on-primary font-medium text-sm transition-all" data-category="agricultural">Agricultural</button>
+<button class="tab-btn px-6 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-medium text-sm hover:bg-surface-container-highest transition-all" data-category="marine">Marine</button>
+<button class="tab-btn px-6 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-medium text-sm hover:bg-surface-container-highest transition-all" data-category="processed">Processed</button>
+<button class="tab-btn px-6 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-medium text-sm hover:bg-surface-container-highest transition-all" data-category="gift">Gift Sets</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12" id="products-grid">
+<!-- Product Card 1 -->
+<div class="group cursor-pointer product-card" onclick="window.location.href='product_detail.html'">
+<div class="relative aspect-[4/5] rounded-xl overflow-hidden mb-6 bg-surface-container-low">
+<img alt="Premium Garlic" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Detailed studio shot of premium Namhae purple garlic bulbs with papery skin on a clean minimalist light grey surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvD8uIdVNYEyiWGHi8yFmVhG6kbg5-KXyFssfxmkrmP-JrJbYqvVD6RtXPpMp9e3q0oJT9JD1rgMsLvnW_N7Guc2UpVX3lrboH_s0l84ZsmqcHHbcMeGGSxCPSUrWw4kZobqPVHoybx0lTymFYoGlw4m66hm8W5HgmeTzDzx4u5Cm14ARuzsuwU-FgzJ9cvl2OMTwesvvWrLgPV0wO-VE5w86RDbjiJXooh7j6sTkPGKfugkB4AmON8LapwmBn12YwXpz-0x63ew4"/>
+<span class="absolute top-4 right-4 px-3 py-1 bg-secondary text-on-secondary text-[10px] font-bold rounded-full font-label">BEST 01</span>
+<div class="absolute bottom-4 left-4 right-4 p-4 translate-y-12 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+<button class="w-full bg-white text-on-surface py-3 rounded-lg font-bold text-sm shadow-xl hover:bg-primary hover:text-white transition-colors">Quick Add</button>
+</div>
+</div>
+<h3 class="font-headline font-bold text-lg text-on-surface mb-1">Namhae Black Garlic Pack</h3>
+<p class="text-zinc-500 text-sm mb-3">Aged for 60 days in sea salt caves</p>
+<div class="flex items-center justify-between">
+<span class="font-bold text-primary">₩45,000</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-secondary-container" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold">4.9 (1.2k)</span>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="group cursor-pointer product-card" onclick="window.location.href='product_detail.html'">
+<div class="relative aspect-[4/5] rounded-xl overflow-hidden mb-6 bg-surface-container-low">
+<img alt="Dried Anchovies" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Artisanal display of silver dried anchovies in a traditional woven bamboo basket with soft side lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtnOlqwxH7qQy3ChR7FmuXsVSSaxhYvOnns0ob-uiDx4zOr71NBx6Q94Wz385GUyjkNNQ5N5JxcRDKfABqITkNJgwySp4LsPMI-vQcuQuJwFqzjv8KCLkeQXUb2tis5ggjGam2O8DACKgg-cvn9SEBhXqCmnefnl0zlnctaNRUCXO92vpIkuO8xAeWFh6b5wDdgld1a9JrVKnBCD__TPAa3BKTgPblzey3Iu4AWPf0VZzS9B_Z7rYdGhncgkQMULAuYf5QSiJ20tM"/>
+<span class="absolute top-4 right-4 px-3 py-1 bg-secondary text-on-secondary text-[10px] font-bold rounded-full font-label">BEST 02</span>
+<div class="absolute bottom-4 left-4 right-4 p-4 translate-y-12 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+<button class="w-full bg-white text-on-surface py-3 rounded-lg font-bold text-sm shadow-xl hover:bg-primary hover:text-white transition-colors">Quick Add</button>
+</div>
+</div>
+<h3 class="font-headline font-bold text-lg text-on-surface mb-1">Jukbang-ryeom Anchovy</h3>
+<p class="text-zinc-500 text-sm mb-3">Premium grade, sun-dried naturally</p>
+<div class="flex items-center justify-between">
+<span class="font-bold text-primary">₩32,000</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-secondary-container" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold">4.8 (850)</span>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="group cursor-pointer product-card" onclick="window.location.href='product_detail.html'">
+<div class="relative aspect-[4/5] rounded-xl overflow-hidden mb-6 bg-surface-container-low">
+<img alt="Citron Honey" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Golden jars of Namhae Yuja citron preserve in a bright kitchen setting with sliced yellow citrus fruits around" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6h2K_MVUBoM6e2g9pPgi1msYnPU-LqTPmHqzCmHfsvP_BBUDLS8stEczldwRW7Escn4_-JCFeGGjjyBtGHDmvzMEGEGzBojUCZqNvDtWyL-Jo2aVNs-7gLGycXcdjZL_FigVsA6YTvm5dy2Ze7AGvew5LlLXtPg4U6B9nTX5rrLUWH_b3tvv7BG4W0mZQCabL3COnRI52h3TOxTODA5LcENrvt5Lqj7OiQqdrw-dqt2bpXQuzWWqCWeN1X7WAsqMeGl46bGUZcjw"/>
+<span class="absolute top-4 right-4 px-3 py-1 bg-secondary text-on-secondary text-[10px] font-bold rounded-full font-label">BEST 03</span>
+<div class="absolute bottom-4 left-4 right-4 p-4 translate-y-12 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+<button class="w-full bg-white text-on-surface py-3 rounded-lg font-bold text-sm shadow-xl hover:bg-primary hover:text-white transition-colors">Quick Add</button>
+</div>
+</div>
+<h3 class="font-headline font-bold text-lg text-on-surface mb-1">Yuja Citron Honey Jar</h3>
+<p class="text-zinc-500 text-sm mb-3">Handpicked citrus from ancient groves</p>
+<div class="flex items-center justify-between">
+<span class="font-bold text-primary">₩18,000</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-secondary-container" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold">5.0 (420)</span>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group cursor-pointer product-card" onclick="window.location.href='product_detail.html'">
+<div class="relative aspect-[4/5] rounded-xl overflow-hidden mb-6 bg-surface-container-low">
+<img alt="Namhae Rice" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Burlap sack of polished short-grain white rice with some rice spilling onto a wooden surface in warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBczyhcl-myvmsy97jzfGBOYvdcKPxAJBIwW-DN3Am5aqlg831CLfC3PUSo0sYcilP7G3PF57aahgUVvY6aK3EkSlrvGRSwgrIM5QtrTIP2MYFPDS4_WTv3M2dIN0uH4XLbljElwmXdT_b1KLtqq9wf5xlhJrLMuUKvrH4psKSO-h23HKyWP-GR9_zTer6zwtBGnvuYGz3F-_pqokzSF0tnYfdXbqkSe7GUawF3eSXJ9F1DsMuzxKnCXE_lgrLEwvRYNXCMiel9Izc"/>
+<span class="absolute top-4 right-4 px-3 py-1 bg-secondary text-on-secondary text-[10px] font-bold rounded-full font-label">BEST 04</span>
+<div class="absolute bottom-4 left-4 right-4 p-4 translate-y-12 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+<button class="w-full bg-white text-on-surface py-3 rounded-lg font-bold text-sm shadow-xl hover:bg-primary hover:text-white transition-colors">Quick Add</button>
+</div>
+</div>
+<h3 class="font-headline font-bold text-lg text-on-surface mb-1">Sea-Breeze Golden Rice</h3>
+<p class="text-zinc-500 text-sm mb-3">New harvest 2024, limited supply</p>
+<div class="flex items-center justify-between">
+<span class="font-bold text-primary">₩68,000</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-secondary-container" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold">4.7 (2.1k)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Namhae Curated Sets (Bento Grid) -->
+<section class="py-24 bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-6">
+<div class="text-center mb-16">
+<span class="text-primary font-bold tracking-widest text-xs uppercase font-label">Heritage Collection</span>
+<h2 class="text-4xl font-headline font-extrabold text-on-surface mt-2 tracking-tight">Namhae Curated Packs</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<a class="md:col-span-2 relative h-[500px] rounded-2xl overflow-hidden group block" href="product_detail.html">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Overhead shot of a curated wooden gift box filled with various organic Korean vegetables, garlic, and dried fish products" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBP0kxkk-Jz5nz7xB5SulhS0SrKXUO8jl8z8g8nidfmgmKjcVxIXRpxoCj0zb0025tmQp1rD3xNsBzVj3UFOuZJg44CxTQOR8yCTGqJpcsB7EuDHUj9ze0NxlsNrnY-GtUJPTecYFiSAa-FBcYqFTVu4SE1tWEBoN4x4P3UjQUYRA83l52QNg0nImstwTIZiBsTsgegLLCMVfoQWu_TOlBhak4xu6xMEI2ZJbAdz9qiuQ2-8AzBNRxsaYdDQ-Q36TcHtqgpszwTjW4"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-background/80 via-on-background/20 to-transparent p-12 flex flex-col justify-end">
+<h3 class="text-3xl font-headline font-bold text-white mb-4">The Grand Harvest Box</h3>
+<p class="text-white/80 max-w-md mb-8">A complete seasonal selection of Namhae's finest exports delivered monthly to your doorstep.</p>
+<span class="flex items-center gap-2 text-primary-fixed font-bold hover:underline">Subscribe Now <span class="material-symbols-outlined" data-icon="north_east">north_east</span></span>
+</div>
+</a>
+<a class="relative h-[500px] rounded-2xl overflow-hidden group block" href="product_detail.html">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Moody dark wood table with several small jars of artisanal Korean side dishes and sauces" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgDW29YF3C7zCcwVXGypLF27KnKUBnbTu_01FCQ5BWYNKZM__RrvQ-85-vI8qWJlL_VoMtmoeTqUP5Zf0p8T5Dk9gzLxMw-CF3P1R3XZSpBunAT5GtzZSyMKuf0jQ8sKxULzdJv-lXx636qyoIRcE97UBVX0Y3nEMI43CSdqbHec4Cl__e6UknwOCp_9i0ySsmxCoxyyzlu4ZSr4P7uJW15gokckdW9dMB8ItlNX-e6pZSrEL02_v4jyFCTAgqfWjQvB6P85zz5NQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-background/80 via-on-background/20 to-transparent p-8 flex flex-col justify-end">
+<h3 class="text-2xl font-headline font-bold text-white mb-2">Ocean &amp; Field Duo</h3>
+<p class="text-white/80 text-sm mb-6">Perfect balance of land and sea.</p>
+<span class="inline-block px-6 py-3 bg-white text-on-surface rounded-xl font-bold text-sm text-center">Pre-order</span>
+</div>
+</a>
+</div>
+</div>
+</section>
+<!-- MD's Recommendation -->
+<section class="py-24 bg-surface">
+<div class="max-w-7xl mx-auto px-6">
+<div class="flex items-center justify-between mb-12">
+<h2 class="text-3xl font-headline font-bold text-on-surface">MD's Heritage Choice</h2>
+<a class="text-sm font-bold text-primary flex items-center gap-1 group" href="#">
+                        View All Recommended
+                        <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+</a>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Recommended Item 1 -->
+<a class="flex gap-6 p-4 bg-surface-container-lowest rounded-2xl border border-outline-variant/10 hover:border-primary/30 transition-all shadow-sm group" href="product_detail.html">
+<div class="relative w-32 h-32 flex-shrink-0 rounded-xl overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="Close up of traditional Korean sea salt crystals in a wooden spoon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChC9koO8FqpFEteM-54eEB5plhJApvKpHvL92kRDPYGoxnucmuCLL3ayFpUrwui7zYHOSQ4q59Ie2633lvaR1fjnafQ4nuKERmn4KP81zITLjA8P0epMiegLRaASZqj6iPAAUxWHe3zfF5fk6M7ie-cyg84MHHPH8Wkm0Dur631VNO7mAbL9MMRH81Aki-xpU0kqZP1QgRomI_MhlNp5RFle_xxoU2CADhQitDboF1dcxZgWIG7i2be15LDfd1W6_MeNVHQ0CA1Iw"/>
+<div class="absolute bottom-1 left-1 flex gap-1">
+<span class="bg-primary/90 text-[8px] text-white p-1 rounded font-bold uppercase tracking-tighter">GAP</span>
+<span class="bg-tertiary/90 text-[8px] text-white p-1 rounded font-bold uppercase tracking-tighter">ECO</span>
+</div>
+</div>
+<div class="flex flex-col justify-center">
+<span class="text-xs font-bold text-secondary-container mb-1">MD Selection</span>
+<h4 class="font-bold text-on-surface mb-1">Natural Sundried Sea Salt</h4>
+<p class="text-xs text-zinc-500 mb-2">3 Years Aged, Low Sodium</p>
+<span class="font-bold text-primary">₩24,000</span>
+</div>
+</a>
+<!-- Recommended Item 2 -->
+<a class="flex gap-6 p-4 bg-surface-container-lowest rounded-2xl border border-outline-variant/10 hover:border-primary/30 transition-all shadow-sm group" href="product_detail.html">
+<div class="relative w-32 h-32 flex-shrink-0 rounded-xl overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="Bottle of premium Korean wild honey next to a honeycomb piece" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7D77ZDlj6uU8nxm98WAdeJCe9M0sjL2UD6_uiVh0bHQi17z-wElrn1OKQyH2RrYK4xMZLEbEuu0JcDZh4YTh8ZEYtROqlvU-_UoPdAB_mvZbV7SB7bvjK0YTAyaxu4N-i4niPxM3hNCy66sL-hgA80hzZYCTjbuJBssO0if1Ag4CEd6zI7k_SgLW3B07E0zj9iXCz5P_fiQMKripopQqOHrBPDgRvmbM41vTuQe2S-C1WEMTMgToXmZFtHV9cwabO31LwJ9pkIJk"/>
+<div class="absolute bottom-1 left-1 flex gap-1">
+<span class="bg-primary/90 text-[8px] text-white p-1 rounded font-bold uppercase tracking-tighter">K-CERT</span>
+</div>
+</div>
+<div class="flex flex-col justify-center">
+<span class="text-xs font-bold text-secondary-container mb-1">Editor's Pick</span>
+<h4 class="font-bold text-on-surface mb-1">Wild Flower Forest Honey</h4>
+<p class="text-xs text-zinc-500 mb-2">From Seolcheon-myeon</p>
+<span class="font-bold text-primary">₩55,000</span>
+</div>
+</a>
+<!-- Recommended Item 3 -->
+<a class="flex gap-6 p-4 bg-surface-container-lowest rounded-2xl border border-outline-variant/10 hover:border-primary/30 transition-all shadow-sm group" href="product_detail.html">
+<div class="relative w-32 h-32 flex-shrink-0 rounded-xl overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="Plate of beautifully arranged sliced citrus with green tea set" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtmL6Wx4HrZ6oCE4Sj1r3KdatP1rht2SZcB8OYA1voOztT96ZI8x0oqPB3UPp1HnSPhNW_zaE41gE76fcz7hRYxqruHde15CHp53v8zGIBnyYEiEgR2AINMlcMPCivVkr6q-9VoA3JsK3TkV9rr09Yqay8Klhh50VwTdXQKS4yWPKaFG3g-CiHOhtvRj-l6RafEXjam2dxQackhmKtVDST7tgKf4cN9ZkjBObbPwbHd7Jb7RZl9H9alATYMD6Q0RAu3bTmMD72bBw"/>
+<div class="absolute bottom-1 left-1 flex gap-1">
+<span class="bg-primary/90 text-[8px] text-white p-1 rounded font-bold uppercase tracking-tighter">HALAL</span>
+<span class="bg-tertiary/90 text-[8px] text-white p-1 rounded font-bold uppercase tracking-tighter">ORGANIC</span>
+</div>
+</div>
+<div class="flex flex-col justify-center">
+<span class="text-xs font-bold text-secondary-container mb-1">New Trend</span>
+<h4 class="font-bold text-on-surface mb-1">Yuja Citron Tea Kit</h4>
+<p class="text-xs text-zinc-500 mb-2">Caffeine-Free Wellness</p>
+<span class="font-bold text-primary">₩15,000</span>
+</div>
+</a>
+</div>
+</div>
+</section>
+<!-- Just Harvested Section -->
+<section class="py-24 bg-tertiary-fixed/20 overflow-hidden">
+<div class="max-w-7xl mx-auto px-6">
+<div class="flex items-center gap-4 mb-12">
+<span class="w-12 h-[2px] bg-primary"></span>
+<h2 class="text-3xl font-headline font-bold text-on-surface">Freshly Harvested Today</h2>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+<!-- New Arrival Items linked -->
+<a class="group relative aspect-square rounded-2xl overflow-hidden editorial-shadow block" href="product_detail.html">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Hand picking a ripe red apple from a tree in an orchard during autumn" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmSFW_XNpm4WgMMq2zh8XQnoljKonrmp3o4ma9vG3mVMnIcvOY9ZGnG_Eh1PtsObxWa8Qjtl3Ez1f9XWHS2OAg03NAcfN8SgqCP4iAQ1jo4fBwamjOSngb6sV1By14rUa0-2LjZKu0q9UiH46QTDzC1g56aszNeNY2x4kbocbHGdpz3h6CXyKLEbr3yOLOgWAtMR4lVgl8yyDplUrl3f5de9sF7x3BQaWmBtb1d228vkR2LmfsLRKqjmDnX5fzVNzmeCDnm438pNs"/>
+<div class="absolute inset-0 bg-on-background/20 group-hover:bg-on-background/10 transition-colors"></div>
+<div class="absolute bottom-4 left-4 right-4 text-white">
+<span class="text-[10px] font-bold uppercase tracking-widest opacity-80">Orchard 04</span>
+<p class="font-bold text-sm">Namhae Ruby Apples</p>
+</div>
+</a>
+<a class="group relative aspect-square rounded-2xl overflow-hidden editorial-shadow translate-y-4 block" href="product_detail.html">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Fresh purple grapes on a vine" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkixaid8d1t117GEC_6wwIXcj2p-9_nXXOWg_jTjEyYs5EAX0ISio_xtxV010VhJBoUTP7e5dzYwsQalb8pBQmGqlTQs-sHDW-KwvqkGhX_pr82zn-y3WmO2AfhT2C6pAeePZuwWXecmGQTMuP5vV5SlMWFmFmKcFn47g15zWrIS2rFllnMZV3ml48T1mkkcq0WXl-WVrDGFP58K4ucH5n6JhH_8gRRVJ6M5c3fgi_4WRbT_DYZS5IeFfHjIoGT1b7vD8yQgkSlWs"/>
+<div class="absolute inset-0 bg-on-background/20 group-hover:bg-on-background/10 transition-colors"></div>
+<div class="absolute bottom-4 left-4 right-4 text-white">
+<span class="text-[10px] font-bold uppercase tracking-widest opacity-80">Vineyard 12</span>
+<p class="font-bold text-sm">Black Shine Muscat</p>
+</div>
+</a>
+<a class="group relative aspect-square rounded-2xl overflow-hidden editorial-shadow block" href="product_detail.html">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Harvested rice stalks" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3o0dfhGz8yF0kekmb7uEmh7mhxaNJuo_UOSrsI-XL1RDp6xOJwTLcqXPw4JCWr0Ztx3EiRGWjx6I5rl8Z3zzAT9_NnRvH3DkpxImM-VZoV6_4E4fUG2JN6pSRtXFiti3KTNvfAlM2DZPtf6SxMsJ0M2M8Se-zMgywPCVuGKMOEhNMjQ_JidBB67XvUaWOlcLBAFzK21WDgEIJXkgWAEeLloI4FmmhHJM796DS34J4eiqFep5r1e2ucXCovKdqvn1WzexUIGoga6U"/>
+<div class="absolute inset-0 bg-on-background/20 group-hover:bg-on-background/10 transition-colors"></div>
+<div class="absolute bottom-4 left-4 right-4 text-white">
+<span class="text-[10px] font-bold uppercase tracking-widest opacity-80">Paddy Field 02</span>
+<p class="font-bold text-sm">Organic Brown Rice</p>
+</div>
+</a>
+<a class="group relative aspect-square rounded-2xl overflow-hidden editorial-shadow translate-y-4 block" href="product_detail.html">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Freshly caught abalone" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_ov1NOr35Hl83S9DwDCacpCMdM2oeckVOhfHtMqmBO_JXLdVxYKPUzLw9cWigqbjt-9jbBrJG7WNS8aFfqrgNLJNpzUblxST1jb6zdFStA6p1RLuKEm71HnIFA8CeB7zKeSnuLpynsPn9Df6sYgBulipDkJCofr_3sZUIL-LQeoZVrisQ57Y50cSFdV-3Pqfy1ZRAM03UFcmOCx4feRfwBnUIcYVOFkVcTxtJFKwIRexyoqNekSVsi8Bq-ri4ZnQsBVzsG3ftH8k"/>
+<div class="absolute inset-0 bg-on-background/20 group-hover:bg-on-background/10 transition-colors"></div>
+<div class="absolute bottom-4 left-4 right-4 text-white">
+<span class="text-[10px] font-bold uppercase tracking-widest opacity-80">Coast Line 09</span>
+<p class="font-bold text-sm">Large Sea Abalone</p>
+</div>
+</a>
+<a class="group relative aspect-square rounded-2xl overflow-hidden editorial-shadow block" href="product_detail.html">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Basket of fresh green bell peppers" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-UYTxpK5lN3Bq6azm3wI2NhNWj_aB9D6EcvJImHTGyN0x5zBoFufMa26FHRUhbUY37xRj8p5DWPCgmOs8qRLMTCUo1xlTU8i8oYM5iMmdGE8xcnq9k8mGVPLOkxP_j_e8HIcrl1apX5nj6zitJFg1Y2z5GEtl1P3yoq94B12aaeYTR8ka5WsZMvSjG8mUkMxjjPLbX3kORSu5HUT65oiL43JauAZlKNk-SbY1wgkKd_PUz3C9FDpWIbmGZh68QFZG3yh3r43MmmM"/>
+<div class="absolute inset-0 bg-on-background/20 group-hover:bg-on-background/10 transition-colors"></div>
+<div class="absolute bottom-4 left-4 right-4 text-white">
+<span class="text-[10px] font-bold uppercase tracking-widest opacity-80">Greenhouse 07</span>
+<p class="font-bold text-sm">Crisp Bell Peppers</p>
+</div>
+</a>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="full-width py-16 px-8 mt-24 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800 transition-colors duration-200 font-work-sans text-xs leading-relaxed">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-7xl mx-auto">
+<div class="col-span-1 md:col-span-1">
+<div class="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-6 font-headline">Heritage Namhae</div>
+<p class="text-zinc-500 dark:text-zinc-400 mb-8 max-w-xs">
+                    The official heritage mall of Namhae County, curated to bring the authentic taste of our coastal paradise directly to your home.
+                </p>
+<div class="flex gap-4">
+<span class="w-8 h-8 rounded-full bg-zinc-200 flex items-center justify-center cursor-pointer hover:bg-zinc-300 transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="share">share</span>
+</span>
+<span class="w-8 h-8 rounded-full bg-zinc-200 flex items-center justify-center cursor-pointer hover:bg-zinc-300 transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="language">language</span>
+</span>
+</div>
+</div>
+<div>
+<h4 class="font-bold text-teal-800 dark:text-teal-500 mb-6">Service</h4>
+<ul class="space-y-4">
+<li><a class="text-zinc-500 dark:text-zinc-400 hover:text-teal-600 underline-offset-4 hover:underline" href="#">About Us</a></li>
+<li><a class="text-zinc-500 dark:text-zinc-400 hover:text-teal-600 underline-offset-4 hover:underline" href="#">Shipping &amp; Tracking</a></li>
+<li><a class="text-zinc-500 dark:text-zinc-400 hover:text-teal-600 underline-offset-4 hover:underline" href="#">Returns &amp; Refunds</a></li>
+<li><a class="text-zinc-500 dark:text-zinc-400 hover:text-teal-600 underline-offset-4 hover:underline" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-teal-800 dark:text-teal-500 mb-6">Contact</h4>
+<ul class="space-y-4">
+<li><a class="text-zinc-500 dark:text-zinc-400 hover:text-teal-600 underline-offset-4 hover:underline" href="#">Customer Center</a></li>
+<li class="text-zinc-500">Tel: 055-123-4567</li>
+<li class="text-zinc-500">Email: help@namhaeheritage.kr</li>
+<li><a class="text-zinc-500 dark:text-zinc-400 hover:text-teal-600 underline-offset-4 hover:underline" href="#">Contact Us</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-teal-800 dark:text-teal-500 mb-6">Location</h4>
+<p class="text-zinc-500 mb-4">Namhae-gun Office, Gyeongsangnam-do, Republic of Korea</p>
+<div class="h-32 w-full rounded-xl bg-zinc-200 overflow-hidden">
+<img alt="Location Map" class="w-full h-full object-cover grayscale" data-location="Namhae, South Korea" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2F8UAsYBf8f-PXSCkWz8tPMj1yPAwzNqFnUHdLvbP3NxWzmKZvO52Qb76KLXKdR7GifJMom5TfallzE3oUiWx6wj1VUqfQ-OWmzQVYplGPmVjO52jxg3e8NQdFOU-O_t0DJrzvtWD0uaWIpCc4fRIYzS0-oPNzSMqm3dfpC4iojREb1bO_k-endojrJHEh2Vek1i1HWAgmAM27qGPEC2EUe-1x_hxNJOM3j_NI-TicipehzW-arsFab0btwNoZOq5wXODkjGdXZM"/>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-zinc-200/50 flex flex-col md:flex-row justify-between gap-4">
+<p class="text-zinc-400">© 2024 Editorial Heritage Namhae. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-teal-600 underline-offset-4 hover:underline" href="#">Privacy Policy</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-teal-600 underline-offset-4 hover:underline" href="#">License Info</a>
+</div>
+</div>
+</footer>
+<!-- FAB -->
+<button class="fixed bottom-8 right-8 w-16 h-16 bg-primary text-on-primary rounded-full editorial-shadow flex items-center justify-center hover:scale-110 transition-transform active:scale-95 z-40">
+<span class="material-symbols-outlined text-3xl" data-icon="chat_bubble" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+</button>
+<script>
+        // 1. Scroll-based header background change
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // 2. Category tab switching logic
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const productsGrid = document.getElementById('products-grid');
+
+        // Simple mock data for category switching to show it's functional
+        const mockProducts = {
+            agricultural: [
+                { title: 'Namhae Black Garlic Pack', desc: 'Aged for 60 days', price: '₩45,000', rating: '4.9', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBvD8uIdVNYEyiWGHi8yFmVhG6kbg5-KXyFssfxmkrmP-JrJbYqvVD6RtXPpMp9e3q0oJT9JD1rgMsLvnW_N7Guc2UpVX3lrboH_s0l84ZsmqcHHbcMeGGSxCPSUrWw4kZobqPVHoybx0lTymFYoGlw4m66hm8W5HgmeTzDzx4u5Cm14ARuzsuwU-FgzJ9cvl2OMTwesvvWrLgPV0wO-VE5w86RDbjiJXooh7j6sTkPGKfugkB4AmON8LapwmBn12YwXpz-0x63ew4', tag: 'BEST 01' },
+                { title: 'Sea-Breeze Golden Rice', desc: 'New harvest 2024', price: '₩68,000', rating: '4.7', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBczyhcl-myvmsy97jzfGBOYvdcKPxAJBIwW-DN3Am5aqlg831CLfC3PUSo0sYcilP7G3PF57aahgUVvY6aK3EkSlrvGRSwgrIM5QtrTIP2MYFPDS4_WTv3M2dIN0uH4XLbljElwmXdT_b1KLtqq9wf5xlhJrLMuUKvrH4psKSO-h23HKyWP-GR9_zTer6zwtBGnvuYGz3F-_pqokzSF0tnYfdXbqkSe7GUawF3eSXJ9F1DsMuzxKnCXE_lgrLEwvRYNXCMiel9Izc', tag: 'BEST 04' }
+            ],
+            marine: [
+                { title: 'Jukbang-ryeom Anchovy', desc: 'Premium grade sun-dried', price: '₩32,000', rating: '4.8', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCtnOlqwxH7qQy3ChR7FmuXsVSSaxhYvOnns0ob-uiDx4zOr71NBx6Q94Wz385GUyjkNNQ5N5JxcRDKfABqITkNJgwySp4LsPMI-vQcuQuJwFqzjv8KCLkeQXUb2tis5ggjGam2O8DACKgg-cvn9SEBhXqCmnefnl0zlnctaNRUCXO92vpIkuO8xAeWFh6b5wDdgld1a9JrVKnBCD__TPAa3BKTgPblzey3Iu4AWPf0VZzS9B_Z7rYdGhncgkQMULAuYf5QSiJ20tM', tag: 'BEST 02' },
+                { title: 'Premium Abalone Set', desc: 'Fresh from Namhae sea', price: '₩120,000', rating: '5.0', img: 'https://images.unsplash.com/photo-1560717789-0ac7c58ac90a?q=80&w=1000&auto=format&fit=crop', tag: 'PREMIUM' }
+            ],
+            processed: [
+                { title: 'Yuja Citron Honey Jar', desc: 'Handpicked citrus', price: '₩18,000', rating: '5.0', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA6h2K_MVUBoM6e2g9pPgi1msYnPU-LqTPmHqzCmHfsvP_BBUDLS8stEczldwRW7Escn4_-JCFeGGjjyBtGHDmvzMEGEGzBojUCZqNvDtWyL-Jo2aVNs-7gLGycXcdjZL_FigVsA6YTvm5dy2Ze7AGvew5LlLXtPg4U6B9nTX5rrLUWH_b3tvv7BG4W0mZQCabL3COnRI52h3TOxTODA5LcENrvt5Lqj7OiQqdrw-dqt2bpXQuzWWqCWeN1X7WAsqMeGl46bGUZcjw', tag: 'BEST 03' }
+            ],
+            gift: [
+                { title: 'Grand Harvest Box', desc: 'Seasonal selection', price: '₩85,000', rating: '4.9', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBP0kxkk-Jz5nz7xB5SulhS0SrKXUO8jl8z8g8nidfmgmKjcVxIXRpxoCj0zb0025tmQp1rD3xNsBzVj3UFOuZJg44CxTQOR8yCTGqJpcsB7EuDHUj9ze0NxlsNrnY-GtUJPTecYFiSAa-FBcYqFTVu4SE1tWEBoN4x4P3UjQUYRA83l52QNg0nImstwTIZiBsTsgegLLCMVfoQWu_TOlBhak4xu6xMEI2ZJbAdz9qiuQ2-8AzBNRxsaYdDQ-Q36TcHtqgpszwTjW4', tag: 'SET' }
+            ]
+        };
+
+        function updateProducts(category) {
+            const products = mockProducts[category] || [];
+            productsGrid.innerHTML = products.map(p => `
+                <div class="group cursor-pointer product-card opacity-0 translate-y-4 transition-all duration-500" onclick="window.location.href='product_detail.html'">
+                    <div class="relative aspect-[4/5] rounded-xl overflow-hidden mb-6 bg-surface-container-low">
+                        <img src="${p.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="${p.title}"/>
+                        <span class="absolute top-4 right-4 px-3 py-1 bg-secondary text-on-secondary text-[10px] font-bold rounded-full font-label">${p.tag}</span>
+                        <div class="absolute bottom-4 left-4 right-4 p-4 translate-y-12 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                            <button class="w-full bg-white text-on-surface py-3 rounded-lg font-bold text-sm shadow-xl hover:bg-primary hover:text-white transition-colors">Quick Add</button>
+                        </div>
+                    </div>
+                    <h3 class="font-headline font-bold text-lg text-on-surface mb-1">${p.title}</h3>
+                    <p class="text-zinc-500 text-sm mb-3">${p.desc}</p>
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-primary">${p.price}</span>
+                        <div class="flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm text-secondary-container">star</span>
+                            <span class="text-xs font-bold">${p.rating}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Small delay for entrance animation
+            setTimeout(() => {
+                const cards = productsGrid.querySelectorAll('.product-card');
+                cards.forEach((card, i) => {
+                    setTimeout(() => {
+                        card.classList.remove('opacity-0', 'translate-y-4');
+                    }, i * 100);
+                });
+            }, 50);
+        }
+
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // UI state change
+                tabButtons.forEach(b => {
+                    b.classList.remove('bg-primary', 'text-on-primary');
+                    b.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+                });
+                btn.classList.add('bg-primary', 'text-on-primary');
+                btn.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+
+                // Update products
+                const cat = btn.getAttribute('data-category');
+                updateProducts(cat);
+            });
+        });
+
+        // Initialize with agricultural
+        // (Don't run on load if we want to keep the initial static HTML, 
+        // but here we ensure functional parity)
+    </script>
+</body></html>

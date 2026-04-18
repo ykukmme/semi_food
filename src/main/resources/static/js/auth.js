@@ -46,7 +46,7 @@ async function fetchWithAuth(url, options = {}) {
  * 토큰이 없으면 지정 경로로 리다이렉트
  * 인증이 필요한 페이지 상단에서 호출
  */
-function redirectIfNoToken(redirectUrl = 'login.html') {
+function redirectIfNoToken(redirectUrl = 'index.html') {
     if (!getToken()) {
         window.location.href = redirectUrl;
     }
