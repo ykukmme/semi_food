@@ -9,9 +9,6 @@ spring:
     url: ${TIDB_URL}
     username: ${TIDB_USERNAME}
     password: ${TIDB_PASSWORD}
-    # url: jdbc:mysql://gateway01.ap-northeast-1.prod.aws.tidbcloud.com:4000/test1?sslMode=VERIFY_IDENTITY
-    # username: 2LWWjfNKzLYhGfs.root
-    # password: HuATAZfrdt7GQAaB
     driver-class-name: com.mysql.cj.jdbc.Drivergit
 
   jpa:
