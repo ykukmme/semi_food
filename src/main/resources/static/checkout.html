@@ -5,6 +5,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>결제하기 | Heritage Namhae</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Work+Sans:wght@400;500;600&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
@@ -89,23 +90,20 @@
 </head>
 <body class="bg-surface text-on-surface selection:bg-primary-fixed-dim selection:text-on-primary-fixed">
 <!-- TopNavBar -->
-<header class="fixed top-0 left-0 w-full flex justify-between items-center px-6 py-4 mx-auto bg-[#FBF9F8]/70 dark:bg-[#1B1C1C]/70 backdrop-blur-md z-50">
-<a href="index.html" class="text-xl font-extrabold text-[#006A63] dark:text-[#4BB6AC] tracking-tighter font-['Plus_Jakarta_Sans']">
-        Heritage Namhae
-    </a>
-<nav class="hidden md:flex gap-8 items-center">
-<a class="text-[#1B1C1C] dark:text-[#FBF9F8] opacity-70 hover:opacity-100 transition-opacity duration-300 font-['Plus_Jakarta_Sans'] font-bold tracking-tight" href="#">브랜드 스토리</a>
-<a class="text-[#1B1C1C] dark:text-[#FBF9F8] opacity-70 hover:opacity-100 transition-opacity duration-300 font-['Plus_Jakarta_Sans'] font-bold tracking-tight" href="#">시즌 상품</a>
-<a class="text-[#1B1C1C] dark:text-[#FBF9F8] opacity-70 hover:opacity-100 transition-opacity duration-300 font-['Plus_Jakarta_Sans'] font-bold tracking-tight" href="#">큐레이션</a>
-</nav>
-<div class="flex gap-4 items-center">
-<button class="text-[#006A63] dark:text-[#4BB6AC] hover:scale-95 duration-200 ease-in-out">
-<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
-</button>
-<button class="text-[#006A63] dark:text-[#4BB6AC] hover:scale-95 duration-200 ease-in-out">
-<span class="material-symbols-outlined" data-icon="person">person</span>
-</button>
-</div>
+<header class="fixed top-0 left-0 right-0 z-50 bg-[#FBF9F8]/70 dark:bg-[#1B1C1C]/70 backdrop-blur-md transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <a href="index.html" class="text-xl font-extrabold text-[#006A63] dark:text-[#4BB6AC] tracking-tighter font-['Plus_Jakarta_Sans']">
+            Heritage Namhae
+        </a>
+        <div class="flex items-center gap-6">
+            <button class="text-[#006A63] dark:text-[#4BB6AC] hover:scale-95 duration-200 ease-in-out">
+                <span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+            </button>
+            <button class="text-[#006A63] dark:text-[#4BB6AC] hover:scale-95 duration-200 ease-in-out">
+                <span class="material-symbols-outlined" data-icon="person">person</span>
+            </button>
+        </div>
+    </div>
 </header>
 <main class="pt-24 pb-32 px-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
 <!-- Left Column: Details -->
@@ -122,7 +120,7 @@
 <span class="material-symbols-outlined text-primary" data-icon="local_shipping">local_shipping</span>
                     배송지 정보
                 </h2>
-<button class="text-primary font-semibold text-sm hover:underline">변경</button>
+<button class="text-primary font-semibold text-sm hover:underline" id="btn-change-address" onclick="openAddressModal()">변경</button>
 </div>
 <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15">
 <div class="flex justify-between items-start">
@@ -140,42 +138,80 @@
 </div>
 </section>
 <!-- Payment Methods -->
-<section class="space-y-6">
-<h2 class="text-xl font-bold flex items-center gap-2">
+<section class="space-y-3">
+<h2 class="text-lg font-bold flex items-center gap-2">
 <span class="material-symbols-outlined text-primary" data-icon="payments">payments</span>
                 결제 수단
             </h2>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-<!-- Naver Pay -->
+<div class="grid grid-cols-3 gap-2">
+<!-- Easy Pay -->
 <label class="relative group cursor-pointer">
-<input checked="" class="peer sr-only" name="payment" type="radio"/>
-<div class="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all">
-<div class="flex flex-col items-center gap-3">
-<div class="w-12 h-12 bg-[#2DB400] rounded-lg flex items-center justify-center text-white font-extrabold text-xl">N</div>
-<span class="font-bold text-sm">네이버페이</span>
+<input checked="" class="peer sr-only" name="payment" type="radio" value="easy" onchange="handlePaymentChange(this)"/>
+<div class="h-full p-3 rounded-lg bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all">
+<div class="flex flex-col items-center gap-1.5">
+<span class="material-symbols-outlined text-xl">wallet</span>
+<span class="font-bold text-xs">간편결제</span>
 </div>
 </div>
 </label>
 <!-- Credit Card -->
 <label class="relative group cursor-pointer">
-<input class="peer sr-only" name="payment" type="radio"/>
-<div class="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all">
-<div class="flex flex-col items-center gap-3">
-<span class="material-symbols-outlined text-3xl" data-icon="credit_card">credit_card</span>
-<span class="font-bold text-sm">신용카드</span>
+<input class="peer sr-only" name="payment" type="radio" value="card" onchange="handlePaymentChange(this)"/>
+<div class="h-full p-3 rounded-lg bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all">
+<div class="flex flex-col items-center gap-1.5">
+<span class="material-symbols-outlined text-xl" data-icon="credit_card">credit_card</span>
+<span class="font-bold text-xs">신용카드</span>
+<div class="relative inline-block" id="interest-free-wrapper">
+    <span class="text-[10px] text-primary underline hover:no-underline mt-1 cursor-pointer" id="interest-free-link">무이자 할부 이벤트</span>
+    <div class="hidden absolute z-50 top-full left-1/2 -translate-x-1/2 mt-2 w-72 bg-white rounded-xl shadow-2xl border border-primary/10 p-0 text-xs text-on-surface overflow-hidden" id="interest-free-tooltip">
+        <div class="bg-primary text-white px-4 py-3 flex items-center justify-between">
+            <span class="font-bold text-sm">2026년 4월 무이자 할부</span>
+            <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full">KG이니시스</span>
+        </div>
+        <table class="w-full text-left">
+            <thead>
+                <tr class="bg-surface-container-low">
+                    <th class="px-4 py-2 font-bold text-on-surface text-[11px]">카드사</th>
+                    <th class="px-4 py-2 font-bold text-on-surface text-[11px] text-right">무이자 개월</th>
+                </tr>
+            </thead>
+            <tbody class="text-on-surface-variant divide-y divide-outline-variant/10">
+                <tr class="hover:bg-surface-container-lowest/50 transition-colors"><td class="px-4 py-2 font-medium text-on-surface">현대카드</td><td class="px-4 py-2 text-right font-semibold text-primary">2, 3, 4, 5개월</td></tr>
+                <tr class="hover:bg-surface-container-lowest/50 transition-colors"><td class="px-4 py-2 font-medium text-on-surface">삼성카드</td><td class="px-4 py-2 text-right font-semibold text-primary">2, 3개월</td></tr>
+                <tr class="hover:bg-surface-container-lowest/50 transition-colors"><td class="px-4 py-2 font-medium text-on-surface">KB국민카드</td><td class="px-4 py-2 text-right font-semibold text-primary">2, 3, 4개월</td></tr>
+                <tr class="hover:bg-surface-container-lowest/50 transition-colors"><td class="px-4 py-2 font-medium text-on-surface">신한카드</td><td class="px-4 py-2 text-right font-semibold text-primary">2, 3, 5개월</td></tr>
+                <tr class="hover:bg-surface-container-lowest/50 transition-colors"><td class="px-4 py-2 font-medium text-on-surface">하나카드</td><td class="px-4 py-2 text-right font-semibold text-primary">2, 3개월</td></tr>
+                <tr class="hover:bg-surface-container-lowest/50 transition-colors"><td class="px-4 py-2 font-medium text-on-surface">우리카드</td><td class="px-4 py-2 text-right font-semibold text-primary">2, 3개월</td></tr>
+                <tr class="hover:bg-surface-container-lowest/50 transition-colors"><td class="px-4 py-2 font-medium text-on-surface">BC카드</td><td class="px-4 py-2 text-right font-semibold text-primary">2, 3, 5개월</td></tr>
+                <tr class="hover:bg-surface-container-lowest/50 transition-colors"><td class="px-4 py-2 font-medium text-on-surface">롯데카드</td><td class="px-4 py-2 text-right font-semibold text-primary">2, 3, 4개월</td></tr>
+            </tbody>
+        </table>
+        <div class="bg-surface-container-low/50 px-4 py-2.5 text-[10px] text-on-surface-variant border-t border-outline-variant/10">
+            <p class="leading-relaxed font-bold text-[#ad3300]">* 5만원 이상 결제 시 적용 / 포인트·마일리지 중복 불가</p>
+            <p class="leading-relaxed">* 법인/체크/선불/기프트카드 제외</p>
+            <p class="leading-relaxed">* 카드사 사정에 따라 변경 또는 중단될 수 있습니다.</p>
+        </div>
+    </div>
+</div>
 </div>
 </div>
 </label>
 <!-- Virtual Account -->
 <label class="relative group cursor-pointer">
-<input class="peer sr-only" name="payment" type="radio"/>
-<div class="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all">
-<div class="flex flex-col items-center gap-3">
-<span class="material-symbols-outlined text-3xl" data-icon="account_balance">account_balance</span>
-<span class="font-bold text-sm">가상계좌</span>
+<input class="peer sr-only" name="payment" type="radio" value="virtual" onchange="handlePaymentChange(this)"/>
+<div class="h-full p-3 rounded-lg bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all">
+<div class="flex flex-col items-center gap-1.5">
+<span class="material-symbols-outlined text-xl" data-icon="account_balance">account_balance</span>
+<span class="font-bold text-xs">가상계좌</span>
 </div>
 </div>
 </label>
+</div>
+<!-- Easy Pay Sub Options -->
+<div class="grid grid-cols-3 gap-1.5 mt-1.5" id="easy-pay-options">
+<button class="py-2 rounded-md bg-[#2DB400] text-white text-xs font-bold hover:opacity-90 transition-opacity" id="btn-naver" onclick="selectEasyPay(this)" type="button">N 네이버페이</button>
+<button class="py-2 rounded-md bg-[#FFEB00] text-black text-xs font-bold hover:opacity-90 transition-opacity" id="btn-kakao" onclick="selectEasyPay(this)" type="button">K 카카오페이</button>
+<button class="py-2 rounded-md bg-[#003087] text-white text-xs font-bold hover:opacity-90 transition-opacity" id="btn-paypal" onclick="selectEasyPay(this)" type="button">P 페이팔</button>
 </div>
 </section>
 <!-- Loyalty & Offers -->
@@ -199,11 +235,11 @@
 </div>
 <div>
 <p class="text-sm font-bold">남해 포인트</p>
-<p class="text-xs text-on-surface-variant">보유: 4,500P</p>
+<p class="text-xs text-on-surface-variant">보유: <span id="points-balance">4,500</span>P</p>
 </div>
 </div>
 <div class="flex items-center gap-2">
-<input class="w-24 text-right bg-transparent border-b border-outline-variant/20 focus:border-primary focus:ring-0 p-1 font-bold" type="number" value="0"/>
+<input class="w-24 text-right bg-transparent border-b border-outline-variant/20 focus:border-primary focus:ring-0 p-1 font-bold" id="points-input" max="4500" min="0" oninput="updatePoints(this)" type="number" value="0"/>
 <span class="text-xs font-bold">P</span>
 </div>
 </div>
@@ -321,17 +357,14 @@
 <ul class="space-y-4">
 <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">회사 소개</a></li>
 <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">배송 및 추적</a></li>
-<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">반품 및 환불</a></li>
 <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">이용 약관</a></li>
 </ul>
 </div>
 <div>
 <h4 class="font-bold text-white mb-6">연락처</h4>
 <ul class="space-y-4">
-<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">고객 센터</a></li>
 <li class="text-white/70">전화: 055-123-4567</li>
 <li class="text-white/70">이메일: help@namhaeheritage.kr</li>
-<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">문의하기</a></li>
 </ul>
 </div>
 <div>
@@ -373,4 +406,154 @@
 <span class="font-['Work_Sans'] text-[10px] font-medium tracking-wide uppercase">마이 남해</span>
 </a>
 </nav>
+<script>
+    function handlePaymentChange(radio) {
+        const easyPayOptions = document.getElementById('easy-pay-options');
+        if (radio.value === 'easy') {
+            easyPayOptions.classList.remove('hidden');
+        } else {
+            easyPayOptions.classList.add('hidden');
+        }
+    }
+    // Interest-free tooltip
+    const interestLink = document.getElementById('interest-free-link');
+    const interestTooltip = document.getElementById('interest-free-tooltip');
+    if (interestLink && interestTooltip) {
+        interestLink.addEventListener('mouseenter', () => interestTooltip.classList.remove('hidden'));
+        interestLink.addEventListener('mouseleave', () => interestTooltip.classList.add('hidden'));
+        interestTooltip.addEventListener('mouseenter', () => interestTooltip.classList.remove('hidden'));
+        interestTooltip.addEventListener('mouseleave', () => interestTooltip.classList.add('hidden'));
+    }
+    function selectEasyPay(btn) {
+        document.querySelectorAll('#easy-pay-options button').forEach(b => {
+            b.classList.remove('ring-2', 'ring-offset-2', 'ring-primary');
+        });
+        btn.classList.add('ring-2', 'ring-offset-2', 'ring-primary');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const checked = document.querySelector('input[name="payment"]:checked');
+        if (checked) handlePaymentChange(checked);
+        const naverBtn = document.getElementById('btn-naver');
+        if (naverBtn) selectEasyPay(naverBtn);
+    });
+
+    // Points update logic
+    const TOTAL_POINTS = 4500;
+    const pointsBalanceEl = document.getElementById('points-balance');
+    const pointsInputEl = document.getElementById('points-input');
+
+    function updatePoints(input) {
+        let used = parseInt(input.value) || 0;
+        if (used < 0) used = 0;
+        if (used > TOTAL_POINTS) {
+            used = TOTAL_POINTS;
+            input.value = TOTAL_POINTS;
+        }
+        const remaining = TOTAL_POINTS - used;
+        if (pointsBalanceEl) {
+            pointsBalanceEl.textContent = remaining.toLocaleString();
+        }
+    }
+</script>
+<!-- Address Search Modal -->
+<div class="hidden fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4" id="address-modal">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-outline-variant/20">
+            <h3 class="font-bold text-lg text-on-surface">배송지 변경</h3>
+            <button class="material-symbols-outlined text-on-surface-variant hover:text-on-surface transition-colors" onclick="closeAddressModal()">close</button>
+        </div>
+        <div class="p-6 space-y-4">
+            <div class="flex gap-2">
+                <input class="flex-1 bg-surface-container-low border border-outline-variant/30 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors" id="address-search-input" placeholder="도로명, 지번, 건물명으로 검색" type="text"/>
+                <button class="bg-primary text-on-primary px-5 py-3 rounded-lg font-bold text-sm hover:bg-primary/90 transition-colors" onclick="searchAddress()">
+                    <span class="material-symbols-outlined text-sm">search</span>
+                </button>
+            </div>
+            <div class="max-h-64 overflow-y-auto rounded-lg border border-outline-variant/20" id="address-results">
+                <!-- Results will be populated here -->
+            </div>
+            <div class="bg-tertiary-fixed/30 p-4 rounded-lg text-xs text-on-surface-variant">
+                <p class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">info</span>
+                    검색 예시: "강남대로 123", "서초동 12-3", "역삼동 퍼스트빌딩"
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // Address search mock data for demo
+    const mockAddresses = [
+        { zonecode: '06234', roadAddress: '서울특별시 강남구 테헤란로 123 큐레이터 빌딩', jibunAddress: '서울특별시 강남구 역삼동 123-45', detail: '101호' },
+        { zonecode: '06164', roadAddress: '서울특별시 강남구 강남대로 456 삼성타워', jibunAddress: '서울특별시 강남구 논현동 456-78', detail: '202호' },
+        { zonecode: '04524', roadAddress: '서울특별시 중구 세종대로 110 서울시청', jibunAddress: '서울특별시 중구 태평로1가 31', detail: '' },
+        { zonecode: '48058', roadAddress: '부산광역시 해운대구 해운대로 620 해운대아이파크', jibunAddress: '부산광역시 해운대구 중동 1398-72', detail: '1501호' },
+        { zonecode: '21998', roadAddress: '인천광역시 연수구 인천타워대로 200 송도센트럴파크', jibunAddress: '인천광역시 연수구 송도동 12-1', detail: '' },
+    ];
+
+    function openAddressModal() {
+        document.getElementById('address-modal').classList.remove('hidden');
+        document.getElementById('address-search-input').focus();
+    }
+
+    function closeAddressModal() {
+        document.getElementById('address-modal').classList.add('hidden');
+        document.getElementById('address-results').innerHTML = '';
+        document.getElementById('address-search-input').value = '';
+    }
+
+    function searchAddress() {
+        const keyword = document.getElementById('address-search-input').value.trim();
+        const resultsContainer = document.getElementById('address-results');
+        
+        if (!keyword) {
+            resultsContainer.innerHTML = '<div class="p-4 text-center text-sm text-on-surface-variant">검색어를 입력해주세요.</div>';
+            return;
+        }
+        
+        const filtered = mockAddresses.filter(addr => 
+            addr.roadAddress.includes(keyword) || 
+            addr.jibunAddress.includes(keyword) ||
+            addr.zonecode.includes(keyword)
+        );
+        
+        if (filtered.length === 0) {
+            resultsContainer.innerHTML = '<div class="p-4 text-center text-sm text-on-surface-variant">검색 결과가 없습니다.</div>';
+            return;
+        }
+        
+        resultsContainer.innerHTML = filtered.map(addr => `
+            <div class="p-4 border-b border-outline-variant/10 hover:bg-surface-container-low cursor-pointer transition-colors" onclick="selectAddress('${addr.zonecode}', '${addr.roadAddress}', '${addr.jibunAddress}')">
+                <div class="flex items-start gap-3">
+                    <span class="material-symbols-outlined text-primary text-lg mt-0.5">location_on</span>
+                    <div>
+                        <p class="font-bold text-sm text-on-surface">${addr.roadAddress}</p>
+                        <p class="text-xs text-on-surface-variant mt-0.5">${addr.jibunAddress}</p>
+                        <span class="inline-block mt-1.5 bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded">${addr.zonecode}</span>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function selectAddress(zonecode, roadAddress, jibunAddress) {
+        const addressLines = roadAddress.split(' ');
+        const html = `
+            <p class="font-bold text-lg mb-1">김남해</p>
+            <p class="text-on-surface-variant text-sm leading-relaxed">
+                ${roadAddress}<br/>
+                우편번호 ${zonecode}<br/>
+                대한민국
+            </p>
+            <p class="text-on-surface-variant text-sm mt-3">+82 10-1234-5678</p>
+        `;
+        document.querySelector('.bg-surface-container-lowest > div > div:first-child').innerHTML = html;
+        closeAddressModal();
+    }
+
+    // Enter key to search
+    document.getElementById('address-search-input')?.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') searchAddress();
+    });
+</script>
 </body></html>

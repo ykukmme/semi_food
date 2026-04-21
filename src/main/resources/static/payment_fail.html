@@ -91,25 +91,17 @@
 </head>
 <body class="bg-surface font-body text-on-surface selection:bg-secondary-container">
 <!-- TopNavBar -->
-<header class="bg-[#fbf9f8]/80 dark:bg-stone-950/80 backdrop-blur-md font-['Plus_Jakarta_Sans'] tracking-tight leading-relaxed docked full-width top-0 sticky z-50 shadow-[0_20px_40px_rgba(0,80,74,0.06)]">
-<div class="flex justify-between items-center w-full px-8 py-4 max-w-screen-2xl mx-auto">
+<header class="fixed top-0 left-0 right-0 z-50 bg-[#fbf9f8]/80 dark:bg-stone-950/80 backdrop-blur-md transition-all duration-300 shadow-[0_20px_40px_rgba(0,80,74,0.06)]">
+<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
 <a class="text-xl font-bold tracking-tighter text-[#006a63] dark:text-[#26a69a]" href="index.html">Heritage Namhae</a>
-<nav class="hidden md:flex items-center gap-10">
-<a class="text-stone-600 dark:text-stone-400 hover:text-[#006a63] transition-all duration-300" href="#">헤리티지</a>
-<a class="text-stone-600 dark:text-stone-400 hover:text-[#006a63] transition-all duration-300" href="#">시즌</a>
-<a class="text-stone-600 dark:text-stone-400 hover:text-[#006a63] transition-all duration-300" href="#">큐레이션</a>
-</nav>
 <div class="flex items-center gap-6">
-<button class="p-2 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 transition-all duration-300 rounded-full">
-<span class="material-symbols-outlined text-[#006a63]" data-icon="shopping_bag">shopping_bag</span>
-</button>
-<button class="p-2 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 transition-all duration-300 rounded-full">
+<a href="mypage.html" class="p-2 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 transition-all duration-300 rounded-full">
 <span class="material-symbols-outlined text-[#006a63]" data-icon="person">person</span>
-</button>
+</a>
 </div>
 </div>
 </header>
-<main class="max-w-screen-2xl mx-auto px-8 pt-16 pb-32">
+<main class="max-w-7xl mx-auto px-6 pt-32 pb-32">
 <!-- Main Failure Content -->
 <div class="flex flex-col lg:flex-row gap-16 items-center">
 <!-- Left Side: Editorial Image -->
@@ -148,41 +140,41 @@
 </div>
 </div>
 <!-- Recommendations Section -->
-<section class="mt-32">
+<!-- <section class="mt-32">
 <div class="flex flex-col mb-12">
 <span class="font-label text-xs uppercase tracking-[0.2em] text-tertiary mb-4">Curated Artisans</span>
 <h2 class="text-[1.75rem] font-headline font-bold text-on-surface">이런 상품은 어떠세요?</h2>
 </div>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"> -->
 <!-- Product 1: Tea -->
-<div class="group cursor-pointer">
+<!-- <div class="group cursor-pointer">
 <div class="aspect-[3/4] overflow-hidden rounded-xl mb-6 bg-surface-container">
 <img alt="Traditional Tea" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Close up of premium Korean green tea leaves in a hand-crafted dark clay jar on a grey stone surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA--TrqUMBrrWVUwUDhms0pVjjKXbaQGYQd4NEdQlWIWs55lzBvevWPUYwwkxRBvh3mHvC3rKgIbLKmJJLnr1ZQwl_7aAMqjWJtdZqYX0PTNHhPLPBDuP-u3YH70jFEalgdaEvfl0S-_DpMRLNh3TyF8FIJAMeeSIcPvuy1jR0JjDfEwmgthbUw10ab4IGHnjzrYS4B1FM-cyJoLtJdyt6ux5IZo2f6Gs2zB_LEi4szQHszvcNg-syThO1L5tIkdOF8lJ3O0mqFnMZj"/>
 </div>
 <span class="font-label text-[0.75rem] text-tertiary uppercase tracking-widest mb-2 block">Hadong Heritage</span>
 <h3 class="text-xl font-headline font-semibold text-on-surface mb-2">하동 야생 녹차</h3>
 <p class="text-outline text-sm">35,000원</p>
-</div>
+</div> -->
 <!-- Product 2: Garlic -->
-<div class="group cursor-pointer">
+<!-- <div class="group cursor-pointer">
 <div class="aspect-[3/4] overflow-hidden rounded-xl mb-6 bg-surface-container">
 <img alt="Namhae Garlic" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Braid of white organic garlic bulbs hanging against a rustic wooden wall with warm directional lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWP24P3925VGPaSBlyTib_Xr94rYPuFwTAbXkNzTQjOcfaIAMqSJjiPal1I7Sa8DXCKKr7LNC9C2H0Joyp0xjTDqSDwfYZFhD-PGSzB0OhJoM1qL1KC4Ckme50MB3tduLr1FiAGOHprFXIN0SwHLxRr0yRf7fY6XgVDM4HAQsc-yb1mvarfc13A5nl-vu0UYIBFPdNcXjLJoM5pHzcW_fzIOx5QwEUNzQGGVhehk8sOruuByV3yhWNR0fnwqDj0lsnwgUOybX58SpI"/>
 </div>
 <span class="font-label text-[0.75rem] text-tertiary uppercase tracking-widest mb-2 block">Local Treasure</span>
 <h3 class="text-xl font-headline font-semibold text-on-surface mb-2">남해 보물섬 마늘</h3>
 <p class="text-outline text-sm">22,000원</p>
-</div>
+</div> -->
 <!-- Product 3: Oil -->
-<div class="group cursor-pointer">
+<!-- <div class="group cursor-pointer">
 <div class="aspect-[3/4] overflow-hidden rounded-xl mb-6 bg-surface-container">
 <img alt="Artisanal Oil" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Minimalist glass bottle of golden sesame oil with a clean label on a limestone pedestal with soft shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDumMI-PNIHXBmid9COm5MTccwW5H4SxYeaz62Kh1OtZEy8tGeUMNenpvk3NBNF2s3r-2dM8M4T-2j_v0mOxwXzCs0JCtU5NeL2tQrLHI6_V7fWG7qYyYh019knVlFxo4nkm-J9Otm3GzemOevySBQLKfWDCVDqpQUGrhMfs8OCmT4Lb2kb0scn1towWG0Ig7V9WoOFYumzYj2x1rX-0FuOnjU7_RQpuudZUxtN8V39DfZdN4nKQ4f8Iwi-p7mAX2YvZ44OzLtJVJEW"/>
 </div>
 <span class="font-label text-[0.75rem] text-tertiary uppercase tracking-widest mb-2 block">Pressed Mastery</span>
 <h3 class="text-xl font-headline font-semibold text-on-surface mb-2">전통 압착 참기름</h3>
 <p class="text-outline text-sm">48,000원</p>
-</div>
+</div> -->
 <!-- Product 4: Honey -->
-<div class="group cursor-pointer">
+<!-- <div class="group cursor-pointer">
 <div class="aspect-[3/4] overflow-hidden rounded-xl mb-6 bg-surface-container">
 <img alt="Wild Honey" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Rich golden honey dripping from a wooden dipper with textured organic honeycomb in the background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBg9KpPDWw8TDLqPbaTWmq7ddqIG--tYZUqrXc8vNRN52oS6Ex3BhcGMbkDf3A1Y8kDFUxh0iruriXUsl3IpreEMuL_ghiAMfiErjLea__o30xznagReC7h_547DRzcHzfWAWIVFUxzUHa2KgMUJotcGa_EiNoMYbWOVZm2QzNnvtFd4LGpYWAztoF41jkJabcQWpclGa7-0VS2l0DnH0eYZrDj4tvOSL6EEHEPjwGz8QxCPecc_MMtu2E1nXMruWnPtSBoxeD-MKg6"/>
 </div>
@@ -191,7 +183,7 @@
 <p class="text-outline text-sm">54,000원</p>
 </div>
 </div>
-</section>
+</section> -->
 </main>
 <!-- Footer -->
 <footer class="full-width py-16 px-8 mt-24 bg-[#333] border-t border-[#555] transition-colors duration-200 font-work-sans text-xs leading-relaxed text-white">
@@ -215,17 +207,14 @@
 <ul class="space-y-4">
 <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">회사 소개</a></li>
 <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">배송 및 추적</a></li>
-<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">반품 및 환불</a></li>
 <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">이용 약관</a></li>
 </ul>
 </div>
 <div>
 <h4 class="font-bold text-white mb-6">연락처</h4>
 <ul class="space-y-4">
-<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">고객 센터</a></li>
 <li class="text-white/70">전화: 055-123-4567</li>
 <li class="text-white/70">이메일: help@namhaeheritage.kr</li>
-<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">문의하기</a></li>
 </ul>
 </div>
 <div>

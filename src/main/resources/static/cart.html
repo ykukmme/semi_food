@@ -89,24 +89,18 @@
 <body class="bg-background text-on-surface min-h-screen">
 <div id="app" v-cloak="">
 <!-- TopNavBar -->
-<nav class="fixed top-0 w-full z-50 bg-[#FBF9F8]/70 dark:bg-stone-900/70 backdrop-blur-md">
-<div class="flex justify-between items-center px-8 h-20 w-full max-w-7xl mx-auto">
+<header class="fixed top-0 left-0 right-0 z-50 bg-[#FBF9F8]/70 dark:bg-stone-900/70 backdrop-blur-md transition-all duration-300">
+<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
 <a class="text-2xl font-black tracking-tighter text-[#006A63] dark:text-[#4BB6AC]" href="index.html">Heritage Namhae</a>
-<div class="hidden md:flex items-center gap-8 font-['Plus_Jakarta_Sans'] tracking-tight font-bold">
-<a class="text-[#1B1C1C]/60 dark:text-stone-400 hover:text-[#006A63] transition-colors duration-300" href="#">헤리티지</a>
-<a class="text-[#1B1C1C]/60 dark:text-stone-400 hover:text-[#006A63] transition-colors duration-300" href="#">컬렉션</a>
-<a class="text-[#1B1C1C]/60 dark:text-stone-400 hover:text-[#006A63] transition-colors duration-300" href="#">수확</a>
-<a class="text-[#1B1C1C]/60 dark:text-stone-400 hover:text-[#006A63] transition-colors duration-300" href="#">스토리</a>
-</div>
 <div class="flex items-center gap-6 text-[#006A63] dark:text-[#4BB6AC]">
 <div class="relative">
-<button class="material-symbols-outlined scale-95 duration-200">shopping_bag</button>
+<a class="material-symbols-outlined scale-95 duration-200" href="cart.html">shopping_bag</a>
 <span class="absolute -top-1 -right-1 bg-secondary text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold" v-if="cartItems.length &gt; 0">{{ totalItemsCount }}</span>
 </div>
-<button class="material-symbols-outlined scale-95 duration-200">person</button>
+<a class="material-symbols-outlined scale-95 duration-200" href="mypage.html">person</a>
 </div>
 </div>
-</nav>
+</header>
 <main class="pt-32 pb-20 px-6 max-w-7xl mx-auto">
 <header class="mb-12">
 <h1 class="text-4xl font-extrabold tracking-tight mb-2 text-primary">당신의&nbsp;&nbsp;장바구니</h1>
@@ -212,17 +206,14 @@
 <ul class="space-y-4">
 <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">회사 소개</a></li>
 <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">배송 및 추적</a></li>
-<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">반품 및 환불</a></li>
 <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">이용 약관</a></li>
 </ul>
 </div>
 <div>
 <h4 class="font-bold text-white mb-6">연락처</h4>
 <ul class="space-y-4">
-<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">고객 센터</a></li>
 <li class="text-white/70">전화: 055-123-4567</li>
 <li class="text-white/70">이메일: help@namhaeheritage.kr</li>
-<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">문의하기</a></li>
 </ul>
 </div>
 <div>

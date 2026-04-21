@@ -88,20 +88,14 @@
 </head>
 <body class="bg-white text-on-surface selection:bg-primary-container selection:text-on-primary-container">
 <!-- TopNavBar Component -->
-<header class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-outline-variant/20">
-<nav class="flex justify-between items-center px-8 h-20 w-full max-w-7xl mx-auto">
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-outline-variant/20 transition-all duration-300">
+<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
 <div class="text-2xl font-black tracking-tighter text-[#006A63]"><a href="index.html">Heritage Namhae</a></div>
-<div class="hidden md:flex items-center gap-8">
-<a class="font-['Plus_Jakarta_Sans'] tracking-tight font-bold text-[#1B1C1C]/60 hover:text-[#006A63] transition-colors duration-300" href="#">쇼핑</a>
-<a class="font-['Plus_Jakarta_Sans'] tracking-tight font-bold text-[#006A63] border-b-2 border-[#006A63] pb-1 hover:text-[#006A63] transition-colors duration-300" href="#">제품</a>
-<a class="font-['Plus_Jakarta_Sans'] tracking-tight font-bold text-[#1B1C1C]/60 hover:text-[#006A63] transition-colors duration-300" href="#">소개</a>
-<a class="font-['Plus_Jakarta_Sans'] tracking-tight font-bold text-[#1B1C1C]/60 hover:text-[#006A63] transition-colors duration-300" href="#">문의</a>
-</div>
 <div class="flex items-center gap-6">
-<button class="material-symbols-outlined text-[#006A63] hover:scale-95 duration-200">shopping_bag</button>
-<button class="material-symbols-outlined text-[#006A63] hover:scale-95 duration-200">person</button>
+<a class="material-symbols-outlined text-[#006A63] hover:scale-95 duration-200" href="cart.html">shopping_bag</a>
+<a class="material-symbols-outlined text-[#006A63] hover:scale-95 duration-200" href="mypage.html">person</a>
 </div>
-</nav>
+</div>
 </header>
 <main class="pt-32 pb-20">
 <div class="max-w-7xl mx-auto px-8">
@@ -152,9 +146,9 @@
 <div>
 <label class="block text-xs font-label text-gray-500 uppercase mb-3 tracking-widest">사이즈</label>
 <div class="flex gap-3" id="size-selector">
-<button class="size-option px-6 py-3 bg-[#006A63] text-white rounded-xl font-bold text-sm shadow-lg shadow-[#006A63]/20 transition-all" data-original="20000" data-price="15000">소</button>
-<button class="size-option px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-200 transition-all" data-original="25000" data-price="20000">중</button>
-<button class="size-option px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-200 transition-all" data-original="30000" data-price="25000">대</button>
+<button class="size-option px-6 py-3 bg-[#006A63] text-white rounded-xl font-bold text-sm shadow-lg shadow-[#006A63]/20 transition-all" data-original="20000" data-price="15000" data-min-qty="100">소</button>
+<button class="size-option px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-200 transition-all" data-original="25000" data-price="20000" data-min-qty="70">중</button>
+<button class="size-option px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-200 transition-all" data-original="30000" data-price="25000" data-min-qty="50">대</button>
 </div>
 </div>
 <div>
@@ -163,7 +157,7 @@
 <button class="w-10 h-10 flex items-center justify-center hover:bg-gray-200 transition-colors" id="qty-minus">
 <span class="material-symbols-outlined text-sm">remove</span>
 </button>
-<div class="flex-1 text-center font-bold" id="qty-value">1</div>
+<div class="flex-1 text-center font-bold" id="qty-value">100</div>
 <button class="w-10 h-10 flex items-center justify-center hover:bg-gray-200 transition-colors" id="qty-plus">
 <span class="material-symbols-outlined text-sm">add</span>
 </button>
@@ -221,17 +215,14 @@
 <ul class="space-y-4">
 <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">회사 소개</a></li>
 <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">배송 및 추적</a></li>
-<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">반품 및 환불</a></li>
 <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">이용 약관</a></li>
 </ul>
 </div>
 <div>
 <h4 class="font-bold text-white mb-6">연락처</h4>
 <ul class="space-y-4">
-<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">고객 센터</a></li>
 <li class="text-white/70">전화: 055-123-4567</li>
 <li class="text-white/70">이메일: help@namhaeheritage.kr</li>
-<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">문의하기</a></li>
 </ul>
 </div>
 <div>
@@ -274,7 +265,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Price and Quantity Interaction
     let currentBasePrice = 15000;
     let currentOriginalPrice = 20000;
-    let quantity = 1;
+    let quantity = 100;
+    let minQty = 100;
 
     const displayPrice = document.getElementById('display-price');
     const displayOriginalPrice = document.getElementById('display-original-price');
@@ -297,8 +289,9 @@ document.addEventListener('DOMContentLoaded', () => {
             currentBasePrice = parseInt(option.dataset.price) || currentBasePrice;
             currentOriginalPrice = parseInt(option.dataset.original) || currentOriginalPrice;
             
-            // Reset quantity to 1 when size changes
-            quantity = 1;
+            // Update minimum quantity for selected size and reset quantity
+            minQty = parseInt(option.dataset.minQty) || 1;
+            quantity = minQty;
             
             // UI Toggle
             sizeOptions.forEach(opt => {
@@ -317,7 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('qty-minus').addEventListener('click', () => {
-        if (quantity > 1) {
+        if (quantity > minQty) {
             quantity--;
             updatePrices();
         }
