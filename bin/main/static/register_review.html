@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>리뷰 등록 | Heritage Namhae</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Work+Sans:wght@300;400;500;600&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#ff642d",
+                    "on-tertiary-fixed": "#131f01",
+                    "surface-container-high": "#eae8e7",
+                    "error-container": "#ffdad6",
+                    "on-primary-container": "#00433f",
+                    "on-secondary-container": "#5a1600",
+                    "tertiary-fixed": "#d7e9b6",
+                    "inverse-primary": "#6fd8cd",
+                    "on-background": "#1b1c1c",
+                    "inverse-on-surface": "#f2f0f0",
+                    "surface-container-highest": "#e4e2e2",
+                    "primary": "#006a63",
+                    "surface-tint": "#006a63",
+                    "on-primary-fixed-variant": "#00504a",
+                    "on-tertiary": "#ffffff",
+                    "surface-bright": "#fbf9f8",
+                    "error": "#ba1a1a",
+                    "primary-fixed": "#8cf4e9",
+                    "tertiary-fixed-dim": "#bccd9c",
+                    "primary-fixed-dim": "#6fd8cd",
+                    "on-surface-variant": "#3d4947",
+                    "outline": "#6d7a77",
+                    "tertiary-container": "#9bac7d",
+                    "primary-container": "#4bb6ac",
+                    "on-primary": "#ffffff",
+                    "inverse-surface": "#303030",
+                    "on-secondary": "#ffffff",
+                    "surface-container": "#efeded",
+                    "secondary-fixed": "#ffdbd0",
+                    "on-primary-fixed": "#00201d",
+                    "surface-variant": "#e4e2e2",
+                    "surface-dim": "#dbdad9",
+                    "secondary-fixed-dim": "#ffb59e",
+                    "on-secondary-fixed": "#3a0b00",
+                    "outline-variant": "#bcc9c6",
+                    "on-tertiary-container": "#32401b",
+                    "on-secondary-fixed-variant": "#842500",
+                    "on-surface": "#1b1c1c",
+                    "on-error-container": "#93000a",
+                    "background": "#fbf9f8",
+                    "surface": "#fbf9f8",
+                    "on-error": "#ffffff",
+                    "tertiary": "#4c612f"
+                },
+                "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+                },
+                "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Work Sans"],
+                    "label": ["Work Sans"]
+                }
+            },
+        }
+    }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .review-area {
+            background-color: #ddd;
+            font-size: 14px;
+        }
+        
+        .photo-preview {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .video-preview {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .delete-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .photo-preview:hover .delete-btn,
+        .video-preview:hover .delete-btn {
+            opacity: 1;
+        }
+        
+        .upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            border-color: #006a63;
+            background-color: #f8f9fa;
+        }
+        
+        .upload-area.dragover {
+            border-color: #006a63;
+            background-color: #e8f5f4;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body">
+    <!-- TopNavBar -->
+    <header class="fixed top-0 w-full z-50 bg-[#FBF9F8]/70 dark:bg-stone-900/70 backdrop-blur-md">
+        <nav class="flex justify-between items-center px-8 h-20 w-full max-w-7xl mx-auto">
+            <div class="text-2xl font-black tracking-tighter text-[#006A63] dark:text-[#4BB6AC]">
+                <a href="index.html" class="hover:text-[#004d45] transition-colors">Heritage Namhae</a>
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="font-['Plus_Jakarta_Sans'] tracking-tight font-bold text-[#1B1C1C]/60 dark:text-stone-400 hover:text-[#006A63] transition-colors duration-300" href="#">헤리티지</a>
+                <a class="font-['Plus_Jakarta_Sans'] tracking-tight font-bold text-[#006A63] border-b-2 border-[#006A63] pb-1 hover:text-[#006A63] transition-colors duration-300" href="#">컬렉션</a>
+                <a class="font-['Plus_Jakarta_Sans'] tracking-tight font-bold text-[#1B1C1C]/60 dark:text-stone-400 hover:text-[#006A63] transition-colors duration-300" href="#">장인</a>
+                <a class="font-['Plus_Jakarta_Sans'] tracking-tight font-bold text-[#1B1C1C]/60 dark:text-stone-400 hover:text-[#006A63] transition-colors duration-300" href="#">소개</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="material-symbols-outlined text-[#1B1C1C] dark:text-stone-400 hover:text-[#006A63] transition-colors duration-300">search</button>
+                <button class="material-symbols-outlined text-[#1B1C1C] dark:text-stone-400 hover:text-[#006A63] transition-colors duration-300">shopping_bag</button>
+                <button class="material-symbols-outlined text-[#1B1C1C] dark:text-stone-400 hover:text-[#006A63] transition-colors duration-300">person</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="pt-32 pb-24 max-w-4xl mx-auto px-6">
+        <!-- Page Title -->
+        <div class="text-center mb-12">
+            <h1 class="font-headline text-4xl font-bold text-on-background mb-4">리뷰 등록</h1>
+            <p class="text-on-surface-variant text-lg">남해 헤리티지 제품에 대한 경험을 공유해주세요</p>
+        </div>
+
+        <!-- Review Form -->
+        <form class="space-y-8">
+            <!-- Review Title -->
+            <div>
+                <label for="review-title" class="block text-sm font-medium text-on-surface mb-2">
+                    리뷰 제목 <span class="text-error">*</span>
+                </label>
+                <input 
+                    type="text" 
+                    id="review-title" 
+                    name="review-title"
+                    class="w-full px-4 py-3 border border-outline rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                    placeholder="리뷰 제목을 입력하세요"
+                    required
+                />
+            </div>
+
+            <!-- Review Author -->
+            <div>
+                <label for="review-author" class="block text-sm font-medium text-on-surface mb-2">
+                    작성자 이름 <span class="text-error">*</span>
+                </label>
+                <input 
+                    type="text" 
+                    id="review-author" 
+                    name="review-author"
+                    class="w-full px-4 py-3 border border-outline rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                    placeholder="이름을 입력하세요"
+                    required
+                />
+            </div>
+
+            <!-- Order Number Selection -->
+            <div>
+                <label for="order-number" class="block text-sm font-medium text-on-surface mb-2">
+                    주문 번호 <span class="text-error">*</span>
+                </label>
+                <select 
+                    id="order-number" 
+                    name="order-number"
+                    class="w-full px-4 py-3 border border-outline rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                    required
+                >
+                    <option value="">주문 번호를 선택하세요</option>
+                    <option value="ORD-2024-001">ORD-2024-001</option>
+                    <option value="ORD-2024-002">ORD-2024-002</option>
+                    <option value="ORD-2024-003">ORD-2024-003</option>
+                    <option value="ORD-2024-004">ORD-2024-004</option>
+                    <option value="ORD-2024-005">ORD-2024-005</option>
+                    <option value="ORD-2024-006">ORD-2024-006</option>
+                    <option value="ORD-2024-007">ORD-2024-007</option>
+                    <option value="ORD-2024-008">ORD-2024-008</option>
+                    <option value="ORD-2024-009">ORD-2024-009</option>
+                    <option value="ORD-2024-010">ORD-2024-010</option>
+                </select>
+                <p class="text-sm text-on-surface-variant mt-1">
+                    리뷰할 제품의 주문 번호를 선택하세요
+                </p>
+            </div>
+
+            <!-- Review Content -->
+            <div>
+                <label for="review-content" class="block text-sm font-medium text-on-surface mb-2">
+                    리뷰 내용 <span class="text-error">*</span>
+                </label>
+                <div class="review-area rounded-lg p-4">
+                    <textarea 
+                        id="review-content" 
+                        name="review-content"
+                        rows="8"
+                        class="w-full bg-transparent border-none outline-none resize-none placeholder-gray-600"
+                        placeholder="제품에 대한 자세한 경험을 공유해주세요..."
+                        required
+                    ></textarea>
+                </div>
+                <p class="text-sm text-on-surface-variant mt-2">
+                    <span id="char-count">0</span> / 1000 자
+                </p>
+            </div>
+
+            <!-- Photo Upload Section -->
+            <div>
+                <label class="block text-sm font-medium text-on-surface mb-4">
+                    사진 (최대 10장)
+                </label>
+                <div id="photo-upload-area" class="upload-area mb-4">
+                    <input 
+                        type="file" 
+                        id="photo-input" 
+                        multiple 
+                        accept="image/*"
+                        class="hidden"
+                    />
+                    <div class="text-center">
+                        <span class="material-symbols-outlined text-4xl text-on-surface-variant mb-2">add_photo_alternate</span>
+                        <p class="text-on-surface-variant">클릭하여 사진을 업로드하거나 드래그 앤 드롭</p>
+                        <p class="text-sm text-on-surface-variant mt-1">JPG, PNG, GIF 각 최대 10MB</p>
+                    </div>
+                </div>
+                <div id="photo-preview-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    <!-- Photo previews will be added here -->
+                </div>
+            </div>
+
+            <!-- Video Upload Section -->
+            <div>
+                <label class="block text-sm font-medium text-on-surface mb-4">
+                    동영상 (1개만)
+                </label>
+                <div id="video-upload-area" class="upload-area mb-4">
+                    <input 
+                        type="file" 
+                        id="video-input" 
+                        accept="video/*"
+                        class="hidden"
+                    />
+                    <div class="text-center">
+                        <span class="material-symbols-outlined text-4xl text-on-surface-variant mb-2">videocam</span>
+                        <p class="text-on-surface-variant">클릭하여 동영상을 업로드하거나 드래그 앤 드롭</p>
+                        <p class="text-sm text-on-surface-variant mt-1">MP4, AVI, MOV 최대 100MB</p>
+                    </div>
+                </div>
+                <div id="video-preview-container" class="grid grid-cols-1 gap-4">
+                    <!-- Video preview will be added here -->
+                </div>
+            </div>
+
+            <!-- Rating Section -->
+            <div>
+                <label class="block text-sm font-medium text-on-surface mb-4">
+                    평점 <span class="text-error">*</span>
+                </label>
+                <div class="flex gap-2" id="rating-stars">
+                    <button type="button" class="star-btn text-3xl text-on-surface-variant hover:text-primary transition-colors" data-rating="1">
+                        <span class="material-symbols-outlined">star_border</span>
+                    </button>
+                    <button type="button" class="star-btn text-3xl text-on-surface-variant hover:text-primary transition-colors" data-rating="2">
+                        <span class="material-symbols-outlined">star_border</span>
+                    </button>
+                    <button type="button" class="star-btn text-3xl text-on-surface-variant hover:text-primary transition-colors" data-rating="3">
+                        <span class="material-symbols-outlined">star_border</span>
+                    </button>
+                    <button type="button" class="star-btn text-3xl text-on-surface-variant hover:text-primary transition-colors" data-rating="4">
+                        <span class="material-symbols-outlined">star_border</span>
+                    </button>
+                    <button type="button" class="star-btn text-3xl text-on-surface-variant hover:text-primary transition-colors" data-rating="5">
+                        <span class="material-symbols-outlined">star_border</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Submit Buttons -->
+            <div class="flex gap-4 pt-8">
+                <button 
+                    type="button"
+                    class="flex-1 px-6 py-3 border border-outline text-on-surface rounded-lg hover:bg-surface-container transition-colors"
+                    onclick="window.history.back()"
+                >
+                    취소
+                </button>
+                <button 
+                    type="submit"
+                    class="flex-1 px-6 py-3 bg-primary text-on-primary rounded-lg hover:bg-primary-container hover:text-on-primary-container transition-colors font-medium"
+                >
+                    리뷰 제출
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#333] w-full py-12 px-8 mt-20 text-white">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+            <div>
+                <div class="text-lg font-black text-white mb-4">Heritage Namhae</div>
+                <p class="font-['Work_Sans'] text-sm leading-relaxed text-white/80">
+                    남해섬의 깨끗한 풍경에서 최고의 농업 헤리티지를 큐레이션합니다.
+                </p>
+            </div>
+            <div>
+                <h3 class="font-bold text-white mb-4">빠른 링크</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-white/70 hover:text-white transition-colors">소개</a></li>
+                    <li><a href="#" class="text-white/70 hover:text-white transition-colors">제품</a></li>
+                    <li><a href="#" class="text-white/70 hover:text-white transition-colors">장인</a></li>
+                    <li><a href="#" class="text-white/70 hover:text-white transition-colors">문의</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-bold text-white mb-4">고객 지원</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-white/70 hover:text-white transition-colors">배송 정보</a></li>
+                    <li><a href="#" class="text-white/70 hover:text-white transition-colors">반품</a></li>
+                    <li><a href="#" class="text-white/70 hover:text-white transition-colors">자주 묻는 질문</a></li>
+                    <li><a href="#" class="text-white/70 hover:text-white transition-colors">지원</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-bold text-white mb-4">연결</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-white/70 hover:text-white transition-colors">인스타그램</a></li>
+                    <li><a href="#" class="text-white/70 hover:text-white transition-colors">페이스북</a></li>
+                    <li><a href="#" class="text-white/70 hover:text-white transition-colors">트위터</a></li>
+                    <li><a href="#" class="text-white/70 hover:text-white transition-colors">유튜브</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-outline-variant/10">
+            <p class="font-['Work_Sans'] text-xs text-white/70 text-center">
+                © 2024 Heritage Namhae. 한국 헤리티지 큐레이션.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Character counter for review content
+        const reviewContent = document.getElementById('review-content');
+        const charCount = document.getElementById('char-count');
+        
+        reviewContent.addEventListener('input', function() {
+            const count = this.value.length;
+            charCount.textContent = count;
+            
+            if (count > 1000) {
+                this.value = this.value.substring(0, 1000);
+                charCount.textContent = 1000;
+            }
+        });
+
+        // Rating system
+        const starButtons = document.querySelectorAll('.star-btn');
+        let selectedRating = 0;
+
+        starButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                selectedRating = parseInt(this.dataset.rating);
+                updateStars(selectedRating);
+            });
+
+            button.addEventListener('mouseenter', function() {
+                const hoverRating = parseInt(this.dataset.rating);
+                updateStars(hoverRating);
+            });
+        });
+
+        document.getElementById('rating-stars').addEventListener('mouseleave', function() {
+            updateStars(selectedRating);
+        });
+
+        function updateStars(rating) {
+            starButtons.forEach((button, index) => {
+                const star = button.querySelector('.material-symbols-outlined');
+                if (index < rating) {
+                    star.textContent = 'star';
+                    star.classList.add('text-primary');
+                    star.classList.remove('text-on-surface-variant');
+                } else {
+                    star.textContent = 'star_border';
+                    star.classList.remove('text-primary');
+                    star.classList.add('text-on-surface-variant');
+                }
+            });
+        }
+
+        // Photo upload functionality
+        const photoInput = document.getElementById('photo-input');
+        const photoUploadArea = document.getElementById('photo-upload-area');
+        const photoPreviewContainer = document.getElementById('photo-preview-container');
+        let uploadedPhotos = [];
+
+        photoUploadArea.addEventListener('click', () => photoInput.click());
+
+        photoUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            photoUploadArea.classList.add('dragover');
+        });
+
+        photoUploadArea.addEventListener('dragleave', () => {
+            photoUploadArea.classList.remove('dragover');
+        });
+
+        photoUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            photoUploadArea.classList.remove('dragover');
+            handlePhotoFiles(e.dataTransfer.files);
+        });
+
+        photoInput.addEventListener('change', (e) => {
+            handlePhotoFiles(e.target.files);
+        });
+
+        function handlePhotoFiles(files) {
+            Array.from(files).forEach(file => {
+                if (uploadedPhotos.length >= 10) {
+                    alert('Maximum 10 photos allowed');
+                    return;
+                }
+
+                if (!file.type.startsWith('image/')) {
+                    alert('Please upload only image files');
+                    return;
+                }
+
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('File size must be less than 10MB');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const photoId = Date.now() + Math.random();
+                    uploadedPhotos.push({ id: photoId, file: file, url: e.target.result });
+                    displayPhoto(photoId, e.target.result);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function displayPhoto(photoId, url) {
+            const photoDiv = document.createElement('div');
+            photoDiv.className = 'photo-preview relative aspect-square rounded-lg overflow-hidden';
+            photoDiv.dataset.photoId = photoId;
+            
+            photoDiv.innerHTML = `
+                <img src="${url}" alt="Preview" class="w-full h-full object-cover">
+                <button type="button" class="delete-btn" onclick="removePhoto('${photoId}')">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                </button>
+            `;
+            
+            photoPreviewContainer.appendChild(photoDiv);
+        }
+
+        function removePhoto(photoId) {
+            uploadedPhotos = uploadedPhotos.filter(photo => photo.id !== photoId);
+            const photoElement = document.querySelector(`[data-photo-id="${photoId}"]`);
+            if (photoElement) {
+                photoElement.remove();
+            }
+        }
+
+        // Video upload functionality
+        const videoInput = document.getElementById('video-input');
+        const videoUploadArea = document.getElementById('video-upload-area');
+        const videoPreviewContainer = document.getElementById('video-preview-container');
+        let uploadedVideo = null;
+
+        videoUploadArea.addEventListener('click', () => videoInput.click());
+
+        videoUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            videoUploadArea.classList.add('dragover');
+        });
+
+        videoUploadArea.addEventListener('dragleave', () => {
+            videoUploadArea.classList.remove('dragover');
+        });
+
+        videoUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            videoUploadArea.classList.remove('dragover');
+            handleVideoFile(e.dataTransfer.files[0]);
+        });
+
+        videoInput.addEventListener('change', (e) => {
+            handleVideoFile(e.target.files[0]);
+        });
+
+        function handleVideoFile(file) {
+            if (!file) return;
+
+            if (uploadedVideo) {
+                alert('Only 1 video allowed');
+                return;
+            }
+
+            if (!file.type.startsWith('video/')) {
+                alert('Please upload only video files');
+                return;
+            }
+
+            if (file.size > 100 * 1024 * 1024) {
+                alert('File size must be less than 100MB');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const videoId = Date.now();
+                uploadedVideo = { id: videoId, file: file, url: e.target.result };
+                displayVideo(videoId, e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function displayVideo(videoId, url) {
+            const videoDiv = document.createElement('div');
+            videoDiv.className = 'video-preview relative rounded-lg overflow-hidden';
+            videoDiv.dataset.videoId = videoId;
+            
+            videoDiv.innerHTML = `
+                <video src="${url}" class="w-full h-auto max-h-64 object-cover" controls></video>
+                <button type="button" class="delete-btn" onclick="removeVideo()">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                </button>
+            `;
+            
+            videoPreviewContainer.appendChild(videoDiv);
+        }
+
+        function removeVideo() {
+            uploadedVideo = null;
+            videoPreviewContainer.innerHTML = '';
+            videoInput.value = '';
+        }
+
+        // Form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (selectedRating === 0) {
+                alert('Please select a rating');
+                return;
+            }
+
+            if (reviewContent.value.trim().length === 0) {
+                alert('Please enter review content');
+                return;
+            }
+
+            const orderNumber = document.getElementById('order-number').value;
+            if (!orderNumber) {
+                alert('Please select an order number');
+                return;
+            }
+
+            // Here you would normally send the data to your server
+            const formData = {
+                title: document.getElementById('review-title').value,
+                author: document.getElementById('review-author').value,
+                orderNumber: document.getElementById('order-number').value,
+                content: reviewContent.value,
+                rating: selectedRating,
+                photos: uploadedPhotos,
+                video: uploadedVideo
+            };
+
+            console.log('Review data:', formData);
+            alert('Review submitted successfully!');
+            
+            // Redirect to reviews page
+            window.location.href = 'reviews.html';
+        });
+    </script>
+</body>
+</html>
