@@ -109,7 +109,7 @@
 </nav>
 <main class="pt-32 pb-20 px-6 max-w-7xl mx-auto">
 <header class="mb-12">
-<h1 class="text-4xl font-extrabold tracking-tight mb-2 text-primary">당신의 수확 바구니</h1>
+<h1 class="text-4xl font-extrabold tracking-tight mb-2 text-primary">당신의&nbsp;&nbsp;장바구니</h1>
 <p class="text-on-surface-variant font-body">남해 헤리티지 컬렉션에서 선택된 아이템들입니다.</p>
 </header>
 <div class="flex flex-col lg:flex-row gap-12" v-if="cartItems.length &gt; 0">
@@ -191,28 +191,60 @@
 </div>
 </main>
 <!-- Footer -->
-<footer class="bg-[#333] w-full py-12 px-8 mt-20 text-white">
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto font-['Work_Sans'] text-sm leading-relaxed">
+<footer class="full-width py-16 px-8 mt-24 bg-[#333] border-t border-[#555] transition-colors duration-200 font-work-sans text-xs leading-relaxed text-white">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-7xl mx-auto">
+<div class="col-span-1 md:col-span-1">
+<div class="text-lg font-bold text-white mb-6 font-headline">Heritage Namhae</div>
+<p class="text-white/80 mb-8 max-w-xs">
+                    남해군 공식 헤리티지 몰, 우리 해안 낙원의 진짜 맛을 당신의 집으로 바로 전달합니다.
+                </p>
+<div class="flex gap-4">
+<span class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-colors">
+<span class="material-symbols-outlined text-sm text-white" data-icon="share">share</span>
+</span>
+<span class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-colors">
+<span class="material-symbols-outlined text-sm text-white" data-icon="language">language</span>
+</span>
+</div>
+</div>
 <div>
-<div class="text-lg font-black text-white mb-4">Heritage Namhae</div>
-<p class="text-white/80">디지털 정밀성으로 한국 해안 수확의 본질을 큐레이션합니다.</p>
+<h4 class="font-bold text-white mb-6">서비스</h4>
+<ul class="space-y-4">
+<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">회사 소개</a></li>
+<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">배송 및 추적</a></li>
+<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">반품 및 환불</a></li>
+<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">이용 약관</a></li>
+</ul>
 </div>
-<div class="flex flex-col gap-3">
-<h4 class="font-bold text-white">고객 지원</h4>
-<a class="text-white/70 hover:text-white transition-opacity opacity-80 hover:opacity-100" href="#">문의하기</a>
-<a class="text-white/70 hover:text-white transition-opacity opacity-80 hover:opacity-100" href="#">배송 정보</a>
+<div>
+<h4 class="font-bold text-white mb-6">연락처</h4>
+<ul class="space-y-4">
+<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">고객 센터</a></li>
+<li class="text-white/70">전화: 055-123-4567</li>
+<li class="text-white/70">이메일: help@namhaeheritage.kr</li>
+<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">문의하기</a></li>
+</ul>
 </div>
-<div class="flex flex-col gap-3">
-<h4 class="font-bold text-white">법적 정보</h4>
-<a class="text-white/70 hover:text-white transition-opacity opacity-80 hover:opacity-100" href="#">개인정보 처리방침</a>
-<a class="text-white/70 hover:text-white transition-opacity opacity-80 hover:opacity-100" href="#">이용 약관</a>
+<div>
+<h4 class="font-bold text-white mb-6">위치</h4>
+<p class="text-white/70 mb-4">대한민국 경상남도 남해군청</p>
+<div class="h-32 w-full rounded-xl bg-white/20 overflow-hidden">
+<img alt="Location Map" class="w-full h-full object-cover grayscale" data-location="Namhae, South Korea" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2F8UAsYBf8f-PXSCkWz8tPMj1yPAwzNqFnUHdLvbP3NxWzmKZvO52Qb76KLXKdR7GifJMom5TfallzE3oUiWx6wj1VUqfQ-OWmzQVYplGPmVjO52jxg3e8NQdFOU-O_t0DJrzvtWD0uaWIpCc4fRIYzS0-oPNzSMqm3dfpC4iojREb1bO_k-endojrJHEh2Vek1i1HWAgmAM27qGPEC2EUe-1x_hxNJOM3j_NI-TicipehzW-arsFab0btwNoZOq5wXODkjGdXZM"/>
 </div>
-<div class="flex flex-col gap-3">
-<h4 class="font-bold text-white">헤리티지</h4>
-<p class="text-white/70">© 2024 Heritage Namhae. 한국 헤리티지 큐레이션.</p>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-zinc-200/50 flex flex-col md:flex-row justify-between gap-4">
+<p class="text-white/60">© 2024 에디토리얼 헤리티지 남해. 모든 권리 보유.</p>
+<div class="flex gap-6">
+<a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">개인정보 처리방침</a>
+<a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">라이선스 정보</a>
 </div>
 </div>
 </footer>
+<!-- FAB -->
+<button class="fixed bottom-8 right-8 w-16 h-16 bg-primary text-on-primary rounded-full editorial-shadow flex items-center justify-center hover:scale-110 transition-transform active:scale-95 z-40">
+<span class="material-symbols-outlined text-3xl" data-icon="chat_bubble" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+</button>
 </div>
 <style>
         /* Animation for removing items */
