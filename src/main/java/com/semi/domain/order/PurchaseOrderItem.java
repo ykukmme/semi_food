@@ -53,4 +53,19 @@ public class PurchaseOrderItem {
     public int subtotal() {
         return this.price * this.quantity;
     }
+
+    /** Get description for AdminOrderController */
+    public String getDescription() {
+        return product != null ? product.getDescription() : null;
+    }
+
+    /** Get unit price for AdminOrderController */
+    public Integer getUnitPrice() {
+        return this.price;
+    }
+
+    /** Get total price for AdminOrderController */
+    public Integer getTotalPrice() {
+        return subtotal();
+    }
 }

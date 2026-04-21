@@ -10,6 +10,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -63,5 +66,32 @@ public class MemberService {
                 member.getMemberId(), oldRole, newRole, changedBy);
 
         return MemberResponse.from(member);
+    }
+
+    /**
+     * all members list for admin
+     */
+    public List<MemberResponse> getAllMembers() {
+        return memberRepository.findAll().stream()
+                .map(MemberResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 임시 비밀번호 변경 (개발 환경용)
+     * admin 계정의 비밀번호를 'admin123'으로 변경
+     */
+    @Transactional
+    public void resetAdminPassword() {
+        Member admin = memberRepository.findByMemberId("admin")
+                .orElseThrow(() -> new MemberNotFoundException("admin 계정을 찾을 수 없습니다."));
+        
+        String newPassword = "admin123";
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        
+        admin.updatePassword(encodedPassword);
+        memberRepository.save(admin);
+        
+        log.info("[ADMIN] admin 비밀번호가 '{}'으로 변경되었습니다.", newPassword);
     }
 }

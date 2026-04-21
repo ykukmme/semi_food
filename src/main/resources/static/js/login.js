@@ -24,10 +24,26 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         const json = await res.json();
 
         if (res.status === 200) {
-            // 로그인 성공 — 토큰 저장 후 이동
+            // Login success - save token and redirect based on role
             setToken(json.accessToken);
             localStorage.setItem('role', json.role);
-            window.location.href = 'index.html';
+            
+            console.log('Login successful!');  // ✅ 추가
+            console.log('Role:', json.role);   // ✅ 추가
+            console.log('Token:', json.accessToken.substring(0, 20) + '...');  // ✅ 추가
+
+            // Role-based redirect
+            // ✅ 약간의 지연을 추가해서 토큰 저장을 확인
+            setTimeout(() => {
+                // Role-based redirect
+                if (json.role === 'ADMIN') {
+                    console.log('🔄 Redirecting to /admin...');
+                    window.location.href = '/admin';
+                } else {
+                    console.log('🔄 Redirecting to /...');
+                    window.location.href = '/';
+                }
+            }, 100);  // ← 100ms 지연
         } else if (res.status === 400 && json.errors) {
             // 입력값 검증 실패
             Object.entries(json.errors).forEach(([field, msg]) => {

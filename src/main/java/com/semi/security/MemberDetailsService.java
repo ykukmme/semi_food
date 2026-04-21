@@ -8,8 +8,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
- * Spring Security UserDetailsService 구현
- * memberId 기준으로 회원을 조회하여 MemberDetails 반환
+ * Spring Security UserDetailsService implementation
+ * memberId based member lookup and return MemberDetails
  */
 @Service
 @RequiredArgsConstructor
@@ -21,6 +21,6 @@ public class MemberDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
         return memberRepository.findByMemberId(memberId)
                 .map(MemberDetails::new)
-                .orElseThrow(() -> new UsernameNotFoundException("회원을 찾을 수 없습니다: " + memberId));
+                .orElseThrow(() -> new UsernameNotFoundException("Member not found: " + memberId));
     }
 }

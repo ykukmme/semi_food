@@ -1,13 +1,8 @@
 package com.semi.controller;
 
 import com.semi.domain.member.MemberService;
-import com.semi.domain.member.dto.MemberResponse;
-import com.semi.domain.member.dto.UpdateRoleRequest;
-import com.semi.security.MemberDetails;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,17 +13,19 @@ public class AdminController {
     private final MemberService memberService;
 
     /**
-     * 회원 권한 변경 (관리자 전용)
-     * PUT /api/admin/members/{id}/role
-     * 요청 본문: { "role": "ADMIN" }
+     * 임시 비밀번호 변경 API (개발 환경용)
+     * admin 계정의 비밀번호를 'admin123'으로 변경
      */
-    @PutMapping("/members/{id}/role")
-    public ResponseEntity<MemberResponse> updateRole(
-            @PathVariable Long id,
-            @Valid @RequestBody UpdateRoleRequest request,
-            @AuthenticationPrincipal MemberDetails changedBy
-    ) {
-        MemberResponse response = memberService.updateRole(id, request.role(), changedBy.getMember().getMemberId());
-        return ResponseEntity.ok(response);
+    @PostMapping("/reset-admin-password")
+    public ResponseEntity<String> resetAdminPassword() {
+        try {
+            memberService.resetAdminPassword();
+            return ResponseEntity.ok("admin 비밀번호가 'admin123'으로 변경되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("비밀번호 변경 실패: " + e.getMessage());
+        }
     }
+
+    // AdminController is now empty - functionality moved to AdminMemberController
+    // to avoid mapping conflicts
 }

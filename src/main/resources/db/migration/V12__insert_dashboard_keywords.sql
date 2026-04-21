@@ -1,0 +1,3 @@
+-- This migration is disabled to avoid foreign key constraint violations
+-- Sample keywords are already inserted in V10 and V11 migrations,
+-- so this migration is no longer necessary.

@@ -26,7 +26,7 @@ spring-app.log
 .gradle/
 
 # ===============================
-# Python (RPA / 분석)
+# Python (RPA / 遺꾩꽍)
 # ===============================
 __pycache__/
 *.pyc
@@ -45,7 +45,7 @@ rpa/logs/
 playwright/.auth/
 
 # ===============================
-# Web / Node (빌드 도구 사용 시)
+# Web / Node (鍮뚮뱶 ?꾧뎄 ?ъ슜 ??
 # ===============================
 node_modules/
 *.log
@@ -59,22 +59,26 @@ logs/
 *.jsonl
 
 # ===============================
-# 문서 생성 도구 (로컬 전용)
+# 臾몄꽌 ?앹꽦 ?꾧뎄 (濡쒖뺄 ?꾩슜)
 # ===============================
 generate_db_design_pdf.py
 DB_DESIGN.pdf
 *_extracted.txt
 
 # ===============================
-# Claude Code 세션 파일 (로컬 전용)
+# Claude Code ?몄뀡 ?뚯씪 (濡쒖뺄 ?꾩슜)
 # ===============================
 memory/
 
 # ===============================
 # IDE & OS
 # ===============================
-.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json
 .DS_Store
 Thumbs.db
 *.swp
 *.swo
+# Added by code-review-graph
+.code-review-graph/

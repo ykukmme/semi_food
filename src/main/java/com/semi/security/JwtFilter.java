@@ -2,6 +2,7 @@ package com.semi.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +14,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-/**
- * JWT 인증 필터 — 매 요청마다 토큰을 검증하고 SecurityContext에 인증 정보를 설정
- */
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
@@ -31,7 +29,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (StringUtils.hasText(token) && jwtProvider.validateToken(token)) {
             String memberId = jwtProvider.extractUsername(token);
-            // MemberDetails 로드 → principal로 설정 (수정안 반영)
             MemberDetails memberDetails = (MemberDetails) memberDetailsService.loadUserByUsername(memberId);
 
             UsernamePasswordAuthenticationToken authentication =
@@ -44,12 +41,21 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    /** Authorization: Bearer <token> 에서 토큰 추출 */
     private String extractToken(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
         if (StringUtils.hasText(header) && header.startsWith("Bearer ")) {
             return header.substring(7);
         }
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("accessToken".equals(cookie.getName()) && StringUtils.hasText(cookie.getValue())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+
         return null;
     }
 }

@@ -50,10 +50,22 @@ public class PurchaseOrder {
     private Integer shippingFee;  // 배송비 (원)
 
     @Column(name = "is_auto", nullable = false)
-    private Boolean isAuto;  // 자동발주 여부
+    private Boolean isAuto;  // auto_order_flag
+
+    @Column(name = "shipping_address", length = 500)
+    private String shippingAddress;  // shipping_address
+
+    @Column(name = "payment_method", length = 50)
+    private String paymentMethod;  // payment_method
+
+    @Column(name = "payment_status", length = 20)
+    private String paymentStatus;  // payment_status
+
+    @Column(name = "subtotal", nullable = false)
+    private Integer subtotal;  // subtotal
 
     @Column(name = "ordered_at", nullable = false, updatable = false)
-    private LocalDateTime orderedAt;  // 발주일시
+    private LocalDateTime orderedAt;  // ordered_at발주일시
 
     @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PurchaseOrderItem> items = new ArrayList<>();
