@@ -38,13 +38,31 @@
         body { font-family: 'Work Sans', sans-serif; }
         h1, h2, h3, .brand-font { font-family: 'Plus Jakarta Sans', sans-serif; }
         [v-cloak] { display: none; }
+        
+        #print-receipt { display: none; }
+        
+        @media print {
+            body * { visibility: hidden; }
+            #print-receipt, #print-receipt * { visibility: visible; }
+            #print-receipt { 
+                display: block; 
+                position: absolute; 
+                left: 0; 
+                top: 0; 
+                width: 100%; 
+                padding: 20px; 
+                font-family: 'Courier New', Courier, monospace; 
+                color: #000;
+            }
+            .no-print { display: none !important; }
+        }
     </style>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body class="bg-background text-on-surface">
     <div id="app" v-cloak>
         <!-- Top Navigation Bar -->
-        <header class="fixed top-0 left-0 right-0 z-50 bg-[#FBF9F8]/70 backdrop-blur-md transition-all duration-300 border-b border-outline-variant/10">
+        <header class="fixed top-0 left-0 right-0 z-50 bg-[#FBF9F8]/70 backdrop-blur-md transition-all duration-300 border-b border-outline-variant/10 no-print">
             <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                 <a class="text-2xl font-bold text-primary tracking-tight" href="index.html">Heritage Namhae</a>
                 <div class="flex items-center gap-6">
@@ -55,7 +73,7 @@
             </div>
         </header>
 
-        <main class="pt-28 pb-12 px-4 sm:px-6 max-w-7xl mx-auto">
+        <main class="pt-28 pb-12 px-4 sm:px-6 max-w-7xl mx-auto no-print">
             <!-- Alert Message -->
             <div v-if="statusMessage" :class="{'bg-green-50 text-green-800 border-green-200': status === 'success', 'bg-red-50 text-red-800 border-red-200': status === 'fail'}" class="mb-8 p-5 rounded-xl border flex items-center gap-4 shadow-sm">
                 <span class="material-symbols-outlined text-4xl" v-if="status === 'success'" style="font-variation-settings: 'FILL' 1;">check_circle</span>
@@ -112,21 +130,21 @@
                         <section class="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/20 shadow-sm h-full flex flex-col">
                             <div class="flex items-center gap-3 mb-5">
                                 <span class="material-symbols-outlined text-primary text-xl">location_on</span>
-                                <h3 class="text-lg font-headline font-extrabold">배송지 정보</h3>
+                                <h3 class="text-lg font-headline font-extrabold">배송 정보</h3>
                             </div>
                             <div class="space-y-4 flex-grow">
                                 <div v-if="order.buyerName">
-                                    <span class="text-[11px] font-label uppercase tracking-widest text-on-surface-variant block mb-1">받는 사람</span>
+                                    <span class="text-[11px] font-label uppercase tracking-widest text-on-surface-variant block mb-1">수령인 (연락처)</span>
                                     <p class="font-bold text-on-surface text-base">
                                         {{ order.buyerName }} <span class="text-sm font-normal text-on-surface-variant ml-1" v-if="order.buyerPhone">{{ order.buyerPhone }}</span>
                                     </p>
                                 </div>
                                 <div v-if="order.shippingAddress">
-                                    <span class="text-[11px] font-label uppercase tracking-widest text-on-surface-variant block mb-1">주소</span>
+                                    <span class="text-[11px] font-label uppercase tracking-widest text-on-surface-variant block mb-1">배송지</span>
                                     <p class="font-medium text-on-surface text-sm leading-relaxed">{{ order.shippingAddress }}</p>
                                 </div>
                                 <div>
-                                    <span class="text-[11px] font-label uppercase tracking-widest text-on-surface-variant block mb-1">배송 방법</span>
+                                    <span class="text-[11px] font-label uppercase tracking-widest text-on-surface-variant block mb-1">배송 종류 및 추적</span>
                                     <p class="font-medium text-on-surface text-sm">
                                         {{ order.shippingType }} 
                                         <span class="text-secondary ml-1" v-if="order.trackingNumber">({{ order.trackingNumber }})</span>
@@ -187,7 +205,7 @@
                             <a href="index.html" class="block w-full text-center bg-primary text-white font-headline font-bold py-4 rounded-xl shadow-lg hover:brightness-110 hover:-translate-y-0.5 transition-all">
                                 쇼핑 계속하기
                             </a>
-                            <button @click="openReceipt" class="block w-full text-center bg-surface-container-lowest text-primary py-3.5 rounded-xl font-headline font-bold border border-primary/30 hover:bg-primary/5 transition-colors">
+                            <button onclick="window.print()" class="block w-full text-center bg-surface-container-lowest text-primary py-3.5 rounded-xl font-headline font-bold border border-primary/30 hover:bg-primary/5 transition-colors">
                                 <span class="flex items-center justify-center gap-2">
                                     <span class="material-symbols-outlined text-[20px]">print</span> 카드영수증 출력
                                 </span>
@@ -216,6 +234,35 @@
                 </a>
             </div>
         </main>
+        
+        <!-- Print Receipt Area (Hidden on screen, visible on print) -->
+        <div id="print-receipt" v-if="order" style="max-width: 340px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 20px; border-bottom: 2px dashed #000; padding-bottom: 15px;">
+                <h2 style="margin: 0 0 15px 0; font-size: 1.4em;">[신용카드 매출전표]</h2>
+                <p style="margin: 4px 0; text-align: left;"><strong>가맹점:</strong> Heritage Namhae</p>
+                <p style="margin: 4px 0; text-align: left;"><strong>일시:</strong> {{ order.orderDate }}</p>
+                <p style="margin: 4px 0; text-align: left;"><strong>주문번호:</strong> {{ order.orderNumber }}</p>
+                <p style="margin: 4px 0; text-align: left;" v-if="order.buyerName"><strong>주문자:</strong> {{ order.buyerName }}</p>
+            </div>
+            <div style="margin-bottom: 15px; border-bottom: 1px dashed #000; padding-bottom: 15px;">
+                <div v-for="item in order.items" :key="item.id" style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.9em;">
+                    <span style="flex: 1; padding-right: 10px;">{{ item.name }} <span style="color:#555;">x{{ item.quantity }}</span></span>
+                    <span style="font-weight: bold;">₩{{ (item.price * item.quantity).toLocaleString() }}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 15px; font-size: 0.9em;">
+                    <span>배송비</span>
+                    <span>₩{{ order.shippingFee.toLocaleString() }}</span>
+                </div>
+            </div>
+            <div style="font-weight: bold; font-size: 1.3em; display: flex; justify-content: space-between; margin-bottom: 20px;">
+                <span style="font-size: 0.7em;">합계</span>
+                <span>₩{{ order.finalTotal.toLocaleString() }}</span>
+            </div>
+            <div style="text-align: center; font-size: 0.8em; border-top: 2px dashed #000; padding-top: 15px;">
+                <p style="margin: 4px 0;">승인번호: {{ Math.floor(10000000 + Math.random() * 90000000) }}</p>
+                <p style="margin: 4px 0;">이용해주셔서 감사합니다.</p>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -269,85 +316,10 @@
                     }
                 });
 
-                const openReceipt = () => {
-                    if (!order.value) return;
-                    const receiptWindow = window.open('', '_blank', 'width=420,height=650');
-                    if (!receiptWindow) return;
-                    
-                    let itemsHtml = '';
-                    for (let i = 0; i < order.value.items.length; i++) {
-                        const item = order.value.items[i];
-                        itemsHtml += '<div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.9em;">' +
-                            '<span style="flex: 1; padding-right: 10px;">' + item.name + ' <span style="color:#666;">x' + item.quantity + '</span></span>' +
-                            '<span style="font-weight: bold;">₩' + (item.price * item.quantity).toLocaleString() + '</span>' +
-                        '</div>';
-                    }
-
-                    const buyerHtml = order.value.buyerName ? '<p><strong>주문자:</strong> ' + order.value.buyerName + '</p>' : '';
-                    const orderDate = order.value.orderDate || new Date().toLocaleString();
-                    const orderNum = order.value.orderNumber;
-                    const shippingFee = order.value.shippingFee.toLocaleString();
-                    const finalTotal = order.value.finalTotal.toLocaleString();
-                    const authCode = Math.floor(10000000 + Math.random() * 90000000);
-
-                    const html = '<!DOCTYPE html>' +
-                        '<html lang="ko">' +
-                        '<head>' +
-                            '<meta charset="UTF-8">' +
-                            '<title>카드 영수증</title>' +
-                            '<style>' +
-                                'body { font-family: Courier New, Courier, monospace; padding: 20px; background: #f0f0f0; color: #333; margin: 0; }' +
-                                '.receipt { background: #fff; padding: 30px; border: 1px dashed #ccc; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 340px; margin: 20px auto; }' +
-                                '.header { text-align: center; margin-bottom: 25px; border-bottom: 2px dashed #333; padding-bottom: 15px; }' +
-                                '.header h2 { margin: 0 0 15px 0; font-size: 1.4em; letter-spacing: 1px; }' +
-                                '.header p { margin: 4px 0; font-size: 0.85em; text-align: left; }' +
-                                '.items { margin-bottom: 20px; border-bottom: 1px dashed #999; padding-bottom: 15px; }' +
-                                '.total { font-weight: bold; font-size: 1.3em; display: flex; justify-content: space-between; margin-bottom: 25px; align-items: flex-end;}' +
-                                '.footer { text-align: center; font-size: 0.8em; color: #555; border-top: 2px dashed #333; padding-top: 15px; }' +
-                                '.footer p { margin: 4px 0; }' +
-                                '@media print { body { background: #fff; padding: 0; } .receipt { box-shadow: none; border: none; max-width: 100%; margin: 0; padding: 10px; } }' +
-                            '</style>' +
-                        '</head>' +
-                        '<body>' +
-                            '<div class="receipt">' +
-                                '<div class="header">' +
-                                    '<h2>[신용카드 매출전표]</h2>' +
-                                    '<p><strong>가맹점:</strong> Heritage Namhae</p>' +
-                                    '<p><strong>일시:</strong> ' + orderDate + '</p>' +
-                                    '<p><strong>주문번호:</strong> ' + orderNum + '</p>' +
-                                    buyerHtml +
-                                '</div>' +
-                                '<div class="items">' +
-                                    itemsHtml +
-                                    '<div style="display: flex; justify-content: space-between; margin-top: 15px; font-size: 0.9em; color: #555;">' +
-                                        '<span>배송비</span>' +
-                                        '<span>₩' + shippingFee + '</span>' +
-                                    '</div>' +
-                                '</div>' +
-                                '<div class="total">' +
-                                    '<span style="font-size: 0.7em; color:#555;">합계</span>' +
-                                    '<span>₩' + finalTotal + '</span>' +
-                                '</div>' +
-                                '<div class="footer">' +
-                                    '<p>승인번호: ' + authCode + '</p>' +
-                                    '<p>이용해주셔서 감사합니다.</p>' +
-                                '</div>' +
-                                '<div style="text-align:center; margin-top: 20px;">' +
-                                    '<button onclick="window.print()" style="padding: 10px 20px; font-size: 16px; cursor: pointer; background: #006a63; color: #fff; border: none; border-radius: 5px;">영수증 인쇄하기</button>' +
-                                '</div>' +
-                            '</div>' +
-                        '</body>' +
-                        '</html>';
-                    
-                    receiptWindow.document.write(html);
-                    receiptWindow.document.close();
-                };
-
                 return {
                     order,
                     status,
-                    statusMessage,
-                    openReceipt
+                    statusMessage
                 };
             }
         }).mount('#app');
