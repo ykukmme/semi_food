@@ -98,7 +98,7 @@
 <!-- TopNavBar -->
 <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300" id="main-header">
 <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-<div class="flex items-center gap-12">
+<div class="flex items-center gap-6 md:gap-8">
 <a class="text-2xl font-bold tracking-tighter text-teal-900 dark:text-white font-headline" href="index.html">Heritage Namhae</a>
 <nav class="hidden md:flex items-center gap-8 font-plus-jakarta text-sm tracking-tight">
 <a class="text-teal-700 dark:text-teal-300 font-bold border-b-2 border-teal-700 pb-1" href="#best">베스트</a>
@@ -110,10 +110,10 @@
 </nav>
 </div>
 <div class="flex items-center gap-6">
-<div class="hidden lg:flex items-center bg-surface-container/50 rounded-full px-4 py-1.5 border border-outline-variant/20 focus-within:border-primary focus-within:bg-white transition-all">
+<form id="nav-search-form" class="hidden lg:flex items-center bg-surface-container/50 rounded-full px-4 py-1.5 border border-outline-variant/20 focus-within:border-primary focus-within:bg-white transition-all" role="search" action="search-result.html" method="get">
 <span class="material-symbols-outlined text-outline text-lg" data-icon="search">search</span>
-<input class="bg-transparent border-none focus:ring-0 text-sm w-48 font-label" placeholder="헤리티지 제품 검색..." type="text"/>
-</div>
+<input id="nav-search-input" name="q" class="bg-transparent border-none focus:ring-0 text-sm w-48 font-label" placeholder="헤리티지 제품 검색..." type="search" autocomplete="off"/>
+</form>
 <div class="flex items-center gap-4">
 <a class="p-2 text-on-surface-variant hover:text-primary transition-colors scale-95 active:scale-90" href="cart.html">
 <span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
@@ -130,16 +130,16 @@
 </header>
 <main class="pt-0">
 <!-- Hero Section -->
-<section class="relative h-[870px] overflow-hidden bg-surface-container-low" id="newRecommendation">
+<section class="relative h-[min(72vh,620px)] min-h-[420px] overflow-hidden bg-surface-container-low" id="newRecommendation">
 <div class="absolute inset-0">
 <img alt="Namhae Winter Spinach" class="w-full h-full object-cover object-center scale-105" data-alt="Close-up of vibrant green organic spinach leaves with dew drops in a sun-drenched coastal field of Namhae island at dawn" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCewXvdNEluXrX_ptA0lh3Q9dIkXMP__IJb6BNdazMSZSSGXL-q29RAd7OrG4IZdVi-nqkHWw4LUsVqSUFy2enS5fH4etAP45twTc1Wy5pbYbU4oVsIRXAa2h5f7qPJ5t6TbvynJ2Tm-XqA47pCo9WhFPlU1J0Fn0CDmht-aydrLGvYkbwRaadeQf0JnVS4MWZ7UhtY6nQCCkmM1wDREZUCJVr-rXfmp2PRUeGMAclzWZOpbO9-dXuUEKLx_C3AoqFPOO9Y62ZD9Ns"/>
 <div class="absolute inset-0 bg-gradient-to-r from-on-background/40 to-transparent"></div>
 </div>
 <div class="relative max-w-7xl mx-auto px-6 h-full flex items-center">
 <div class="max-w-2xl text-on-primary">
-<span class="inline-block px-3 py-1 rounded-full bg-secondary text-on-secondary text-xs font-bold mb-6 font-label uppercase tracking-widest">계절 특선</span>
-<h1 class="text-6xl md:text-8xl font-headline font-extrabold tracking-tighter leading-[0.9] mb-8">남해<br/>봄<br/>시금치.</h1>
-<p class="text-xl text-white/90 font-body leading-relaxed mb-10 max-w-lg">바닷바람과 남쪽 태양 아래 자라난 헤리티지 시금치는 남해의 겨울에만 느낄 수 있는 달콤함을 간직하고 있습니다.</p>
+<span class="inline-block px-3 py-1 rounded-full bg-secondary text-on-secondary text-xs font-bold mb-3 font-label uppercase tracking-widest">계절 특선</span>
+<h1 class="text-5xl md:text-7xl font-headline font-extrabold tracking-tighter leading-[0.9] mb-4">남해<br/>봄<br/>시금치.</h1>
+<p class="text-lg md:text-xl text-white/90 font-body leading-relaxed mb-6 max-w-lg">바닷바람과 남쪽 태양 아래 자라난 헤리티지 시금치는 남해의 겨울에만 느낄 수 있는 달콤함을 간직하고 있습니다.</p>
 <div class="flex gap-4">
 <a class="px-8 py-4 bg-primary text-on-primary rounded-xl font-semibold flex items-center gap-2 editorial-shadow hover:bg-primary/90 transition-all" href="product.html">
                             계절 특선 보기
@@ -153,11 +153,11 @@
 </div>
 </section>
 <!-- Best Products Grid -->
-<section class="py-24 bg-surface" id="best">
-<div class="max-w-7xl mx-auto px-6">
-<div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+<section class="py-10 md:py-12 bg-surface" id="best">
+<div class="max-w-7xl mx-auto px-4 sm:px-6">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4 md:gap-5">
 <div>
-<h2 class="text-4xl font-headline font-bold text-on-surface mb-4 tracking-tight">베스트 큐레이션</h2>
+<h2 class="text-3xl md:text-4xl font-headline font-bold text-on-surface mb-2 tracking-tight">베스트 큐레이션</h2>
 <p class="text-on-surface-variant max-w-md">남해의 해안 들판과 깊은 바다에서 온 우리 커뮤니티가 가장 사랑하는 보물들입니다.</p>
 </div>
 <div class="flex flex-wrap gap-2" id="category-tabs">
@@ -167,10 +167,10 @@
 <button class="tab-btn px-6 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-medium text-sm hover:bg-surface-container-highest transition-all" data-category="gift">선물세트</button>
 </div>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12" id="products-grid">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-6" id="products-grid">
 <!-- Product Card 1 -->
 <div class="group cursor-pointer product-card" onclick="window.location.href='product.html'">
-<div class="relative aspect-[4/5] rounded-xl overflow-hidden mb-6 bg-surface-container-low">
+<div class="relative aspect-[4/5] rounded-xl overflow-hidden mb-3 bg-surface-container-low">
 <img alt="Premium Garlic" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Detailed studio shot of premium Namhae purple garlic bulbs with papery skin on a clean minimalist light grey surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvD8uIdVNYEyiWGHi8yFmVhG6kbg5-KXyFssfxmkrmP-JrJbYqvVD6RtXPpMp9e3q0oJT9JD1rgMsLvnW_N7Guc2UpVX3lrboH_s0l84ZsmqcHHbcMeGGSxCPSUrWw4kZobqPVHoybx0lTymFYoGlw4m66hm8W5HgmeTzDzx4u5Cm14ARuzsuwU-FgzJ9cvl2OMTwesvvWrLgPV0wO-VE5w86RDbjiJXooh7j6sTkPGKfugkB4AmON8LapwmBn12YwXpz-0x63ew4"/>
 <span class="absolute top-4 right-4 px-3 py-1 bg-secondary text-on-secondary text-[10px] font-bold rounded-full font-label">BEST 01</span>
 <div class="absolute bottom-4 left-4 right-4 p-4 translate-y-12 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
@@ -179,17 +179,13 @@
 </div>
 <h3 class="font-headline font-bold text-lg text-on-surface mb-1">남해 흑마늘 팩</h3>
 <p class="text-zinc-500 text-sm mb-3">천일염 동굴에서 60일 숙성</p>
-<div class="flex items-center justify-between">
+<div class="flex items-center">
 <span class="font-bold text-primary">₩45,000</span>
-<div class="flex items-center gap-1">
-<span class="material-symbols-outlined text-sm text-secondary-container" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-bold">4.9 (1.2k)</span>
-</div>
 </div>
 </div>
 <!-- Product Card 2 -->
 <div class="group cursor-pointer product-card" onclick="window.location.href='product.html'">
-<div class="relative aspect-[4/5] rounded-xl overflow-hidden mb-6 bg-surface-container-low">
+<div class="relative aspect-[4/5] rounded-xl overflow-hidden mb-3 bg-surface-container-low">
 <img alt="Dried Anchovies" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Artisanal display of silver dried anchovies in a traditional woven bamboo basket with soft side lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtnOlqwxH7qQy3ChR7FmuXsVSSaxhYvOnns0ob-uiDx4zOr71NBx6Q94Wz385GUyjkNNQ5N5JxcRDKfABqITkNJgwySp4LsPMI-vQcuQuJwFqzjv8KCLkeQXUb2tis5ggjGam2O8DACKgg-cvn9SEBhXqCmnefnl0zlnctaNRUCXO92vpIkuO8xAeWFh6b5wDdgld1a9JrVKnBCD__TPAa3BKTgPblzey3Iu4AWPf0VZzS9B_Z7rYdGhncgkQMULAuYf5QSiJ20tM"/>
 <span class="absolute top-4 right-4 px-3 py-1 bg-secondary text-on-secondary text-[10px] font-bold rounded-full font-label">BEST 02</span>
 <div class="absolute bottom-4 left-4 right-4 p-4 translate-y-12 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
@@ -198,17 +194,13 @@
 </div>
 <h3 class="font-headline font-bold text-lg text-on-surface mb-1">죽방렴 멸치</h3>
 <p class="text-zinc-500 text-sm mb-3">프리미엄 등급, 자연 건조</p>
-<div class="flex items-center justify-between">
+<div class="flex items-center">
 <span class="font-bold text-primary">₩32,000</span>
-<div class="flex items-center gap-1">
-<span class="material-symbols-outlined text-sm text-secondary-container" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-bold">4.8 (850)</span>
-</div>
 </div>
 </div>
 <!-- Product Card 3 -->
 <div class="group cursor-pointer product-card" onclick="window.location.href='product.html'">
-<div class="relative aspect-[4/5] rounded-xl overflow-hidden mb-6 bg-surface-container-low">
+<div class="relative aspect-[4/5] rounded-xl overflow-hidden mb-3 bg-surface-container-low">
 <img alt="Citron Honey" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Golden jars of Namhae Yuja citron preserve in a bright kitchen setting with sliced yellow citrus fruits around" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6h2K_MVUBoM6e2g9pPgi1msYnPU-LqTPmHqzCmHfsvP_BBUDLS8stEczldwRW7Escn4_-JCFeGGjjyBtGHDmvzMEGEGzBojUCZqNvDtWyL-Jo2aVNs-7gLGycXcdjZL_FigVsA6YTvm5dy2Ze7AGvew5LlLXtPg4U6B9nTX5rrLUWH_b3tvv7BG4W0mZQCabL3COnRI52h3TOxTODA5LcENrvt5Lqj7OiQqdrw-dqt2bpXQuzWWqCWeN1X7WAsqMeGl46bGUZcjw"/>
 <span class="absolute top-4 right-4 px-3 py-1 bg-secondary text-on-secondary text-[10px] font-bold rounded-full font-label">BEST 03</span>
 <div class="absolute bottom-4 left-4 right-4 p-4 translate-y-12 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
@@ -217,17 +209,13 @@
 </div>
 <h3 class="font-headline font-bold text-lg text-on-surface mb-1">유자 청꿀</h3>
 <p class="text-zinc-500 text-sm mb-3">오래된 과수원에서 수확</p>
-<div class="flex items-center justify-between">
+<div class="flex items-center">
 <span class="font-bold text-primary">₩18,000</span>
-<div class="flex items-center gap-1">
-<span class="material-symbols-outlined text-sm text-secondary-container" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-bold">5.0 (420)</span>
-</div>
 </div>
 </div>
 <!-- Product Card 4 -->
 <div class="group cursor-pointer product-card" onclick="window.location.href='product.html'">
-<div class="relative aspect-[4/5] rounded-xl overflow-hidden mb-6 bg-surface-container-low">
+<div class="relative aspect-[4/5] rounded-xl overflow-hidden mb-3 bg-surface-container-low">
 <img alt="Namhae Rice" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Burlap sack of polished short-grain white rice with some rice spilling onto a wooden surface in warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBczyhcl-myvmsy97jzfGBOYvdcKPxAJBIwW-DN3Am5aqlg831CLfC3PUSo0sYcilP7G3PF57aahgUVvY6aK3EkSlrvGRSwgrIM5QtrTIP2MYFPDS4_WTv3M2dIN0uH4XLbljElwmXdT_b1KLtqq9wf5xlhJrLMuUKvrH4psKSO-h23HKyWP-GR9_zTer6zwtBGnvuYGz3F-_pqokzSF0tnYfdXbqkSe7GUawF3eSXJ9F1DsMuzxKnCXE_lgrLEwvRYNXCMiel9Izc"/>
 <span class="absolute top-4 right-4 px-3 py-1 bg-secondary text-on-secondary text-[10px] font-bold rounded-full font-label">BEST 04</span>
 <div class="absolute bottom-4 left-4 right-4 p-4 translate-y-12 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
@@ -236,11 +224,8 @@
 </div>
 <h3 class="font-headline font-bold text-lg text-on-surface mb-1">바닷바람 황금쌀</h3>
 <p class="text-zinc-500 text-sm mb-3">2024년 햅쌀, 한정 수량</p>
-<div class="flex items-center justify-between">
+<div class="flex items-center">
 <span class="font-bold text-primary">₩68,000</span>
-<div class="flex items-center gap-1">
-<span class="material-symbols-outlined text-sm text-secondary-container" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-bold">4.7 (2.1k)</span>
 </div>
 </div>
 </div>
@@ -336,10 +321,10 @@
 </div>
 </section> -->
 <!-- Just Harvested Section -->
-<section class="py-24 bg-tertiary-fixed/20 overflow-hidden" id="newProduct">
-<div class="max-w-7xl mx-auto px-6">
-<div class="flex items-center gap-4 mb-12">
-<span class="w-12 h-[2px] bg-primary"></span>
+<section class="py-10 md:py-12 bg-tertiary-fixed/20 overflow-hidden" id="newProduct">
+<div class="max-w-7xl mx-auto px-4 sm:px-6">
+<div class="flex items-center gap-3 mb-6">
+<!-- <span class="w-12 h-[2px] bg-primary"></span> -->
 <h2 class="text-3xl font-headline font-bold text-on-surface">신상!</h2>
 </div>
 <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
@@ -352,7 +337,7 @@
 <p class="font-bold text-sm">남해 루비 사과</p>
 </div>
 </a>
-<a class="group relative aspect-square rounded-2xl overflow-hidden editorial-shadow translate-y-4 block" href="product.html">
+<a class="group relative aspect-square rounded-2xl overflow-hidden editorial-shadow block" href="product.html">
 <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Fresh purple grapes on a vine" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkixaid8d1t117GEC_6wwIXcj2p-9_nXXOWg_jTjEyYs5EAX0ISio_xtxV010VhJBoUTP7e5dzYwsQalb8pBQmGqlTQs-sHDW-KwvqkGhX_pr82zn-y3WmO2AfhT2C6pAeePZuwWXecmGQTMuP5vV5SlMWFmFmKcFn47g15zWrIS2rFllnMZV3ml48T1mkkcq0WXl-WVrDGFP58K4ucH5n6JhH_8gRRVJ6M5c3fgi_4WRbT_DYZS5IeFfHjIoGT1b7vD8yQgkSlWs"/>
 <div class="absolute inset-0 bg-on-background/20 group-hover:bg-on-background/10 transition-colors"></div>
 <div class="absolute bottom-4 left-4 right-4 text-white">
@@ -368,7 +353,7 @@
 <p class="font-bold text-sm">유기농 현미</p>
 </div>
 </a>
-<a class="group relative aspect-square rounded-2xl overflow-hidden editorial-shadow translate-y-4 block" href="product.html">
+<a class="group relative aspect-square rounded-2xl overflow-hidden editorial-shadow block" href="product.html">
 <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Freshly caught abalone" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_ov1NOr35Hl83S9DwDCacpCMdM2oeckVOhfHtMqmBO_JXLdVxYKPUzLw9cWigqbjt-9jbBrJG7WNS8aFfqrgNLJNpzUblxST1jb6zdFStA6p1RLuKEm71HnIFA8CeB7zKeSnuLpynsPn9Df6sYgBulipDkJCofr_3sZUIL-LQeoZVrisQ57Y50cSFdV-3Pqfy1ZRAM03UFcmOCx4feRfwBnUIcYVOFkVcTxtJFKwIRexyoqNekSVsi8Bq-ri4ZnQsBVzsG3ftH8k"/>
 <div class="absolute inset-0 bg-on-background/20 group-hover:bg-on-background/10 transition-colors"></div>
 <div class="absolute bottom-4 left-4 right-4 text-white">
@@ -389,11 +374,11 @@
 </section>
 </main>
 <!-- Footer -->
-<footer class="full-width py-16 px-8 mt-24 bg-[#333] border-t border-[#555] transition-colors duration-200 font-work-sans text-xs leading-relaxed text-white">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-7xl mx-auto">
+<footer class="full-width py-10 px-6 sm:px-8 mt-12 bg-[#333] border-t border-[#555] transition-colors duration-200 font-work-sans text-xs leading-relaxed text-white">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-7xl mx-auto">
 <div class="col-span-1 md:col-span-1">
-<div class="text-lg font-bold text-white mb-6 font-headline">Heritage Namhae</div>
-<p class="text-white/80 mb-8 max-w-xs">
+<div class="text-lg font-bold text-white mb-4 font-headline">Heritage Namhae</div>
+<p class="text-white/80 mb-5 max-w-xs">
                     남해군 공식 헤리티지 몰, 우리 해안 낙원의 진짜 맛을 당신의 집으로 바로 전달합니다.
                 </p>
 <div class="flex gap-4">
@@ -406,29 +391,29 @@
 </div>
 </div>
 <div>
-<h4 class="font-bold text-white mb-6">서비스</h4>
-<ul class="space-y-4">
+<h4 class="font-bold text-white mb-3">서비스</h4>
+<ul class="space-y-2">
 <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">회사 소개</a></li>
 <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">배송 및 추적</a></li>
 <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">이용 약관</a></li>
 </ul>
 </div>
 <div>
-<h4 class="font-bold text-white mb-6">연락처</h4>
-<ul class="space-y-4">
+<h4 class="font-bold text-white mb-3">연락처</h4>
+<ul class="space-y-2">
 <li class="text-white/70">전화: 055-123-4567</li>
 <li class="text-white/70">이메일: help@namhaeheritage.kr</li>
 </ul>
 </div>
 <div>
-<h4 class="font-bold text-white mb-6">위치</h4>
+<h4 class="font-bold text-white mb-3">위치</h4>
 <p class="text-white/70 mb-4">대한민국 경상남도 남해군청</p>
 <div class="h-32 w-full rounded-xl bg-white/20 overflow-hidden">
 <img alt="Location Map" class="w-full h-full object-cover grayscale" data-location="Namhae, South Korea" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2F8UAsYBf8f-PXSCkWz8tPMj1yPAwzNqFnUHdLvbP3NxWzmKZvO52Qb76KLXKdR7GifJMom5TfallzE3oUiWx6wj1VUqfQ-OWmzQVYplGPmVjO52jxg3e8NQdFOU-O_t0DJrzvtWD0uaWIpCc4fRIYzS0-oPNzSMqm3dfpC4iojREb1bO_k-endojrJHEh2Vek1i1HWAgmAM27qGPEC2EUe-1x_hxNJOM3j_NI-TicipehzW-arsFab0btwNoZOq5wXODkjGdXZM"/>
 </div>
 </div>
 </div>
-<div class="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-zinc-200/50 flex flex-col md:flex-row justify-between gap-4">
+<div class="max-w-7xl mx-auto px-6 mt-8 pt-6 border-t border-zinc-200/50 flex flex-col md:flex-row justify-between gap-4">
 <p class="text-white/60">© 2024 에디토리얼 헤리티지 남해. 모든 권리 보유.</p>
 <div class="flex gap-6">
 <a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">개인정보 처리방침</a>
@@ -462,28 +447,28 @@
         // Simple mock data for category switching to show it's functional
         const mockProducts = {
             agricultural: [
-                { title: '남해 흑마늘 팩', desc: '60일 숙성', price: '₩45,000', rating: '4.9', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBvD8uIdVNYEyiWGHi8yFmVhG6kbg5-KXyFssfxmkrmP-JrJbYqvVD6RtXPpMp9e3q0oJT9JD1rgMsLvnW_N7Guc2UpVX3lrboH_s0l84ZsmqcHHbcMeGGSxCPSUrWw4kZobqPVHoybx0lTymFYoGlw4m66hm8W5HgmeTzDzx4u5Cm14ARuzsuwU-FgzJ9cvl2OMTwesvvWrLgPV0wO-VE5w86RDbjiJXooh7j6sTkPGKfugkB4AmON8LapwmBn12YwXpz-0x63ew4', tag: 'BEST 01' },
-                { title: '바닷바람 황금쌀', desc: '2024년 햅쌀', price: '₩68,000', rating: '4.7', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBczyhcl-myvmsy97jzfGBOYvdcKPxAJBIwW-DN3Am5aqlg831CLfC3PUSo0sYcilP7G3PF57aahgUVvY6aK3EkSlrvGRSwgrIM5QtrTIP2MYFPDS4_WTv3M2dIN0uH4XLbljElwmXdT_b1KLtqq9wf5xlhJrLMuUKvrH4psKSO-h23HKyWP-GR9_zTer6zwtBGnvuYGz3F-_pqokzSF0tnYfdXbqkSe7GUawF3eSXJ9F1DsMuzxKnCXE_lgrLEwvRYNXCMiel9Izc', tag: 'BEST 04' }
+                { title: '남해 흑마늘 팩', desc: '60일 숙성', price: '₩45,000', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBvD8uIdVNYEyiWGHi8yFmVhG6kbg5-KXyFssfxmkrmP-JrJbYqvVD6RtXPpMp9e3q0oJT9JD1rgMsLvnW_N7Guc2UpVX3lrboH_s0l84ZsmqcHHbcMeGGSxCPSUrWw4kZobqPVHoybx0lTymFYoGlw4m66hm8W5HgmeTzDzx4u5Cm14ARuzsuwU-FgzJ9cvl2OMTwesvvWrLgPV0wO-VE5w86RDbjiJXooh7j6sTkPGKfugkB4AmON8LapwmBn12YwXpz-0x63ew4', tag: 'BEST 01' },
+                { title: '바닷바람 황금쌀', desc: '2024년 햅쌀', price: '₩68,000', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBczyhcl-myvmsy97jzfGBOYvdcKPxAJBIwW-DN3Am5aqlg831CLfC3PUSo0sYcilP7G3PF57aahgUVvY6aK3EkSlrvGRSwgrIM5QtrTIP2MYFPDS4_WTv3M2dIN0uH4XLbljElwmXdT_b1KLtqq9wf5xlhJrLMuUKvrH4psKSO-h23HKyWP-GR9_zTer6zwtBGnvuYGz3F-_pqokzSF0tnYfdXbqkSe7GUawF3eSXJ9F1DsMuzxKnCXE_lgrLEwvRYNXCMiel9Izc', tag: 'BEST 04' }
             ],
             marine: [
-                { title: '죽방렴 멸치', desc: '프리미엄 등급 자연 건조', price: '₩32,000', rating: '4.8', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCtnOlqwxH7qQy3ChR7FmuXsVSSaxhYvOnns0ob-uiDx4zOr71NBx6Q94Wz385GUyjkNNQ5N5JxcRDKfABqITkNJgwySp4LsPMI-vQcuQuJwFqzjv8KCLkeQXUb2tis5ggjGam2O8DACKgg-cvn9SEBhXqCmnefnl0zlnctaNRUCXO92vpIkuO8xAeWFh6b5wDdgld1a9JrVKnBCD__TPAa3BKTgPblzey3Iu4AWPf0VZzS9B_Z7rYdGhncgkQMULAuYf5QSiJ20tM', tag: 'BEST 02' },
-                { title: '프리미엄 전복 세트', desc: '남해 바다 직송', price: '₩120,000', rating: '5.0', img: 'https://images.unsplash.com/photo-1560717789-0ac7c58ac90a?q=80&w=1000&auto=format&fit=crop', tag: 'PREMIUM' }
+                { title: '죽방렴 멸치', desc: '프리미엄 등급 자연 건조', price: '₩32,000', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCtnOlqwxH7qQy3ChR7FmuXsVSSaxhYvOnns0ob-uiDx4zOr71NBx6Q94Wz385GUyjkNNQ5N5JxcRDKfABqITkNJgwySp4LsPMI-vQcuQuJwFqzjv8KCLkeQXUb2tis5ggjGam2O8DACKgg-cvn9SEBhXqCmnefnl0zlnctaNRUCXO92vpIkuO8xAeWFh6b5wDdgld1a9JrVKnBCD__TPAa3BKTgPblzey3Iu4AWPf0VZzS9B_Z7rYdGhncgkQMULAuYf5QSiJ20tM', tag: 'BEST 02' },
+                { title: '프리미엄 전복 세트', desc: '남해 바다 직송', price: '₩120,000', img: 'https://images.unsplash.com/photo-1560717789-0ac7c58ac90a?q=80&w=1000&auto=format&fit=crop', tag: 'PREMIUM' }
             ],
             processed: [
-                { title: '유자 청꿀', desc: '수확 유자', price: '₩18,000', rating: '5.0', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA6h2K_MVUBoM6e2g9pPgi1msYnPU-LqTPmHqzCmHfsvP_BBUDLS8stEczldwRW7Escn4_-JCFeGGjjyBtGHDmvzMEGEGzBojUCZqNvDtWyL-Jo2aVNs-7gLGycXcdjZL_FigVsA6YTvm5dy2Ze7AGvew5LlLXtPg4U6B9nTX5rrLUWH_b3tvv7BG4W0mZQCabL3COnRI52h3TOxTODA5LcENrvt5Lqj7OiQqdrw-dqt2bpXQuzWWqCWeN1X7WAsqMeGl46bGUZcjw', tag: 'BEST 03' }
+                { title: '유자 청꿀', desc: '수확 유자', price: '₩18,000', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA6h2K_MVUBoM6e2g9pPgi1msYnPU-LqTPmHqzCmHfsvP_BBUDLS8stEczldwRW7Escn4_-JCFeGGjjyBtGHDmvzMEGEGzBojUCZqNvDtWyL-Jo2aVNs-7gLGycXcdjZL_FigVsA6YTvm5dy2Ze7AGvew5LlLXtPg4U6B9nTX5rrLUWH_b3tvv7BG4W0mZQCabL3COnRI52h3TOxTODA5LcENrvt5Lqj7OiQqdrw-dqt2bpXQuzWWqCWeN1X7WAsqMeGl46bGUZcjw', tag: 'BEST 03' }
             ],
             gift: [
-                { title: '대수확 박스', desc: '계절별 선택', price: '₩85,000', rating: '4.9', img: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=1000&auto=format&fit=crop', tag: 'SET' }
+                { title: '대수확 박스', desc: '계절별 선택', price: '₩85,000', img: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=1000&auto=format&fit=crop', tag: 'SET' }
             ]
         };
 
         function getAllProducts() {
             // Return one product from each category
             return [
-                { title: '남해 흑마늘 팩', desc: '60일 숙성', price: '₩45,000', rating: '4.9', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBvD8uIdVNYEyiWGHi8yFmVhG6kbg5-KXyFssfxmkrmP-JrJbYqvVD6RtXPpMp9e3q0oJT9JD1rgMsLvnW_N7Guc2UpVX3lrboH_s0l84ZsmqcHHbcMeGGSxCPSUrWw4kZobqPVHoybx0lTymFYoGlw4m66hm8W5HgmeTzDzx4u5Cm14ARuzsuwU-FgzJ9cvl2OMTwesvvWrLgPV0wO-VE5w86RDbjiJXooh7j6sTkPGKfugkB4AmON8LapwmBn12YwXpz-0x63ew4', tag: 'BEST 01' },
-                { title: '죽방렴 멸치', desc: '프리미엄 등급 자연 건조', price: '₩32,000', rating: '4.8', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCtnOlqwxH7qQy3ChR7FmuXsVSSaxhYvOnns0ob-uiDx4zOr71NBx6Q94Wz385GUyjkNNQ5N5JxcRDKfABqITkNJgwySp4LsPMI-vQcuQuJwFqzjv8KCLkeQXUb2tis5ggjGam2O8DACKgg-cvn9SEBhXqCmnefnl0zlnctaNRUCXO92vpIkuO8xAeWFh6b5wDdgld1a9JrVKnBCD__TPAa3BKTgPblzey3Iu4AWPf0VZzS9B_Z7rYdGhncgkQMULAuYf5QSiJ20tM', tag: 'BEST 02' },
-                { title: '유자 청꿀', desc: '수확 유자', price: '₩18,000', rating: '5.0', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA6h2K_MVUBoM6e2g9pPgi1msYnPU-LqTPmHqzCmHfsvP_BBUDLS8stEczldwRW7Escn4_-JCFeGGjjyBtGHDmvzMEGEGzBojUCZqNvDtWyL-Jo2aVNs-7gLGycXcdjZL_FigVsA6YTvm5dy2Ze7AGvew5LlLXtPg4U6B9nTX5rrLUWH_b3tvv7BG4W0mZQCabL3COnRI52h3TOxTODA5LcENrvt5Lqj7OiQqdrw-dqt2bpXQuzWWqCWeN1X7WAsqMeGl46bGUZcjw', tag: 'BEST 03' },
-                { title: '대수확 박스', desc: '계절별 선택', price: '₩85,000', rating: '4.9', img: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=1000&auto=format&fit=crop', tag: 'SET' }
+                { title: '남해 흑마늘 팩', desc: '60일 숙성', price: '₩45,000', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBvD8uIdVNYEyiWGHi8yFmVhG6kbg5-KXyFssfxmkrmP-JrJbYqvVD6RtXPpMp9e3q0oJT9JD1rgMsLvnW_N7Guc2UpVX3lrboH_s0l84ZsmqcHHbcMeGGSxCPSUrWw4kZobqPVHoybx0lTymFYoGlw4m66hm8W5HgmeTzDzx4u5Cm14ARuzsuwU-FgzJ9cvl2OMTwesvvWrLgPV0wO-VE5w86RDbjiJXooh7j6sTkPGKfugkB4AmON8LapwmBn12YwXpz-0x63ew4', tag: 'BEST 01' },
+                { title: '죽방렴 멸치', desc: '프리미엄 등급 자연 건조', price: '₩32,000', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCtnOlqwxH7qQy3ChR7FmuXsVSSaxhYvOnns0ob-uiDx4zOr71NBx6Q94Wz385GUyjkNNQ5N5JxcRDKfABqITkNJgwySp4LsPMI-vQcuQuJwFqzjv8KCLkeQXUb2tis5ggjGam2O8DACKgg-cvn9SEBhXqCmnefnl0zlnctaNRUCXO92vpIkuO8xAeWFh6b5wDdgld1a9JrVKnBCD__TPAa3BKTgPblzey3Iu4AWPf0VZzS9B_Z7rYdGhncgkQMULAuYf5QSiJ20tM', tag: 'BEST 02' },
+                { title: '유자 청꿀', desc: '수확 유자', price: '₩18,000', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA6h2K_MVUBoM6e2g9pPgi1msYnPU-LqTPmHqzCmHfsvP_BBUDLS8stEczldwRW7Escn4_-JCFeGGjjyBtGHDmvzMEGEGzBojUCZqNvDtWyL-Jo2aVNs-7gLGycXcdjZL_FigVsA6YTvm5dy2Ze7AGvew5LlLXtPg4U6B9nTX5rrLUWH_b3tvv7BG4W0mZQCabL3COnRI52h3TOxTODA5LcENrvt5Lqj7OiQqdrw-dqt2bpXQuzWWqCWeN1X7WAsqMeGl46bGUZcjw', tag: 'BEST 03' },
+                { title: '대수확 박스', desc: '계절별 선택', price: '₩85,000', img: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=1000&auto=format&fit=crop', tag: 'SET' }
             ];
         }
 
@@ -508,7 +493,7 @@
             
             productsGrid.innerHTML = products.map(p => `
                 <div class="group cursor-pointer product-card opacity-0 translate-y-4 transition-all duration-500" onclick="window.location.href='product.html'">
-                    <div class="relative aspect-[4/5] rounded-xl overflow-hidden mb-6 bg-surface-container-low">
+                    <div class="relative aspect-[4/5] rounded-xl overflow-hidden mb-3 bg-surface-container-low">
                         <img src="${p.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="${p.title}"/>
                         <span class="absolute top-4 right-4 px-3 py-1 bg-secondary text-on-secondary text-[10px] font-bold rounded-full font-label">${p.tag}</span>
                         <div class="absolute bottom-4 left-4 right-4 p-4 translate-y-12 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
@@ -517,12 +502,8 @@
                     </div>
                     <h3 class="font-headline font-bold text-lg text-on-surface mb-1">${p.title}</h3>
                     <p class="text-zinc-500 text-sm mb-3">${p.desc}</p>
-                    <div class="flex items-center justify-between">
+                    <div class="flex items-center">
                         <span class="font-bold text-primary">${p.price}</span>
-                        <div class="flex items-center gap-1">
-                            <span class="material-symbols-outlined text-sm text-secondary-container">star</span>
-                            <span class="text-xs font-bold">${p.rating}</span>
-                        </div>
                     </div>
                 </div>
             `).join('');
@@ -571,5 +552,13 @@
 
         // Initialize tabs when DOM is ready
         document.addEventListener('DOMContentLoaded', initializeTabs);
+
+        // 상단 검색 → search-result.html (상품명 부분 일치)
+        document.getElementById('nav-search-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const raw = document.getElementById('nav-search-input').value || '';
+            const q = raw.trim();
+            window.location.href = 'search-result.html?q=' + encodeURIComponent(q);
+        });
     </script>
 </body></html>

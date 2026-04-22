@@ -103,7 +103,7 @@
 </header>
 <main class="pt-32 pb-20 px-6 max-w-7xl mx-auto">
 <header class="mb-12">
-<h1 class="text-4xl font-extrabold tracking-tight mb-2 text-primary">당신의&nbsp;&nbsp;장바구니</h1>
+<h1 class="text-4xl font-extrabold tracking-tight mb-2 text-primary">나의&nbsp;&nbsp;장바구니</h1>
 <p class="text-on-surface-variant font-body">남해 헤리티지 컬렉션에서 선택된 아이템들입니다.</p>
 </header>
 <div class="flex flex-col lg:flex-row gap-12" v-if="cartItems.length &gt; 0">
@@ -124,8 +124,8 @@
 </div>
 <div class="mt-6 flex flex-wrap items-center justify-between gap-4">
 <div class="flex items-center bg-surface-container-high rounded-full px-3 py-1">
-<button :class="{'opacity-30 cursor-not-allowed': item.quantity &lt;= 1}" :disabled="item.quantity &lt;= 1" @click="decrementQty(item)" class="material-symbols-outlined text-on-surface-variant p-1 hover:text-primary transition-colors">remove</button>
-<span class="px-4 font-bold text-on-surface w-8 text-center">{{ item.quantity }}</span>
+<button :class="{'opacity-30 cursor-not-allowed': item.quantity &lt;= minQtyFor(item)}" :disabled="item.quantity &lt;= minQtyFor(item)" @click="decrementQty(item)" class="material-symbols-outlined text-on-surface-variant p-1 hover:text-primary transition-colors">remove</button>
+<span class="inline-flex min-w-[2.5rem] items-center justify-center px-2 font-bold text-on-surface tabular-nums">{{ item.quantity }}</span>
 <button @click="incrementQty(item)" class="material-symbols-outlined text-on-surface-variant p-1 hover:text-primary transition-colors">add</button>
 </div>
 <div class="text-lg font-bold text-on-surface">₩{{ (item.price * item.quantity).toLocaleString() }}</div>
@@ -250,28 +250,41 @@
         }
     </style>
 <script>
-        const { createApp, ref, computed } = Vue;
+        const { createApp, ref, computed, watch } = Vue;
+
+        const NAMHAE_CART_STORAGE_KEY = 'namhae_cart_v1';
+
+        function loadCartFromStorage() {
+            try {
+                const raw = localStorage.getItem(NAMHAE_CART_STORAGE_KEY);
+                if (!raw) return [];
+                const parsed = JSON.parse(raw);
+                return Array.isArray(parsed) ? parsed : [];
+            } catch {
+                return [];
+            }
+        }
+
+        function persistCart(items) {
+            localStorage.setItem(NAMHAE_CART_STORAGE_KEY, JSON.stringify(items));
+        }
 
         createApp({
             setup() {
-                const cartItems = ref([
-                    {
-                        id: 1,
-                        name: 'Namhae Premium Dureup',
-                        collection: 'Spring Harvest Collection',
-                        price: 24500,
-                        quantity: 1,
-                        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBMQWyqAWo9uC3RXt8HduQ4O_5KFZzTxmTzshy7sSSBXyUadok95y01o1qasDKIwxGLpYRRzVPMapJwM2E-dAkzRodr0-JVEH9_wDwEX29EmsJpPLJ840omMPdu1BM5j3yE9N_sMgYfNYza1N0chTr9a8S8aXPTH31jeNUx4yzkzxrz5SjkkFvtUwqPgz83SQILu92KAzGcF8LvnsBV1XCJ9urlPjSnQ8-BIeiw-EckcaZ9jnnDVRWebYbNjx0ORT8bqcHfj9jg8_s'
+                const cartItems = ref(loadCartFromStorage());
+
+                watch(
+                    cartItems,
+                    (v) => {
+                        persistCart(v);
                     },
-                    {
-                        id: 2,
-                        name: 'Aged Garlic',
-                        collection: 'Namhae Fermentation Heritage',
-                        price: 32000,
-                        quantity: 2,
-                        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAPBoIb-3MJShiVhMMcsV8s-ywGWg44NEPAFxB2VJppEWvKE0Nk_QRftDtElAtePujL9v8kUhaB57enbzgJP22KQS7TKfKUXwZuS_XgPAJLL9mxxgvozaq99RIUVSl8hunR0P42V5lKURZHrQNrIcLHsdfsDCKpFxk4kR0iHKtyRB4uMSzce4SCA6Ig2Gc2whcUwp_wsEqeoie2Htk0TqrgVYa-4GNtLbpaaGAX_60Wu99gHhfd5DLHC-eviImEvSDf4DW0PeOFHHg'
-                    }
-                ]);
+                    { deep: true }
+                );
+
+                const minQtyFor = (item) => {
+                    const m = item.minQty;
+                    return typeof m === 'number' && m > 0 ? m : 1;
+                };
 
                 const shippingFee = computed(() => cartItems.value.length > 0 ? 3000 : 0);
 
@@ -287,18 +300,21 @@
                     return cartItems.value.reduce((acc, item) => acc + item.quantity, 0);
                 });
 
+                const qtyStep = 10;
+
                 const incrementQty = (item) => {
-                    item.quantity++;
+                    item.quantity += qtyStep;
                 };
 
                 const decrementQty = (item) => {
-                    if (item.quantity > 1) {
-                        item.quantity--;
+                    const floor = minQtyFor(item);
+                    if (item.quantity > floor) {
+                        item.quantity = Math.max(floor, item.quantity - qtyStep);
                     }
                 };
 
                 const removeItem = (id) => {
-                    cartItems.value = cartItems.value.filter(item => item.id !== id);
+                    cartItems.value = cartItems.value.filter((row) => row.id !== id);
                 };
 
                 return {
@@ -307,6 +323,7 @@
                     shippingFee,
                     finalTotal,
                     totalItemsCount,
+                    minQtyFor,
                     incrementQty,
                     decrementQty,
                     removeItem
