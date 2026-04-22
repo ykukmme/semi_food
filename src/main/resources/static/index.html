@@ -110,7 +110,7 @@
 </nav>
 </div>
 <div class="flex items-center gap-6">
-<form id="nav-search-form" class="hidden lg:flex items-center bg-surface-container/50 rounded-full px-4 py-1.5 border border-outline-variant/20 focus-within:border-primary focus-within:bg-white transition-all" role="search" action="search-result.html" method="get">
+<form id="nav-search-form" class="hidden lg:flex items-center bg-surface-container/50 rounded-full px-4 py-1.5 border border-outline-variant/20 focus-within:border-primary focus-within:bg-white transition-all" role="search" action="search_result.html" method="get">
 <span class="material-symbols-outlined text-outline text-lg" data-icon="search">search</span>
 <input id="nav-search-input" name="q" class="bg-transparent border-none focus:ring-0 text-sm w-48 font-label" placeholder="헤리티지 제품 검색..." type="search" autocomplete="off"/>
 </form>
@@ -553,12 +553,12 @@
         // Initialize tabs when DOM is ready
         document.addEventListener('DOMContentLoaded', initializeTabs);
 
-        // 상단 검색 → search-result.html (상품명 부분 일치)
+        // 상단 검색 → search_result.html (상품명 부분 일치)
         document.getElementById('nav-search-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const raw = document.getElementById('nav-search-input').value || '';
             const q = raw.trim();
-            window.location.href = 'search-result.html?q=' + encodeURIComponent(q);
+            window.location.href = 'search_result.html?q=' + encodeURIComponent(q);
         });
     </script>
 </body></html>
