@@ -27,7 +27,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             // 로그인 성공 — 토큰 저장 후 이동
             setToken(json.accessToken);
             localStorage.setItem('role', json.role);
-            window.location.href = 'index.html';
+            window.location.href = 'dashboard.html';
         } else if (res.status === 400 && json.errors) {
             // 입력값 검증 실패
             Object.entries(json.errors).forEach(([field, msg]) => {

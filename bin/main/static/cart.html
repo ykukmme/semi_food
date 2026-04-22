@@ -94,8 +94,8 @@
 <a class="text-2xl font-black tracking-tighter text-[#006A63] dark:text-[#4BB6AC]" href="index.html">Heritage Namhae</a>
 <div class="flex items-center gap-6 text-[#006A63] dark:text-[#4BB6AC]">
 <div class="relative">
-<a class="material-symbols-outlined scale-95 duration-200" href="cart.html">shopping_bag</a>
-<span class="absolute -top-1 -right-1 bg-secondary text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold" v-if="cartItems.length &gt; 0">{{ totalItemsCount }}</span>
+<a class="inline-flex items-center justify-center scale-95 duration-200" href="cart.html"><span class="material-symbols-outlined">shopping_bag</span></a>
+<span class="absolute -top-2 -right-3 min-w-[1.35rem] h-5 px-1 rounded-full bg-[#FF642D] text-white text-[10px] font-extrabold leading-5 text-center shadow-md shadow-[#FF642D]/30 border border-white" v-if="cartItems.length &gt; 0">{{ totalItemsCount &gt; 99 ? '99+' : totalItemsCount }}</span>
 </div>
 <a class="material-symbols-outlined scale-95 duration-200" href="mypage.html">person</a>
 </div>

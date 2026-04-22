@@ -115,8 +115,9 @@
 <input id="nav-search-input" name="q" class="bg-transparent border-none focus:ring-0 text-sm w-48 font-label" placeholder="헤리티지 제품 검색..." type="search" autocomplete="off"/>
 </form>
 <div class="flex items-center gap-4">
-<a class="p-2 text-on-surface-variant hover:text-primary transition-colors scale-95 active:scale-90" href="cart.html">
+<a class="relative inline-flex items-center justify-center p-2 text-on-surface-variant hover:text-primary transition-colors scale-95 active:scale-90" href="cart.html">
 <span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span id="cart-count-badge" class="hidden absolute -top-2 -right-3 min-w-[1.35rem] h-5 px-1 rounded-full bg-[#FF642D] text-white text-[10px] font-extrabold leading-5 text-center shadow-md shadow-[#FF642D]/30 border border-white">0</span>
 </a>
 <a class="p-2 text-on-surface-variant hover:text-primary transition-colors scale-95 active:scale-90" href="login.html">
 <span class="material-symbols-outlined" data-icon="person">person</span>
@@ -426,6 +427,37 @@
 <span class="material-symbols-outlined text-3xl" data-icon="chat_bubble" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
 </button> -->
 <script>
+        const NAMHAE_CART_STORAGE_KEY = 'namhae_cart_v1';
+
+        function loadCartFromStorage() {
+            try {
+                const raw = localStorage.getItem(NAMHAE_CART_STORAGE_KEY);
+                if (!raw) return [];
+                const parsed = JSON.parse(raw);
+                return Array.isArray(parsed) ? parsed : [];
+            } catch {
+                return [];
+            }
+        }
+
+        function updateCartBadge() {
+            const badge = document.getElementById('cart-count-badge');
+            if (!badge) return;
+
+            const totalCount = loadCartFromStorage().reduce((sum, item) => {
+                const quantity = Number(item?.quantity) || 0;
+                return sum + quantity;
+            }, 0);
+
+            if (totalCount > 0) {
+                badge.textContent = totalCount > 99 ? '99+' : String(totalCount);
+                badge.classList.remove('hidden');
+            } else {
+                badge.textContent = '0';
+                badge.classList.add('hidden');
+            }
+        }
+
         // 1. Scroll-based header background change
         window.addEventListener('scroll', () => {
             const header = document.getElementById('main-header');
@@ -551,7 +583,16 @@
         }
 
         // Initialize tabs when DOM is ready
-        document.addEventListener('DOMContentLoaded', initializeTabs);
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeTabs();
+            updateCartBadge();
+        });
+
+        window.addEventListener('storage', (event) => {
+            if (event.key === NAMHAE_CART_STORAGE_KEY) {
+                updateCartBadge();
+            }
+        });
 
         // 상단 검색 → search_result.html (상품명 부분 일치)
         document.getElementById('nav-search-form').addEventListener('submit', (e) => {
