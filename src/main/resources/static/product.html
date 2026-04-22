@@ -120,8 +120,8 @@
     }
 
     .thumbnail-container {
-        flex: 1;
-        height: 80px;
+        flex: 0 0 90px;
+        aspect-ratio: 1 / 1;
         border-radius: 10px;
         overflow: hidden;
         background: #f3f4f6;
@@ -197,8 +197,8 @@
                         제품 이름
                     </h1>
                     <div class="flex items-baseline gap-4 mb-8">
-                        <span class="text-3xl font-headline font-bold text-secondary" id="display-price">15,000원</span>
-                        <span class="text-xl font-label text-gray-400 line-through" id="display-original-price">20,000원</span>
+                        <span class="text-3xl font-headline font-bold text-secondary" id="display-price">1,500,000원</span>
+                        <span class="text-xl font-label text-gray-400 line-through" id="display-original-price">2,000,000원</span>
                         <span class="ml-auto text-red-600 font-bold text-sm bg-red-100 px-2 py-1 rounded">25% 할인</span>
                     </div>
 
@@ -353,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const thumbH     = thumbRow ? thumbRow.offsetHeight : 80;
         const gap        = 10;
 
-        const mainH = ctaBottom - galleryTop - thumbH - gap;
+        const mainH = ctaBottom - galleryTop - thumbH - gap + 50;
         if (mainH > 100) mainWrapper.style.height = mainH + 'px';
     }
 
@@ -439,6 +439,8 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Product added to cart. Redirecting to checkout...');
         window.location.href = 'cart.html';
     });
+
+    updatePrices();
 });
 </script>
 </body></html>

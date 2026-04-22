@@ -108,10 +108,51 @@
 </div>
 </main>
 
-<footer class="py-12 px-8 mt-auto bg-[#333] text-white text-xs">
-<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-4">
-<p class="text-white/60">© 2024 Heritage Namhae</p>
-<a class="text-white/70 hover:text-white" href="index.html">메인으로</a>
+<footer class="full-width py-10 px-6 sm:px-8 mt-12 bg-[#333] border-t border-[#555] transition-colors duration-200 font-work-sans text-xs leading-relaxed text-white">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-7xl mx-auto">
+<div class="col-span-1 md:col-span-1">
+<div class="text-lg font-bold text-white mb-4 font-headline">Heritage Namhae</div>
+<p class="text-white/80 mb-5 max-w-xs">
+                    남해군 공식 헤리티지 몰, 우리 해안 낙원의 진짜 맛을 당신의 집으로 바로 전달합니다.
+                </p>
+<div class="flex gap-4">
+<span class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-colors">
+<span class="material-symbols-outlined text-sm text-white" data-icon="share">share</span>
+</span>
+<span class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-colors">
+<span class="material-symbols-outlined text-sm text-white" data-icon="language">language</span>
+</span>
+</div>
+</div>
+<div>
+<h4 class="font-bold text-white mb-3">서비스</h4>
+<ul class="space-y-2">
+<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">회사 소개</a></li>
+<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">배송 및 추적</a></li>
+<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">이용 약관</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-white mb-3">연락처</h4>
+<ul class="space-y-2">
+<li class="text-white/70">전화: 055-123-4567</li>
+<li class="text-white/70">이메일: help@namhaeheritage.kr</li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-white mb-3">위치</h4>
+<p class="text-white/70 mb-4">대한민국 경상남도 남해군청</p>
+<div class="h-32 w-full rounded-xl bg-white/20 overflow-hidden">
+<img alt="Location Map" class="w-full h-full object-cover grayscale" data-location="Namhae, South Korea" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2F8UAsYBf8f-PXSCkWz8tPMj1yPAwzNqFnUHdLvbP3NxWzmKZvO52Qb76KLXKdR7GifJMom5TfallzE3oUiWx6wj1VUqfQ-OWmzQVYplGPmVjO52jxg3e8NQdFOU-O_t0DJrzvtWD0uaWIpCc4fRIYzS0-oPNzSMqm3dfpC4iojREb1bO_k-endojrJHEh2Vek1i1HWAgmAM27qGPEC2EUe-1x_hxNJOM3j_NI-TicipehzW-arsFab0btwNoZOq5wXODkjGdXZM"/>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-6 mt-8 pt-6 border-t border-zinc-200/50 flex flex-col md:flex-row justify-between gap-4">
+<p class="text-white/60">© 2024 에디토리얼 헤리티지 남해. 모든 권리 보유.</p>
+<div class="flex gap-6">
+<a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">개인정보 처리방침</a>
+<a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">라이선스 정보</a>
+</div>
 </div>
 </footer>
 
@@ -213,7 +254,7 @@
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
                 var v = (document.getElementById('nav-search-input').value || '').trim();
-                window.location.href = 'search-result.html?q=' + encodeURIComponent(v);
+                window.location.href = 'search_result.html?q=' + encodeURIComponent(v);
             });
         }
     });
