@@ -142,7 +142,52 @@ function addCurrentProductToCart() {
 document.getElementById('btn-add-to-cart')?.addEventListener('click', () => {
     addCurrentProductToCart();
     updateCartBadge();
-    alert('상품이 장바구니에 추가되었습니다.');
+    
+    // Show temporary notification instead of alert
+    showNotification('상품이 추가되었습니다.');
+});
+
+// Function to show temporary notification
+function showNotification(message) {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #0066cc;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+    `;
+    
+    // Add to body
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+    }, 10);
+    
+    // Remove after 2 seconds
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }, 2000);
+}
+
+document.getElementById('btn-go-to-cart')?.addEventListener('click', () => {
+    window.location.href = 'cart.html';
 });
 
 document.getElementById('btn-buy-now')?.addEventListener('click', () => {

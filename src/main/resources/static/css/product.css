@@ -12,6 +12,7 @@
     overflow: hidden;
     border-radius: 12px;
     background: #f3f4f6;
+    margin-bottom: 16px; /* 간격 추가 */
 }
 
 .main-image-wrapper img {
@@ -27,8 +28,9 @@
 /* 썸네일 행: 고정 높이, 절대 줄어들지 않음 */
 .thumbnail-row {
     display: flex;
-    gap: 10px;
+    gap: 12px; /* 간격 증가 */
     flex-shrink: 0;
+    padding: 0 4px; /* 좌우 패딩 추가 */
 }
 
 .thumbnail-container {

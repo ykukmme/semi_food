@@ -292,11 +292,7 @@
               <span class="text-on-surface-variant">상품 금액</span>
               <span class="font-medium text-on-surface" id="summary-product-total">₩0</span>
             </div>
-            <div class="flex justify-between text-sm">
-              <span class="text-on-surface-variant">배송비</span>
-              <span class="font-medium text-on-surface" id="summary-shipping">₩0</span>
-            </div>
-            <div class="flex justify-between text-sm">
+                        <div class="flex justify-between text-sm">
               <span class="text-on-surface-variant">쿠폰 할인</span>
               <span class="font-bold text-secondary">-₩0</span>
             </div>
@@ -456,20 +452,18 @@
 
     function updateOrderSummary(order) {
       const totalEl = document.getElementById('summary-product-total');
-      const shippingEl = document.getElementById('summary-shipping');
       const finalEl = document.getElementById('summary-final-total');
       const pointsEl = document.getElementById('summary-points');
       const pointsDiscountEl = document.getElementById('summary-points-discount');
 
-      if (!totalEl || !shippingEl || !finalEl || !pointsEl || !pointsDiscountEl) {
+      if (!totalEl || !finalEl || !pointsEl || !pointsDiscountEl) {
         return;
       }
 
-      const usedPoints = Math.min(getUsedPoints(), order.totalPrice + order.shippingFee);
-      const finalTotal = Math.max(order.totalPrice + order.shippingFee - usedPoints, 0);
+      const usedPoints = Math.min(getUsedPoints(), order.totalPrice);
+      const finalTotal = Math.max(order.totalPrice - usedPoints, 0);
 
       totalEl.textContent = `₩${order.totalPrice.toLocaleString()}`;
-      shippingEl.textContent = `₩${order.shippingFee.toLocaleString()}`;
       pointsDiscountEl.textContent = `-₩${usedPoints.toLocaleString()}`;
       finalEl.textContent = `₩${finalTotal.toLocaleString()}`;
       pointsEl.textContent = `${Math.floor(finalTotal * 0.01).toLocaleString()}P`;
@@ -485,24 +479,48 @@
         if (raw) order = JSON.parse(raw);
       } catch (e) { }
 
-      // 데이터 없을 때 – 장바구니 데이터 직접 시도
+      // 데이터 없을 때 – 선택된 상품 데이터 확인 후 장바구니 데이터 시도
       if (!order || !order.items || order.items.length === 0) {
         try {
-          const cartRaw = localStorage.getItem('namhae_cart_v1');
-          if (cartRaw) {
-            const cartItems = JSON.parse(cartRaw);
-            if (Array.isArray(cartItems) && cartItems.length > 0) {
-              const totalPrice = cartItems.reduce((s, i) => s + i.price * i.quantity, 0);
-              const shippingFee = 3000;
-              order = {
-                items: cartItems.map(i => ({
-                  id: i.id, name: i.name, collection: i.collection,
-                  image: i.image, price: i.price, quantity: i.quantity,
-                  lineTotal: i.price * i.quantity,
-                })),
-                totalPrice, shippingFee, finalTotal: totalPrice + shippingFee,
-              };
+          // 먼저 선택된 상품이 있는지 확인
+          const selectedRaw = localStorage.getItem('namhae_selected_items');
+          let itemsToUse = null;
+          
+          if (selectedRaw) {
+            itemsToUse = JSON.parse(selectedRaw);
+            // 선택된 상품을 checkout 저장소에도 저장하여 결제 처리에서 사용
+            const order = {
+              items: itemsToUse.map(i => ({
+                id: i.id, name: i.name, collection: i.collection,
+                image: i.image, price: i.price, quantity: i.quantity,
+                lineTotal: i.price * i.quantity,
+              })),
+              totalPrice: itemsToUse.reduce((s, i) => s + i.price * i.quantity, 0),
+              finalTotal: itemsToUse.reduce((s, i) => s + i.price * i.quantity, 0),
+            };
+            localStorage.setItem('namhae_checkout_v1', JSON.stringify(order));
+            // 선택된 상품 사용 후 임시 저장소에서 제거
+            localStorage.removeItem('namhae_selected_items');
+          } else {
+            // 선택된 상품이 없으면 전체 장바구니 사용
+            const cartRaw = localStorage.getItem('namhae_cart_v1');
+            if (cartRaw) {
+              const cartItems = JSON.parse(cartRaw);
+              itemsToUse = cartItems;
             }
+          }
+          
+          if (itemsToUse && Array.isArray(itemsToUse) && itemsToUse.length > 0) {
+            const totalPrice = itemsToUse.reduce((s, i) => s + i.price * i.quantity, 0);
+            order = {
+              items: itemsToUse.map(i => ({
+                id: i.id, name: i.name, collection: i.collection,
+                image: i.image, price: i.price, quantity: i.quantity,
+                lineTotal: i.price * i.quantity,
+              })),
+              totalPrice,
+              finalTotal: totalPrice,
+            };
           }
         } catch (e) { }
       }
@@ -690,17 +708,10 @@
         }
       } catch(e) {}
 
+      // Only use checkout items, no fallback to full cart
       if (!itemsToSave.length) {
-        try {
-          const cartRaw = localStorage.getItem('namhae_cart_v1');
-          if (cartRaw) {
-            const cartItems = JSON.parse(cartRaw);
-            if (Array.isArray(cartItems)) {
-                itemsToSave = cartItems;
-                totalPrice = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-            }
-          }
-        } catch(e) {}
+        alert('주문할 상품이 없습니다. 장바구니에서 상품을 선택해주세요.');
+        return;
       }
 
       if (itemsToSave.length > 0) {
@@ -720,9 +731,8 @@
             }
         } catch(e) {}
 
-        const shippingFee = totalPrice > 0 ? 3000 : 0;
-        const usedPoints = Math.min(getUsedPoints(), totalPrice + shippingFee);
-        const finalTotal = Math.max(totalPrice + shippingFee - usedPoints, 0);
+        const usedPoints = Math.min(getUsedPoints(), totalPrice);
+        const finalTotal = Math.max(totalPrice - usedPoints, 0);
         const orderDate = new Date();
         const estimatedDate = new Date(orderDate.getTime() + 3 * 24 * 60 * 60 * 1000);
         
@@ -735,12 +745,9 @@
             buyerName: buyerName,
             buyerPhone: buyerPhone,
             shippingAddress: shippingAddress,
-            shippingType: 'CJ대한통운 택배',
-            trackingNumber: '배송 준비 중',
             estimatedArrival: formattedEstimated,
             items: itemsToSave,
             totalPrice: totalPrice,
-            shippingFee: shippingFee,
             usedPoints: usedPoints,
             finalTotal: finalTotal
         };

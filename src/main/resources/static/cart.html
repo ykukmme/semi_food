@@ -97,9 +97,12 @@
 </div>
 <div class="flex-grow w-full">
 <div class="flex justify-between items-start">
+<div class="flex items-start gap-3">
+<input type="checkbox" v-model="item.checked" @change="updateItemCheck(item)" class="mt-1 w-5 h-5 text-primary rounded focus:ring-primary focus:ring-2">
 <div>
 <h3 class="text-xl font-bold text-on-surface">{{ item.name }}</h3>
 <p class="text-sm text-tertiary font-medium">{{ item.collection }}</p>
+</div>
 </div>
 <button @click="removeItem(item.id)" class="material-symbols-outlined text-outline-variant hover:text-secondary transition-colors duration-200">close</button>
 </div>
@@ -124,13 +127,9 @@
 <span class="font-body">총 제품 가격</span>
 <span class="font-bold text-on-surface">₩{{ totalPrice.toLocaleString() }}</span>
 </div>
-<div class="flex justify-between text-on-surface-variant">
-<span class="font-body">배송비</span>
-<span class="font-bold text-on-surface">₩{{ shippingFee.toLocaleString() }}</span>
-</div>
 <div class="pt-4 border-t border-outline-variant/20 flex justify-between items-end">
 <span class="font-headline font-bold text-lg text-on-surface">총 금액</span>
-<span class="font-headline font-extrabold text-3xl text-primary">₩{{ finalTotal.toLocaleString() }}</span>
+<span class="font-headline font-extrabold text-3xl text-primary">₩{{ totalPrice.toLocaleString() }}</span>
 </div>
 </div>
 <div class="space-y-4">
@@ -139,9 +138,9 @@
         모든 상품 주문
     </button>
 </a>
-<a class="block w-full text-center bg-surface-container-lowest text-primary py-4 rounded-full font-headline font-bold border border-outline-variant/30 hover:bg-surface-container-highest transition-colors" href="index.html">
-                                쇼핑 계속하기
-                            </a>
+<button @click="orderSelectedItems" class="w-full bg-gradient-to-br from-secondary to-secondary-container text-on-secondary py-4 rounded-full font-headline font-bold text-lg tracking-tight hover:brightness-110 transition-all duration-300 shadow-md shadow-secondary/20">
+        선택한 상품만 주문
+    </button>
 </div>
 <div class="mt-8 flex items-center gap-3 p-4 bg-tertiary-fixed/30 rounded-lg">
 <span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">verified</span>
@@ -266,14 +265,13 @@
                     return typeof m === 'number' && m > 0 ? m : 1;
                 };
 
-                const shippingFee = computed(() => cartItems.value.length > 0 ? 3000 : 0);
-
                 const totalPrice = computed(() => {
-                    return cartItems.value.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-                });
-
-                const finalTotal = computed(() => {
-                    return totalPrice.value + shippingFee.value;
+                    return cartItems.value.reduce((acc, item) => {
+                        if (item.checked !== false) {
+                            return acc + (item.price * item.quantity);
+                        }
+                        return acc;
+                    }, 0);
                 });
 
                 const totalItemsCount = computed(() => {
@@ -297,16 +295,49 @@
                     cartItems.value = cartItems.value.filter((row) => row.id !== id);
                 };
 
+                const updateItemCheck = (item) => {
+                    // Ensure checked state is properly set
+                    item.checked = item.checked !== false;
+                };
+
+                const orderSelectedItems = () => {
+                    // Filter only checked items
+                    const selectedItems = cartItems.value.filter(item => item.checked !== false);
+                    
+                    if (selectedItems.length === 0) {
+                        alert('선택된 상품이 없습니다.');
+                        return;
+                    }
+                    
+                    // Save selected items to temporary storage for checkout
+                    localStorage.setItem('namhae_selected_items', JSON.stringify(selectedItems));
+                    
+                    // Navigate to checkout
+                    window.location.href = 'checkout.html';
+                };
+
+                // Initialize checked state for all items
+                const initializeCheckedState = () => {
+                    cartItems.value.forEach(item => {
+                        if (item.checked === undefined) {
+                            item.checked = true;
+                        }
+                    });
+                };
+
+                // Initialize on mount
+                initializeCheckedState();
+
                 return {
                     cartItems,
                     totalPrice,
-                    shippingFee,
-                    finalTotal,
                     totalItemsCount,
                     minQtyFor,
                     incrementQty,
                     decrementQty,
-                    removeItem
+                    removeItem,
+                    updateItemCheck,
+                    orderSelectedItems
                 };
             }
         }).mount('#app');

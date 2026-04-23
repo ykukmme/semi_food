@@ -189,11 +189,7 @@
                                 <span>총 상품 금액</span>
                                 <span class="font-bold text-on-surface">₩{{ order.totalPrice.toLocaleString() }}</span>
                             </div>
-                            <div class="flex justify-between text-on-surface-variant font-body">
-                                <span>배송비</span>
-                                <span class="font-bold text-on-surface">₩{{ order.shippingFee.toLocaleString() }}</span>
-                            </div>
-                            <div class="flex justify-between text-on-surface-variant font-body" v-if="order.usedPoints">
+                                                        <div class="flex justify-between text-on-surface-variant font-body" v-if="order.usedPoints">
                                 <span>포인트 할인</span>
                                 <span class="font-bold text-secondary">-₩{{ order.usedPoints.toLocaleString() }}</span>
                             </div>
@@ -299,11 +295,7 @@
                     <span style="flex: 1; padding-right: 10px;">{{ item.name }} <span style="color:#555;">x{{ item.quantity }}</span></span>
                     <span style="font-weight: bold;">₩{{ (item.price * item.quantity).toLocaleString() }}</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 15px; font-size: 0.9em;">
-                    <span>배송비</span>
-                    <span>₩{{ order.shippingFee.toLocaleString() }}</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 0.9em;" v-if="order.usedPoints">
+                                <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 0.9em;" v-if="order.usedPoints">
                     <span>포인트 할인</span>
                     <span>-₩{{ order.usedPoints.toLocaleString() }}</span>
                 </div>
@@ -346,7 +338,6 @@
                             // Support legacy array format or new object format
                             if (Array.isArray(parsed)) {
                                 const totalPrice = parsed.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-                                const shippingFee = totalPrice > 0 ? 3000 : 0;
                                 order.value = {
                                     orderNumber: 'N/A',
                                     orderDate: 'N/A',
@@ -358,8 +349,7 @@
                                     estimatedArrival: '미정',
                                     items: parsed,
                                     totalPrice,
-                                    shippingFee,
-                                    finalTotal: totalPrice + shippingFee
+                                    finalTotal: totalPrice
                                 };
                             } else {
                                 order.value = parsed;
