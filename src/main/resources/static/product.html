@@ -12,53 +12,41 @@
         theme: {
             extend: {
                 "colors": {
-                    "on-secondary-container": "#5a1600",
-                    "outline-variant": "#bcc9c6",
-                    "inverse-primary": "#6fd8cd",
-                    "primary-container": "#4bb6ac",
-                    "surface-dim": "#dbdad9",
-                    "surface-container-high": "#eae8e7",
-                    "on-secondary-fixed": "#3a0b00",
-                    "on-tertiary-fixed-variant": "#3d4c26",
-                    "tertiary-container": "#9bac7d",
-                    "secondary-fixed": "#ffdbd0",
-                    "on-surface-variant": "#3d4947",
-                    "on-secondary-fixed-variant": "#842500",
-                    "surface-container": "#efeded",
-                    "on-tertiary-fixed": "#131f01",
-                    "primary-fixed": "#8cf4e9",
-                    "surface-container-low": "#f5f3f3",
-                    "secondary": "#ad3300",
-                    "outline": "#6d7a77",
-                    "on-error": "#ffffff",
-                    "background": "#ffffff",
-                    "surface-tint": "#006a63",
-                    "on-secondary": "#ffffff",
-                    "on-primary-fixed-variant": "#00504a",
-                    "surface-bright": "#fbf9f8",
-                    "primary": "#006a63",
-                    "on-surface": "#1b1c1c",
-                    "tertiary-fixed": "#d7e9b6",
-                    "on-primary-fixed": "#00201d",
-                    "primary-fixed-dim": "#6fd8cd",
-                    "on-primary-container": "#00433f",
-                    "on-tertiary": "#ffffff",
-                    "tertiary": "#54643b",
-                    "surface-variant": "#e4e2e2",
-                    "on-primary": "#ffffff",
-                    "on-error-container": "#93000a",
+                    "primary": "#0066cc",
+                    "secondary": "#0052a3",
+                    "tertiary": "#0080ff",
+                    "background": "#f0f7ff",
+                    "surface": "#ffffff",
+                    "surface-bright": "#ffffff",
+                    "surface-container": "#e6f3ff",
+                    "surface-container-low": "#f0f7ff",
                     "surface-container-lowest": "#ffffff",
-                    "surface-container-highest": "#e4e2e2",
-                    "on-tertiary-container": "#32401b",
-                    "error-container": "#ffdad6",
-                    "inverse-on-surface": "#f2f0f0",
-                    "surface": "#fbf9f8",
-                    "secondary-container": "#ff642d",
-                    "error": "#ba1a1a",
-                    "tertiary-fixed-dim": "#bccd9c",
-                    "secondary-fixed-dim": "#ffb59e",
-                    "on-background": "#1b1c1c",
-                    "inverse-surface": "#303030"
+                    "surface-container-high": "#cce0ff",
+                    "surface-container-highest": "#b3d1ff",
+                    "primary-container": "#e6f3ff",
+                    "primary-fixed": "#d1e9ff",
+                    "primary-fixed-dim": "#99c2ff",
+                    "secondary-container": "#cce0ff",
+                    "tertiary-fixed": "#b3d9ff",
+                    "outline": "#0066cc",
+                    "outline-variant": "#99c2ff",
+                    "on-surface": "#003366",
+                    "on-surface-variant": "#004080",
+                    "on-primary": "#ffffff",
+                    "on-primary-container": "#003366",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "error": "#cc0000",
+                    "error-container": "#ffe6e6",
+                    "on-error": "#ffffff",
+                    "on-error-container": "#990000",
+                    "surface-tint": "#0066cc",
+                    "inverse-primary": "#0066cc",
+                    "inverse-surface": "#ffffff",
+                    "inverse-on-surface": "#003366",
+                    "on-background": "#003366",
+                    "surface-dim": "#b3d1ff",
+                    "surface-variant": "#cce0ff"
                 },
                 "borderRadius": {
                     "DEFAULT": "0.125rem",
@@ -67,115 +55,28 @@
                     "full": "0.75rem"
                 },
                 "fontFamily": {
-                    "headline": ["Plus Jakarta Sans"],
-                    "body": ["Work Sans"],
-                    "label": ["Inter"]
+                    "headline": ["Inter", "sans-serif"],
+                    "body": ["Inter", "sans-serif"],
+                    "label": ["Inter", "sans-serif"]
                 }
             }
         }
     }
 </script>
-<style>
-    .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    }
-    body { font-family: 'Work Sans', sans-serif; }
-    h1, h2, h3 { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .thumbnail-container.active {
-        outline: 2px solid #006A63;
-        outline-offset: 2px;
-    }
-
-    /* ── 갤러리: 일반 흐름 (좌우 함께 스크롤) ── */
-    .gallery-sticky {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    /* 메인 이미지: JS가 CTA 버튼 bottom에 맞춰 높이 설정 */
-    .main-image-wrapper {
-        width: 100%;
-        height: 500px; /* JS 실행 전 fallback */
-        border-radius: 12px;
-        overflow: hidden;
-        background: #f3f4f6;
-    }
-
-    .main-image-wrapper img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.7s ease;
-    }
-    .main-image-wrapper:hover img {
-        transform: scale(1.04);
-    }
-
-    /* 썸네일 행: 고정 높이, 절대 줄어들지 않음 */
-    .thumbnail-row {
-        display: flex;
-        gap: 10px;
-        flex-shrink: 0;
-    }
-
-    .thumbnail-container {
-        flex: 0 0 90px;
-        aspect-ratio: 1 / 1;
-        border-radius: 10px;
-        overflow: hidden;
-        background: #f3f4f6;
-        cursor: pointer;
-    }
-
-    .thumbnail-container img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: opacity 0.2s;
-    }
-    .thumbnail-container:hover img {
-        opacity: 0.85;
-    }
-
-    /* 우측 정보 패널: 좌우 함께 스크롤 */
-    .product-info-scroll {
-        display: flex;
-        flex-direction: column;
-    }
-    .footer-social-link {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 2.5rem;
-        height: 2.5rem;
-        border-radius: 9999px;
-        background: rgba(255, 255, 255, 0.12);
-        transition: transform 0.2s ease, background-color 0.2s ease;
-    }
-    .footer-social-link:hover {
-        transform: scale(1.08);
-        background: rgba(255, 255, 255, 0.2);
-    }
-    .footer-social-icon {
-        width: 1.55rem;
-        height: 1.55rem;
-        object-fit: contain;
-    }
-</style>
+<link rel="stylesheet" href="css/product.css">
 </head>
 <body class="bg-white text-on-surface selection:bg-primary-container selection:text-on-primary-container">
 
 <!-- TopNavBar -->
 <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-outline-variant/20 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <div class="text-2xl font-black tracking-tighter text-[#006A63]"><a href="index.html">Heritage Namhae</a></div>
+        <div class="text-2xl font-black tracking-tighter text-[#0066cc]"><a href="index.html">Heritage Namhae</a></div>
         <div class="flex items-center gap-6">
-            <a class="relative inline-flex items-center justify-center text-[#006A63] hover:scale-95 duration-200" href="cart.html">
+            <a class="relative inline-flex items-center justify-center text-[#0066cc] hover:scale-95 duration-200" href="cart.html">
                 <span class="material-symbols-outlined">shopping_bag</span>
-                <span id="cart-count-badge" class="hidden absolute -top-2 -right-3 min-w-[1.35rem] h-5 px-1 rounded-full bg-[#FF642D] text-white text-[10px] font-extrabold leading-5 text-center shadow-md shadow-[#FF642D]/30 border border-white">0</span>
+                <span id="cart-count-badge" class="hidden absolute -top-2 -right-3 min-w-[1.35rem] h-5 px-1 rounded-full bg-[#0066cc] text-white text-[10px] font-extrabold leading-5 text-center shadow-md shadow-[#0066cc]/30 border border-white">0</span>
             </a>
-            <a class="material-symbols-outlined text-[#006A63] hover:scale-95 duration-200" href="login.html">person</a>
+            <a class="material-symbols-outlined text-[#0066cc] hover:scale-95 duration-200" href="login.html">person</a>
         </div>
     </div>
 </header>
@@ -213,7 +114,7 @@
             <div class="lg:col-span-5">
                 <div class="product-info-scroll flex flex-col">
                     <div class="mb-2">
-                        <span class="inline-block py-1 px-3 bg-green-100 text-green-800 text-[10px] font-bold tracking-widest uppercase rounded-full">프리미엄</span>
+                        <span class="inline-block py-1 px-3 bg-primary/20 text-primary text-[10px] font-bold tracking-widest uppercase rounded-full">프리미엄</span>
                     </div>
                     <h1 class="text-4xl lg:text-5xl font-headline font-extrabold tracking-tighter text-on-surface mb-4 leading-tight" id="product-title">
                         제품 이름
@@ -221,7 +122,7 @@
                     <div class="flex items-baseline gap-4 mb-8">
                         <span class="text-3xl font-headline font-bold text-secondary" id="display-price">1,500,000원</span>
                         <span class="text-xl font-label text-gray-400 line-through" id="display-original-price">2,000,000원</span>
-                        <span class="ml-auto text-red-600 font-bold text-sm bg-red-100 px-2 py-1 rounded">25% 할인</span>
+                        <span class="ml-auto text-primary font-bold text-sm bg-primary/10 px-2 py-1 rounded">25% 할인</span>
                     </div>
 
                     <div class="h-px bg-gray-200 mb-8"></div>
@@ -242,7 +143,7 @@
                         <div>
                             <label class="block text-xs font-label text-gray-500 uppercase mb-3 tracking-widest">사이즈</label>
                             <div class="flex gap-3" id="size-selector">
-                                <button type="button" class="size-option px-6 py-3 bg-[#006A63] text-white rounded-xl font-bold text-sm shadow-lg shadow-[#006A63]/20 transition-all" data-size="소" data-original="20000" data-price="15000" data-min-qty="100">소</button>
+                                <button type="button" class="size-option px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm shadow-lg shadow-primary/20 transition-all" data-size="소" data-original="20000" data-price="15000" data-min-qty="100">소</button>
                                 <button type="button" class="size-option px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-200 transition-all" data-size="중" data-original="25000" data-price="20000" data-min-qty="70">중</button>
                                 <button type="button" class="size-option px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-200 transition-all" data-size="대" data-original="30000" data-price="25000" data-min-qty="50">대</button>
                             </div>
@@ -263,11 +164,11 @@
 
                     <!-- CTA -->
                     <div class="flex gap-4" id="cta-row">
-                        <button type="button" class="flex-1 py-5 bg-white border border-[#006A63] text-[#006A63] rounded-xl font-bold hover:bg-gray-50 transition-all flex items-center justify-center gap-2 cursor-pointer" id="btn-add-to-cart">
+                        <button type="button" class="flex-1 py-5 bg-white border border-[#0066cc] text-[#0066cc] rounded-xl font-bold hover:bg-gray-50 transition-all flex items-center justify-center gap-2 cursor-pointer" id="btn-add-to-cart">
                             <span class="material-symbols-outlined">shopping_cart</span>
                             장바구니에 추가
                         </button>
-                        <button class="flex-[1.5] py-5 bg-gradient-to-br from-[#006A63] to-[#4BB6AC] text-white rounded-xl font-extrabold shadow-xl shadow-[#006A63]/25 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2" id="btn-buy-now">
+                        <button class="flex-[1.5] py-5 bg-gradient-to-br from-[#0066cc] to-[#99c2ff] text-white rounded-xl font-extrabold shadow-xl shadow-[#0066cc]/25 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2" id="btn-buy-now">
                             바로 구매
                         </button>
                     </div>
@@ -295,7 +196,7 @@
 </main>
 
 <!-- Footer -->
-<footer class="full-width py-16 px-8 mt-24 bg-[#333] border-t border-[#555] transition-colors duration-200 font-work-sans text-xs leading-relaxed text-white">
+<footer class="full-width py-16 px-8 mt-24 bg-[#003366] border-t border-[#0066cc] transition-colors duration-200 font-inter text-xs leading-relaxed text-white">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-7xl mx-auto">
         <div class="col-span-1 md:col-span-1">
             <div class="text-lg font-bold text-white mb-6 font-headline">Heritage Namhae</div>
@@ -307,7 +208,6 @@
                 <a class="footer-social-link" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img class="footer-social-icon" src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook" /></a>
                 <a class="footer-social-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><img class="footer-social-icon" src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn" /></a>
                 <a class="footer-social-link" href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X"><img class="footer-social-icon" src="https://img.icons8.com/color/48/twitterx--v1.png" alt="X" /></a>
-                <a class="footer-social-link" href="https://www.naver.com/" target="_blank" rel="noopener noreferrer" aria-label="Naver"><img class="footer-social-icon" src="https://img.icons8.com/color/48/naver.png" alt="Naver" /></a>
             </div>
         </div>
         <div>
@@ -328,8 +228,8 @@
         <div>
             <h4 class="font-bold text-white mb-6">위치</h4>
             <p class="text-white/70 mb-4">대한민국 경상남도 남해군청</p>
-            <div class="h-32 w-full rounded-xl bg-white/20 overflow-hidden">
-                <img alt="Location Map" class="w-full h-full object-cover grayscale"
+            <div class="h-32 w-full rounded-xl bg-[#0066cc]/20 overflow-hidden">
+                <img alt="Location Map" class="w-full h-full object-cover" style="filter: grayscale(100%) sepia(100%) hue-rotate(200deg) saturate(150%);"
                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2F8UAsYBf8f-PXSCkWz8tPMj1yPAwzNqFnUHdLvbP3NxWzmKZvO52Qb76KLXKdR7GifJMom5TfallzE3oUiWx6wj1VUqfQ-OWmzQVYplGPmVjO52jxg3e8NQdFOU-O_t0DJrzvtWD0uaWIpCc4fRIYzS0-oPNzSMqm3dfpC4iojREb1bO_k-endojrJHEh2Vek1i1HWAgmAM27qGPEC2EUe-1x_hxNJOM3j_NI-TicipehzW-arsFab0btwNoZOq5wXODkjGdXZM"/>
             </div>
         </div>
@@ -343,150 +243,6 @@
     </div>
 </footer>
 
-<script>
-const NAMHAE_CART_STORAGE_KEY = 'namhae_cart_v1';
-
-function loadCartFromStorage() {
-    try {
-        const raw = localStorage.getItem(NAMHAE_CART_STORAGE_KEY);
-        if (!raw) return [];
-        const parsed = JSON.parse(raw);
-        return Array.isArray(parsed) ? parsed : [];
-    } catch { return []; }
-}
-
-function saveCartToStorage(items) {
-    localStorage.setItem(NAMHAE_CART_STORAGE_KEY, JSON.stringify(items));
-}
-
-function updateCartBadge() {
-    const badge = document.getElementById('cart-count-badge');
-    if (!badge) return;
-
-    const totalCount = loadCartFromStorage().reduce((sum, item) => {
-        const itemQuantity = Number(item?.quantity) || 0;
-        return sum + itemQuantity;
-    }, 0);
-
-    if (totalCount > 0) {
-        badge.textContent = totalCount > 99 ? '99+' : String(totalCount);
-        badge.classList.remove('hidden');
-    } else {
-        badge.textContent = '0';
-        badge.classList.add('hidden');
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    updateCartBadge();
-
-    // ── 메인 이미지 높이를 장바구니 버튼 bottom에 맞춤 ──
-    function syncImageHeight() {
-        const ctaRow      = document.getElementById('cta-row');
-        const mainWrapper = document.querySelector('.main-image-wrapper');
-        const thumbRow    = document.querySelector('.thumbnail-row');
-        const gallery     = document.querySelector('.gallery-sticky');
-        if (!ctaRow || !mainWrapper || !gallery) return;
-
-        const galleryTop = gallery.getBoundingClientRect().top + window.scrollY;
-        const ctaBottom  = ctaRow.getBoundingClientRect().bottom + window.scrollY;
-        const thumbH     = thumbRow ? thumbRow.offsetHeight : 80;
-        const gap        = 10;
-
-        const mainH = ctaBottom - galleryTop - thumbH - gap + 50;
-        if (mainH > 100) mainWrapper.style.height = mainH + 'px';
-    }
-
-    // 폰트·이미지 로드 후 정확한 레이아웃 기준으로 측정
-    requestAnimationFrame(() => requestAnimationFrame(syncImageHeight));
-    window.addEventListener('resize', syncImageHeight);
-    const mainImage = document.getElementById('main-product-image');
-    const thumbnails = document.querySelectorAll('.thumbnail-container');
-
-    thumbnails.forEach(thumb => {
-        thumb.addEventListener('click', () => {
-            const clickedImg = thumb.querySelector('img');
-            if (clickedImg && mainImage) {
-                mainImage.src = clickedImg.src.replace('200/200', '800/1000');
-                thumbnails.forEach(t => t.classList.remove('active'));
-                thumb.classList.add('active');
-            }
-        });
-    });
-
-    // ── 가격 / 수량 ──
-    let currentBasePrice = 15000;
-    let currentOriginalPrice = 20000;
-    let quantity = 100;
-    let minQty = 100;
-    let selectedSizeLabel = '소';
-
-    const displayPrice = document.getElementById('display-price');
-    const displayOriginalPrice = document.getElementById('display-original-price');
-    const qtyValue = document.getElementById('qty-value');
-    const sizeOptions = document.querySelectorAll('.size-option');
-
-    const updatePrices = () => {
-        displayPrice.textContent = `${(currentBasePrice * quantity).toLocaleString()}원`;
-        displayOriginalPrice.textContent = `${(currentOriginalPrice * quantity).toLocaleString()}원`;
-        qtyValue.textContent = quantity;
-    };
-
-    sizeOptions.forEach(option => {
-        option.addEventListener('click', () => {
-            currentBasePrice = parseInt(option.dataset.price) || currentBasePrice;
-            currentOriginalPrice = parseInt(option.dataset.original) || currentOriginalPrice;
-            minQty = parseInt(option.dataset.minQty, 10) || 1;
-            quantity = minQty;
-            selectedSizeLabel = option.dataset.size || option.textContent.trim();
-
-            sizeOptions.forEach(opt => {
-                opt.className = 'size-option px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-200 transition-all';
-            });
-            option.className = 'size-option px-6 py-3 bg-[#006A63] text-white rounded-xl font-bold text-sm shadow-lg shadow-[#006A63]/20 transition-all';
-            updatePrices();
-        });
-    });
-
-    const qtyStep = 10;
-    document.getElementById('qty-plus').addEventListener('click', () => { quantity += qtyStep; updatePrices(); });
-    document.getElementById('qty-minus').addEventListener('click', () => {
-        if (quantity > minQty) { quantity = Math.max(minQty, quantity - qtyStep); updatePrices(); }
-    });
-
-    const addCurrentProductToCart = () => {
-        const titleEl = document.getElementById('product-title');
-        const productTitle = titleEl ? titleEl.textContent.trim() : '제품 이름';
-        const imageSrc = mainImage ? mainImage.src : '';
-        const lineId = `heritage-demo-${selectedSizeLabel}`;
-        const cart = loadCartFromStorage();
-        const line = { id: lineId, name: `${productTitle} (${selectedSizeLabel})`, collection: 'Heritage Namhae', price: currentBasePrice, quantity, image: imageSrc, minQty };
-        const idx = cart.findIndex(row => row.id === lineId);
-        if (idx >= 0) {
-            cart[idx].quantity += quantity;
-            cart[idx].price = currentBasePrice;
-            cart[idx].image = imageSrc;
-            cart[idx].name = line.name;
-            cart[idx].minQty = minQty;
-        } else {
-            cart.push(line);
-        }
-        saveCartToStorage(cart);
-    };
-
-    document.getElementById('btn-add-to-cart').addEventListener('click', () => {
-        addCurrentProductToCart();
-        updateCartBadge();
-        alert('상품이 장바구니에 추가되었습니다.');
-    });
-
-    document.getElementById('btn-buy-now').addEventListener('click', () => {
-        addCurrentProductToCart();
-        updateCartBadge();
-        window.location.href = 'cart.html';
-    });
-
-    updatePrices();
-});
-</script>
-</body></html>
+<script src="js/product.js"></script>
+</body>
+</html>

@@ -12,53 +12,41 @@
         theme: {
           extend: {
             "colors": {
-                    "secondary-container": "#ff642d",
-                    "on-tertiary-fixed": "#131f01",
-                    "surface-container-high": "#eae8e7",
-                    "error-container": "#ffdad6",
-                    "on-primary-container": "#00433f",
-                    "on-secondary-container": "#5a1600",
-                    "tertiary-fixed": "#d7e9b6",
-                    "inverse-primary": "#6fd8cd",
-                    "on-background": "#1b1c1c",
-                    "inverse-on-surface": "#f2f0f0",
-                    "surface-container-highest": "#e4e2e2",
-                    "primary": "#006a63",
-                    "surface-tint": "#006a63",
-                    "on-primary-fixed-variant": "#00504a",
-                    "on-tertiary": "#ffffff",
-                    "surface-bright": "#fbf9f8",
-                    "error": "#ba1a1a",
-                    "primary-fixed": "#8cf4e9",
-                    "tertiary-fixed-dim": "#bccd9c",
-                    "primary-fixed-dim": "#6fd8cd",
-                    "on-surface-variant": "#3d4947",
-                    "outline": "#6d7a77",
-                    "tertiary-container": "#9bac7d",
-                    "primary-container": "#4bb6ac",
-                    "on-primary": "#ffffff",
-                    "inverse-surface": "#303030",
-                    "on-secondary": "#ffffff",
-                    "surface-container": "#efeded",
-                    "secondary-fixed": "#ffdbd0",
-                    "on-primary-fixed": "#00201d",
-                    "surface-variant": "#e4e2e2",
-                    "surface-dim": "#dbdad9",
-                    "secondary-fixed-dim": "#ffb59e",
-                    "on-secondary-fixed": "#3a0b00",
-                    "outline-variant": "#bcc9c6",
-                    "on-tertiary-container": "#32401b",
-                    "on-secondary-fixed-variant": "#842500",
-                    "surface-container-low": "#f5f3f3",
-                    "on-error-container": "#93000a",
-                    "on-tertiary-fixed-variant": "#3d4c26",
-                    "surface": "#fbf9f8",
-                    "on-surface": "#1b1c1c",
-                    "on-error": "#ffffff",
+                    "primary": "#0066cc",
+                    "secondary": "#0052a3",
+                    "tertiary": "#0080ff",
+                    "background": "#f0f7ff",
+                    "surface": "#ffffff",
+                    "surface-bright": "#ffffff",
+                    "surface-container": "#e6f3ff",
+                    "surface-container-low": "#f0f7ff",
                     "surface-container-lowest": "#ffffff",
-                    "background": "#fbf9f8",
-                    "tertiary": "#54643b",
-                    "secondary": "#ad3300"
+                    "surface-container-high": "#cce0ff",
+                    "surface-container-highest": "#b3d1ff",
+                    "primary-container": "#e6f3ff",
+                    "primary-fixed": "#d1e9ff",
+                    "primary-fixed-dim": "#99c2ff",
+                    "secondary-container": "#cce0ff",
+                    "tertiary-fixed": "#b3d9ff",
+                    "outline": "#0066cc",
+                    "outline-variant": "#99c2ff",
+                    "on-surface": "#003366",
+                    "on-surface-variant": "#004080",
+                    "on-primary": "#ffffff",
+                    "on-primary-container": "#003366",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "error": "#cc0000",
+                    "error-container": "#ffe6e6",
+                    "on-error": "#ffffff",
+                    "on-error-container": "#990000",
+                    "surface-tint": "#0066cc",
+                    "inverse-primary": "#0066cc",
+                    "inverse-surface": "#ffffff",
+                    "inverse-on-surface": "#003366",
+                    "on-background": "#003366",
+                    "surface-dim": "#b3d1ff",
+                    "surface-variant": "#cce0ff"
             },
             "borderRadius": {
                     "DEFAULT": "0.125rem",
@@ -67,93 +55,36 @@
                     "full": "0.75rem"
             },
             "fontFamily": {
-                    "headline": ["Plus Jakarta Sans"],
-                    "body": ["Work Sans"],
-                    "label": ["Inter"]
+                    "headline": ["Inter", "sans-serif"],
+                    "body": ["Inter", "sans-serif"],
+                    "label": ["Inter", "sans-serif"]
             }
           },
         },
       }
     </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            vertical-align: middle;
-        }
-        .editorial-shadow {
-            box-shadow: 0 24px 48px -12px rgba(27, 28, 28, 0.04);
-        }
-        .glass-nav {
-            background: #fff;
-            backdrop-filter: blur(0px);
-        }
-        .glass-nav.scrolled {
-            background: rgba(251, 249, 248, 0.85);
-            backdrop-filter: blur(12px);
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-        }
-        .footer-social-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 9999px;
-            background: rgba(255, 255, 255, 0.12);
-            transition: transform 0.2s ease, background-color 0.2s ease;
-        }
-        .footer-social-link:hover {
-            transform: scale(1.08);
-            background: rgba(255, 255, 255, 0.2);
-        }
-        .footer-social-icon {
-            width: 1.55rem;
-            height: 1.55rem;
-            object-fit: contain;
-        }
-    </style>
+<link rel="stylesheet" href="css/index.css">
 </head>
 <body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
 <!-- TopNavBar -->
-<header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300" id="main-header">
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-outline-variant/20 transition-all duration-300">
 <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-<div class="flex items-center gap-6 md:gap-8">
-<a class="text-2xl font-bold tracking-tighter text-teal-900 dark:text-white font-headline" href="index.html">Heritage Namhae</a>
-<nav class="hidden md:flex items-center gap-8 font-plus-jakarta text-sm tracking-tight">
-<a class="text-zinc-600 dark:text-zinc-400 font-bold border-b-2 border-transparent pb-1 transition-all duration-300 hover:text-teal-700 hover:dark:text-teal-300 hover:border-teal-700" href="#best">베스트</a>
-<a class="text-zinc-600 dark:text-zinc-400 font-bold border-b-2 border-transparent pb-1 transition-all duration-300 hover:text-teal-700 hover:dark:text-teal-300 hover:border-teal-700" href="#newProduct">신상</a>
-<!-- <a class="text-zinc-600 dark:text-zinc-400" href="#curation">남해팩</a>
-<a class="text-zinc-600 dark:text-zinc-400" href="#Recommendation">MD추천</a>
-<a class="text-zinc-600 dark:text-zinc-400" href="reviews.html">리뷰</a>
-<a class="text-zinc-600 dark:text-zinc-400" href="#">커뮤니티</a> -->
-</nav>
-</div>
-<div class="flex items-center gap-6">
-<form id="nav-search-form" class="hidden lg:flex items-center bg-surface-container/50 rounded-full px-4 py-1.5 border border-outline-variant/20 focus-within:border-primary focus-within:bg-white transition-all" role="search" action="search_result.html" method="get">
-<span class="material-symbols-outlined text-outline text-lg" data-icon="search">search</span>
-<input id="nav-search-input" name="q" class="bg-transparent border-none focus:ring-0 text-sm w-48 font-label" placeholder="헤리티지 제품 검색..." type="search" autocomplete="off"/>
-</form>
-<div class="flex items-center gap-4">
-<a class="relative inline-flex items-center justify-center p-2 text-on-surface-variant hover:text-primary transition-colors scale-95 active:scale-90" href="cart.html">
-<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
-<span id="cart-count-badge" class="hidden absolute -top-2 -right-3 min-w-[1.35rem] h-5 px-1 rounded-full bg-[#FF642D] text-white text-[10px] font-extrabold leading-5 text-center shadow-md shadow-[#FF642D]/30 border border-white">0</span>
-</a>
-<a class="p-2 text-on-surface-variant hover:text-primary transition-colors scale-95 active:scale-90" href="login.html">
-<span class="material-symbols-outlined" data-icon="person">person</span>
-</a>
-<a class="md:hidden p-2 text-on-surface-variant" href="#">
-<span class="material-symbols-outlined" data-icon="menu">menu</span>
-</a>
-</div>
-</div>
-</div>
+        <div class="text-2xl font-black tracking-tighter text-[#0066cc]"><a href="index.html">Heritage Namhae</a></div>
+        <div class="flex items-center gap-6">
+            <a class="relative inline-flex items-center justify-center text-[#0066cc] hover:scale-95 duration-200" href="cart.html">
+                <span class="material-symbols-outlined">shopping_bag</span>
+                <span id="cart-count-badge" class="hidden absolute -top-2 -right-3 min-w-[1.35rem] h-5 px-1 rounded-full bg-[#0066cc] text-white text-[10px] font-extrabold leading-5 text-center shadow-md shadow-[#0066cc]/30 border border-white">0</span>
+            </a>
+            <a class="material-symbols-outlined text-[#0066cc] hover:scale-95 duration-200" href="login.html">person</a>
+        </div>
+    </div>
 </header>
 <main class="pt-0">
 <!-- Hero Section -->
 <section class="relative h-[min(72vh,620px)] min-h-[420px] overflow-hidden bg-surface-container-low" id="newRecommendation">
 <div class="absolute inset-0">
 <img alt="Namhae Winter Spinach" class="w-full h-full object-cover object-center scale-105" data-alt="Close-up of vibrant green organic spinach leaves with dew drops in a sun-drenched coastal field of Namhae island at dawn" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCewXvdNEluXrX_ptA0lh3Q9dIkXMP__IJb6BNdazMSZSSGXL-q29RAd7OrG4IZdVi-nqkHWw4LUsVqSUFy2enS5fH4etAP45twTc1Wy5pbYbU4oVsIRXAa2h5f7qPJ5t6TbvynJ2Tm-XqA47pCo9WhFPlU1J0Fn0CDmht-aydrLGvYkbwRaadeQf0JnVS4MWZ7UhtY6nQCCkmM1wDREZUCJVr-rXfmp2PRUeGMAclzWZOpbO9-dXuUEKLx_C3AoqFPOO9Y62ZD9Ns"/>
-<div class="absolute inset-0 bg-gradient-to-r from-on-background/40 to-transparent"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-on-background/20 to-transparent"></div>
 </div>
 <div class="relative max-w-7xl mx-auto px-6 h-full flex items-center">
 <div class="max-w-2xl text-on-primary">
@@ -394,230 +325,55 @@
 </section>
 </main>
 <!-- Footer -->
-<footer class="full-width py-10 px-6 sm:px-8 mt-12 bg-[#333] border-t border-[#555] transition-colors duration-200 font-work-sans text-xs leading-relaxed text-white">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-7xl mx-auto">
-<div class="col-span-1 md:col-span-1">
-<div class="text-lg font-bold text-white mb-4 font-headline">Heritage Namhae</div>
-<p class="text-white/80 mb-5 max-w-xs">
-                    남해군 공식 헤리티지 몰, 우리 해안 낙원의 진짜 맛을 당신의 집으로 바로 전달합니다.
-                </p>
-<div class="flex gap-4">
-<a class="footer-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img class="footer-social-icon" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="Instagram"/></a>
-<a class="footer-social-link" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img class="footer-social-icon" src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook"/></a>
-<a class="footer-social-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><img class="footer-social-icon" src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn"/></a>
-<a class="footer-social-link" href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X"><img class="footer-social-icon" src="https://img.icons8.com/color/48/twitterx--v1.png" alt="X"/></a>
-<a class="footer-social-link" href="https://www.naver.com/" target="_blank" rel="noopener noreferrer" aria-label="Naver"><img class="footer-social-icon" src="https://img.icons8.com/color/48/naver.png" alt="Naver"/></a>
-</div>
-</div>
-<div>
-<h4 class="font-bold text-white mb-3">서비스</h4>
-<ul class="space-y-2">
-<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">회사 소개</a></li>
-<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">배송 및 추적</a></li>
-<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">이용 약관</a></li>
-</ul>
-</div>
-<div>
-<h4 class="font-bold text-white mb-3">연락처</h4>
-<ul class="space-y-2">
-<li class="text-white/70">전화: 055-123-4567</li>
-<li class="text-white/70">이메일: help@namhaeheritage.kr</li>
-</ul>
-</div>
-<div>
-<h4 class="font-bold text-white mb-3">위치</h4>
-<p class="text-white/70 mb-4">대한민국 경상남도 남해군청</p>
-<div class="h-32 w-full rounded-xl bg-white/20 overflow-hidden">
-<img alt="Location Map" class="w-full h-full object-cover grayscale" data-location="Namhae, South Korea" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2F8UAsYBf8f-PXSCkWz8tPMj1yPAwzNqFnUHdLvbP3NxWzmKZvO52Qb76KLXKdR7GifJMom5TfallzE3oUiWx6wj1VUqfQ-OWmzQVYplGPmVjO52jxg3e8NQdFOU-O_t0DJrzvtWD0uaWIpCc4fRIYzS0-oPNzSMqm3dfpC4iojREb1bO_k-endojrJHEh2Vek1i1HWAgmAM27qGPEC2EUe-1x_hxNJOM3j_NI-TicipehzW-arsFab0btwNoZOq5wXODkjGdXZM"/>
-</div>
-</div>
-</div>
-<div class="max-w-7xl mx-auto px-6 mt-8 pt-6 border-t border-zinc-200/50 flex flex-col md:flex-row justify-between gap-4">
-<p class="text-white/60">© 2024 에디토리얼 헤리티지 남해. 모든 권리 보유.</p>
-<div class="flex gap-6">
-<a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">개인정보 처리방침</a>
-<a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">라이선스 정보</a>
-</div>
-</div>
+<footer class="full-width py-16 px-8 mt-24 bg-[#003366] border-t border-[#0066cc] transition-colors duration-200 font-inter text-xs leading-relaxed text-white">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-7xl mx-auto">
+        <div class="col-span-1 md:col-span-1">
+            <div class="text-lg font-bold text-white mb-6 font-headline">Heritage Namhae</div>
+            <p class="text-white/80 mb-8 max-w-xs">
+                남해군 공식 헤리티지 몰, 우리 해안 낙원의 진짜 맛을 당신의 집으로 바로 전달합니다.
+            </p>
+            <div class="flex gap-4">
+                <a class="footer-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img class="footer-social-icon" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="Instagram" /></a>
+                <a class="footer-social-link" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img class="footer-social-icon" src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook" /></a>
+                <a class="footer-social-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><img class="footer-social-icon" src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn" /></a>
+                <a class="footer-social-link" href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X"><img class="footer-social-icon" src="https://img.icons8.com/color/48/twitterx--v1.png" alt="X" /></a>
+            </div>
+        </div>
+        <div>
+            <h4 class="font-bold text-white mb-6">서비스</h4>
+            <ul class="space-y-4">
+                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">회사 소개</a></li>
+                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">배송 및 추적</a></li>
+                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">이용 약관</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="font-bold text-white mb-6">연락처</h4>
+            <ul class="space-y-4">
+                <li class="text-white/70">전화: 055-123-4567</li>
+                <li class="text-white/70">이메일: help@namhaeheritage.kr</li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="font-bold text-white mb-6">위치</h4>
+            <p class="text-white/70 mb-4">대한민국 경상남도 남해군청</p>
+            <div class="h-32 w-full rounded-xl bg-[#0066cc]/20 overflow-hidden">
+                <img alt="Location Map" class="w-full h-full object-cover" style="filter: grayscale(100%) sepia(100%) hue-rotate(200deg) saturate(150%);"
+                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2F8UAsYBf8f-PXSCkWz8tPMj1yPAwzNqFnUHdLvbP3NxWzmKZvO52Qb76KLXKdR7GifJMom5TfallzE3oUiWx6wj1VUqfQ-OWmzQVYplGPmVjO52jxg3e8NQdFOU-O_t0DJrzvtWD0uaWIpCc4fRIYzS0-oPNzSMqm3dfpC4iojREb1bO_k-endojrJHEh2Vek1i1HWAgmAM27qGPEC2EUe-1x_hxNJOM3j_NI-TicipehzW-arsFab0btwNoZOq5wXODkjGdXZM"/>
+            </div>
+        </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-zinc-200/50 flex flex-col md:flex-row justify-between gap-4">
+        <p class="text-white/60">© 2024 에디토리얼 헤리티지 남해. 모든 권리 보유.</p>
+        <div class="flex gap-6">
+            <a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">개인정보 처리방침</a>
+            <a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">라이선스 정보</a>
+        </div>
+    </div>
 </footer>
 <!-- FAB -->
 <!-- <button class="fixed bottom-8 right-8 w-16 h-16 bg-primary text-on-primary rounded-full editorial-shadow flex items-center justify-center hover:scale-110 transition-transform active:scale-95 z-40">
 <span class="material-symbols-outlined text-3xl" data-icon="chat_bubble" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
 </button> -->
-<script>
-        const NAMHAE_CART_STORAGE_KEY = 'namhae_cart_v1';
-
-        function loadCartFromStorage() {
-            try {
-                const raw = localStorage.getItem(NAMHAE_CART_STORAGE_KEY);
-                if (!raw) return [];
-                const parsed = JSON.parse(raw);
-                return Array.isArray(parsed) ? parsed : [];
-            } catch {
-                return [];
-            }
-        }
-
-        function updateCartBadge() {
-            const badge = document.getElementById('cart-count-badge');
-            if (!badge) return;
-
-            const totalCount = loadCartFromStorage().reduce((sum, item) => {
-                const quantity = Number(item?.quantity) || 0;
-                return sum + quantity;
-            }, 0);
-
-            if (totalCount > 0) {
-                badge.textContent = totalCount > 99 ? '99+' : String(totalCount);
-                badge.classList.remove('hidden');
-            } else {
-                badge.textContent = '0';
-                badge.classList.add('hidden');
-            }
-        }
-
-        // 1. Scroll-based header background change
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('main-header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // 2. Category tab switching logic
-        const tabButtons = document.querySelectorAll('.tab-btn');
-        const productsGrid = document.getElementById('products-grid');
-        
-        // State to track if showing all products
-        let isShowingAll = false;
-        let lastActiveCategory = 'agricultural';
-
-        // Simple mock data for category switching to show it's functional
-        const mockProducts = {
-            agricultural: [
-                { title: '남해 흑마늘 팩', desc: '60일 숙성', price: '₩45,000', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBvD8uIdVNYEyiWGHi8yFmVhG6kbg5-KXyFssfxmkrmP-JrJbYqvVD6RtXPpMp9e3q0oJT9JD1rgMsLvnW_N7Guc2UpVX3lrboH_s0l84ZsmqcHHbcMeGGSxCPSUrWw4kZobqPVHoybx0lTymFYoGlw4m66hm8W5HgmeTzDzx4u5Cm14ARuzsuwU-FgzJ9cvl2OMTwesvvWrLgPV0wO-VE5w86RDbjiJXooh7j6sTkPGKfugkB4AmON8LapwmBn12YwXpz-0x63ew4', tag: 'BEST 01' },
-                { title: '바닷바람 황금쌀', desc: '2024년 햅쌀', price: '₩68,000', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBczyhcl-myvmsy97jzfGBOYvdcKPxAJBIwW-DN3Am5aqlg831CLfC3PUSo0sYcilP7G3PF57aahgUVvY6aK3EkSlrvGRSwgrIM5QtrTIP2MYFPDS4_WTv3M2dIN0uH4XLbljElwmXdT_b1KLtqq9wf5xlhJrLMuUKvrH4psKSO-h23HKyWP-GR9_zTer6zwtBGnvuYGz3F-_pqokzSF0tnYfdXbqkSe7GUawF3eSXJ9F1DsMuzxKnCXE_lgrLEwvRYNXCMiel9Izc', tag: 'BEST 04' }
-            ],
-            marine: [
-                { title: '죽방렴 멸치', desc: '프리미엄 등급 자연 건조', price: '₩32,000', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCtnOlqwxH7qQy3ChR7FmuXsVSSaxhYvOnns0ob-uiDx4zOr71NBx6Q94Wz385GUyjkNNQ5N5JxcRDKfABqITkNJgwySp4LsPMI-vQcuQuJwFqzjv8KCLkeQXUb2tis5ggjGam2O8DACKgg-cvn9SEBhXqCmnefnl0zlnctaNRUCXO92vpIkuO8xAeWFh6b5wDdgld1a9JrVKnBCD__TPAa3BKTgPblzey3Iu4AWPf0VZzS9B_Z7rYdGhncgkQMULAuYf5QSiJ20tM', tag: 'BEST 02' },
-                { title: '프리미엄 전복 세트', desc: '남해 바다 직송', price: '₩120,000', img: 'https://images.unsplash.com/photo-1560717789-0ac7c58ac90a?q=80&w=1000&auto=format&fit=crop', tag: 'PREMIUM' }
-            ],
-            processed: [
-                { title: '유자 청꿀', desc: '수확 유자', price: '₩18,000', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA6h2K_MVUBoM6e2g9pPgi1msYnPU-LqTPmHqzCmHfsvP_BBUDLS8stEczldwRW7Escn4_-JCFeGGjjyBtGHDmvzMEGEGzBojUCZqNvDtWyL-Jo2aVNs-7gLGycXcdjZL_FigVsA6YTvm5dy2Ze7AGvew5LlLXtPg4U6B9nTX5rrLUWH_b3tvv7BG4W0mZQCabL3COnRI52h3TOxTODA5LcENrvt5Lqj7OiQqdrw-dqt2bpXQuzWWqCWeN1X7WAsqMeGl46bGUZcjw', tag: 'BEST 03' }
-            ],
-            gift: [
-                { title: '대수확 박스', desc: '계절별 선택', price: '₩85,000', img: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=1000&auto=format&fit=crop', tag: 'SET' }
-            ]
-        };
-
-        function getAllProducts() {
-            // Return one product from each category
-            return [
-                { title: '남해 흑마늘 팩', desc: '60일 숙성', price: '₩45,000', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBvD8uIdVNYEyiWGHi8yFmVhG6kbg5-KXyFssfxmkrmP-JrJbYqvVD6RtXPpMp9e3q0oJT9JD1rgMsLvnW_N7Guc2UpVX3lrboH_s0l84ZsmqcHHbcMeGGSxCPSUrWw4kZobqPVHoybx0lTymFYoGlw4m66hm8W5HgmeTzDzx4u5Cm14ARuzsuwU-FgzJ9cvl2OMTwesvvWrLgPV0wO-VE5w86RDbjiJXooh7j6sTkPGKfugkB4AmON8LapwmBn12YwXpz-0x63ew4', tag: 'BEST 01' },
-                { title: '죽방렴 멸치', desc: '프리미엄 등급 자연 건조', price: '₩32,000', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCtnOlqwxH7qQy3ChR7FmuXsVSSaxhYvOnns0ob-uiDx4zOr71NBx6Q94Wz385GUyjkNNQ5N5JxcRDKfABqITkNJgwySp4LsPMI-vQcuQuJwFqzjv8KCLkeQXUb2tis5ggjGam2O8DACKgg-cvn9SEBhXqCmnefnl0zlnctaNRUCXO92vpIkuO8xAeWFh6b5wDdgld1a9JrVKnBCD__TPAa3BKTgPblzey3Iu4AWPf0VZzS9B_Z7rYdGhncgkQMULAuYf5QSiJ20tM', tag: 'BEST 02' },
-                { title: '유자 청꿀', desc: '수확 유자', price: '₩18,000', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA6h2K_MVUBoM6e2g9pPgi1msYnPU-LqTPmHqzCmHfsvP_BBUDLS8stEczldwRW7Escn4_-JCFeGGjjyBtGHDmvzMEGEGzBojUCZqNvDtWyL-Jo2aVNs-7gLGycXcdjZL_FigVsA6YTvm5dy2Ze7AGvew5LlLXtPg4U6B9nTX5rrLUWH_b3tvv7BG4W0mZQCabL3COnRI52h3TOxTODA5LcENrvt5Lqj7OiQqdrw-dqt2bpXQuzWWqCWeN1X7WAsqMeGl46bGUZcjw', tag: 'BEST 03' },
-                { title: '대수확 박스', desc: '계절별 선택', price: '₩85,000', img: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=1000&auto=format&fit=crop', tag: 'SET' }
-            ];
-        }
-
-        function updateProducts(category) {
-            let products;
+<script src="js/index-complete.js"></script>
             
-            if (category === 'all') {
-                // Show all products (one from each category)
-                products = getAllProducts();
-                isShowingAll = true;
-            } else if (category === lastActiveCategory && !isShowingAll) {
-                // If clicking the same category again, show all products
-                products = getAllProducts();
-                isShowingAll = true;
-            } else {
-                // Show specific category
-                products = mockProducts[category] || [];
-                isShowingAll = false;
-            }
-            
-            lastActiveCategory = category;
-            
-            productsGrid.innerHTML = products.map(p => `
-                <div class="group cursor-pointer product-card opacity-0 translate-y-4 transition-all duration-500" onclick="window.location.href='product.html'">
-                    <div class="relative aspect-[4/5] rounded-xl overflow-hidden mb-3 bg-surface-container-low">
-                        <img src="${p.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="${p.title}"/>
-                        <span class="absolute top-4 right-4 px-3 py-1 bg-secondary text-on-secondary text-[10px] font-bold rounded-full font-label">${p.tag}</span>
-                        <div class="absolute bottom-4 left-4 right-4 p-4 translate-y-12 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                            <button class="w-full bg-white text-on-surface py-3 rounded-lg font-bold text-sm shadow-xl hover:bg-primary hover:text-white transition-colors">장바구니 담기</button>
-                        </div>
-                    </div>
-                    <h3 class="font-headline font-bold text-lg text-on-surface mb-1">${p.title}</h3>
-                    <p class="text-zinc-500 text-sm mb-3">${p.desc}</p>
-                    <div class="flex items-center">
-                        <span class="font-bold text-primary">${p.price}</span>
-                    </div>
-                </div>
-            `).join('');
-
-            // Small delay for entrance animation
-            setTimeout(() => {
-                const cards = productsGrid.querySelectorAll('.product-card');
-                cards.forEach((card, i) => {
-                    setTimeout(() => {
-                        card.classList.remove('opacity-0', 'translate-y-4');
-                    }, i * 100);
-                });
-            }, 50);
-        }
-
-        tabButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const cat = btn.getAttribute('data-category');
-                
-                // Reset all tabs to inactive state
-                tabButtons.forEach(b => {
-                    b.classList.remove('bg-primary', 'text-on-primary');
-                    b.classList.add('bg-surface-container-high', 'text-on-surface-variant');
-                });
-                
-                // Set clicked tab as active
-                btn.classList.add('bg-primary', 'text-on-primary');
-                btn.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
-                
-                // Update products
-                updateProducts(cat);
-            });
-        });
-
-        // Initialize with agricultural category
-        function initializeTabs() {
-            // Set initial active tab state
-            const initialTab = document.querySelector('.tab-btn[data-category="agricultural"]');
-            if (initialTab) {
-                initialTab.classList.add('bg-primary', 'text-on-primary');
-                initialTab.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
-            }
-            // Load initial products
-            updateProducts('agricultural');
-        }
-
-        // Initialize tabs when DOM is ready
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeTabs();
-            updateCartBadge();
-        });
-
-        window.addEventListener('storage', (event) => {
-            if (event.key === NAMHAE_CART_STORAGE_KEY) {
-                updateCartBadge();
-            }
-        });
-
-        // 상단 검색 → search_result.html (상품명 부분 일치)
-        document.getElementById('nav-search-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const raw = document.getElementById('nav-search-input').value || '';
-            const q = raw.trim();
-            window.location.href = 'search_result.html?q=' + encodeURIComponent(q);
-        });
-    </script>
-</body></html>

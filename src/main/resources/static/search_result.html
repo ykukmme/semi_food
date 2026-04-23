@@ -12,104 +12,63 @@
         theme: {
           extend: {
             "colors": {
-                    "secondary-container": "#ff642d",
-                    "on-tertiary-fixed": "#131f01",
-                    "surface-container-high": "#eae8e7",
-                    "error-container": "#ffdad6",
-                    "on-primary-container": "#00433f",
-                    "on-secondary-container": "#5a1600",
-                    "tertiary-fixed": "#d7e9b6",
-                    "inverse-primary": "#6fd8cd",
-                    "on-background": "#1b1c1c",
-                    "inverse-on-surface": "#f2f0f0",
-                    "surface-container-highest": "#e4e2e2",
-                    "primary": "#006a63",
-                    "surface-tint": "#006a63",
-                    "on-primary-fixed-variant": "#00504a",
-                    "on-tertiary": "#ffffff",
-                    "surface-bright": "#fbf9f8",
-                    "error": "#ba1a1a",
-                    "primary-fixed": "#8cf4e9",
-                    "tertiary-fixed-dim": "#bccd9c",
-                    "primary-fixed-dim": "#6fd8cd",
-                    "on-surface-variant": "#3d4947",
-                    "outline": "#6d7a77",
-                    "tertiary-container": "#9bac7d",
-                    "primary-container": "#4bb6ac",
-                    "on-primary": "#ffffff",
-                    "inverse-surface": "#303030",
-                    "on-secondary": "#ffffff",
-                    "surface-container": "#efeded",
-                    "secondary-fixed": "#ffdbd0",
-                    "on-primary-fixed": "#00201d",
-                    "surface-variant": "#e4e2e2",
-                    "surface-dim": "#dbdad9",
-                    "secondary-fixed-dim": "#ffb59e",
-                    "on-secondary-fixed": "#3a0b00",
-                    "outline-variant": "#bcc9c6",
-                    "on-tertiary-container": "#32401b",
-                    "on-secondary-fixed-variant": "#842500",
-                    "surface-container-low": "#f5f3f3",
-                    "on-error-container": "#93000a",
-                    "on-tertiary-fixed-variant": "#3d4c26",
-                    "surface": "#fbf9f8",
-                    "on-surface": "#1b1c1c",
-                    "on-error": "#ffffff",
+                    "primary": "#0066cc",
+                    "secondary": "#0052a3",
+                    "tertiary": "#0080ff",
+                    "background": "#f0f7ff",
+                    "surface": "#ffffff",
+                    "surface-bright": "#ffffff",
+                    "surface-container": "#e6f3ff",
+                    "surface-container-low": "#f0f7ff",
                     "surface-container-lowest": "#ffffff",
-                    "background": "#fbf9f8",
-                    "tertiary": "#54643b",
-                    "secondary": "#ad3300"
+                    "surface-container-high": "#cce0ff",
+                    "surface-container-highest": "#b3d1ff",
+                    "primary-container": "#e6f3ff",
+                    "primary-fixed": "#d1e9ff",
+                    "primary-fixed-dim": "#99c2ff",
+                    "secondary-container": "#cce0ff",
+                    "tertiary-fixed": "#b3d9ff",
+                    "outline": "#0066cc",
+                    "outline-variant": "#99c2ff",
+                    "on-surface": "#003366",
+                    "on-surface-variant": "#004080",
+                    "on-primary": "#ffffff",
+                    "on-primary-container": "#003366",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "error": "#cc0000",
+                    "error-container": "#ffe6e6",
+                    "on-error": "#ffffff",
+                    "on-error-container": "#990000",
+                    "surface-tint": "#0066cc",
+                    "inverse-primary": "#0066cc",
+                    "inverse-surface": "#ffffff",
+                    "inverse-on-surface": "#003366",
+                    "on-background": "#003366",
+                    "surface-dim": "#b3d1ff",
+                    "surface-variant": "#cce0ff"
             },
             "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
             "fontFamily": {
-                    "headline": ["Plus Jakarta Sans"],
-                    "body": ["Work Sans"],
-                    "label": ["Inter"]
+                    "headline": ["Inter", "sans-serif"],
+                    "body": ["Inter", "sans-serif"],
+                    "label": ["Inter", "sans-serif"]
             }
           },
         },
       }
     </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            vertical-align: middle;
-        }
-        body { font-family: 'Work Sans', sans-serif; }
-        h1, h2, h3 { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .footer-social-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 9999px;
-            background: rgba(255, 255, 255, 0.12);
-            transition: transform 0.2s ease, background-color 0.2s ease;
-        }
-        .footer-social-link:hover {
-            transform: scale(1.08);
-            background: rgba(255, 255, 255, 0.2);
-        }
-        .footer-social-icon {
-            width: 1.55rem;
-            height: 1.55rem;
-            object-fit: contain;
-        }
-    </style>
+<link rel="stylesheet" href="css/search_result.css">
 </head>
 <body class="bg-surface text-on-surface font-body min-h-screen">
-<header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-outline-variant/20">
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-outline-variant/20 transition-all duration-300">
 <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-<a class="text-2xl font-bold tracking-tighter text-teal-900 font-headline" href="index.html">Heritage Namhae</a>
+<div class="text-2xl font-black tracking-tighter text-[#0066cc]"><a href="index.html">Heritage Namhae</a></div>
 <div class="flex items-center gap-6">
-<form id="nav-search-form" class="hidden lg:flex items-center bg-surface-container/50 rounded-full px-4 py-1.5 border border-outline-variant/20 focus-within:border-primary focus-within:bg-white transition-all" role="search" action="search-result.html" method="get">
-<span class="material-symbols-outlined text-outline text-lg">search</span>
-<input id="nav-search-input" name="q" class="bg-transparent border-none focus:ring-0 text-sm w-48 font-label" placeholder="헤리티지 제품 검색..." type="search" autocomplete="off"/>
-</form>
+<div class="flex items-center gap-6">
 <div class="flex items-center gap-4">
-<a class="p-2 text-on-surface-variant hover:text-primary transition-colors" href="cart.html"><span class="material-symbols-outlined">shopping_cart</span></a>
-<a class="p-2 text-on-surface-variant hover:text-primary transition-colors" href="login.html"><span class="material-symbols-outlined">person</span></a>
+<a class="relative inline-flex items-center justify-center text-[#0066cc] hover:scale-95 duration-200" href="cart.html"><span class="material-symbols-outlined">shopping_bag</span></a>
+<a class="material-symbols-outlined text-[#0066cc] hover:scale-95 duration-200" href="login.html">person</a>
 </div>
 </div>
 </div>
@@ -127,51 +86,51 @@
 </div>
 </main>
 
-<footer class="full-width py-10 px-6 sm:px-8 mt-12 bg-[#333] border-t border-[#555] transition-colors duration-200 font-work-sans text-xs leading-relaxed text-white">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-7xl mx-auto">
-<div class="col-span-1 md:col-span-1">
-<div class="text-lg font-bold text-white mb-4 font-headline">Heritage Namhae</div>
-<p class="text-white/80 mb-5 max-w-xs">
-                    남해군 공식 헤리티지 몰, 우리 해안 낙원의 진짜 맛을 당신의 집으로 바로 전달합니다.
-                </p>
-<div class="flex gap-4">
-<a class="footer-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img class="footer-social-icon" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="Instagram"/></a>
-<a class="footer-social-link" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img class="footer-social-icon" src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook"/></a>
-<a class="footer-social-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><img class="footer-social-icon" src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn"/></a>
-<a class="footer-social-link" href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X"><img class="footer-social-icon" src="https://img.icons8.com/color/48/twitterx--v1.png" alt="X"/></a>
-<a class="footer-social-link" href="https://www.naver.com/" target="_blank" rel="noopener noreferrer" aria-label="Naver"><img class="footer-social-icon" src="https://img.icons8.com/color/48/naver.png" alt="Naver"/></a>
-</div>
-</div>
-<div>
-<h4 class="font-bold text-white mb-3">서비스</h4>
-<ul class="space-y-2">
-<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">회사 소개</a></li>
-<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">배송 및 추적</a></li>
-<li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">이용 약관</a></li>
-</ul>
-</div>
-<div>
-<h4 class="font-bold text-white mb-3">연락처</h4>
-<ul class="space-y-2">
-<li class="text-white/70">전화: 055-123-4567</li>
-<li class="text-white/70">이메일: help@namhaeheritage.kr</li>
-</ul>
-</div>
-<div>
-<h4 class="font-bold text-white mb-3">위치</h4>
-<p class="text-white/70 mb-4">대한민국 경상남도 남해군청</p>
-<div class="h-32 w-full rounded-xl bg-white/20 overflow-hidden">
-<img alt="Location Map" class="w-full h-full object-cover grayscale" data-location="Namhae, South Korea" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2F8UAsYBf8f-PXSCkWz8tPMj1yPAwzNqFnUHdLvbP3NxWzmKZvO52Qb76KLXKdR7GifJMom5TfallzE3oUiWx6wj1VUqfQ-OWmzQVYplGPmVjO52jxg3e8NQdFOU-O_t0DJrzvtWD0uaWIpCc4fRIYzS0-oPNzSMqm3dfpC4iojREb1bO_k-endojrJHEh2Vek1i1HWAgmAM27qGPEC2EUe-1x_hxNJOM3j_NI-TicipehzW-arsFab0btwNoZOq5wXODkjGdXZM"/>
-</div>
-</div>
-</div>
-<div class="max-w-7xl mx-auto px-6 mt-8 pt-6 border-t border-zinc-200/50 flex flex-col md:flex-row justify-between gap-4">
-<p class="text-white/60">© 2024 에디토리얼 헤리티지 남해. 모든 권리 보유.</p>
-<div class="flex gap-6">
-<a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">개인정보 처리방침</a>
-<a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">라이선스 정보</a>
-</div>
-</div>
+<footer class="full-width py-16 px-8 mt-24 bg-[#003366] border-t border-[#0066cc] transition-colors duration-200 font-inter text-xs leading-relaxed text-white">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-7xl mx-auto">
+        <div class="col-span-1 md:col-span-1">
+            <div class="text-lg font-bold text-white mb-6 font-headline">Heritage Namhae</div>
+            <p class="text-white/80 mb-8 max-w-xs">
+                남해군 공식 헤리티지 몰, 우리 해안 낙원의 진짜 맛을 당신의 집으로 바로 전달합니다.
+            </p>
+            <div class="flex gap-4">
+                <a class="footer-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img class="footer-social-icon" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="Instagram" /></a>
+                <a class="footer-social-link" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img class="footer-social-icon" src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook" /></a>
+                <a class="footer-social-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><img class="footer-social-icon" src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn" /></a>
+                <a class="footer-social-link" href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X"><img class="footer-social-icon" src="https://img.icons8.com/color/48/twitterx--v1.png" alt="X" /></a>
+            </div>
+        </div>
+        <div>
+            <h4 class="font-bold text-white mb-6">서비스</h4>
+            <ul class="space-y-4">
+                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">회사 소개</a></li>
+                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">배송 및 추적</a></li>
+                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">이용 약관</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="font-bold text-white mb-6">연락처</h4>
+            <ul class="space-y-4">
+                <li class="text-white/70">전화: 055-123-4567</li>
+                <li class="text-white/70">이메일: help@namhaeheritage.kr</li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="font-bold text-white mb-6">위치</h4>
+            <p class="text-white/70 mb-4">대한민국 경상남도 남해군청</p>
+            <div class="h-32 w-full rounded-xl bg-[#0066cc]/20 overflow-hidden">
+                <img alt="Location Map" class="w-full h-full object-cover" style="filter: grayscale(100%) sepia(100%) hue-rotate(200deg) saturate(150%);"
+                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2F8UAsYBf8f-PXSCkWz8tPMj1yPAwzNqFnUHdLvbP3NxWzmKZvO52Qb76KLXKdR7GifJMom5TfallzE3oUiWx6wj1VUqfQ-OWmzQVYplGPmVjO52jxg3e8NQdFOU-O_t0DJrzvtWD0uaWIpCc4fRIYzS0-oPNzSMqm3dfpC4iojREb1bO_k-endojrJHEh2Vek1i1HWAgmAM27qGPEC2EUe-1x_hxNJOM3j_NI-TicipehzW-arsFab0btwNoZOq5wXODkjGdXZM"/>
+            </div>
+        </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-zinc-200/50 flex flex-col md:flex-row justify-between gap-4">
+        <p class="text-white/60">© 2024 에디토리얼 헤리티지 남해. 모든 권리 보유.</p>
+        <div class="flex gap-6">
+            <a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">개인정보 처리방침</a>
+            <a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">라이선스 정보</a>
+        </div>
+    </div>
 </footer>
 
 <script>

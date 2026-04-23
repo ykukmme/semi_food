@@ -6,6 +6,13 @@
             "name": "SemiApplication",
             "request": "launch",
             "mainClass": "com.semi.SemiApplication",
+            "projectName": "semi_food"
+        },
+        {
+            "type": "java",
+            "name": "SemiApplication",
+            "request": "launch",
+            "mainClass": "com.semi.SemiApplication",
             "projectName": "semi-semi_food"
         },
         {
