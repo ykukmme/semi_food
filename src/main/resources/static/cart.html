@@ -70,15 +70,15 @@
 <body class="bg-background text-on-surface min-h-screen">
 <div id="app" v-cloak="">
 <!-- TopNavBar -->
-<header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-outline-variant/20 transition-all duration-300">
-<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/10 backdrop-blur-md border-b border-outline-variant/20 transition-all duration-300">
+<div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
 <div class="text-2xl font-black tracking-tighter text-[#0066cc]"><a href="index.html">Heritage Namhae</a></div>
 <div class="flex items-center gap-6">
 <div class="relative">
-<a class="relative inline-flex items-center justify-center text-[#0066cc] hover:scale-95 duration-200" href="cart.html"><span class="material-symbols-outlined">shopping_bag</span></a>
+<a class="relative inline-flex items-center justify-center text-[#0066cc] duration-200" href="cart.html"><span class="material-symbols-outlined">shopping_bag</span></a>
 <span class="absolute -top-2 -right-3 min-w-[1.35rem] h-5 px-1 rounded-full bg-[#0066cc] text-white text-[10px] font-extrabold leading-5 text-center shadow-md shadow-[#0066cc]/30 border border-white" v-if="cartItems.length &gt; 0">{{ totalItemsCount &gt; 99 ? '99+' : totalItemsCount }}</span>
 </div>
-<a class="material-symbols-outlined text-[#0066cc] hover:scale-95 duration-200" href="login.html">person</a>
+<a class="material-symbols-outlined text-[#0066cc] duration-200" href="login.html">person</a>
 </div>
 </div>
 </header>

@@ -19,7 +19,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.7s ease;
+    transition: all 0.7s ease;
 }
 .main-image-wrapper:hover img {
     transform: scale(1.04);
@@ -33,13 +33,25 @@
     padding: 0 4px; /* 좌우 패딩 추가 */
 }
 
+/* 썸네일 열: 우측 세로 배치 */
+.thumbnail-column {
+    flex-shrink: 0;
+    width: 80px;
+}
+
 .thumbnail-container {
-    flex: 0 0 90px;
-    aspect-ratio: 1 / 1;
+    width: 80px;
+    height: 80px;
     border-radius: 10px;
     overflow: hidden;
     background: #f3f4f6;
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.thumbnail-container.active {
+    border: 2px solid #0066cc;
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
 }
 
 .thumbnail-container img {
@@ -75,4 +87,78 @@
     width: 1.85rem;
     height: 1.85rem;
     object-fit: contain;
+}
+
+/* Button transition effects matching cart.html */
+button {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Gradient buttons - matching cart.html style */
+.bg-gradient-to-br,
+button[class*="gradient"] {
+    transition: all 0.3s ease-in-out;
+}
+
+.bg-gradient-to-br:hover,
+button[class*="gradient"]:hover {
+    filter: brightness(1.1);
+}
+
+.bg-gradient-to-br:active,
+button[class*="gradient"]:active {
+    filter: brightness(1);
+}
+
+/* White/background buttons */
+.bg-white,
+button[class*="bg-white"],
+button[class*="border"] {
+    transition: all 0.3s ease-in-out;
+}
+
+.bg-white:hover,
+button[class*="bg-white"]:hover,
+button[class*="border"]:hover {
+    filter: brightness(0.95);
+}
+
+.bg-white:active,
+button[class*="bg-white"]:active,
+button[class*="border"]:active {
+    filter: brightness(1);
+}
+
+/* Primary color buttons */
+.bg-primary,
+.btn-primary {
+    transition: all 0.3s ease-in-out;
+}
+
+.bg-primary:hover,
+.btn-primary:hover {
+    filter: brightness(1.1);
+}
+
+.bg-primary:active,
+.btn-primary:active {
+    filter: brightness(1);
+}
+
+/* Icon buttons - matching cart.html style */
+.material-symbols-outlined {
+    transition: color 0.2s ease;
+}
+
+button .material-symbols-outlined:hover {
+    color: var(--primary, #0066cc);
+}
+
+/* Remove transform effects to match cart.html */
+button:hover {
+    transform: none;
+}
+
+button:active {
+    transform: none;
 }

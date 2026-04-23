@@ -67,15 +67,15 @@
 </head>
 <body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
 <!-- TopNavBar -->
-<header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-outline-variant/20 transition-all duration-300">
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/10 backdrop-blur-md border-b border-outline-variant/20 transition-all duration-500 ease-in-out" style="transition-property: background-color, backdrop-filter, border-bottom-color, opacity;">
 <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <div class="text-2xl font-black tracking-tighter text-[#0066cc]"><a href="index.html">Heritage Namhae</a></div>
+        <div class="text-2xl font-black tracking-tighter text-white"><a href="index.html">Heritage Namhae</a></div>
         <div class="flex items-center gap-6">
-            <a class="relative inline-flex items-center justify-center text-[#0066cc] hover:scale-95 duration-200" href="cart.html">
+            <a class="relative inline-flex items-center justify-center text-white duration-200" href="cart.html">
                 <span class="material-symbols-outlined">shopping_bag</span>
-                <span id="cart-count-badge" class="hidden absolute -top-2 -right-3 min-w-[1.35rem] h-5 px-1 rounded-full bg-[#0066cc] text-white text-[10px] font-extrabold leading-5 text-center shadow-md shadow-[#0066cc]/30 border border-white">0</span>
+                <span id="cart-count-badge" class="hidden absolute -top-2 -right-3 min-w-[1.35rem] h-5 px-1 rounded-full bg-white text-[#0066cc] text-[10px] font-extrabold leading-5 text-center shadow-md shadow-white/30 border border-[#0066cc]">0</span>
             </a>
-            <a class="material-symbols-outlined text-[#0066cc] hover:scale-95 duration-200" href="login.html">person</a>
+            <a class="material-symbols-outlined text-white duration-200" href="login.html">person</a>
         </div>
     </div>
 </header>
@@ -184,7 +184,7 @@
 </div>
 </section>
 <!-- Namhae Curated Sets (Bento Grid) -->
-<section class="py-24 bg-surface-container-low" id="curation">
+<!-- <section class="py-24 bg-surface-container-low" id="curation">
 <div class="max-w-7xl mx-auto px-6">
 <div class="text-center mb-16">
 <span class="text-primary font-bold tracking-widest text-xs uppercase font-label">헤리티지 컬렉션</span>
@@ -209,7 +209,7 @@
 </a>
 </div>
 </div>
-</section>
+</section> -->
 <!-- MD's Recommendation -->
 <!-- <section class="py-24 bg-surface" id="Recommendation">
 <div class="max-w-7xl mx-auto px-6">
@@ -375,5 +375,41 @@
 <!-- <button class="fixed bottom-8 right-8 w-16 h-16 bg-primary text-on-primary rounded-full editorial-shadow flex items-center justify-center hover:scale-110 transition-transform active:scale-95 z-40">
 <span class="material-symbols-outlined text-3xl" data-icon="chat_bubble" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
 </button> -->
+<script>
+// Header transparency on scroll and window height
+function updateHeaderBackground() {
+    const header = document.querySelector('header');
+    const isAtTop = window.scrollY === 0;
+    const isSmallWindow = window.innerHeight <= 100;
+    
+    if (isAtTop && isSmallWindow) {
+        // Hide background completely when at top and window height is 100 or less
+        header.style.backgroundColor = 'transparent';
+        header.style.backdropFilter = 'none';
+        header.style.borderBottomColor = 'transparent';
+        header.style.opacity = '0';
+    } else if (isAtTop) {
+        // Transparent background when at top with normal window height
+        header.style.backgroundColor = 'transparent';
+        header.style.backdropFilter = 'none';
+        header.style.borderBottomColor = 'transparent';
+        header.style.opacity = '1';
+    } else {
+        // Show blur background when scrolled
+        header.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+        header.style.backdropFilter = 'blur(12px)';
+        header.style.borderBottomColor = 'rgba(153, 194, 255, 0.2)';
+        header.style.opacity = '1';
+    }
+}
+
+window.addEventListener('scroll', updateHeaderBackground);
+window.addEventListener('resize', updateHeaderBackground);
+
+// Initialize header state
+document.addEventListener('DOMContentLoaded', function() {
+    updateHeaderBackground();
+});
+</script>
 <script src="js/index-complete.js"></script>
             
