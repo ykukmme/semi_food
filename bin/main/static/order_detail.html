@@ -56,6 +56,25 @@
             }
             .no-print { display: none !important; }
         }
+        .footer-social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.12);
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+        .footer-social-link:hover {
+            transform: scale(1.08);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .footer-social-icon {
+            width: 1.55rem;
+            height: 1.55rem;
+            object-fit: contain;
+        }
     </style>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
@@ -194,6 +213,10 @@
                                 <span>배송비</span>
                                 <span class="font-bold text-on-surface">₩{{ order.shippingFee.toLocaleString() }}</span>
                             </div>
+                            <div class="flex justify-between text-on-surface-variant font-body" v-if="order.usedPoints">
+                                <span>포인트 할인</span>
+                                <span class="font-bold text-secondary">-₩{{ order.usedPoints.toLocaleString() }}</span>
+                            </div>
                         </div>
                         <div class="pt-5 border-t-2 border-primary-container/20 mb-6">
                             <div class="flex justify-between items-end">
@@ -243,12 +266,11 @@
                         남해군 공식 헤리티지 몰, 우리 해안 낙원의 진짜 맛을 당신의 집으로 바로 전달합니다.
                     </p>
                     <div class="flex gap-4">
-                        <span class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-colors">
-                            <span class="material-symbols-outlined text-sm text-white" data-icon="share">share</span>
-                        </span>
-                        <span class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-colors">
-                            <span class="material-symbols-outlined text-sm text-white" data-icon="language">language</span>
-                        </span>
+                        <a class="footer-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img class="footer-social-icon" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="Instagram" /></a>
+                        <a class="footer-social-link" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img class="footer-social-icon" src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook" /></a>
+                        <a class="footer-social-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><img class="footer-social-icon" src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn" /></a>
+                        <a class="footer-social-link" href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X"><img class="footer-social-icon" src="https://img.icons8.com/color/48/twitterx--v1.png" alt="X" /></a>
+                        <a class="footer-social-link" href="https://www.naver.com/" target="_blank" rel="noopener noreferrer" aria-label="Naver"><img class="footer-social-icon" src="https://img.icons8.com/color/48/naver.png" alt="Naver" /></a>
                     </div>
                 </div>
                 <div>
@@ -300,6 +322,10 @@
                 <div style="display: flex; justify-content: space-between; margin-top: 15px; font-size: 0.9em;">
                     <span>배송비</span>
                     <span>₩{{ order.shippingFee.toLocaleString() }}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 0.9em;" v-if="order.usedPoints">
+                    <span>포인트 할인</span>
+                    <span>-₩{{ order.usedPoints.toLocaleString() }}</span>
                 </div>
             </div>
             <div style="font-weight: bold; font-size: 1.3em; display: flex; justify-content: space-between; margin-bottom: 20px;">

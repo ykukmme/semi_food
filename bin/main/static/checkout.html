@@ -58,6 +58,25 @@
     h3 {
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
+    .footer-social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.12);
+      transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+    .footer-social-link:hover {
+      transform: scale(1.08);
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .footer-social-icon {
+      width: 1.55rem;
+      height: 1.55rem;
+      object-fit: contain;
+    }
   </style>
 </head>
 
@@ -302,6 +321,10 @@
               <span class="text-on-surface-variant">쿠폰 할인</span>
               <span class="font-bold text-secondary">-₩0</span>
             </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-on-surface-variant">포인트 할인</span>
+              <span class="font-bold text-secondary" id="summary-points-discount">-₩0</span>
+            </div>
             <div class="flex justify-between pt-4 border-t border-outline-variant/5">
               <span class="text-lg font-extrabold text-on-surface">최종 결제 금액</span>
               <span class="text-2xl font-extrabold text-primary" id="summary-final-total">₩0</span>
@@ -354,12 +377,11 @@
         <div class="text-lg font-bold text-white mb-4">Heritage Namhae</div>
         <p class="text-white/80 mb-5 max-w-xs">남해군 공식 헤리티지 몰, 우리 해안 낙원의 진짜 맛을 당신의 집으로 바로 전달합니다.</p>
         <div class="flex gap-4">
-          <span
-            class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center cursor-pointer hover:bg-white/30"><span
-              class="material-symbols-outlined text-sm text-white">share</span></span>
-          <span
-            class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center cursor-pointer hover:bg-white/30"><span
-              class="material-symbols-outlined text-sm text-white">language</span></span>
+          <a class="footer-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img class="footer-social-icon" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="Instagram" /></a>
+          <a class="footer-social-link" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img class="footer-social-icon" src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook" /></a>
+          <a class="footer-social-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><img class="footer-social-icon" src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn" /></a>
+          <a class="footer-social-link" href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X"><img class="footer-social-icon" src="https://img.icons8.com/color/48/twitterx--v1.png" alt="X" /></a>
+          <a class="footer-social-link" href="https://www.naver.com/" target="_blank" rel="noopener noreferrer" aria-label="Naver"><img class="footer-social-icon" src="https://img.icons8.com/color/48/naver.png" alt="Naver" /></a>
         </div>
       </div>
       <div>
@@ -446,13 +468,37 @@
     ════════════════════════════════════════ */
     const NAMHAE_CHECKOUT_KEY = 'namhae_checkout_v1';
 
-    function loadAndRenderOrder() {
-      const listEl = document.getElementById('order-items-list');
-      const loadingEl = document.getElementById('order-items-loading');
+    function getUsedPoints() {
+      const input = document.getElementById('points-input');
+      if (!input) return 0;
+
+      return Math.min(Math.max(parseInt(input.value, 10) || 0, 0), TOTAL_POINTS);
+    }
+
+    function updateOrderSummary(order) {
       const totalEl = document.getElementById('summary-product-total');
       const shippingEl = document.getElementById('summary-shipping');
       const finalEl = document.getElementById('summary-final-total');
       const pointsEl = document.getElementById('summary-points');
+      const pointsDiscountEl = document.getElementById('summary-points-discount');
+
+      if (!totalEl || !shippingEl || !finalEl || !pointsEl || !pointsDiscountEl) {
+        return;
+      }
+
+      const usedPoints = Math.min(getUsedPoints(), order.totalPrice + order.shippingFee);
+      const finalTotal = Math.max(order.totalPrice + order.shippingFee - usedPoints, 0);
+
+      totalEl.textContent = `₩${order.totalPrice.toLocaleString()}`;
+      shippingEl.textContent = `₩${order.shippingFee.toLocaleString()}`;
+      pointsDiscountEl.textContent = `-₩${usedPoints.toLocaleString()}`;
+      finalEl.textContent = `₩${finalTotal.toLocaleString()}`;
+      pointsEl.textContent = `${Math.floor(finalTotal * 0.01).toLocaleString()}P`;
+    }
+
+    function loadAndRenderOrder() {
+      const listEl = document.getElementById('order-items-list');
+      const loadingEl = document.getElementById('order-items-loading');
 
       let order = null;
       try {
@@ -521,10 +567,7 @@
       listEl.innerHTML = itemsHTML;
 
       // 금액 요약 업데이트
-      totalEl.textContent = `₩${order.totalPrice.toLocaleString()}`;
-      shippingEl.textContent = `₩${order.shippingFee.toLocaleString()}`;
-      finalEl.textContent = `₩${order.finalTotal.toLocaleString()}`;
-      pointsEl.textContent = `${Math.floor(order.finalTotal * 0.01).toLocaleString()}P`;
+      updateOrderSummary(order);
     }
 
     function escHtml(str) {
@@ -575,6 +618,31 @@
       let used = Math.min(Math.max(parseInt(input.value) || 0, 0), TOTAL_POINTS);
       input.value = used;
       document.getElementById('points-balance').textContent = (TOTAL_POINTS - used).toLocaleString();
+
+      try {
+        const raw = localStorage.getItem(NAMHAE_CHECKOUT_KEY);
+        if (raw) {
+          const order = JSON.parse(raw);
+          if (order && order.items && order.items.length > 0) {
+            updateOrderSummary(order);
+            return;
+          }
+        }
+      } catch (e) { }
+
+      try {
+        const cartRaw = localStorage.getItem('namhae_cart_v1');
+        if (!cartRaw) return;
+
+        const cartItems = JSON.parse(cartRaw);
+        if (!Array.isArray(cartItems) || cartItems.length === 0) return;
+
+        const totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        updateOrderSummary({
+          totalPrice,
+          shippingFee: totalPrice > 0 ? 3000 : 0,
+        });
+      } catch (e) { }
     }
 
     /* ════════════════════════════════════════
@@ -674,6 +742,8 @@
         } catch(e) {}
 
         const shippingFee = totalPrice > 0 ? 3000 : 0;
+        const usedPoints = Math.min(getUsedPoints(), totalPrice + shippingFee);
+        const finalTotal = Math.max(totalPrice + shippingFee - usedPoints, 0);
         const orderDate = new Date();
         const estimatedDate = new Date(orderDate.getTime() + 3 * 24 * 60 * 60 * 1000);
         
@@ -692,7 +762,8 @@
             items: itemsToSave,
             totalPrice: totalPrice,
             shippingFee: shippingFee,
-            finalTotal: totalPrice + shippingFee
+            usedPoints: usedPoints,
+            finalTotal: finalTotal
         };
         localStorage.setItem('namhae_order_v1', JSON.stringify(orderData));
         localStorage.removeItem('namhae_cart_v1');

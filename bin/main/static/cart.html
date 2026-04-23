@@ -83,6 +83,25 @@
         body { font-family: 'Work Sans', sans-serif; background-color: #fbf9f8; color: #1b1c1c; }
         h1, h2, h3 { font-family: 'Plus Jakarta Sans', sans-serif; }
         [v-cloak] { display: none; }
+        .footer-social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.12);
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+        .footer-social-link:hover {
+            transform: scale(1.08);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .footer-social-icon {
+            width: 1.55rem;
+            height: 1.55rem;
+            object-fit: contain;
+        }
     </style>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
@@ -193,12 +212,11 @@
                     남해군 공식 헤리티지 몰, 우리 해안 낙원의 진짜 맛을 당신의 집으로 바로 전달합니다.
                 </p>
 <div class="flex gap-4">
-<span class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-colors">
-<span class="material-symbols-outlined text-sm text-white" data-icon="share">share</span>
-</span>
-<span class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-colors">
-<span class="material-symbols-outlined text-sm text-white" data-icon="language">language</span>
-</span>
+<a class="footer-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img class="footer-social-icon" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="Instagram"/></a>
+<a class="footer-social-link" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img class="footer-social-icon" src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook"/></a>
+<a class="footer-social-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><img class="footer-social-icon" src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn"/></a>
+<a class="footer-social-link" href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X"><img class="footer-social-icon" src="https://img.icons8.com/color/48/twitterx--v1.png" alt="X"/></a>
+<a class="footer-social-link" href="https://www.naver.com/" target="_blank" rel="noopener noreferrer" aria-label="Naver"><img class="footer-social-icon" src="https://img.icons8.com/color/48/naver.png" alt="Naver"/></a>
 </div>
 </div>
 <div>
