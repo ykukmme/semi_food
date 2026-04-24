@@ -1,6 +1,7 @@
 // index.html Complete JavaScript
 const NAMHAE_CART_STORAGE_KEY = 'namhae_cart_v1';
 
+
 function loadCartFromStorage() {
     try {
         const raw = localStorage.getItem(NAMHAE_CART_STORAGE_KEY);
@@ -236,3 +237,5 @@ document.getElementById('nav-search-form')?.addEventListener('submit', (e) => {
 document.addEventListener('DOMContentLoaded', () => {
     updateCartBadge();
 });
+
+

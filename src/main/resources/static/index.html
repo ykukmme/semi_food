@@ -383,25 +383,41 @@ function updateHeaderBackground() {
     const isSmallWindow = window.innerHeight <= 100;
     
     if (isAtTop && isSmallWindow) {
-        // Hide background completely when at top and window height is 100 or less
         header.style.backgroundColor = 'transparent';
         header.style.backdropFilter = 'none';
         header.style.borderBottomColor = 'transparent';
         header.style.opacity = '0';
+        // ✅ 높이 ≤ 100 → 흰색
+        header.querySelectorAll('a, .material-symbols-outlined').forEach(el => {
+            el.style.color = 'white';
+        });
     } else if (isAtTop) {
-        // Transparent background when at top with normal window height
         header.style.backgroundColor = 'transparent';
         header.style.backdropFilter = 'none';
         header.style.borderBottomColor = 'transparent';
         header.style.opacity = '1';
+        // ✅ 높이 > 100 → 다크블루
+        header.querySelectorAll('a, .material-symbols-outlined').forEach(el => {
+            el.style.color = '#003366';
+        });
     } else {
-        // Show blur background when scrolled
         header.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
         header.style.backdropFilter = 'blur(12px)';
         header.style.borderBottomColor = 'rgba(153, 194, 255, 0.2)';
         header.style.opacity = '1';
+        // 스크롤 시 높이에 따라 색상 변경
+        if (window.innerHeight > 100) {
+            header.querySelectorAll('a, .material-symbols-outlined').forEach(el => {
+                el.style.color = '#003366';
+            });
+        } else {
+            header.querySelectorAll('a, .material-symbols-outlined').forEach(el => {
+                el.style.color = 'white';
+            });
+        }
     }
 }
+
 
 window.addEventListener('scroll', updateHeaderBackground);
 window.addEventListener('resize', updateHeaderBackground);

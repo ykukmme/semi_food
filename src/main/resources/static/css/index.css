@@ -9,6 +9,11 @@ html, body {
     vertical-align: middle;
 }
 
+header a,
+header .material-symbols-outlined {
+    text-shadow: 1px 1px #fff;
+}
+
 .glass-nav {
     background: rgba(251, 249, 248, 0.74);
     backdrop-filter: blur(14px);
@@ -58,20 +63,25 @@ html, body {
     object-fit: contain;
 }
 
-/* Tab selection dark background */
+/* Tab buttons */
 .tab-btn {
     transition: all 0.3s ease;
+    background-color: transparent !important;
+    color: #004080 !important;
+    box-shadow: none !important;
 }
 
+.tab-btn:hover {
+    background-color: #cce0ff !important;
+}
+
+/* 활성화된 탭 버튼 */
 .tab-btn.bg-primary {
-    background-color: #1f2937 !important;
+    background-color: #0669aa !important;
     color: white !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
 
 .tab-btn.bg-primary:hover {
-    background-color: #111827 !important;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    background-color: #0669aa !important;
 }
-

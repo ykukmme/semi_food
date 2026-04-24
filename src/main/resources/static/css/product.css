@@ -19,18 +19,14 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: all 0.7s ease;
-}
-.main-image-wrapper:hover img {
-    transform: scale(1.04);
 }
 
 /* 썸네일 행: 고정 높이, 절대 줄어들지 않음 */
 .thumbnail-row {
     display: flex;
-    gap: 12px; /* 간격 증가 */
+    gap: 12px;
     flex-shrink: 0;
-    padding: 0 4px; /* 좌우 패딩 추가 */
+    padding: 0 4px;
 }
 
 /* 썸네일 열: 우측 세로 배치 */
@@ -58,10 +54,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: opacity 0.2s;
-}
-.thumbnail-container:hover img {
-    opacity: 0.85;
 }
 
 /* 우측 정보 패널: 좌우 함께 스크롤 */
@@ -89,76 +81,51 @@
     object-fit: contain;
 }
 
-/* Button transition effects matching cart.html */
-button {
-    transition: all 0.3s ease-in-out;
+/* CTA 버튼 공통 - cart.html 스타일 통일 */
+#btn-add-to-cart {
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.2);
 }
 
-/* Gradient buttons - matching cart.html style */
-.bg-gradient-to-br,
-button[class*="gradient"] {
-    transition: all 0.3s ease-in-out;
-}
-
-.bg-gradient-to-br:hover,
-button[class*="gradient"]:hover {
+#btn-add-to-cart:hover {
     filter: brightness(1.1);
+    box-shadow: 0 6px 16px rgba(0, 102, 204, 0.3);
 }
 
-.bg-gradient-to-br:active,
-button[class*="gradient"]:active {
-    filter: brightness(1);
+#btn-add-to-cart:active {
+    filter: brightness(1.0);
+    box-shadow: 0 2px 8px rgba(0, 102, 204, 0.2);
 }
 
-/* White/background buttons */
-.bg-white,
-button[class*="bg-white"],
-button[class*="border"] {
-    transition: all 0.3s ease-in-out;
+#btn-go-to-cart,
+#btn-buy-now {
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.35);
 }
 
-.bg-white:hover,
-button[class*="bg-white"]:hover,
-button[class*="border"]:hover {
-    filter: brightness(0.95);
-}
-
-.bg-white:active,
-button[class*="bg-white"]:active,
-button[class*="border"]:active {
-    filter: brightness(1);
-}
-
-/* Primary color buttons */
-.bg-primary,
-.btn-primary {
-    transition: all 0.3s ease-in-out;
-}
-
-.bg-primary:hover,
-.btn-primary:hover {
+#btn-go-to-cart:hover,
+#btn-buy-now:hover {
     filter: brightness(1.1);
+    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.45);
 }
 
-.bg-primary:active,
-.btn-primary:active {
-    filter: brightness(1);
+#btn-go-to-cart:active,
+#btn-buy-now:active {
+    filter: brightness(1.0);
+    box-shadow: 0 3px 10px rgba(0, 102, 204, 0.3);
 }
 
-/* Icon buttons - matching cart.html style */
-.material-symbols-outlined {
-    transition: color 0.2s ease;
+/* 사이즈 버튼 */
+.size-option {
+    transition: all 0.3s ease;
 }
 
-button .material-symbols-outlined:hover {
-    color: var(--primary, #0066cc);
+.size-option:hover {
+    background-color: #cce0ff !important;
+    color: #003366 !important;
 }
 
-/* Remove transform effects to match cart.html */
-button:hover {
-    transform: none;
-}
-
-button:active {
-    transform: none;
+.size-option:active {
+    background-color: #99c2ff !important;
+    color: #003366 !important;
 }
