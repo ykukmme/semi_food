@@ -1,0 +1,87 @@
+/* index.html Styles */
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+}
+
+header a,
+header .material-symbols-outlined {
+    text-shadow: 1px 1px #fff;
+}
+
+.glass-nav {
+    background: rgba(251, 249, 248, 0.74);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(188, 201, 198, 0.3);
+}
+
+.full-width {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+.editorial-shadow {
+    box-shadow: 0 24px 48px -12px rgba(27, 28, 28, 0.06);
+}
+
+
+.product-card img {
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover img {
+    transform: translateY(-4px);
+}
+
+.footer-social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0;
+    background: transparent;
+    transition: transform 0.2s ease;
+}
+
+.footer-social-link:hover {
+    transform: scale(1.2);
+}
+
+.footer-social-icon {
+    width: 1.85rem;
+    height: 1.85rem;
+    object-fit: contain;
+}
+
+/* Tab buttons */
+.tab-btn {
+    transition: all 0.3s ease;
+    background-color: transparent !important;
+    color: #004080 !important;
+    box-shadow: none !important;
+}
+
+.tab-btn:hover {
+    background-color: #cce0ff !important;
+}
+
+/* 활성화된 탭 버튼 */
+.tab-btn.bg-primary {
+    background-color: #0669aa !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.tab-btn.bg-primary:hover {
+    background-color: #0669aa !important;
+}

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대시보드 검색 결과 | Heritage Namhae</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="css/dashboard_search_result.css">
+</head>
+<body class="min-h-screen text-gray-800">
+    <header class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <a href="dashboard.html" class="inline-flex items-center gap-2 text-sm font-bold text-emerald-700 hover:text-emerald-800 transition-colors">
+                    <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                    대시보드로 돌아가기
+                </a>
+            </div>
+            <form id="dashboard-search-form" action="dashboard_search_result.html" method="get" class="relative w-full max-w-md" role="search">
+                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-[20px]">search</span>
+                <input id="dashboard-search-input" name="q" type="search" placeholder="주문/취소/상품 검색..." class="w-full pl-11 pr-4 py-2.5 bg-gray-100 border border-gray-200 rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-shadow" autocomplete="off">
+            </form>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-10">
+        <h1 class="text-3xl font-bold text-gray-900">통합 검색 결과</h1>
+        <p id="search-summary" class="text-gray-500 mt-3 mb-8"></p>
+
+        <div id="result-wrap" class="space-y-8">
+            <section id="products-section" class="hidden bg-white rounded-2xl border border-gray-200 shadow-sm">
+                <div class="px-6 py-5 border-b border-gray-100">
+                    <h2 class="text-xl font-bold text-gray-900">상품 검색 결과</h2>
+                </div>
+                <div id="products-grid" class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </section>
+
+            <section id="orders-section" class="hidden bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+                <div class="px-6 py-5 border-b border-gray-100">
+                    <h2 class="text-xl font-bold text-gray-900">주문 목록 검색 결과</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-[980px] text-left border-collapse">
+                        <thead class="bg-gray-50/80">
+                            <tr>
+                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">주문번호</th>
+                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">주문상품</th>
+                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">배송여부</th>
+                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">주문취소 여부</th>
+                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">주문자</th>
+                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">배송지</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-body" class="text-sm"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="cancel-section" class="hidden bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+                <div class="px-6 py-5 border-b border-gray-100">
+                    <h2 class="text-xl font-bold text-gray-900">주문 취소 목록 검색 결과</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-[980px] text-left border-collapse">
+                        <thead class="bg-gray-50/80">
+                            <tr>
+                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">주문번호</th>
+                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">취소 신청 접수</th>
+                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">완료 여부</th>
+                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">취소 이유</th>
+                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">취소 완료일</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cancel-body" class="text-sm"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <div id="empty-state" class="hidden text-center py-16 px-4">
+            <span class="material-symbols-outlined text-5xl text-gray-400 mb-4">search_off</span>
+            <p id="empty-message" class="text-gray-500 text-lg"></p>
+            <a class="inline-block mt-8 px-8 py-3 bg-emerald-700 text-white rounded-full font-bold hover:brightness-110 transition-all" href="dashboard.html">대시보드로 돌아가기</a>
+        </div>
+    </main>
+
+    <script>
+        (function () {
+            var PRODUCTS = [
+                { title: '남해 흑마늘 팩', desc: '60일 숙성', price: '₩45,000', url: 'product.html', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBvD8uIdVNYEyiWGHi8yFmVhG6kbg5-KXyFssfxmkrmP-JrJbYqvVD6RtXPpMp9e3q0oJT9JD1rgMsLvnW_N7Guc2UpVX3lrboH_s0l84ZsmqcHHbcMeGGSxCPSUrWw4kZobqPVHoybx0lTymFYoGlw4m66hm8W5HgmeTzDzx4u5Cm14ARuzsuwU-FgzJ9cvl2OMTwesvvWrLgPV0wO-VE5w86RDbjiJXooh7j6sTkPGKfugkB4AmON8LapwmBn12YwXpz-0x63ew4' },
+                { title: '바닷바람 황금쌀', desc: '2024년 햅쌀', price: '₩68,000', url: 'product.html', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBczyhcl-myvmsy97jzfGBOYvdcKPxAJBIwW-DN3Am5aqlg831CLfC3PUSo0sYcilP7G3PF57aahgUVvY6aK3EkSlrvGRSwgrIM5QtrTIP2MYFPDS4_WTv3M2dIN0uH4XLbljElwmXdT_b1KLtqq9wf5xlhJrLMuUKvrH4psKSO-h23HKyWP-GR9_zTer6zwtBGnvuYGz3F-_pqokzSF0tnYfdXbqkSe7GUawF3eSXJ9F1DsMuzxKnCXE_lgrLEwvRYNXCMiel9Izc' },
+                { title: '죽방렴 멸치', desc: '프리미엄 등급 자연 건조', price: '₩32,000', url: 'product.html', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCtnOlqwxH7qQy3ChR7FmuXsVSSaxhYvOnns0ob-uiDx4zOr71NBx6Q94Wz385GUyjkNNQ5N5JxcRDKfABqITkNJgwySp4LsPMI-vQcuQuJwFqzjv8KCLkeQXUb2tis5ggjGam2O8DACKgg-cvn9SEBhXqCmnefnl0zlnctaNRUCXO92vpIkuO8xAeWFh6b5wDdgld1a9JrVKnBCD__TPAa3BKTgPblzey3Iu4AWPf0VZzS9B_Z7rYdGhncgkQMULAuYf5QSiJ20tM' },
+                { title: '프리미엄 전복 세트', desc: '남해 바다 직송', price: '₩120,000', url: 'product.html', img: 'https://images.unsplash.com/photo-1560717789-0ac7c58ac90a?q=80&w=1000&auto=format&fit=crop' },
+                { title: '유자 청꿀', desc: '수확 유자', price: '₩18,000', url: 'product.html', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA6h2K_MVUBoM6e2g9pPgi1msYnPU-LqTPmHqzCmHfsvP_BBUDLS8stEczldwRW7Escn4_-JCFeGGjjyBtGHDmvzMEGEGzBojUCZqNvDtWyL-Jo2aVNs-7gLGycXcdjZL_FigVsA6YTvm5dy2Ze7AGvew5LlLXtPg4U6B9nTX5rrLUWH_b3tvv7BG4W0mZQCabL3COnRI52h3TOxTODA5LcENrvt5Lqj7OiQqdrw-dqt2bpXQuzWWqCWeN1X7WAsqMeGl46bGUZcjw' },
+                { title: '대수확 박스', desc: '계절별 선택', price: '₩85,000', url: 'product.html', img: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=1000&auto=format&fit=crop' }
+            ];
+
+            var ORDERS = [
+                { orderNo: 'NH-20260422-001', product: '남해 흑마늘 팩', delivery: '배송 완료', cancel: '취소 아님', customer: '홍길동', address: '경상남도 남해군 남해읍 망운로 12' },
+                { orderNo: 'NH-20260421-014', product: '죽방렴 멸치 세트', delivery: '배송 중', cancel: '취소 아님', customer: '김남해', address: '부산광역시 해운대구 센텀동로 45' },
+                { orderNo: 'NH-20260420-009', product: '유자 청꿀', delivery: '배송 준비', cancel: '취소 아님', customer: '이바다', address: '서울특별시 마포구 성암로 77' },
+                { orderNo: 'NH-20260418-031', product: '프리미엄 전복 세트', delivery: '배송 보류', cancel: '취소 요청', customer: '최수산', address: '인천광역시 연수구 컨벤시아대로 88' }
+            ];
+
+            var CANCEL_ORDERS = [
+                { orderNo: 'NH-20260418-031', requestedAt: '2026-04-18 10:12', status: '완료', reason: '단순 변심', completedAt: '2026-04-19' },
+                { orderNo: 'NH-20260417-022', requestedAt: '2026-04-17 14:46', status: '처리 중', reason: '배송 지연', completedAt: '진행 중' },
+                { orderNo: 'NH-20260415-008', requestedAt: '2026-04-15 09:28', status: '완료', reason: '상품 파손', completedAt: '2026-04-16' },
+                { orderNo: 'NH-20260411-005', requestedAt: '2026-04-11 11:54', status: '반려', reason: '배송 완료 후 단순 취소', completedAt: '반려 처리' }
+            ];
+
+            function includesText(value, query) {
+                return String(value || '').toLowerCase().indexOf(query.toLowerCase()) !== -1;
+            }
+
+            function getParamsQuery() {
+                var params = new URLSearchParams(window.location.search);
+                var raw = params.get('q');
+                return raw ? String(raw).trim() : '';
+            }
+
+            function renderProducts(rows) {
+                var grid = document.getElementById('products-grid');
+                grid.innerHTML = rows.map(function (p) {
+                    return (
+                        '<a href="' + p.url + '" class="group block rounded-xl overflow-hidden bg-gray-50 border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all">' +
+                        '<div class="aspect-[4/3] overflow-hidden bg-gray-100">' +
+                        '<img src="' + escapeHtml(p.img) + '" alt="' + escapeHtml(p.title) + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>' +
+                        '</div>' +
+                        '<div class="p-4">' +
+                        '<h3 class="font-bold text-gray-900 mb-1">' + escapeHtml(p.title) + '</h3>' +
+                        '<p class="text-sm text-gray-500 mb-2">' + escapeHtml(p.desc) + '</p>' +
+                        '<span class="font-bold text-emerald-700">' + escapeHtml(p.price) + '</span>' +
+                        '</div></a>'
+                    );
+                }).join('');
+            }
+
+            function renderOrders(rows) {
+                var body = document.getElementById('orders-body');
+                body.innerHTML = rows.map(function (r) {
+                    return (
+                        '<tr class="border-t border-gray-100">' +
+                        '<td class="py-4 px-6 font-bold text-gray-800">' + escapeHtml(r.orderNo) + '</td>' +
+                        '<td class="py-4 px-6 text-gray-700">' + escapeHtml(r.product) + '</td>' +
+                        '<td class="py-4 px-6 text-gray-700">' + escapeHtml(r.delivery) + '</td>' +
+                        '<td class="py-4 px-6 text-gray-700">' + escapeHtml(r.cancel) + '</td>' +
+                        '<td class="py-4 px-6 text-gray-700">' + escapeHtml(r.customer) + '</td>' +
+                        '<td class="py-4 px-6 text-gray-700">' + escapeHtml(r.address) + '</td>' +
+                        '</tr>'
+                    );
+                }).join('');
+            }
+
+            function renderCancelOrders(rows) {
+                var body = document.getElementById('cancel-body');
+                body.innerHTML = rows.map(function (r) {
+                    return (
+                        '<tr class="border-t border-gray-100">' +
+                        '<td class="py-4 px-6 font-bold text-gray-800">' + escapeHtml(r.orderNo) + '</td>' +
+                        '<td class="py-4 px-6 text-gray-700">' + escapeHtml(r.requestedAt) + '</td>' +
+                        '<td class="py-4 px-6 text-gray-700">' + escapeHtml(r.status) + '</td>' +
+                        '<td class="py-4 px-6 text-gray-700">' + escapeHtml(r.reason) + '</td>' +
+                        '<td class="py-4 px-6 text-gray-700">' + escapeHtml(r.completedAt) + '</td>' +
+                        '</tr>'
+                    );
+                }).join('');
+            }
+
+            function escapeHtml(s) {
+                return String(s)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;');
+            }
+
+            function runSearch() {
+                var q = getParamsQuery();
+                var input = document.getElementById('dashboard-search-input');
+                var summary = document.getElementById('search-summary');
+                var empty = document.getElementById('empty-state');
+                var emptyMsg = document.getElementById('empty-message');
+                var productsSection = document.getElementById('products-section');
+                var ordersSection = document.getElementById('orders-section');
+                var cancelSection = document.getElementById('cancel-section');
+
+                input.value = q;
+
+                if (!q) {
+                    summary.textContent = '검색어를 입력해 주세요.';
+                    empty.classList.remove('hidden');
+                    emptyMsg.textContent = '상단 검색창에 상품명을 입력한 뒤 검색해 주세요.';
+                    productsSection.classList.add('hidden');
+                    ordersSection.classList.add('hidden');
+                    cancelSection.classList.add('hidden');
+                    return;
+                }
+
+                var matchedProducts = PRODUCTS.filter(function (p) {
+                    return includesText(p.title, q);
+                });
+                var matchedOrders = ORDERS.filter(function (o) {
+                    return includesText(o.orderNo, q) || includesText(o.product, q) || includesText(o.customer, q) || includesText(o.address, q);
+                });
+                var matchedCancel = CANCEL_ORDERS.filter(function (c) {
+                    return includesText(c.orderNo, q) || includesText(c.reason, q) || includesText(c.status, q) || includesText(c.completedAt, q);
+                });
+
+                var total = matchedProducts.length + matchedOrders.length + matchedCancel.length;
+                summary.innerHTML = '“<strong class="text-gray-900">' + escapeHtml(q) + '</strong>”에 대한 결과 <strong class="text-emerald-700">' + total + '</strong>건';
+
+                if (total === 0) {
+                    empty.classList.remove('hidden');
+                    emptyMsg.textContent = '일치하는 검색 결과가 없습니다. 다른 검색어로 시도해 보세요.';
+                    productsSection.classList.add('hidden');
+                    ordersSection.classList.add('hidden');
+                    cancelSection.classList.add('hidden');
+                    return;
+                }
+
+                empty.classList.add('hidden');
+
+                if (matchedProducts.length > 0) {
+                    renderProducts(matchedProducts);
+                    productsSection.classList.remove('hidden');
+                } else {
+                    productsSection.classList.add('hidden');
+                }
+
+                if (matchedOrders.length > 0) {
+                    renderOrders(matchedOrders);
+                    ordersSection.classList.remove('hidden');
+                } else {
+                    ordersSection.classList.add('hidden');
+                }
+
+                if (matchedCancel.length > 0) {
+                    renderCancelOrders(matchedCancel);
+                    cancelSection.classList.remove('hidden');
+                } else {
+                    cancelSection.classList.add('hidden');
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', runSearch);
+        })();
+    </script>
+</body>
+</html>

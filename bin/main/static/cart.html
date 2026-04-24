@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>쇼핑 카트 | Heritage Namhae</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Work+Sans:wght@300;400;500;600&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#0066cc",
+                    "secondary": "#0052a3",
+                    "tertiary": "#0080ff",
+                    "background": "#f0f7ff",
+                    "surface": "#ffffff",
+                    "surface-bright": "#ffffff",
+                    "surface-container": "#e6f3ff",
+                    "surface-container-low": "#f0f7ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#cce0ff",
+                    "surface-container-highest": "#b3d1ff",
+                    "primary-container": "#e6f3ff",
+                    "primary-fixed": "#d1e9ff",
+                    "primary-fixed-dim": "#99c2ff",
+                    "secondary-container": "#cce0ff",
+                    "tertiary-fixed": "#b3d9ff",
+                    "outline": "#0066cc",
+                    "outline-variant": "#99c2ff",
+                    "on-surface": "#003366",
+                    "on-surface-variant": "#004080",
+                    "on-primary": "#ffffff",
+                    "on-primary-container": "#003366",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "error": "#cc0000",
+                    "error-container": "#ffe6e6",
+                    "on-error": "#ffffff",
+                    "on-error-container": "#990000",
+                    "surface-tint": "#0066cc",
+                    "inverse-primary": "#0066cc",
+                    "inverse-surface": "#ffffff",
+                    "inverse-on-surface": "#003366",
+                    "on-background": "#003366",
+                    "surface-dim": "#b3d1ff",
+                    "surface-variant": "#cce0ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Inter", "sans-serif"],
+                    "body": ["Inter", "sans-serif"],
+                    "label": ["Inter", "sans-serif"]
+            }
+          },
+        },
+      }
+    </script>
+<link rel="stylesheet" href="css/cart.css">
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body class="bg-background text-on-surface min-h-screen">
+<div id="app" v-cloak="">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/10 backdrop-blur-md border-b border-outline-variant/20 transition-all duration-300">
+<div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+<div class="text-2xl font-black tracking-tighter text-[#0066cc]"><a href="index.html">Heritage Namhae</a></div>
+<div class="flex items-center gap-6">
+<div class="relative">
+<a class="relative inline-flex items-center justify-center text-[#0066cc] duration-200" href="cart.html"><span class="material-symbols-outlined">shopping_bag</span></a>
+<span class="absolute -top-2 -right-3 min-w-[1.35rem] h-5 px-1 rounded-full bg-[#0066cc] text-white text-[10px] font-extrabold leading-5 text-center shadow-md shadow-[#0066cc]/30 border border-white" v-if="cartItems.length &gt; 0">{{ totalItemsCount &gt; 99 ? '99+' : totalItemsCount }}</span>
+</div>
+<a class="material-symbols-outlined text-[#0066cc] duration-200" href="login.html">person</a>
+</div>
+</div>
+</header>
+<main class="pt-32 pb-20 px-6 max-w-7xl mx-auto">
+<header class="mb-12">
+<h1 class="text-4xl font-extrabold tracking-tight mb-2 text-primary">나의&nbsp;&nbsp;장바구니</h1>
+<p class="text-on-surface-variant font-body">남해 헤리티지 컬렉션에서 선택된 아이템들입니다.</p>
+</header>
+<div class="flex flex-col lg:flex-row gap-12" v-if="cartItems.length &gt; 0">
+<!-- Cart Items List -->
+<div class="flex-grow space-y-6">
+<transition-group class="space-y-6" name="list" tag="div">
+<div :key="item.id" class="bg-surface-container-lowest rounded-xl p-6 flex flex-col sm:flex-row items-center gap-6 transition-all duration-300 hover:shadow-sm" v-for="item in cartItems">
+<div class="w-32 h-32 rounded-lg bg-surface-container-low overflow-hidden flex-shrink-0">
+<img :alt="item.name" :src="item.image" class="w-full h-full object-cover"/>
+</div>
+<div class="flex-grow w-full">
+<div class="flex justify-between items-start">
+<div class="flex items-start gap-3">
+<input type="checkbox" v-model="item.checked" @change="updateItemCheck(item)" class="mt-1 w-5 h-5 text-primary rounded focus:ring-primary focus:ring-2">
+<div>
+<h3 class="text-xl font-bold text-on-surface">{{ item.name }}</h3>
+<p class="text-sm text-tertiary font-medium">{{ item.collection }}</p>
+</div>
+</div>
+<button @click="removeItem(item.id)" class="material-symbols-outlined text-outline-variant hover:text-secondary transition-colors duration-200">close</button>
+</div>
+<div class="mt-6 flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center bg-surface-container-high rounded-full px-3 py-1">
+<button :class="{'opacity-30 cursor-not-allowed': item.quantity &lt;= minQtyFor(item)}" :disabled="item.quantity &lt;= minQtyFor(item)" @click="decrementQty(item)" class="material-symbols-outlined text-on-surface-variant p-1 hover:text-primary transition-colors">remove</button>
+<span class="inline-flex min-w-[2.5rem] items-center justify-center px-2 font-bold text-on-surface tabular-nums">{{ item.quantity }}</span>
+<button @click="incrementQty(item)" class="material-symbols-outlined text-on-surface-variant p-1 hover:text-primary transition-colors">add</button>
+</div>
+<div class="text-lg font-bold text-on-surface">₩{{ (item.price * item.quantity).toLocaleString() }}</div>
+</div>
+</div>
+</div>
+</transition-group>
+</div>
+<!-- Price Summary -->
+<aside class="lg:w-96">
+<div class="bg-surface-container-low rounded-xl p-8 sticky top-32">
+<h2 class="text-2xl font-bold mb-8 text-on-surface">가격 요약</h2>
+<div class="space-y-4 mb-8">
+<div class="flex justify-between text-on-surface-variant">
+<span class="font-body">총 제품 가격</span>
+<span class="font-bold text-on-surface">₩{{ totalPrice.toLocaleString() }}</span>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex justify-between items-end">
+<span class="font-headline font-bold text-lg text-on-surface">총 금액</span>
+<span class="font-headline font-extrabold text-3xl text-primary">₩{{ totalPrice.toLocaleString() }}</span>
+</div>
+</div>
+<div class="space-y-4">
+<a class="block w-full" href="checkout.html">
+<button class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary py-4 rounded-full font-headline font-bold text-lg tracking-tight hover:brightness-110 transition-all duration-300 shadow-md shadow-primary/20">
+        모든 상품 주문
+    </button>
+</a>
+<button @click="orderSelectedItems" class="w-full bg-gradient-to-br from-secondary to-secondary-container text-on-secondary py-4 rounded-full font-headline font-bold text-lg tracking-tight hover:brightness-110 transition-all duration-300 shadow-md shadow-secondary/20">
+        선택한 상품만 주문
+    </button>
+</div>
+<div class="mt-8 flex items-center gap-3 p-4 bg-tertiary-fixed/30 rounded-lg">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">verified</span>
+<p class="text-xs text-on-tertiary-fixed-variant leading-relaxed">
+                                당신의 구매는 남해섬의 전통 농업 헤리티지를 지원합니다.
+                            </p>
+</div>
+</div>
+</aside>
+</div>
+<!-- Empty Cart State -->
+<div class="flex flex-col items-center justify-center py-20 text-center animate-in fade-in zoom-in duration-500" v-else="">
+<div class="w-24 h-24 bg-surface-container rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-5xl text-outline-variant">shopping_basket</span>
+</div>
+<h2 class="text-2xl font-bold text-on-surface mb-2">당신의 바구니가 비어있습니다</h2>
+<p class="text-on-surface-variant mb-8 max-w-xs">아직 남해의 보물들을 컬렉션에 추가하지 않으신 것 같습니다.</p>
+<a class="inline-flex items-center gap-2 bg-primary text-on-primary px-8 py-4 rounded-full font-headline font-bold hover:brightness-110 transition-all" href="index.html">
+                    탐색 시작하기
+                    <span class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+</main>
+<!-- Footer -->
+<footer class="full-width py-16 px-8 mt-24 bg-[#003366] border-t border-[#0066cc] transition-colors duration-200 font-inter text-xs leading-relaxed text-white">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-7xl mx-auto">
+        <div class="col-span-1 md:col-span-1">
+            <div class="text-lg font-bold text-white mb-6 font-headline">Heritage Namhae</div>
+            <p class="text-white/80 mb-8 max-w-xs">
+                남해군 공식 헤리티지 몰, 우리 해안 낙원의 진짜 맛을 당신의 집으로 바로 전달합니다.
+            </p>
+            <div class="flex gap-4">
+                <a class="footer-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img class="footer-social-icon" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="Instagram" /></a>
+                <a class="footer-social-link" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img class="footer-social-icon" src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook" /></a>
+                <a class="footer-social-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><img class="footer-social-icon" src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn" /></a>
+                <a class="footer-social-link" href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X"><img class="footer-social-icon" src="https://img.icons8.com/color/48/twitterx--v1.png" alt="X" /></a>
+            </div>
+        </div>
+        <div>
+            <h4 class="font-bold text-white mb-6">서비스</h4>
+            <ul class="space-y-4">
+                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">회사 소개</a></li>
+                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">배송 및 추적</a></li>
+                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">이용 약관</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="font-bold text-white mb-6">연락처</h4>
+            <ul class="space-y-4">
+                <li class="text-white/70">전화: 055-123-4567</li>
+                <li class="text-white/70">이메일: help@namhaeheritage.kr</li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="font-bold text-white mb-6">위치</h4>
+            <p class="text-white/70 mb-4">대한민국 경상남도 남해군청</p>
+            <div class="h-32 w-full rounded-xl bg-[#0066cc]/20 overflow-hidden">
+                <img alt="Location Map" class="w-full h-full object-cover" style="filter: grayscale(100%) sepia(100%) hue-rotate(200deg) saturate(150%);"
+                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2F8UAsYBf8f-PXSCkWz8tPMj1yPAwzNqFnUHdLvbP3NxWzmKZvO52Qb76KLXKdR7GifJMom5TfallzE3oUiWx6wj1VUqfQ-OWmzQVYplGPmVjO52jxg3e8NQdFOU-O_t0DJrzvtWD0uaWIpCc4fRIYzS0-oPNzSMqm3dfpC4iojREb1bO_k-endojrJHEh2Vek1i1HWAgmAM27qGPEC2EUe-1x_hxNJOM3j_NI-TicipehzW-arsFab0btwNoZOq5wXODkjGdXZM"/>
+            </div>
+        </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-zinc-200/50 flex flex-col md:flex-row justify-between gap-4">
+        <p class="text-white/60">© 2024 에디토리얼 헤리티지 남해. 모든 권리 보유.</p>
+        <div class="flex gap-6">
+            <a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">개인정보 처리방침</a>
+            <a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">라이선스 정보</a>
+        </div>
+    </div>
+</footer>
+<!-- FAB -->
+<!-- <button class="fixed bottom-8 right-8 w-16 h-16 bg-primary text-on-primary rounded-full editorial-shadow flex items-center justify-center hover:scale-110 transition-transform active:scale-95 z-40">
+<span class="material-symbols-outlined text-3xl" data-icon="chat_bubble" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+</button> -->
+</div>
+<style>
+        /* Animation for removing items */
+        .list-enter-active,
+        .list-leave-active {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .list-enter-from,
+        .list-leave-to {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+    </style>
+<script>
+        const { createApp, ref, computed, watch } = Vue;
+
+        const NAMHAE_CART_STORAGE_KEY = 'namhae_cart_v1';
+
+        function loadCartFromStorage() {
+            try {
+                const raw = localStorage.getItem(NAMHAE_CART_STORAGE_KEY);
+                if (!raw) return [];
+                const parsed = JSON.parse(raw);
+                return Array.isArray(parsed) ? parsed : [];
+            } catch {
+                return [];
+            }
+        }
+
+        function persistCart(items) {
+            localStorage.setItem(NAMHAE_CART_STORAGE_KEY, JSON.stringify(items));
+        }
+
+        createApp({
+            setup() {
+                const cartItems = ref(loadCartFromStorage());
+
+                watch(
+                    cartItems,
+                    (v) => {
+                        persistCart(v);
+                    },
+                    { deep: true }
+                );
+
+                const minQtyFor = (item) => {
+                    const m = item.minQty;
+                    return typeof m === 'number' && m > 0 ? m : 1;
+                };
+
+                const totalPrice = computed(() => {
+                    return cartItems.value.reduce((acc, item) => {
+                        if (item.checked !== false) {
+                            return acc + (item.price * item.quantity);
+                        }
+                        return acc;
+                    }, 0);
+                });
+
+                const totalItemsCount = computed(() => {
+                    return cartItems.value.reduce((acc, item) => acc + item.quantity, 0);
+                });
+
+                const qtyStep = 10;
+
+                const incrementQty = (item) => {
+                    item.quantity += qtyStep;
+                };
+
+                const decrementQty = (item) => {
+                    const floor = minQtyFor(item);
+                    if (item.quantity > floor) {
+                        item.quantity = Math.max(floor, item.quantity - qtyStep);
+                    }
+                };
+
+                const removeItem = (id) => {
+                    cartItems.value = cartItems.value.filter((row) => row.id !== id);
+                };
+
+                const updateItemCheck = (item) => {
+                    // Ensure checked state is properly set
+                    item.checked = item.checked !== false;
+                };
+
+                const orderSelectedItems = () => {
+                    // Filter only checked items
+                    const selectedItems = cartItems.value.filter(item => item.checked !== false);
+                    
+                    if (selectedItems.length === 0) {
+                        alert('선택된 상품이 없습니다.');
+                        return;
+                    }
+                    
+                    // Save selected items to temporary storage for checkout
+                    localStorage.setItem('namhae_selected_items', JSON.stringify(selectedItems));
+                    
+                    // Navigate to checkout
+                    window.location.href = 'checkout.html';
+                };
+
+                // Initialize checked state for all items
+                const initializeCheckedState = () => {
+                    cartItems.value.forEach(item => {
+                        if (item.checked === undefined) {
+                            item.checked = true;
+                        }
+                    });
+                };
+
+                // Initialize on mount
+                initializeCheckedState();
+
+                return {
+                    cartItems,
+                    totalPrice,
+                    totalItemsCount,
+                    minQtyFor,
+                    incrementQty,
+                    decrementQty,
+                    removeItem,
+                    updateItemCheck,
+                    orderSelectedItems
+                };
+            }
+        }).mount('#app');
+    </script>
+</body></html>

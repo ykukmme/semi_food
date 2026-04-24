@@ -1,0 +1,15 @@
+/* dashboard_search_result.html Styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f0f7ff;
+    color: #003366;
+}
+
+h1, h2, h3, .font-headline {
+    font-family: 'Inter', sans-serif;
+}
+
+.text-primary { color: #0066cc; }
+.bg-primary { background-color: #0066cc; }
+.border-primary { border-color: #0066cc; }
+.hover-bg-primary:hover { background-color: #0052a3; }
