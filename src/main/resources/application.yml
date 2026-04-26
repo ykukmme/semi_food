@@ -24,6 +24,12 @@ spring:
   flyway:
     # Flyway is executed by FlywayConfig so startup order stays explicit.
     enabled: false
+    
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    cache: false # 개발 환경에서는 false, 운영 환경에서는 true
 
     out-of-order: true # 순서가 바뀐마이그레이션 파일도 허용 (협업용)
 

@@ -47,12 +47,20 @@ public class SecurityConfig {
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 // 회원가입·로그인은 인증 없이 허용
+<<<<<<< HEAD
                 .requestMatchers("/**/index.html", "/product/**").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
                 // 정적 파일 허용 (루트 + 하위 디렉토리 HTML 모두 포함)
                 .requestMatchers("/*.html", "/**/*.html", "/css/**", "/js/**").permitAll()
                 // 관리자 API — ADMIN 역할 필수
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
+=======
+                .requestMatchers("/", "/error", "/product/**", "/api/auth/**").permitAll()
+                // 관리자 API — ADMIN 역할 필수
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                // 정적 파일 허용 (루트 + 하위 디렉토리 HTML 모두 포함)
+                .requestMatchers("/index.html", "/*.html", "/**/*.html", "/css/**", "/js/**","/images/**").permitAll()
+>>>>>>> 1ade278 (fix: Thymeleaf 3.1 security error on index.html)
                 .anyRequest().authenticated()
             )
             // 401 응답을 일관된 JSON 형식으로 반환

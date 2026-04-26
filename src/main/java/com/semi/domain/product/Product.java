@@ -47,6 +47,10 @@ public class Product {
     @Column(name = "product_url", length = 500)
     private String productUrl;  // 상품 구매처 링크
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 30)
+    private ProductCategory category;  // 상품 카테고리
+
     @Column(name = "auto_order", nullable = false)
     private Boolean autoOrder;  // 자동발주 플래그 (기본 OFF, 변경 시 audit 필수)
 
@@ -63,6 +67,7 @@ public class Product {
         this.price       = price;
         this.imageUrl    = imageUrl;
         this.productUrl  = productUrl;
+        this.category    = ProductCategoryClassifier.classify(name);
         this.autoOrder   = false;  // 자동발주 기본 OFF (Hard Rule)
         this.crawledAt   = crawledAt;
     }
@@ -86,6 +91,7 @@ public class Product {
         this.price       = price;
         this.imageUrl    = imageUrl;
         this.productUrl  = productUrl;
+        this.category    = ProductCategoryClassifier.classify(name);
         this.crawledAt   = crawledAt;
     }
 }

@@ -1,6 +1,10 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
+<<<<<<< HEAD
     "java.configuration.updateBuildConfiguration": "interactive",
     "liveServer.settings.port": 5501,
     "java.debug.settings.onBuildFailureProceed": true
+=======
+    "java.configuration.updateBuildConfiguration": "automatic"
+>>>>>>> 1ade278 (fix: Thymeleaf 3.1 security error on index.html)
 }
