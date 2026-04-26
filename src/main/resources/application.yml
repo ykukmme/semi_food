@@ -30,14 +30,7 @@ spring:
     suffix: .html
     mode: HTML
     cache: false # 개발 환경에서는 false, 운영 환경에서는 true
-
     out-of-order: true # 순서가 바뀐마이그레이션 파일도 허용 (협업용)
-
-  thymeleaf:
-    prefix: classpath:/static/
-    suffix: .html
-    mode: HTML
-    cache: false # 개발 환경에서는 false, 운영 환경에서는 true
     
 cors:
   # Local browser dev defaults only. Production must override with real origins.
