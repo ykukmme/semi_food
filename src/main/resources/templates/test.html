@@ -6,15 +6,12 @@
     <title>Document</title>
 </head>
 <body>
-    <div th:if="${#lists.isEmpty(keywords)}">
-    <p>등록된 키워드가 없습니다.</p>
+    <div th:if="${#lists.isEmpty(products)}">
+    <p>등록된 상품이 없습니다.</p>
 </div>
-    <!-- <div class="TrendRank" th:each="keyword : ${keywords}"> -->
-        <div class="orderBy" th:each="keyword : ${#lists.sort(keywords, idComparator)}">
-            <!-- <span th:text="${keyword.id}"></span> -->
-            <span th:text="${keyword.rank}"></span>
-            <span th:text="${keyword.keyword}"></span>
-        </div>
-    <!-- </div> -->
+    <div class="card" th:each="product : ${products}">
+        <p th:text="${product.name}"></p>
+        <a th:href="@{${product.productUrl}}">링크</a>
+    </div>
 </body>
 </html>
