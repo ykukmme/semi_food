@@ -1,0 +1,42 @@
+package com.semi.domain.rpa.vo;
+
+import com.semi.domain.rpa.dto.TrendKeywordResponse;
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "trend_keywords")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
+public class TrendKeywordVO { // 이름을 Vo로 변경
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private int rank;
+
+    private int frequency = 0 ;
+
+    @Column(nullable = false, length = 100)
+    private String keyword;
+
+    @Column(name = "collected_at")
+    private DateTime collectedAt ;
+
+    @Column(name = "is_active")
+    private int isActive=true;
+
+    // --- DTO(RankItem)를 VO로 변환하는 메서드 ---
+    public static TrendKeywordVO from(TrendKeywordResponse.RankItem item) {
+        return TrendKeywordVO.builder()
+                .rank(item.getRank())
+                .keyword(item.getKeyword())
+                .frequency(item.getfrequency())
+                
+                .build();
+    }
+}

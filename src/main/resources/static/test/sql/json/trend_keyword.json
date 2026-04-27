@@ -1,0 +1,396 @@
+[
+    {
+        "rank": 1,
+        "status": "UP",
+        "rankFluctuation": 2,
+        "rankId": "2165824835",
+        "title": "버터떡",
+        "subTitle": "떡류",
+        "tags": [
+            "떡류"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50019139",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "떡류",
+        "catId2": "50019139",
+        "catNm3": "기타떡",
+        "catId3": "50019239"
+    },
+    {
+        "rank": 2,
+        "status": "UP",
+        "rankFluctuation": 1,
+        "rankId": "2165824837",
+        "title": "닭가슴살",
+        "subTitle": "축산물",
+        "tags": [
+            "축산물"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50000145",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "축산물",
+        "catId2": "50000145",
+        "catNm3": "닭고기",
+        "catId3": "50001172"
+    },
+    {
+        "rank": 3,
+        "status": "DOWN",
+        "rankFluctuation": -2,
+        "rankId": "2165824838",
+        "title": "두릅",
+        "subTitle": "농산물",
+        "tags": [
+            "농산물"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50000160",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "농산물",
+        "catId2": "50000160",
+        "catNm3": "채소",
+        "catId3": "50001077"
+    },
+    {
+        "rank": 4,
+        "status": "STABLE",
+        "rankFluctuation": 0,
+        "rankId": "2165824839",
+        "title": "쭈꾸미",
+        "subTitle": "수산물",
+        "tags": [
+            "수산물"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50000159",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "수산물",
+        "catId2": "50000159",
+        "catNm3": "해산물/어패류",
+        "catId3": "50001049"
+    },
+    {
+        "rank": 5,
+        "status": "STABLE",
+        "rankFluctuation": 0,
+        "rankId": "2165824840",
+        "title": "가죽나물",
+        "subTitle": "농산물",
+        "tags": [
+            "농산물"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50000160",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "농산물",
+        "catId2": "50000160",
+        "catNm3": "채소",
+        "catId3": "50001077"
+    },
+    {
+        "rank": 6,
+        "status": "NEW",
+        "rankId": "2165824842",
+        "title": "샤브샤브",
+        "subTitle": "밀키트",
+        "tags": [
+            "밀키트"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50014240",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "밀키트",
+        "catId2": "50014240",
+        "catNm3": "찌개/국",
+        "catId3": "50013821"
+    },
+    {
+        "rank": 7,
+        "status": "SOAR",
+        "rankFluctuation": 21,
+        "rankId": "2165824843",
+        "title": "마이노멀",
+        "subTitle": "소스/드레싱",
+        "tags": [
+            "소스/드레싱"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50012782",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "소스/드레싱",
+        "catId2": "50012782",
+        "catNm3": "마요네즈",
+        "catId3": "50013162"
+    },
+    {
+        "rank": 8,
+        "status": "NEW",
+        "rankId": "2165824844",
+        "title": "담두만두",
+        "subTitle": "냉동/간편조리식품",
+        "tags": [
+            "냉동/간편조리식품"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50000026",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "냉동/간편조리식품",
+        "catId2": "50000026",
+        "catNm3": "만두/딤섬",
+        "catId3": "50001871"
+    },
+    {
+        "rank": 9,
+        "status": "UP",
+        "rankFluctuation": 3,
+        "rankId": "2165824846",
+        "title": "삼겹살",
+        "subTitle": "축산물",
+        "tags": [
+            "축산물"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50000145",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "축산물",
+        "catId2": "50000145",
+        "catNm3": "돼지고기",
+        "catId3": "50001170"
+    },
+    {
+        "rank": 10,
+        "status": "SOAR",
+        "rankFluctuation": 10,
+        "rankId": "2165824847",
+        "title": "쌀국수",
+        "subTitle": "라면/면류",
+        "tags": [
+            "라면/면류"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50013960",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "라면/면류",
+        "catId2": "50013960",
+        "catNm3": "면류",
+        "catId3": "50014020"
+    },
+    {
+        "rank": 11,
+        "status": "SOAR",
+        "rankFluctuation": 6,
+        "rankId": "2165824849",
+        "title": "시오콘부",
+        "subTitle": "수산물",
+        "tags": [
+            "수산물"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50000159",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "수산물",
+        "catId2": "50000159",
+        "catNm3": "김/해초",
+        "catId3": "50001176"
+    },
+    {
+        "rank": 12,
+        "status": "SOAR",
+        "rankFluctuation": 10,
+        "rankId": "2165824850",
+        "title": "참외",
+        "subTitle": "농산물",
+        "tags": [
+            "농산물"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50000160",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "농산물",
+        "catId2": "50000160",
+        "catNm3": "과일",
+        "catId3": "50000960"
+    },
+    {
+        "rank": 13,
+        "status": "SOAR",
+        "rankFluctuation": 6,
+        "rankId": "2165824853",
+        "title": "꽃게",
+        "subTitle": "수산물",
+        "tags": [
+            "수산물"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50000159",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "수산물",
+        "catId2": "50000159",
+        "catNm3": "해산물/어패류",
+        "catId3": "50001049"
+    },
+    {
+        "rank": 14,
+        "status": "DOWN",
+        "rankFluctuation": -12,
+        "rankId": "2165824856",
+        "title": "카라향",
+        "subTitle": "농산물",
+        "tags": [
+            "농산물"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50000160",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "농산물",
+        "catId2": "50000160",
+        "catNm3": "과일",
+        "catId3": "50000960"
+    },
+    {
+        "rank": 15,
+        "status": "SOAR",
+        "rankFluctuation": 5,
+        "rankId": "2165824857",
+        "title": "뉴케어",
+        "subTitle": "건강식품",
+        "tags": [
+            "건강식품"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50000023",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "건강식품",
+        "catId2": "50000023",
+        "catNm3": "환자식/영양보충식",
+        "catId3": "50011861"
+    },
+    {
+        "rank": 16,
+        "status": "DOWN",
+        "rankFluctuation": -9,
+        "rankId": "2165824861",
+        "title": "계란",
+        "subTitle": "축산물",
+        "tags": [
+            "축산물"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50000145",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "축산물",
+        "catId2": "50000145",
+        "catNm3": "알류",
+        "catId3": "50001173"
+    },
+    {
+        "rank": 17,
+        "status": "NEW",
+        "rankId": "2165824863",
+        "title": "촉촉한황치즈",
+        "subTitle": "과자/베이커리",
+        "tags": [
+            "과자/베이커리"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50000149",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "과자/베이커리",
+        "catId2": "50000149",
+        "catNm3": "스낵",
+        "catId3": "50016901"
+    },
+    {
+        "rank": 18,
+        "status": "UP",
+        "rankFluctuation": 1,
+        "rankId": "2165824864",
+        "title": "명가삼대떡집",
+        "subTitle": "떡류",
+        "tags": [
+            "떡류"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50019139",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "떡류",
+        "catId2": "50019139"
+    },
+    {
+        "rank": 19,
+        "status": "DOWN",
+        "rankFluctuation": -4,
+        "rankId": "2165824867",
+        "title": "사과",
+        "subTitle": "농산물",
+        "tags": [
+            "농산물"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50000160",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "농산물",
+        "catId2": "50000160",
+        "catNm3": "과일",
+        "catId3": "50000960"
+    },
+    {
+        "rank": 20,
+        "status": "NEW",
+        "rankId": "2165824869",
+        "title": "돈까스",
+        "subTitle": "축산물",
+        "tags": [
+            "축산물"
+        ],
+        "syncDate": "20260423",
+        "categoryId": "50000145",
+        "catLvl": "2",
+        "catNm1": "식품",
+        "catId1": "50000006",
+        "catNm2": "축산물",
+        "catId2": "50000145",
+        "catNm3": "축산가공식품",
+        "catId3": "50001174"
+    }
+]

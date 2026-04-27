@@ -1,0 +1,1053 @@
+<!-- 2026_04_27_Mon_1035
+https://snxbest.naver.com/api/v1/snxbest/keyword/rank?ageType=ALL&categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY -->
+<!-- This XML file does not appear to have any style information associated with it. The document
+tree is shown below. -->
+<KeywordRankDetailResult>
+    <rankId>2165824835</rankId>
+    <products>
+        <products>
+            <isAd>false</isAd>
+            <rank>1</rank>
+            <nvMid>90759027783</nvMid>
+            <productId>90759027783</productId>
+            <chnlProductId>13214517461</chnlProductId>
+            <title>[봉동당] 상하이 버터떡 디저트 수제 루씨허 선물 남친 여친 개별포장 식사대용 답례품</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9075902/90759027783.7.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/13214517461</linkUrl>
+            <discountRate>0</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>1190</priceValue>
+            <price>1,190</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>4.63</reviewScore>
+            <reviewCount>1,015</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels />
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>1190</discountPriceValue>
+            <discountPrice>1,190</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>1100036805</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>3000</deliveryFee>
+            <deliveryFeeType>PAID</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>false</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>13214517461</shpChannelProductId>
+                <shpChannelNo>1100036805</shpChannelNo>
+            </nlog>
+        </products>
+        <products>
+            <isAd>true</isAd>
+            <rank />
+            <nvMid>90947183383</nvMid>
+            <productId>13343763127</productId>
+            <chnlProductId>13402673047</chnlProductId>
+            <title>상하이 초코 버터떡 14개입 세트 쫀득한 디저트 선물 기념일 개별포장 답례품 단체간식</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9094718/90947183383.jpg</imageUrl>
+            <linkUrl>
+                https://ader.naver.com/v1/Nkes2ua21RrfgCrAkVdOmlIaZxdQYluqoX2QqxIFALimCP7508fx8LfDlPtd0XGBWFtFBd-kWt0RnZjphtrLcYlHS1VLvwME1SdniesspcQcAgE6RL7Ufmaqb05Ui_kq7bDtG9QdwgQb_nADLqtjk0CeOQYMRdJ_c9zUDoSn3HqVS9HlX_X6M29-M6nqb-wGPNI51AU6vhAwB1X6S7lNchwnD11h95qC4f5FRYowlnyUQuBUU00cBHVaEyUGWjmwe6gqzJBjVv7eC0ZUJ6Bi5kKlJnNR93ax6ES-msolNhM_njomLgbiKuhZMhpXUANJ?c=m.nplusstore.best.keyword.popular&NaPm=1</linkUrl>
+            <discountRate>11</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>25200</priceValue>
+            <price>25,200</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>0.0</reviewScore>
+            <reviewCount>0</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint />
+            <labels />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult />
+            <mallSeq>12270685</mallSeq>
+            <mallNm>그린잇푸드</mallNm>
+            <mallLinkUrl>https://smartstore.naver.com/greeneatfood</mallLinkUrl>
+            <discountPriceValue>22400</discountPriceValue>
+            <discountPrice>22,400</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq />
+            <minPurchaseQuantity />
+            <deliveryFee>4000</deliveryFee>
+            <deliveryFeeType>PAID</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow />
+            <isKurly />
+            <nlog />
+        </products>
+        <products>
+            <isAd>true</isAd>
+            <rank />
+            <nvMid>90947146400</nvMid>
+            <productId>13343726248</productId>
+            <chnlProductId>13402636064</chnlProductId>
+            <title>상하이 버터떡 14개입 세트 쫀득한 디저트 선물 기념일 개별포장 답례품 단체간식</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9094714/90947146400.jpg</imageUrl>
+            <linkUrl>
+                https://ader.naver.com/v1/Nkes2ua21RrfgCrAkVdOmlIaZxdQYluqoX2QqxIFALimCP7508fx8LfDlPtd0XGBWFtFBd-kWt0RnZjphtrLcYlHS1VLvwME1SdniesspcQcAgE6RL7Ufmaqb05Ui_kq3QSVx2qb8VxopbiI9R5makUsCVndMNq23YgMjdflBuuUzdgaopPJCDomOyihofz3MCuVfq3iGHi660XBJn42fpLrvs6Li3oBk7PyXNGIV5QofRhYnx1kRmZBC36pshirpxoTalrAX3TdYrQGzMG_oxL6N2HTZH0d_Ln6fdMliJCbBfyR4d9MU_iHFug4J3B8?c=m.nplusstore.best.keyword.popular&NaPm=1</linkUrl>
+            <discountRate>11</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>25200</priceValue>
+            <price>25,200</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>0.0</reviewScore>
+            <reviewCount>0</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint />
+            <labels />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult />
+            <mallSeq>12270685</mallSeq>
+            <mallNm>그린잇푸드</mallNm>
+            <mallLinkUrl>https://smartstore.naver.com/greeneatfood</mallLinkUrl>
+            <discountPriceValue>22400</discountPriceValue>
+            <discountPrice>22,400</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq />
+            <minPurchaseQuantity />
+            <deliveryFee>4000</deliveryFee>
+            <deliveryFeeType>PAID</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow />
+            <isKurly />
+            <nlog />
+        </products>
+        <products>
+            <isAd>false</isAd>
+            <rank>2</rank>
+            <nvMid>90738454632</nvMid>
+            <productId>90738454632</productId>
+            <chnlProductId>13193943535</chnlProductId>
+            <title>상하이 버터떡 5개입 외 2종 수제 루씨허 단체 회사 대량 답례품 구움과자</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9073845/90738454632.3.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/13193943535</linkUrl>
+            <discountRate>0</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>9900</priceValue>
+            <price>9,900</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>4.75</reviewScore>
+            <reviewCount>774</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels />
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>9900</discountPriceValue>
+            <discountPrice>9,900</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>101300580</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>3000</deliveryFee>
+            <deliveryFeeType>PAID</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>false</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>13193943535</shpChannelProductId>
+                <shpChannelNo>101300580</shpChannelNo>
+            </nlog>
+        </products>
+        <products>
+            <isAd>false</isAd>
+            <rank>3</rank>
+            <nvMid>90903522578</nvMid>
+            <productId>90903522578</productId>
+            <chnlProductId>13359012246</chnlProductId>
+            <title>[릿치스밀] 버터떡 (25g X 6개)</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9090352/90903522578.1.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/13359012246</linkUrl>
+            <discountRate>0</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>8360</priceValue>
+            <price>8,360</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>4.64</reviewScore>
+            <reviewCount>148</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels />
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>8360</discountPriceValue>
+            <discountPrice>8,360</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>102655931</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>3000</deliveryFee>
+            <deliveryFeeType>PAID</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>true</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>13359012246</shpChannelProductId>
+                <shpChannelNo>102655931</shpChannelNo>
+            </nlog>
+        </products>
+        <products>
+            <isAd>false</isAd>
+            <rank>4</rank>
+            <nvMid>90769062551</nvMid>
+            <productId>90769062551</productId>
+            <chnlProductId>13224552220</chnlProductId>
+            <title>상하이 버터떡 버터모찌 플레인(10개입)</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9076906/90769062551.1.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/13224552220</linkUrl>
+            <discountRate>0</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>14900</priceValue>
+            <price>14,900</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>4.79</reviewScore>
+            <reviewCount>63</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels />
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>14900</discountPriceValue>
+            <discountPrice>14,900</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>100130493</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>3000</deliveryFee>
+            <deliveryFeeType>PAID</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>false</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>13224552220</shpChannelProductId>
+                <shpChannelNo>100130493</shpChannelNo>
+            </nlog>
+        </products>
+        <products>
+            <isAd>false</isAd>
+            <rank>5</rank>
+            <nvMid>90787800741</nvMid>
+            <productId>90787800741</productId>
+            <chnlProductId>13243290409</chnlProductId>
+            <title>버터떡 답례품 개별포장 외 4종 단체 회사 대량 선물 수제 루씨허 상하이 디저트 구움과자</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9078780/90787800741.6.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/13243290409</linkUrl>
+            <discountRate>0</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>1500</priceValue>
+            <price>1,500</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>4.47</reviewScore>
+            <reviewCount>43</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels />
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>1500</discountPriceValue>
+            <discountPrice>1,500</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>101070052</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>3500</deliveryFee>
+            <deliveryFeeType>PAID</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>false</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>13243290409</shpChannelProductId>
+                <shpChannelNo>101070052</shpChannelNo>
+            </nlog>
+        </products>
+        <products>
+            <isAd>false</isAd>
+            <rank>6</rank>
+            <nvMid>90762008651</nvMid>
+            <productId>90762008651</productId>
+            <chnlProductId>13217498320</chnlProductId>
+            <title>원투고홈 상하이 버터떡 호박인절미 5개입 수제 디저트 선물 결혼 답례품 단체 간식 구움과자</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9076200/90762008651.4.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/13217498320</linkUrl>
+            <discountRate>0</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>7000</priceValue>
+            <price>7,000</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>4.74</reviewScore>
+            <reviewCount>271</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels />
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>7000</discountPriceValue>
+            <discountPrice>7,000</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>101938422</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>3000</deliveryFee>
+            <deliveryFeeType>PAID</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>false</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>13217498320</shpChannelProductId>
+                <shpChannelNo>101938422</shpChannelNo>
+            </nlog>
+        </products>
+        <products>
+            <isAd>false</isAd>
+            <rank>7</rank>
+            <nvMid>90866654580</nvMid>
+            <productId>90866654580</productId>
+            <chnlProductId>13322144248</chnlProductId>
+            <title>업소용 벌크 상하이 버터떡 30g 20개입 디저트 수제 루씨허 대용량</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9086665/90866654580.4.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/13322144248</linkUrl>
+            <discountRate>0</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>16200</priceValue>
+            <price>16,200</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>4.63</reviewScore>
+            <reviewCount>8</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels />
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>16200</discountPriceValue>
+            <discountPrice>16,200</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>100852126</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>4500</deliveryFee>
+            <deliveryFeeType>PAID</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>false</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>13322144248</shpChannelProductId>
+                <shpChannelNo>100852126</shpChannelNo>
+            </nlog>
+        </products>
+        <products>
+            <isAd>false</isAd>
+            <rank>8</rank>
+            <nvMid>90818718446</nvMid>
+            <productId>90818718446</productId>
+            <chnlProductId>13274208114</chnlProductId>
+            <title>루씨허 상하이 버터떡 디저트 수제 단체간식 회사 대량 답례품 선물</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9081871/90818718446.7.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/13274208114</linkUrl>
+            <discountRate>25</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>1600</priceValue>
+            <price>1,600</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>4.37</reviewScore>
+            <reviewCount>51</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels />
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>1190</discountPriceValue>
+            <discountPrice>1,190</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>102332904</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>3000</deliveryFee>
+            <deliveryFeeType>PAID</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>false</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>13274208114</shpChannelProductId>
+                <shpChannelNo>102332904</shpChannelNo>
+            </nlog>
+        </products>
+        <products>
+            <isAd>false</isAd>
+            <rank>9</rank>
+            <nvMid>90768042895</nvMid>
+            <productId>90768042895</productId>
+            <chnlProductId>13223532564</chnlProductId>
+            <title>상하이 버터떡 콰삭쫀득 수제디저트 단체간식 답례품 디저트</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9076804/90768042895.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/13223532564</linkUrl>
+            <discountRate>0</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>1950</priceValue>
+            <price>1,950</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>4.77</reviewScore>
+            <reviewCount>69</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels />
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>1950</discountPriceValue>
+            <discountPrice>1,950</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>102079433</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>3000</deliveryFee>
+            <deliveryFeeType>PAID</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>false</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>13223532564</shpChannelProductId>
+                <shpChannelNo>102079433</shpChannelNo>
+            </nlog>
+        </products>
+        <products>
+            <isAd>false</isAd>
+            <rank>10</rank>
+            <nvMid>90788803620</nvMid>
+            <productId>90788803620</productId>
+            <chnlProductId>13244293288</chnlProductId>
+            <title>대형 루씨허 상하이 버터떡 5개입 저당 버터떡 구움 과자 답례품 결혼식 조문 회사 선물</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9078880/90788803620.2.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/13244293288</linkUrl>
+            <discountRate>50</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>17000</priceValue>
+            <price>17,000</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>4.35</reviewScore>
+            <reviewCount>26</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels />
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>8500</discountPriceValue>
+            <discountPrice>8,500</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>101790771</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>3000</deliveryFee>
+            <deliveryFeeType>PAID</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>false</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>13244293288</shpChannelProductId>
+                <shpChannelNo>101790771</shpChannelNo>
+            </nlog>
+        </products>
+        <products>
+            <isAd>false</isAd>
+            <rank>11</rank>
+            <nvMid>90903778724</nvMid>
+            <productId>90903778724</productId>
+            <chnlProductId>13359268392</chnlProductId>
+            <title>[이웃집통통이] 버터떡 (25g X 6개입)</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9090377/90903778724.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/13359268392</linkUrl>
+            <discountRate>0</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>15900</priceValue>
+            <price>15,900</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>4.7</reviewScore>
+            <reviewCount>10</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels />
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>15900</discountPriceValue>
+            <discountPrice>15,900</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>102655931</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>3000</deliveryFee>
+            <deliveryFeeType>PAID</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>true</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>13359268392</shpChannelProductId>
+                <shpChannelNo>102655931</shpChannelNo>
+            </nlog>
+        </products>
+        <products>
+            <isAd>false</isAd>
+            <rank>12</rank>
+            <nvMid>90822629048</nvMid>
+            <productId>90822629048</productId>
+            <chnlProductId>13278118716</chnlProductId>
+            <title>상하이 버터떡 글루텐프리 빵 버터 떡 1개</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9082262/90822629048.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/13278118716</linkUrl>
+            <discountRate>94</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>55000</priceValue>
+            <price>55,000</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>4.86</reviewScore>
+            <reviewCount>42</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels />
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>2900</discountPriceValue>
+            <discountPrice>2,900</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>100111289</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>3000</deliveryFee>
+            <deliveryFeeType>PAID</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>false</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>13278118716</shpChannelProductId>
+                <shpChannelNo>100111289</shpChannelNo>
+            </nlog>
+        </products>
+        <products>
+            <isAd>false</isAd>
+            <rank>13</rank>
+            <nvMid>90762724094</nvMid>
+            <productId>90762724094</productId>
+            <chnlProductId>13218213763</chnlProductId>
+            <title>다양하게 즐기는 상하이 버터떡 5종</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9076272/90762724094.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/13218213763</linkUrl>
+            <discountRate>15</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>10000</priceValue>
+            <price>10,000</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>4.63</reviewScore>
+            <reviewCount>16</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels>
+                <labels>무료배송</labels>
+            </labels>
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>8500</discountPriceValue>
+            <discountPrice>8,500</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>102567281</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>0</deliveryFee>
+            <deliveryFeeType>FREE</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>false</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>13218213763</shpChannelProductId>
+                <shpChannelNo>102567281</shpChannelNo>
+            </nlog>
+        </products>
+        <products>
+            <isAd>false</isAd>
+            <rank>14</rank>
+            <nvMid>90771454670</nvMid>
+            <productId>90771454670</productId>
+            <chnlProductId>13226944339</chnlProductId>
+            <title>[5개입] 상하이 버터떡 플레인맛 수제 찹쌀 구움과자 선물 답례품</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9077145/90771454670.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/13226944339</linkUrl>
+            <discountRate>6</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>7500</priceValue>
+            <price>7,500</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>5.0</reviewScore>
+            <reviewCount>7</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels />
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>7000</discountPriceValue>
+            <discountPrice>7,000</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>102656848</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>3000</deliveryFee>
+            <deliveryFeeType>PAID</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>false</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>13226944339</shpChannelProductId>
+                <shpChannelNo>102656848</shpChannelNo>
+            </nlog>
+        </products>
+        <products>
+            <isAd>false</isAd>
+            <rank>15</rank>
+            <nvMid>90820274078</nvMid>
+            <productId>90820274078</productId>
+            <chnlProductId>13275763746</chnlProductId>
+            <title>느린맛 상하이 버터떡 저당떡 대용량 65g 5개입</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9082027/90820274078.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/13275763746</linkUrl>
+            <discountRate>0</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>9900</priceValue>
+            <price>9,900</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>5.0</reviewScore>
+            <reviewCount>15</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels />
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>9900</discountPriceValue>
+            <discountPrice>9,900</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>102716234</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>3000</deliveryFee>
+            <deliveryFeeType>PAID</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>false</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>13275763746</shpChannelProductId>
+                <shpChannelNo>102716234</shpChannelNo>
+            </nlog>
+        </products>
+        <products>
+            <isAd>false</isAd>
+            <rank>16</rank>
+            <nvMid>90911929089</nvMid>
+            <productId>90911929089</productId>
+            <chnlProductId>13367418753</chnlProductId>
+            <title>[봉동당] 호박인절미 버터떡 디저트 상하이 수제 선물 남친 여친 개별포장 식사대용 답례품</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9091192/90911929089.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/13367418753</linkUrl>
+            <discountRate>0</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>1990</priceValue>
+            <price>1,990</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>5.0</reviewScore>
+            <reviewCount>2</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels />
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>1990</discountPriceValue>
+            <discountPrice>1,990</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>1100036805</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>3000</deliveryFee>
+            <deliveryFeeType>PAID</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>false</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>13367418753</shpChannelProductId>
+                <shpChannelNo>1100036805</shpChannelNo>
+            </nlog>
+        </products>
+        <products>
+            <isAd>false</isAd>
+            <rank>17</rank>
+            <nvMid>90777937194</nvMid>
+            <productId>90777937194</productId>
+            <chnlProductId>13233426863</chnlProductId>
+            <title>버터바닐라 상하이 고메 버터떡 스틱 회사 간식 답례품 구움과자 루씨허</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9077793/90777937194.2.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/13233426863</linkUrl>
+            <discountRate>0</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>1800</priceValue>
+            <price>1,800</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>5.0</reviewScore>
+            <reviewCount>1</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels />
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>1800</discountPriceValue>
+            <discountPrice>1,800</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>102737064</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>3000</deliveryFee>
+            <deliveryFeeType>PAID</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>false</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>13233426863</shpChannelProductId>
+                <shpChannelNo>102737064</shpChannelNo>
+            </nlog>
+        </products>
+        <products>
+            <isAd>false</isAd>
+            <rank>18</rank>
+            <nvMid>90789167459</nvMid>
+            <productId>90789167459</productId>
+            <chnlProductId>13244657127</chnlProductId>
+            <title>[스티커 제작 서비스] 어린이날 상하이 버터떡 수제 디저트 단체 간식 답례품 인사이동</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9078916/90789167459.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/13244657127</linkUrl>
+            <discountRate>28</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>1390</priceValue>
+            <price>1,390</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>4.78</reviewScore>
+            <reviewCount>9</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels />
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>990</discountPriceValue>
+            <discountPrice>990</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>100557631</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>3000</deliveryFee>
+            <deliveryFeeType>PAID</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>false</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>13244657127</shpChannelProductId>
+                <shpChannelNo>100557631</shpChannelNo>
+            </nlog>
+        </products>
+        <products>
+            <isAd>false</isAd>
+            <rank>19</rank>
+            <nvMid>90146008590</nvMid>
+            <productId>90146008590</productId>
+            <chnlProductId>12601497734</chnlProductId>
+            <title>청년떡집 저당절편X박서진 땅콩버터&말차 간식떡 골라담기 40gx20개입</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9014600/90146008590.2.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/12601497734</linkUrl>
+            <discountRate>10</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>29800</priceValue>
+            <price>29,800</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>4.66</reviewScore>
+            <reviewCount>421</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels>
+                <labels>무료배송</labels>
+            </labels>
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>26800</discountPriceValue>
+            <discountPrice>26,800</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>100095618</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>0</deliveryFee>
+            <deliveryFeeType>FREE</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>false</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>12601497734</shpChannelProductId>
+                <shpChannelNo>100095618</shpChannelNo>
+            </nlog>
+        </products>
+        <products>
+            <isAd>false</isAd>
+            <rank>20</rank>
+            <nvMid>90901962283</nvMid>
+            <productId>90901962283</productId>
+            <chnlProductId>13357451951</chnlProductId>
+            <title>상하이 버터떡 밤 모양 고메버터 찹쌀떡 카페 블룸 루씨허 , 개별포장</title>
+            <imageUrl>https://shopping-phinf.pstatic.net/main_9090196/90901962283.1.jpg?type=f450</imageUrl>
+            <linkUrl>https://m.smartstore.naver.com/main/products/13357451951</linkUrl>
+            <discountRate>0</discountRate>
+            <discountRateUnit>%</discountRateUnit>
+            <priceValue>17900</priceValue>
+            <price>17,900</price>
+            <priceUnit>원</priceUnit>
+            <reviewScore>5.0</reviewScore>
+            <reviewCount>2</reviewCount>
+            <payPointRatio />
+            <payPointValue />
+            <payPoint>0</payPoint>
+            <labels>
+                <labels>무료배송</labels>
+            </labels>
+            <tags />
+            <isZzim>false</isZzim>
+            <isArrivalGuarantee />
+            <isAdult>false</isAdult>
+            <mallSeq />
+            <mallNm />
+            <mallLinkUrl />
+            <discountPriceValue>17900</discountPriceValue>
+            <discountPrice>17,900</discountPrice>
+            <discountPriceUnit>원</discountPriceUnit>
+            <couponPriceValue />
+            <couponPrice />
+            <couponPriceUnit />
+            <syncDate>20260427</syncDate>
+            <chnlSeq>101940402</chnlSeq>
+            <minPurchaseQuantity>1</minPurchaseQuantity>
+            <deliveryFee>0</deliveryFee>
+            <deliveryFeeType>FREE</deliveryFeeType>
+            <hasInstallationFee>false</hasInstallationFee>
+            <isDeliveryNow>false</isDeliveryNow>
+            <isKurly>false</isKurly>
+            <nlog>
+                <contentsType>prod</contentsType>
+                <shpChannelProductId>13357451951</shpChannelProductId>
+                <shpChannelNo>101940402</shpChannelNo>
+            </nlog>
+        </products>
+    </products>
+    <isFallback>false</isFallback>
+    <sasParameters>
+        q=%EB%B2%84%ED%84%B0%EB%96%A1&sq_or_catId=50019239&st_isSearch=exist:1&r_format=json&st=product&sm=all.basic&pr=shopping_best&ic=product_best&version=1.0.0&display=20&so=rel.dsc&rp=none</sasParameters>
+    <query>버터떡</query>
+    <impressionEventUrl>
+        https://ader.naver.com/v1/Nkes2ua21RrfgCrAkVdOmlIaZxdQYluqoX2QqxIFALiwdDBNUGluDVfhfAq_4btnut1Y0-cYdO9-pmelH02TAAhN4FUAmG1UstnvjBeZU0ityN5ONaFPvd79d9r7LcHp?d=1&c=m.nplusstore.best.keyword.popular</impressionEventUrl>
+    <showAd>true</showAd>
+    <age />
+    <gender />
+    <catId1 />
+    <catId2 />
+    <catId3 />
+</KeywordRankDetailResult>

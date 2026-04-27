@@ -1,0 +1,8 @@
+food 웹페이지
+https://snxbest.naver.com/keyword/best?categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY&ageType=ALL
+
+food 제품
+https://snxbest.naver.com/api/v1/snxbest/keyword/rank/2165824835?showAd=true&channel=m.nplusstore.best.keyword.popular&stmsId=100410832&areaCode=bkeypop&ymd=20260423
+
+food 랭킹
+https://snxbest.naver.com/api/v1/snxbest/keyword/rank?ageType=ALL&categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY
