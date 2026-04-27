@@ -1,78 +1,30 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>주문 취소 및 환불 | Heritage Namhae</title>
+    <title>二쇰Ц 痍⑥냼 諛??섎텋 | Heritage Namhae</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Work+Sans:wght@300;400;500;600&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#0066cc",
-                        "secondary": "#0052a3",
-                        "tertiary": "#0080ff",
-                        "background": "#f0f7ff",
-                        "surface": "#ffffff",
-                        "surface-bright": "#ffffff",
-                        "surface-container": "#e6f3ff",
-                        "surface-container-low": "#f0f7ff",
-                        "surface-container-lowest": "#ffffff",
-                        "surface-container-high": "#cce0ff",
-                        "surface-container-highest": "#b3d1ff",
-                        "primary-container": "#e6f3ff",
-                        "primary-fixed": "#d1e9ff",
-                        "primary-fixed-dim": "#99c2ff",
-                        "secondary-container": "#cce0ff",
-                        "tertiary-fixed": "#b3d9ff",
-                        "outline": "#0066cc",
-                        "outline-variant": "#99c2ff",
-                        "on-surface": "#003366",
-                        "on-surface-variant": "#004080",
-                        "on-primary": "#ffffff",
-                        "on-primary-container": "#003366",
-                        "on-secondary": "#ffffff",
-                        "on-tertiary": "#ffffff"
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
-                    },
-                    fontFamily: {
-                        "headline": ["Inter", "sans-serif"],
-                        "body": ["Inter", "sans-serif"],
-                        "label": ["Inter", "sans-serif"]
-                    }
-                }
-            }
-        }
-    </script>
     <link rel="stylesheet" href="css/cancel_orders.css">
-</head>
+    <link rel="stylesheet" href="css/vanilla-utilities.css">`r`n</head>
 <body class="min-h-screen text-on-surface bg-background">
     <div class="max-w-7xl mx-auto px-6 py-10">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-8">
             <div>
                 <a href="dashboard.html" class="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-secondary transition-colors">
                     <span class="material-symbols-outlined text-[18px]">arrow_back</span>
-                    대시보드로 돌아가기
-                </a>
-                <h1 class="mt-4 text-3xl font-bold text-on-surface">주문 취소 및 환불 목록</h1>
-                <p class="mt-2 text-sm text-on-surface-variant">취소 신청 접수 현황과 완료 상태를 빠르게 확인할 수 있습니다.</p>
+                    ??쒕낫?쒕줈 ?뚯븘媛湲?                </a>
+                <h1 class="mt-4 text-3xl font-bold text-on-surface">二쇰Ц 痍⑥냼 諛??섎텋 紐⑸줉</h1>
+                <p class="mt-2 text-sm text-on-surface-variant">痍⑥냼 ?좎껌 ?묒닔 ?꾪솴怨??꾨즺 ?곹깭瑜?鍮좊Ⅴ寃??뺤씤?????덉뒿?덈떎.</p>
             </div>
             <div class="grid grid-cols-2 gap-4 sm:flex">
                 <div class="bg-surface rounded-2xl px-5 py-4 shadow-sm border border-outline-variant min-w-[140px]">
-                    <p class="text-[11px] font-bold text-outline-variant uppercase tracking-widest">취소 접수</p>
-                    <p class="mt-2 text-2xl font-bold text-rose-600">8건</p>
+                    <p class="text-[11px] font-bold text-outline-variant uppercase tracking-widest">痍⑥냼 ?묒닔</p>
+                    <p class="mt-2 text-2xl font-bold text-rose-600">8嫄?/p>
                 </div>
                 <div class="bg-surface rounded-2xl px-5 py-4 shadow-sm border border-outline-variant min-w-[140px]">
-                    <p class="text-[11px] font-bold text-outline-variant uppercase tracking-widest">환불 완료</p>
-                    <p class="mt-2 text-2xl font-bold text-primary">5건</p>
+                    <p class="text-[11px] font-bold text-outline-variant uppercase tracking-widest">?섎텋 ?꾨즺</p>
+                    <p class="mt-2 text-2xl font-bold text-primary">5嫄?/p>
                 </div>
             </div>
         </div>
@@ -80,12 +32,12 @@
         <div class="bg-surface rounded-2xl shadow-sm border border-outline-variant overflow-hidden">
             <div class="px-6 py-5 border-b border-outline-variant/20 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
-                    <h2 class="text-lg font-bold text-on-surface">취소 주문 목록</h2>
-                    <p class="text-sm text-on-surface-variant mt-1">주문 취소 신청 접수부터 완료일까지 단계별로 확인하세요.</p>
+                    <h2 class="text-lg font-bold text-on-surface">痍⑥냼 二쇰Ц 紐⑸줉</h2>
+                    <p class="text-sm text-on-surface-variant mt-1">二쇰Ц 痍⑥냼 ?좎껌 ?묒닔遺???꾨즺?쇨퉴吏 ?④퀎蹂꾨줈 ?뺤씤?섏꽭??</p>
                 </div>
                 <div class="relative">
                     <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant text-[18px]">search</span>
-                    <input type="text" placeholder="주문번호 또는 취소 사유 검색" class="w-full md:w-72 pl-11 pr-4 py-2.5 bg-surface-container-low border border-transparent rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary transition-shadow">
+                    <input type="text" placeholder="二쇰Ц踰덊샇 ?먮뒗 痍⑥냼 ?ъ쑀 寃?? class="w-full md:w-72 pl-11 pr-4 py-2.5 bg-surface-container-low border border-transparent rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary transition-shadow">
                 </div>
             </div>
 
@@ -93,48 +45,48 @@
                 <table class="w-full min-w-[980px] text-left border-collapse">
                     <thead class="bg-surface-container-low">
                         <tr>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">주문번호</th>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">주문 취소 신청 접수</th>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">완료 여부</th>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">주문취소 이유</th>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">주문 취소 완료일</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">二쇰Ц踰덊샇</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">二쇰Ц 痍⑥냼 ?좎껌 ?묒닔</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">?꾨즺 ?щ?</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">二쇰Ц痍⑥냼 ?댁쑀</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">二쇰Ц 痍⑥냼 ?꾨즺??/th>
                         </tr>
                     </thead>
                     <tbody class="text-sm">
                         <tr class="border-t border-gray-100 hover:bg-rose-50/30 transition-colors">
                             <td class="py-5 px-6 font-bold text-gray-800">NH-20260418-031</td>
                             <td class="py-5 px-6 text-gray-700 font-medium">2026-04-18 10:12</td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>완료</span></td>
-                            <td class="py-5 px-6 text-gray-600">단순 변심</td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>?꾨즺</span></td>
+                            <td class="py-5 px-6 text-gray-600">?⑥닚 蹂??/td>
                             <td class="py-5 px-6 text-gray-700 font-medium">2026-04-19</td>
                         </tr>
                         <tr class="border-t border-gray-100 hover:bg-rose-50/30 transition-colors">
                             <td class="py-5 px-6 font-bold text-gray-800">NH-20260417-022</td>
                             <td class="py-5 px-6 text-gray-700 font-medium">2026-04-17 14:46</td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>처리 중</span></td>
-                            <td class="py-5 px-6 text-gray-600">배송 지연</td>
-                            <td class="py-5 px-6 text-gray-400 font-medium">진행 중</td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>泥섎━ 以?/span></td>
+                            <td class="py-5 px-6 text-gray-600">諛곗넚 吏??/td>
+                            <td class="py-5 px-6 text-gray-400 font-medium">吏꾪뻾 以?/td>
                         </tr>
                         <tr class="border-t border-gray-100 hover:bg-rose-50/30 transition-colors">
                             <td class="py-5 px-6 font-bold text-gray-800">NH-20260415-008</td>
                             <td class="py-5 px-6 text-gray-700 font-medium">2026-04-15 09:28</td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>완료</span></td>
-                            <td class="py-5 px-6 text-gray-600">상품 파손</td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>?꾨즺</span></td>
+                            <td class="py-5 px-6 text-gray-600">?곹뭹 ?뚯넀</td>
                             <td class="py-5 px-6 text-gray-700 font-medium">2026-04-16</td>
                         </tr>
                         <tr class="border-t border-gray-100 hover:bg-rose-50/30 transition-colors">
                             <td class="py-5 px-6 font-bold text-gray-800">NH-20260412-019</td>
                             <td class="py-5 px-6 text-gray-700 font-medium">2026-04-12 17:03</td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>완료</span></td>
-                            <td class="py-5 px-6 text-gray-600">중복 주문</td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>?꾨즺</span></td>
+                            <td class="py-5 px-6 text-gray-600">以묐났 二쇰Ц</td>
                             <td class="py-5 px-6 text-gray-700 font-medium">2026-04-13</td>
                         </tr>
                         <tr class="border-t border-gray-100 hover:bg-rose-50/30 transition-colors">
                             <td class="py-5 px-6 font-bold text-gray-800">NH-20260411-005</td>
                             <td class="py-5 px-6 text-gray-700 font-medium">2026-04-11 11:54</td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>반려</span></td>
-                            <td class="py-5 px-6 text-gray-600">배송 완료 후 단순 취소</td>
-                            <td class="py-5 px-6 text-gray-400 font-medium">반려 처리</td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>諛섎젮</span></td>
+                            <td class="py-5 px-6 text-gray-600">諛곗넚 ?꾨즺 ???⑥닚 痍⑥냼</td>
+                            <td class="py-5 px-6 text-gray-400 font-medium">諛섎젮 泥섎━</td>
                         </tr>
                     </tbody>
                 </table>
@@ -147,7 +99,7 @@
         <div class="col-span-1 md:col-span-1">
             <div class="text-lg font-bold text-white mb-6 font-headline">Heritage Namhae</div>
             <p class="text-white/80 mb-8 max-w-xs">
-                남해군 공식 헤리티지 몰, 우리 해안 낙원의 진짜 맛을 당신의 집으로 바로 전달합니다.
+                ?⑦빐援?怨듭떇 ?ㅻ━?곗? 紐? ?곕━ ?댁븞 ?숈썝??吏꾩쭨 留쏆쓣 ?뱀떊??吏묒쑝濡?諛붾줈 ?꾨떖?⑸땲??
             </p>
             <div class="flex gap-4">
                 <a class="footer-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img class="footer-social-icon" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="Instagram" /></a>
@@ -157,23 +109,23 @@
             </div>
         </div>
         <div>
-            <h4 class="font-bold text-white mb-6">서비스</h4>
+            <h4 class="font-bold text-white mb-6">?쒕퉬??/h4>
             <ul class="space-y-4">
-                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">회사 소개</a></li>
-                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">배송 및 추적</a></li>
-                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">이용 약관</a></li>
+                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">?뚯궗 ?뚭컻</a></li>
+                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">諛곗넚 諛?異붿쟻</a></li>
+                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">?댁슜 ?쎄?</a></li>
             </ul>
         </div>
         <div>
-            <h4 class="font-bold text-white mb-6">연락처</h4>
+            <h4 class="font-bold text-white mb-6">?곕씫泥?/h4>
             <ul class="space-y-4">
-                <li class="text-white/70">전화: 055-123-4567</li>
-                <li class="text-white/70">이메일: help@namhaeheritage.kr</li>
+                <li class="text-white/70">?꾪솕: 055-123-4567</li>
+                <li class="text-white/70">?대찓?? help@namhaeheritage.kr</li>
             </ul>
         </div>
         <div>
-            <h4 class="font-bold text-white mb-6">위치</h4>
-            <p class="text-white/70 mb-4">대한민국 경상남도 남해군청</p>
+            <h4 class="font-bold text-white mb-6">?꾩튂</h4>
+            <p class="text-white/70 mb-4">??쒕?援?寃쎌긽?⑤룄 ?⑦빐援곗껌</p>
             <div class="h-32 w-full rounded-xl bg-[#0066cc]/20 overflow-hidden">
                 <img alt="Location Map" class="w-full h-full object-cover" style="filter: grayscale(100%) sepia(100%) hue-rotate(200deg) saturate(150%);"
                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2F8UAsYBf8f-PXSCkWz8tPMj1yPAwzNqFnUHdLvbP3NxWzmKZvO52Qb76KLXKdR7GifJMom5TfallzE3oUiWx6wj1VUqfQ-OWmzQVYplGPmVjO52jxg3e8NQdFOU-O_t0DJrzvtWD0uaWIpCc4fRIYzS0-oPNzSMqm3dfpC4iojREb1bO_k-endojrJHEh2Vek1i1HWAgmAM27qGPEC2EUe-1x_hxNJOM3j_NI-TicipehzW-arsFab0btwNoZOq5wXODkjGdXZM"/>
@@ -181,10 +133,10 @@
         </div>
     </div>
     <div class="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-zinc-200/50 flex flex-col md:flex-row justify-between gap-4">
-        <p class="text-white/60">© 2024 에디토리얼 헤리티지 남해. 모든 권리 보유.</p>
+        <p class="text-white/60">짤 2024 ?먮뵒?좊━???ㅻ━?곗? ?⑦빐. 紐⑤뱺 沅뚮━ 蹂댁쑀.</p>
         <div class="flex gap-6">
-            <a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">개인정보 처리방침</a>
-            <a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">라이선스 정보</a>
+            <a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">媛쒖씤?뺣낫 泥섎━諛⑹묠</a>
+            <a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">?쇱씠?좎뒪 ?뺣낫</a>
         </div>
     </div>
 </footer>

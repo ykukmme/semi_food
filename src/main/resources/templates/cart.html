@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="ko"><head>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>쇼핑 카트 | Heritage Namhae</title>
@@ -72,7 +72,7 @@
 <!-- TopNavBar -->
 <header class="fixed top-0 left-0 right-0 z-50 bg-white/10 backdrop-blur-md border-b border-outline-variant/20 transition-all duration-300">
 <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-<div class="text-2xl font-black tracking-tighter text-[#0066cc]"><a href="index.html">Heritage Namhae</a></div>
+<div class="text-2xl font-black tracking-tighter text-[#0066cc]"><a th:href="@{/}">Heritage Namhae</a></div>
 <div class="flex items-center gap-6">
 <div class="relative">
 <a class="relative inline-flex items-center justify-center text-[#0066cc] duration-200" href="cart.html"><span class="material-symbols-outlined">shopping_bag</span></a>
@@ -100,7 +100,7 @@
 <div class="flex items-start gap-3">
 <input type="checkbox" v-model="item.checked" @change="updateItemCheck(item)" class="mt-1 w-5 h-5 text-primary rounded focus:ring-primary focus:ring-2">
 <div>
-<h3 class="text-xl font-bold text-on-surface">{{ item.name }}</h3>
+<h3 class="text-xl font-bold text-on-surface" th:text="${product.name}">{{ item.name }}</h3>
 <p class="text-sm text-tertiary font-medium">{{ item.collection }}</p>
 </div>
 </div>
@@ -109,7 +109,7 @@
 <div class="mt-6 flex flex-wrap items-center justify-between gap-4">
 <div class="flex items-center bg-surface-container-high rounded-full px-3 py-1">
 <button :class="{'opacity-30 cursor-not-allowed': item.quantity &lt;= minQtyFor(item)}" :disabled="item.quantity &lt;= minQtyFor(item)" @click="decrementQty(item)" class="material-symbols-outlined text-on-surface-variant p-1 hover:text-primary transition-colors">remove</button>
-<span class="inline-flex min-w-[2.5rem] items-center justify-center px-2 font-bold text-on-surface tabular-nums">{{ item.quantity }}</span>
+<span class="inline-flex min-w-[2.5rem] items-center justify-center px-2 font-bold text-on-surface tabular-nums" th:text="${cartItem.quantity}">{{ item.quantity }}</span>
 <button @click="incrementQty(item)" class="material-symbols-outlined text-on-surface-variant p-1 hover:text-primary transition-colors">add</button>
 </div>
 <div class="text-lg font-bold text-on-surface">₩{{ (item.price * item.quantity).toLocaleString() }}</div>
@@ -125,11 +125,11 @@
 <div class="space-y-4 mb-8">
 <div class="flex justify-between text-on-surface-variant">
 <span class="font-body">총 제품 가격</span>
-<span class="font-bold text-on-surface">₩{{ totalPrice.toLocaleString() }}</span>
+<span class="font-bold text-on-surface" th:text="${product.price * cartItem.quantity}">₩{{ totalPrice.toLocaleString() }}</span>
 </div>
 <div class="pt-4 border-t border-outline-variant/20 flex justify-between items-end">
 <span class="font-headline font-bold text-lg text-on-surface">총 금액</span>
-<span class="font-headline font-extrabold text-3xl text-primary">₩{{ totalPrice.toLocaleString() }}</span>
+<span class="font-headline font-extrabold text-3xl text-primary" th:text="${product.price * cartItem.quantity}">₩{{ totalPrice.toLocaleString() }}</span>
 </div>
 </div>
 <div class="space-y-4">

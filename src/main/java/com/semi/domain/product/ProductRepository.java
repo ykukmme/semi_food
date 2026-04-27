@@ -3,6 +3,7 @@ package com.semi.domain.product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
@@ -11,4 +12,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     /** 자동발주 활성 상품 조회 */
     List<Product> findByAutoOrderTrue();
+
+    /** ID에 해당하는 상품 단건 조회 */
+    Optional<Product> findProductById(Long id);
+
+    
 }

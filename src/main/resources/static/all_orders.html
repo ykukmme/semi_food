@@ -1,77 +1,29 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>모든 주문 | Heritage Namhae</title>
+    <title>紐⑤뱺 二쇰Ц | Heritage Namhae</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Work+Sans:wght@300;400;500;600&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#0066cc",
-                        "secondary": "#0052a3",
-                        "tertiary": "#0080ff",
-                        "background": "#f0f7ff",
-                        "surface": "#ffffff",
-                        "surface-bright": "#ffffff",
-                        "surface-container": "#e6f3ff",
-                        "surface-container-low": "#f0f7ff",
-                        "surface-container-lowest": "#ffffff",
-                        "surface-container-high": "#cce0ff",
-                        "surface-container-highest": "#b3d1ff",
-                        "primary-container": "#e6f3ff",
-                        "primary-fixed": "#d1e9ff",
-                        "primary-fixed-dim": "#99c2ff",
-                        "secondary-container": "#cce0ff",
-                        "tertiary-fixed": "#b3d9ff",
-                        "outline": "#0066cc",
-                        "outline-variant": "#99c2ff",
-                        "on-surface": "#003366",
-                        "on-surface-variant": "#004080",
-                        "on-primary": "#ffffff",
-                        "on-primary-container": "#003366",
-                        "on-secondary": "#ffffff",
-                        "on-tertiary": "#ffffff"
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
-                    },
-                    fontFamily: {
-                        "headline": ["Inter", "sans-serif"],
-                        "body": ["Inter", "sans-serif"],
-                        "label": ["Inter", "sans-serif"]
-                    }
-                }
-            }
-        }
-    </script>
     <link rel="stylesheet" href="css/all_orders.css">
-</head>
+    <link rel="stylesheet" href="css/vanilla-utilities.css">`r`n</head>
 <body class="min-h-screen text-on-surface bg-background">
     <div class="max-w-7xl mx-auto px-6 py-10">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-8">
             <div>
                 <a href="dashboard.html" class="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-secondary transition-colors">
                     <span class="material-symbols-outlined text-[18px]">arrow_back</span>
-                    대시보드로 돌아가기
-                </a>
-                <h1 class="mt-4 text-3xl font-bold text-on-surface">내가 주문한 모든 주문</h1>
-                <p class="mt-2 text-sm text-on-surface-variant">최근 주문 내역과 배송 상태, 재구매 흐름을 한 번에 확인할 수 있습니다.</p>
+                    ??쒕낫?쒕줈 ?뚯븘媛湲?                </a>
+                <h1 class="mt-4 text-3xl font-bold text-on-surface">?닿? 二쇰Ц??紐⑤뱺 二쇰Ц</h1>
+                <p class="mt-2 text-sm text-on-surface-variant">理쒓렐 二쇰Ц ?댁뿭怨?諛곗넚 ?곹깭, ?ш뎄留??먮쫫????踰덉뿉 ?뺤씤?????덉뒿?덈떎.</p>
             </div>
             <div class="grid grid-cols-2 gap-4 sm:flex">
                 <div class="bg-surface rounded-2xl px-5 py-4 shadow-sm border border-outline-variant min-w-[140px]">
-                    <p class="text-[11px] font-bold text-outline-variant uppercase tracking-widest">전체 주문</p>
-                    <p class="mt-2 text-2xl font-bold text-on-surface">24건</p>
+                    <p class="text-[11px] font-bold text-outline-variant uppercase tracking-widest">?꾩껜 二쇰Ц</p>
+                    <p class="mt-2 text-2xl font-bold text-on-surface">24嫄?/p>
                 </div>
                 <div class="bg-surface rounded-2xl px-5 py-4 shadow-sm border border-outline-variant min-w-[140px]">
-                    <p class="text-[11px] font-bold text-outline-variant uppercase tracking-widest">평균 재구매율</p>
+                    <p class="text-[11px] font-bold text-outline-variant uppercase tracking-widest">?됯퇏 ?ш뎄留ㅼ쑉</p>
                     <p class="mt-2 text-2xl font-bold text-primary">90.2%</p>
                 </div>
             </div>
@@ -80,12 +32,12 @@
         <div class="bg-surface rounded-2xl shadow-sm border border-outline-variant overflow-hidden">
             <div class="px-6 py-5 border-b border-outline-variant/20 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
-                    <h2 class="text-lg font-bold text-on-surface">주문 목록</h2>
-                    <p class="text-sm text-on-surface-variant mt-1">주문번호, 주문상품, 배송 상태와 배송지 정보를 확인하세요.</p>
+                    <h2 class="text-lg font-bold text-on-surface">二쇰Ц 紐⑸줉</h2>
+                    <p class="text-sm text-on-surface-variant mt-1">二쇰Ц踰덊샇, 二쇰Ц?곹뭹, 諛곗넚 ?곹깭? 諛곗넚吏 ?뺣낫瑜??뺤씤?섏꽭??</p>
                 </div>
                 <div class="relative">
                     <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant text-[18px]">search</span>
-                    <input type="text" placeholder="주문번호 또는 상품 검색" class="w-full md:w-72 pl-11 pr-4 py-2.5 bg-surface-container-low border border-transparent rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary transition-shadow">
+                    <input type="text" placeholder="二쇰Ц踰덊샇 ?먮뒗 ?곹뭹 寃?? class="w-full md:w-72 pl-11 pr-4 py-2.5 bg-surface-container-low border border-transparent rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary transition-shadow">
                 </div>
             </div>
 
@@ -93,81 +45,81 @@
                 <table class="w-full min-w-[980px] text-left border-collapse">
                     <thead class="bg-surface-container-low">
                         <tr>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">주문번호</th>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">주문상품</th>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">배송여부</th>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">주문취소 여부</th>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">취소 요청</th>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">주문자</th>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">재구매 횟수</th>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">배송지</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">二쇰Ц踰덊샇</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">二쇰Ц?곹뭹</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">諛곗넚?щ?</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">二쇰Ц痍⑥냼 ?щ?</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">痍⑥냼 ?붿껌</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">二쇰Ц??/th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">?ш뎄留??잛닔</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">諛곗넚吏</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm">
                         <tr class="border-t border-gray-100 hover:bg-emerald-50/40 transition-colors">
                             <td class="py-5 px-6 font-bold text-gray-800">NH-20260422-001</td>
                             <td class="py-5 px-6">
-                                <p class="font-semibold text-gray-900">남해 흑마늘 팩</p>
-                                <p class="text-xs text-gray-400 mt-1">중 사이즈 / 2개</p>
+                                <p class="font-semibold text-gray-900">?⑦빐 ?묐쭏????/p>
+                                <p class="text-xs text-gray-400 mt-1">以??ъ씠利?/ 2媛?/p>
                             </td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>배송 완료</span></td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>취소 아님</span></td>
-                            <td class="py-5 px-6"><button type="button" class="inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-rose-50 text-rose-600 text-xs font-bold border border-rose-200 hover:bg-rose-100 transition-colors">취소</button></td>
-                            <td class="py-5 px-6 font-medium text-gray-700">홍길동</td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center justify-center min-w-10 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold">4회</span></td>
-                            <td class="py-5 px-6 text-gray-600">경상남도 남해군 남해읍 망운로 12</td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>諛곗넚 ?꾨즺</span></td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>痍⑥냼 ?꾨떂</span></td>
+                            <td class="py-5 px-6"><button type="button" class="inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-rose-50 text-rose-600 text-xs font-bold border border-rose-200 hover:bg-rose-100 transition-colors">痍⑥냼</button></td>
+                            <td class="py-5 px-6 font-medium text-gray-700">?띻만??/td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center justify-center min-w-10 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold">4??/span></td>
+                            <td class="py-5 px-6 text-gray-600">寃쎌긽?⑤룄 ?⑦빐援??⑦빐??留앹슫濡?12</td>
                         </tr>
                         <tr class="border-t border-gray-100 hover:bg-emerald-50/40 transition-colors">
                             <td class="py-5 px-6 font-bold text-gray-800">NH-20260421-014</td>
                             <td class="py-5 px-6">
-                                <p class="font-semibold text-gray-900">죽방렴 멸치 세트</p>
-                                <p class="text-xs text-gray-400 mt-1">프리미엄 / 1박스</p>
+                                <p class="font-semibold text-gray-900">二쎈갑??硫몄튂 ?명듃</p>
+                                <p class="text-xs text-gray-400 mt-1">?꾨━誘몄뾼 / 1諛뺤뒪</p>
                             </td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-100 text-sky-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>배송 중</span></td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>취소 아님</span></td>
-                            <td class="py-5 px-6"><button type="button" class="inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-rose-50 text-rose-600 text-xs font-bold border border-rose-200 hover:bg-rose-100 transition-colors">취소</button></td>
-                            <td class="py-5 px-6 font-medium text-gray-700">김남해</td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center justify-center min-w-10 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold">2회</span></td>
-                            <td class="py-5 px-6 text-gray-600">부산광역시 해운대구 센텀동로 45</td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-100 text-sky-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>諛곗넚 以?/span></td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>痍⑥냼 ?꾨떂</span></td>
+                            <td class="py-5 px-6"><button type="button" class="inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-rose-50 text-rose-600 text-xs font-bold border border-rose-200 hover:bg-rose-100 transition-colors">痍⑥냼</button></td>
+                            <td class="py-5 px-6 font-medium text-gray-700">源?⑦빐</td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center justify-center min-w-10 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold">2??/span></td>
+                            <td class="py-5 px-6 text-gray-600">遺?곌킅??떆 ?댁슫?援??쇳??숇줈 45</td>
                         </tr>
                         <tr class="border-t border-gray-100 hover:bg-emerald-50/40 transition-colors">
                             <td class="py-5 px-6 font-bold text-gray-800">NH-20260420-009</td>
                             <td class="py-5 px-6">
-                                <p class="font-semibold text-gray-900">유자 청꿀</p>
-                                <p class="text-xs text-gray-400 mt-1">선물 포장 / 3병</p>
+                                <p class="font-semibold text-gray-900">?좎옄 泥??</p>
+                                <p class="text-xs text-gray-400 mt-1">?좊Ъ ?ъ옣 / 3蹂?/p>
                             </td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>배송 준비</span></td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>취소 아님</span></td>
-                            <td class="py-5 px-6"><button type="button" class="inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-rose-50 text-rose-600 text-xs font-bold border border-rose-200 hover:bg-rose-100 transition-colors">취소</button></td>
-                            <td class="py-5 px-6 font-medium text-gray-700">이바다</td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center justify-center min-w-10 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold">5회</span></td>
-                            <td class="py-5 px-6 text-gray-600">서울특별시 마포구 성암로 77</td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>諛곗넚 以鍮?/span></td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>痍⑥냼 ?꾨떂</span></td>
+                            <td class="py-5 px-6"><button type="button" class="inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-rose-50 text-rose-600 text-xs font-bold border border-rose-200 hover:bg-rose-100 transition-colors">痍⑥냼</button></td>
+                            <td class="py-5 px-6 font-medium text-gray-700">?대컮??/td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center justify-center min-w-10 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold">5??/span></td>
+                            <td class="py-5 px-6 text-gray-600">?쒖슱?밸퀎??留덊룷援??깆븫濡?77</td>
                         </tr>
                         <tr class="border-t border-gray-100 hover:bg-emerald-50/40 transition-colors">
                             <td class="py-5 px-6 font-bold text-gray-800">NH-20260419-023</td>
                             <td class="py-5 px-6">
-                                <p class="font-semibold text-gray-900">바닷바람 황금쌀</p>
-                                <p class="text-xs text-gray-400 mt-1">10kg / 정기배송</p>
+                                <p class="font-semibold text-gray-900">諛붾떣諛붾엺 ?⑷툑?</p>
+                                <p class="text-xs text-gray-400 mt-1">10kg / ?뺢린諛곗넚</p>
                             </td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>배송 완료</span></td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>취소 아님</span></td>
-                            <td class="py-5 px-6"><button type="button" class="inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-rose-50 text-rose-600 text-xs font-bold border border-rose-200 hover:bg-rose-100 transition-colors">취소</button></td>
-                            <td class="py-5 px-6 font-medium text-gray-700">박재주문</td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center justify-center min-w-10 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold">7회</span></td>
-                            <td class="py-5 px-6 text-gray-600">대구광역시 수성구 달구벌대로 201</td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>諛곗넚 ?꾨즺</span></td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>痍⑥냼 ?꾨떂</span></td>
+                            <td class="py-5 px-6"><button type="button" class="inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-rose-50 text-rose-600 text-xs font-bold border border-rose-200 hover:bg-rose-100 transition-colors">痍⑥냼</button></td>
+                            <td class="py-5 px-6 font-medium text-gray-700">諛뺤옱二쇰Ц</td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center justify-center min-w-10 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold">7??/span></td>
+                            <td class="py-5 px-6 text-gray-600">?援ш킅??떆 ?섏꽦援??ш뎄踰뚮?濡?201</td>
                         </tr>
                         <tr class="border-t border-gray-100 hover:bg-emerald-50/40 transition-colors">
                             <td class="py-5 px-6 font-bold text-gray-800">NH-20260418-031</td>
                             <td class="py-5 px-6">
-                                <p class="font-semibold text-gray-900">프리미엄 전복 세트</p>
-                                <p class="text-xs text-gray-400 mt-1">특대 / 1세트</p>
+                                <p class="font-semibold text-gray-900">?꾨━誘몄뾼 ?꾨났 ?명듃</p>
+                                <p class="text-xs text-gray-400 mt-1">?밸? / 1?명듃</p>
                             </td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>배송 보류</span></td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>취소 요청</span></td>
-                            <td class="py-5 px-6"><button type="button" class="inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-400 text-xs font-bold border border-gray-200 cursor-not-allowed">요청됨</button></td>
-                            <td class="py-5 px-6 font-medium text-gray-700">최수산</td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center justify-center min-w-10 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold">1회</span></td>
-                            <td class="py-5 px-6 text-gray-600">인천광역시 연수구 컨벤시아대로 88</td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>諛곗넚 蹂대쪟</span></td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>痍⑥냼 ?붿껌</span></td>
+                            <td class="py-5 px-6"><button type="button" class="inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-400 text-xs font-bold border border-gray-200 cursor-not-allowed">?붿껌??/button></td>
+                            <td class="py-5 px-6 font-medium text-gray-700">理쒖닔??/td>
+                            <td class="py-5 px-6"><span class="inline-flex items-center justify-center min-w-10 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold">1??/span></td>
+                            <td class="py-5 px-6 text-gray-600">?몄쿇愿묒뿭???곗닔援?而⑤깽?쒖븘?濡?88</td>
                         </tr>
                     </tbody>
                 </table>
@@ -180,7 +132,7 @@
         <div class="col-span-1 md:col-span-1">
             <div class="text-lg font-bold text-white mb-6 font-headline">Heritage Namhae</div>
             <p class="text-white/80 mb-8 max-w-xs">
-                남해군 공식 헤리티지 몰, 우리 해안 낙원의 진짜 맛을 당신의 집으로 바로 전달합니다.
+                ?⑦빐援?怨듭떇 ?ㅻ━?곗? 紐? ?곕━ ?댁븞 ?숈썝??吏꾩쭨 留쏆쓣 ?뱀떊??吏묒쑝濡?諛붾줈 ?꾨떖?⑸땲??
             </p>
             <div class="flex gap-4">
                 <a class="footer-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img class="footer-social-icon" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="Instagram" /></a>
@@ -190,23 +142,23 @@
             </div>
         </div>
         <div>
-            <h4 class="font-bold text-white mb-6">서비스</h4>
+            <h4 class="font-bold text-white mb-6">?쒕퉬??/h4>
             <ul class="space-y-4">
-                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">회사 소개</a></li>
-                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">배송 및 추적</a></li>
-                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">이용 약관</a></li>
+                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">?뚯궗 ?뚭컻</a></li>
+                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">諛곗넚 諛?異붿쟻</a></li>
+                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">?댁슜 ?쎄?</a></li>
             </ul>
         </div>
         <div>
-            <h4 class="font-bold text-white mb-6">연락처</h4>
+            <h4 class="font-bold text-white mb-6">?곕씫泥?/h4>
             <ul class="space-y-4">
-                <li class="text-white/70">전화: 055-123-4567</li>
-                <li class="text-white/70">이메일: help@namhaeheritage.kr</li>
+                <li class="text-white/70">?꾪솕: 055-123-4567</li>
+                <li class="text-white/70">?대찓?? help@namhaeheritage.kr</li>
             </ul>
         </div>
         <div>
-            <h4 class="font-bold text-white mb-6">위치</h4>
-            <p class="text-white/70 mb-4">대한민국 경상남도 남해군청</p>
+            <h4 class="font-bold text-white mb-6">?꾩튂</h4>
+            <p class="text-white/70 mb-4">??쒕?援?寃쎌긽?⑤룄 ?⑦빐援곗껌</p>
             <div class="h-32 w-full rounded-xl bg-[#0066cc]/20 overflow-hidden">
                 <img alt="Location Map" class="w-full h-full object-cover" style="filter: grayscale(100%) sepia(100%) hue-rotate(200deg) saturate(150%);"
                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2F8UAsYBf8f-PXSCkWz8tPMj1yPAwzNqFnUHdLvbP3NxWzmKZvO52Qb76KLXKdR7GifJMom5TfallzE3oUiWx6wj1VUqfQ-OWmzQVYplGPmVjO52jxg3e8NQdFOU-O_t0DJrzvtWD0uaWIpCc4fRIYzS0-oPNzSMqm3dfpC4iojREb1bO_k-endojrJHEh2Vek1i1HWAgmAM27qGPEC2EUe-1x_hxNJOM3j_NI-TicipehzW-arsFab0btwNoZOq5wXODkjGdXZM"/>
@@ -214,10 +166,10 @@
         </div>
     </div>
     <div class="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-zinc-200/50 flex flex-col md:flex-row justify-between gap-4">
-        <p class="text-white/60">© 2024 에디토리얼 헤리티지 남해. 모든 권리 보유.</p>
+        <p class="text-white/60">짤 2024 ?먮뵒?좊━???ㅻ━?곗? ?⑦빐. 紐⑤뱺 沅뚮━ 蹂댁쑀.</p>
         <div class="flex gap-6">
-            <a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">개인정보 처리방침</a>
-            <a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">라이선스 정보</a>
+            <a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">媛쒖씤?뺣낫 泥섎━諛⑹묠</a>
+            <a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">?쇱씠?좎뒪 ?뺣낫</a>
         </div>
     </div>
 </footer>

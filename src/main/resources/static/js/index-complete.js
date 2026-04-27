@@ -1,5 +1,49 @@
 (() => {
     const CART_STORAGE_KEY = "namhae_cart_v1";
+    const TOKEN_STORAGE_KEY = "accessToken";
+
+    function decodeJwtPayload(token) {
+        if (!token || typeof token !== "string") {
+            return null;
+        }
+
+        const parts = token.split(".");
+        if (parts.length < 2) {
+            return null;
+        }
+
+        try {
+            const base64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+            const paddedBase64 = base64.padEnd(base64.length + (4 - base64.length % 4) % 4, "=");
+            const json = decodeURIComponent(
+                atob(paddedBase64)
+                    .split("")
+                    .map((char) => `%${char.charCodeAt(0).toString(16).padStart(2, "0")}`)
+                    .join("")
+            );
+
+            return JSON.parse(json);
+        } catch {
+            return null;
+        }
+    }
+
+    function getLoginMemberId() {
+        const payload = decodeJwtPayload(localStorage.getItem(TOKEN_STORAGE_KEY));
+        return payload?.memberId || payload?.sub || payload?.username || null;
+    }
+
+    function updateLoginMemberId() {
+        const memberId = getLoginMemberId();
+        const targets = document.querySelectorAll("[data-login-member-id]");
+
+        targets.forEach((target) => {
+            target.textContent = memberId || "";
+            target.classList.toggle("is-hidden", !memberId);
+        });
+    }
+
+    window.getLoginMemberId = getLoginMemberId;
 
     function loadCartFromStorage() {
         try {
@@ -185,6 +229,7 @@
 
     function init() {
         updateCartBadge();
+        updateLoginMemberId();
         setupProductListControls();
         setupScrollTopButton();
         updateHeaderBackground();

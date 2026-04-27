@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${product.name} + ' | Heritage Namhae'">Product Detail | Heritage Namhae</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Work+Sans:wght@300;400;500;600&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/product.css}" href="../static/css/product.css">
+</head>
+<body>
+<header class="product-header">
+    <div class="product-header__inner">
+        <div class="product-brand"><a th:href="@{/}">Heritage Namhae</a></div>
+        <nav class="product-nav" aria-label="상단 메뉴">
+            <a class="product-nav__icon-link cart-link" th:href="@{/cart.html}" href="/cart.html" aria-label="장바구니">
+                <span class="material-symbols-outlined">shopping_bag</span>
+                <span id="cart-count-badge" class="cart-count-badge is-hidden">0</span>
+            </a>
+            <a class="product-nav__icon-link" th:href="@{/login.html}" href="login.html" aria-label="로그인">
+                <span class="material-symbols-outlined">person</span>
+            </a>
+        </nav>
+    </div>
+</header>
+
+<main class="product-page">
+    <div class="product-layout">
+        <section class="product-gallery" aria-label="상품 이미지">
+            <div class="gallery-sticky">
+                <div class="main-image-wrapper">
+                    <img id="main-product-image"
+                         th:src="${product.imageUrl}"
+                         th:alt="${product.name}"
+                         src="https://placehold.co/900x1100?text=Product">
+                </div>
+                <div class="thumbnail-column">
+                    <button class="thumbnail-container active" type="button" aria-label="상품 이미지 1">
+                        <img th:src="${product.imageUrl}" th:alt="${product.name}" src="https://placehold.co/160x160?text=Product">
+                    </button>
+                    <button class="thumbnail-container" type="button" aria-label="상품 이미지 2">
+                        <img th:src="${product.imageUrl}" th:alt="${product.name}" src="https://placehold.co/160x160?text=Product">
+                    </button>
+                    <button class="thumbnail-container" type="button" aria-label="상품 이미지 3">
+                        <img th:src="${product.imageUrl}" th:alt="${product.name}" src="https://placehold.co/160x160?text=Product">
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="product-info-scroll"
+                 th:data-product-id="${product.id}"
+                 th:data-product-price="${product.price != null ? product.price : 0}"
+                 th:data-product-image="${product.imageUrl}">
+            <div class="product-badge">프리미엄</div>
+            <h1 class="product-title" id="product-title" th:text="${product.name}">제품 이름</h1>
+
+            <div class="price-row">
+                <span class="display-price"
+                      id="display-price"
+                      th:data-unit-price="${product.price != null ? product.price : 0}"
+                      th:text="${product.price != null} ? |₩${#numbers.formatInteger(product.price, 0, 'COMMA')}| : '가격 미정'">
+                    ₩0
+                </span>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="shipping-box">
+                <div class="shipping-box__title">
+                    <span class="material-symbols-outlined">local_shipping</span>
+                    <span>무료 배송</span>
+                </div>
+                <p>일정 금액 이상 주문 시 무료 배송됩니다. 상품 준비 후 순차 발송됩니다.</p>
+            </div>
+
+            <div class="option-group">
+                <div>
+                    <label class="option-label">옵션</label>
+                    <div class="size-selector" id="size-selector">
+                        <button type="button" class="size-option is-active" data-size="기본" th:data-price="${product.price != null ? product.price : 0}" data-min-qty="1">기본</button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="option-label">수량</label>
+                    <div class="quantity-control">
+                        <button class="quantity-button" type="button" id="qty-minus" aria-label="수량 감소">
+                            <span class="material-symbols-outlined">remove</span>
+                        </button>
+                        <div class="quantity-value" id="qty-value">1</div>
+                        <button class="quantity-button" type="button" id="qty-plus" aria-label="수량 증가">
+                            <span class="material-symbols-outlined">add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-row" id="cta-row">
+                <button type="button" class="button button--secondary" id="btn-add-to-cart">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                    장바구니에 추가
+                </button>
+                <a class="button button--primary" id="btn-go-to-cart" th:href="@{/cart.html}" href="/cart.html">
+                    <span class="material-symbols-outlined">shopping_bag</span>
+                    장바구니로 가기
+                </a>
+            </div>
+            <button type="button" class="button button--primary button--full" id="btn-buy-now">
+                <span class="material-symbols-outlined">shopping_bag</span>
+                바로 구매
+            </button>
+
+            <div class="trust-grid">
+                <div class="trust-item">
+                    <span class="material-symbols-outlined">verified</span>
+                    <p>검증 상품</p>
+                </div>
+                <div class="trust-item">
+                    <span class="material-symbols-outlined">eco</span>
+                    <p>지역 생산</p>
+                </div>
+                <div class="trust-item">
+                    <span class="material-symbols-outlined">support_agent</span>
+                    <p>고객 지원</p>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<footer class="product-footer">
+    <div class="product-footer__grid">
+        <div>
+            <div class="product-footer__brand">Heritage Namhae</div>
+            <p class="product-footer__copy">남해의 지역 먹거리를 더 편하게 만나는 스마트 푸드 커머스입니다.</p>
+        </div>
+        <div>
+            <h4>서비스</h4>
+            <ul>
+                <li><a href="#">회사 소개</a></li>
+                <li><a href="#">배송 안내</a></li>
+                <li><a href="#">이용 약관</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>연락처</h4>
+            <ul>
+                <li>055-123-4567</li>
+                <li>help@namhaeheritage.kr</li>
+            </ul>
+        </div>
+    </div>
+</footer>
+
+<script th:src="@{/js/product.js}" src="../static/js/product.js"></script>
+</body>
+</html>

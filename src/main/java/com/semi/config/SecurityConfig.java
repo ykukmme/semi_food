@@ -47,7 +47,7 @@ public class SecurityConfig {
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 // 회원가입·로그인은 인증 없이 허용
-                .requestMatchers("/", "/error", "/product/**", "/api/auth/**").permitAll()
+                .requestMatchers("/", "/error", "/trend/**", "/product/**", "/api/auth/**").permitAll()
                 // 관리자 API — ADMIN 역할 필수
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 // 정적 파일 허용 (루트 + 하위 디렉토리 HTML 모두 포함)

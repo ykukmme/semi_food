@@ -30,9 +30,14 @@ h1, h2, h3, .font-headline {
 }
 
 .glass-nav {
-    background: rgba(251, 249, 248, 0.74);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid rgba(188, 201, 198, 0.3);
+    position: fixed !important;
+    inset: 0 0 auto !important;
+    z-index: 50 !important;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: 1px solid transparent;
+    transition: background-color 0.5s ease, backdrop-filter 0.5s ease, border-bottom-color 0.5s ease, opacity 0.5s ease;
 }
 
 .panel {
