@@ -51,3 +51,91 @@ function redirectIfNoToken(redirectUrl = 'index.html') {
         window.location.href = redirectUrl;
     }
 }
+
+function showGuestMenu() {
+    const guestMenu = document.getElementById('guestMenu');
+    const memberMenu = document.getElementById('memberMenu');
+
+    if (guestMenu) {
+        guestMenu.style.display = 'flex';
+    }
+
+    if (memberMenu) {
+        memberMenu.style.display = 'none';
+    }
+
+
+}
+
+function showMemberMenu(member) {
+    const guestMenu = document.getElementById('guestMenu');
+    const memberMenu = document.getElementById('memberMenu');
+
+    if (guestMenu) {
+        guestMenu.style.display = 'none';
+    }
+
+    if (memberMenu) {
+        memberMenu.style.display = 'flex';
+    }
+
+}
+
+async function renderLoginMenu() {
+    const token = getToken();
+
+    const guestMenu = document.getElementById('guestMenu');
+    const memberMenu = document.getElementById('memberMenu');
+
+    if (!guestMenu && !memberMenu) {
+        return;
+    }
+
+    if(!token){
+        showGuestMenu();
+        return;
+    }
+
+    try {
+        const res = await fetch('/api/auth/me', {
+            headers: {
+                Authorization:`Bearer ${token}`
+            }
+        });
+
+        if(!res.ok){
+            clearToken();
+            showGuestMenu();
+            return;
+        }
+
+        const member = await res.json();
+
+        if(member.memberId){
+            showMemberMenu(member);
+            return;
+        }
+
+        showGuestMenu();
+    } catch (error) {
+        showGuestMenu();
+    }
+}
+
+function setupLogoutButton() {
+    document.getElementById('logoutBtn')?.addEventListener('click', ()=>{
+        clearToken();
+        location.href="/";
+    });
+}
+
+function initAuthMenu() {
+    renderLoginMenu();
+    setupLogoutButton();
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAuthMenu);
+} else {
+    initAuthMenu();
+}

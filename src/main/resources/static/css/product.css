@@ -18,6 +18,8 @@
 
 html,
 body {
+    overflow-x: hidden;
+    max-width: 100%;
     margin: 0;
     min-height: 100%;
 }
@@ -80,12 +82,38 @@ button {
     gap: 1.5rem;
 }
 
+#guestMenu,
+#memberMenu {
+    align-items: center;
+    gap: 0.75rem;
+}
+
+#guestMenu {
+    display: flex;
+}
+
+#memberMenu {
+    display: none;
+}
+
 .product-nav__icon-link {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
     color: var(--color-primary);
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.product-nav__icon-link .material-symbols-outlined {
+    font-size: inherit;
+    line-height: 1;
 }
 
 .cart-count-badge {
@@ -391,41 +419,125 @@ button {
     text-transform: uppercase;
 }
 
-.product-footer {
+.site-footer {
+    width: 100%;
+    margin: 6rem 0 0;
     padding: 4rem 2rem;
+    border-top: 1px solid #0066cc;
     background: var(--color-primary-dark);
     color: #fff;
-}
-
-.product-footer__grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 3rem;
-    width: min(100%, 80rem);
-    margin: 0 auto;
-}
-
-.product-footer__brand,
-.product-footer h4 {
-    margin: 0 0 1rem;
-    font-family: "Plus Jakarta Sans", "Inter", sans-serif;
-    font-weight: 900;
-}
-
-.product-footer__copy {
-    max-width: 24rem;
-    margin: 0;
-    color: rgba(255, 255, 255, 0.76);
+    font-size: 0.75rem;
     line-height: 1.7;
 }
 
-.product-footer ul {
+.site-footer__grid {
     display: grid;
-    gap: 0.75rem;
-    padding: 0;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 3rem;
+    width: min(100% - 2rem, 80rem);
+    margin: 0 auto;
+}
+
+.site-footer__brand {
+    margin-bottom: 1.5rem;
+    color: #fff;
+    font-size: 1.125rem;
+    font-weight: 900;
+}
+
+.site-footer__copy {
+    max-width: 20rem;
+    margin: 0 0 2rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.footer-socials {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer-social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: transparent;
+    transition: transform 0.2s ease;
+}
+
+.footer-social-link:hover {
+    transform: scale(1.2);
+}
+
+.footer-social-icon {
+    width: 1.85rem;
+    height: 1.85rem;
+    object-fit: contain;
+}
+
+.site-footer__title {
+    margin: 0 0 1.5rem;
+    color: #fff;
+    font-weight: 900;
+}
+
+.site-footer__list {
+    display: grid;
+    gap: 1rem;
     margin: 0;
-    color: rgba(255, 255, 255, 0.76);
+    padding: 0;
     list-style: none;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.site-footer__list a:hover,
+.site-footer__links a:hover {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.site-footer__text {
+    margin: 0 0 1rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.footer-map {
+    width: 100%;
+    height: 8rem;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background: rgba(0, 102, 204, 0.2);
+}
+
+.footer-map-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) sepia(100%) hue-rotate(200deg) saturate(150%);
+}
+
+.site-footer__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: min(100% - 2rem, 80rem);
+    margin: 4rem auto 0;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.28);
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.site-footer__bottom p {
+    margin: 0;
+}
+
+.site-footer__links {
+    display: flex;
+    gap: 1.5rem;
+    color: rgba(255, 255, 255, 0.72);
 }
 
 .product-toast {
@@ -482,7 +594,21 @@ button {
     }
 
     .cta-row,
-    .product-footer__grid {
+    .site-footer__grid {
         grid-template-columns: 1fr;
+    }
+
+    .site-footer {
+        padding: 3rem 1rem;
+    }
+
+    .site-footer__bottom {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .site-footer__links {
+        flex-direction: column;
+        gap: 0.75rem;
     }
 }

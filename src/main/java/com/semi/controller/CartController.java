@@ -4,8 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -57,4 +60,32 @@ public class CartController {
         ));
     }
 
+    @DeleteMapping("/items/{productId}")
+    @ResponseBody
+    public ResponseEntity<Void> deleteCartItem(
+            @AuthenticationPrincipal MemberDetails memberDetails,
+            @PathVariable Long productId
+    ) {
+        cartItemService.deleteCartItem(memberDetails.getMember().getId(), productId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/items")
+    @ResponseBody
+    public ResponseEntity<?> updateCartItemQuantity(
+            @AuthenticationPrincipal MemberDetails memberDetails,
+            @Valid @RequestBody AddCartItemRequest request
+    ) {
+        CartItem cartItem = cartItemService.updateCartItemQuantity(
+                memberDetails.getMember().getId(),
+                request.productId(),
+                request.quantity()
+        );
+
+        return ResponseEntity.ok().body(java.util.Map.of(
+                "id", cartItem.getId(),
+                "productId", request.productId(),
+                "quantity", cartItem.getQuantity()
+        ));
+    }
 }

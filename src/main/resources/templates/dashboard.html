@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" class="light">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -62,12 +62,13 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="h-20 flex items-center justify-between gap-6">
                 <div class="flex items-center gap-6 md:gap-8">
-                    <a href="main.html" class="text-2xl font-headline font-bold tracking-tighter text-primary">Heritage Namhae</a>
+                    <a th:href="@{/}" class="text-2xl font-headline font-bold tracking-tighter text-primary">Heritage Namhae</a>
                     <nav class="hidden md:flex items-center gap-8 text-sm font-bold tracking-tight">
-                        <a href="dashboard.html" class="text-primary border-b-2 border-primary pb-1">대시보드</a>
-                        <a href="all_orders.html" class="text-on-surface-variant border-b-2 border-transparent pb-1 transition-all duration-300 hover:text-primary hover:border-primary">주문 현황</a>
-                        <a href="cancel_orders.html" class="text-on-surface-variant border-b-2 border-transparent pb-1 transition-all duration-300 hover:text-primary hover:border-primary">취소/환불</a>
-                        <a href="mypage.html" class="text-on-surface-variant border-b-2 border-transparent pb-1 transition-all duration-300 hover:text-primary hover:border-primary">내 정보</a>
+                        <a href="dashboard.html" data-dashboard-home class="dashboard-menu-link text-primary border-b-2 border-primary pb-1 transition-all duration-300 hover:text-primary hover:border-primary">대시보드</a>
+                        <a href="all_orders.html" data-dashboard-frame class="dashboard-menu-link text-on-surface-variant border-b-2 border-transparent pb-1 transition-all duration-300 hover:text-primary hover:border-primary">주문 현황</a>
+                        <a href="cancel_orders.html" data-dashboard-frame class="dashboard-menu-link text-on-surface-variant border-b-2 border-transparent pb-1 transition-all duration-300 hover:text-primary hover:border-primary">취소/환불</a>
+                        <a href="mypage.html" data-dashboard-frame class="dashboard-menu-link text-on-surface-variant border-b-2 border-transparent pb-1 transition-all duration-300 hover:text-primary hover:border-primary">내 정보</a>
+                        <button type="button" id="logoutBtn" class="text-on-surface-variant border-b-2 border-transparent pb-1 transition-all duration-300 hover:text-primary hover:border-primary">로그아웃</button>
                     </nav>
                 </div>
 
@@ -84,84 +85,13 @@
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-12 space-y-8">
-        <section class="panel overflow-hidden rounded-[28px]">
-            <div class="grid lg:grid-cols-[1.25fr_0.9fr]">
-                <div class="relative px-6 py-8 sm:px-8 sm:py-10 bg-gradient-to-br from-primary via-primary to-primary-container text-white">
-                    <div class="absolute inset-0 opacity-20">
-                    <img src="https://images.unsplash.com/photo-1605000797499-95a51c5269ae?q=80&w=2000&auto=format&fit=crop" alt="Dashboard background" class="w-full h-full object-cover">
-                </div>
-                    <div class="relative">
-                        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/12 border border-white/15 text-[11px] font-bold uppercase tracking-[0.24em]">
-                            <span class="w-2 h-2 rounded-full bg-[#ffdbd0]"></span>
-                            Live Dashboard
-                        </span>
-                        <h1 class="mt-5 text-4xl sm:text-5xl font-headline font-extrabold tracking-tight leading-[0.95]">회원 주문 흐름을 한눈에<br />읽는 대시보드</h1>
-                        <p class="mt-4 max-w-2xl text-white/84 text-sm sm:text-base leading-relaxed">
-                            index.html의 헤리티지 무드를 유지하면서, 주문량과 취소율, 인기 상품과 최근 로그를 같은 화면 안에서 빠르게 읽을 수 있도록 정리한 운영용 뷰입니다.
-                        </p>
-                        <div class="mt-8 flex flex-wrap gap-3">
-                            <a href="all_orders.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-primary font-bold shadow-editorial hover:brightness-95 transition-all">
-                                주문 로그 보기
-                                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-                            </a>
-                            <a href="cancel_orders.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/25 bg-white/10 font-bold hover:bg-white/16 transition-all">
-                                취소율 확인
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    <main class="dashboard-main max-w-7xl mx-auto px-4 sm:px-6 pb-12 space-y-8">
 
-                <div class="px-6 py-8 sm:px-8 sm:py-10 bg-surface-container-low/70">
-                    <div class="flex items-center justify-between gap-4 mb-6">
-                        <div>
-                            <p class="text-xs font-bold uppercase tracking-[0.24em] text-tertiary">Today Snapshot</p>
-                            <h2 class="mt-2 text-2xl font-headline font-bold text-on-surface">운영 메모</h2>
-                        </div>
-                        <span class="px-3 py-1 rounded-full bg-tertiary-fixed text-tertiary text-[11px] font-bold">Updated 1m ago</span>
-                    </div>
-
-                    <div class="space-y-4">
-                        <div class="rounded-2xl bg-surface-container-lowest p-4 border border-outline-variant/15">
-                            <div class="flex items-start gap-3">
-                                <div class="w-10 h-10 rounded-2xl bg-primary-fixed/40 text-primary flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
-                                </div>
-                                <div>
-                                    <p class="font-bold text-on-surface">점심 시간대 주문 집중</p>
-                                    <p class="text-sm text-on-surface-variant mt-1">12:00~15:00 구간에서 신규 상품 유입이 가장 높고, 반찬/해산물 카테고리 반응이 강합니다.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="rounded-2xl bg-surface-container-lowest p-4 border border-outline-variant/15">
-                            <div class="flex items-start gap-3">
-                                <div class="w-10 h-10 rounded-2xl bg-secondary-container/20 text-secondary flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-[20px]">local_offer</span>
-                                </div>
-                                <div>
-                                    <p class="font-bold text-on-surface">유자청, 멸치 재주문 강세</p>
-                                    <p class="text-sm text-on-surface-variant mt-1">재구매율이 87.2%로 안정적이고, 리뷰 유입보다 직접 탐색 유입의 전환률이 더 높습니다.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="rounded-2xl bg-surface-container-lowest p-4 border border-outline-variant/15">
-                            <div class="flex items-start gap-3">
-                                <div class="w-10 h-10 rounded-2xl bg-tertiary-fixed/60 text-tertiary flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-[20px]">bolt</span>
-                                </div>
-                                <div>
-                                    <p class="font-bold text-on-surface">바로 액션이 필요한 항목</p>
-                                    <p class="text-sm text-on-surface-variant mt-1">대기중 로그 1건이 있어 오늘 오후 자동화 추출 상태를 확인하는 것이 좋습니다.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <section id="dashboardFrameSection" class="dashboard-frame-section panel rounded-[24px] overflow-hidden" hidden>
+            <iframe id="dashboardFrame" name="dashboardFrame" title="대시보드 메뉴 상세 화면"></iframe>
         </section>
 
+        <div id="dashboardHomeContent" class="space-y-8">
         <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
             <article class="panel metric-card relative rounded-[24px] p-6 overflow-hidden">
                 <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-on-surface-variant">총 주문 수</p>
@@ -178,7 +108,7 @@
                 <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-on-surface-variant">주문 취소율</p>
                 <div class="mt-6 flex items-end justify-between gap-4">
                     <div>
-                        <p class="text-4xl font-headline font-extrabold text-on-surface">09.4%</p>
+                        <p class="text-4xl font-headline font-extrabold text-on-surface">9.4%</p>
                         <p class="mt-2 text-sm text-on-surface-variant">안정적인 범위 유지</p>
                     </div>
                     <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-tertiary-fixed/60 text-tertiary text-xs font-bold">Stable</span>
@@ -210,7 +140,7 @@
 
         <section class="grid grid-cols-1 xl:grid-cols-12 gap-6">
             <div class="xl:col-span-4 space-y-6">
-                <article class="panel rounded-[28px] p-6">
+                <!-- <article class="panel rounded-[28px] p-6">
                     <div class="flex items-end justify-between gap-4 mb-6">
                         <div>
                             <p class="text-xs font-bold uppercase tracking-[0.24em] text-tertiary">Top Picks</p>
@@ -280,7 +210,7 @@
                             </div>
                         </div>
                     </div>
-                </article>
+                </article> -->
 
                 <article class="panel rounded-[28px] p-6">
                     <p class="text-xs font-bold uppercase tracking-[0.24em] text-tertiary">Keyword Atmosphere</p>
@@ -301,7 +231,7 @@
             </div>
 
             <div class="xl:col-span-8 space-y-6">
-                <article class="panel rounded-[28px] p-6">
+                <!-- <article class="panel rounded-[28px] p-6">
                     <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
                         <div>
                             <p class="text-xs font-bold uppercase tracking-[0.24em] text-tertiary">Order Flow</p>
@@ -374,7 +304,7 @@
                             </div>
                         </div>
                     </div>
-                </article>
+                </article> -->
 
                 <article class="panel rounded-[28px] p-6">
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
@@ -438,6 +368,7 @@
                 </article>
             </div>
         </section>
+        </div>
     </main>
 <!-- Footer -->
 <footer class="full-width py-16 px-8 mt-24 bg-[#003366] border-t border-[#0066cc] transition-colors duration-200 font-inter text-xs leading-relaxed text-white">
@@ -487,6 +418,45 @@
     </div>
 </footer>
 
-    <script src="js/dashboard.js"></script>
+    <script th:src="@{/js/dashboard.js}"></script>
+    <script th:src="@{/js/auth.js}"></script>
+    <script>
+        (() => {
+            const activeClasses = ["text-primary", "border-primary"];
+            const inactiveClasses = ["text-on-surface-variant", "border-transparent"];
+            const menuLinks = document.querySelectorAll(".dashboard-menu-link");
+            const homeContent = document.getElementById("dashboardHomeContent");
+            const frameSection = document.getElementById("dashboardFrameSection");
+            const frame = document.getElementById("dashboardFrame");
+
+            function activate(link) {
+                menuLinks.forEach((menuLink) => {
+                    menuLink.classList.remove(...activeClasses);
+                    menuLink.classList.add(...inactiveClasses);
+                });
+
+                link.classList.remove(...inactiveClasses);
+                link.classList.add(...activeClasses);
+            }
+
+            document.querySelector("[data-dashboard-home]")?.addEventListener("click", (event) => {
+                event.preventDefault();
+                homeContent.hidden = false;
+                frameSection.hidden = true;
+                frame.removeAttribute("src");
+                activate(event.currentTarget);
+            });
+
+            document.querySelectorAll("[data-dashboard-frame]").forEach((link) => {
+                link.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    homeContent.hidden = true;
+                    frameSection.hidden = false;
+                    frame.src = event.currentTarget.href;
+                    activate(event.currentTarget);
+                });
+            });
+        })();
+    </script>
 </body>
 </html>

@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 // 정적 파일 허용 (루트 + 하위 디렉토리 HTML 모두 포함)
                 .requestMatchers("/index.html", "/*.html", "/**/*.html", "/css/**", "/js/**","/images/**").permitAll()
-                .anyRequest().authenticated()
+               .anyRequest().authenticated()
             )
             // 401 응답을 일관된 JSON 형식으로 반환
             .exceptionHandling(ex -> ex

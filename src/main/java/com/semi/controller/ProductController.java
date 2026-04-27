@@ -28,16 +28,16 @@ public class ProductController {
 
 
 
-    @GetMapping("/keywords")    
+    @GetMapping("/member")    
     public String getTrendKeywords(Model model){
         List<TrendKeyword> keywords = trendKeywordService.getKeywords();
         // ID 필드를 기준으로 비교하는 규칙(Comparator) 생성
         Comparator<TrendKeyword> idComparator = Comparator.comparing(TrendKeyword::getId);
         model.addAttribute("idComparator", idComparator);
         model.addAttribute("keywords", keywords);
-        return "test";
+        return "dashboard";
     }
-    @GetMapping({"/list", "/"})
+    @GetMapping("/")
     public String getAllProduct(Model model) {
         List<Product> products = productService.getAllProduct();
         model.addAttribute("products", products);

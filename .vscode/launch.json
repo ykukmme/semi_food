@@ -6,7 +6,6 @@
             "name": "SemiApplication",
             "request": "launch",
             "mainClass": "com.semi.SemiApplication",
-            "projectName": "semi",
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal"
         }

@@ -64,32 +64,57 @@
                 <div class="text-2xl font-black tracking-tighter text-[#0066cc]">
                     <a th:href="@{/}" href="/">Heritage Namhae</a>
                 </div>
-                <div class="flex items-center gap-6">
-                    <div class="relative">
-                        <a class="relative inline-flex items-center justify-center text-[#0066cc] duration-200"
-                            th:href="@{/cart.html}" href="/cart.html" aria-label="장바구니">
-                            <span class="material-symbols-outlined">shopping_bag</span>
+                <div class="cart-nav">
+                    <div id="guestMenu">
+                        <a class="cart-nav__icon-link" th:href="@{/login.html}" href="/login.html" aria-label="로그인">
+                            <span class="material-symbols-outlined" aria-hidden="true">person</span>
                         </a>
-                        <span
-                            class="absolute -top-2 -right-3 min-w-[1.35rem] h-5 px-1 rounded-full bg-[#0066cc] text-white text-[10px] font-extrabold leading-5 text-center shadow-md shadow-[#0066cc]/30 border border-white"
-                            v-if="cartItems.length > 0">
-                            {{ totalItemsCount > 99 ? '99+' : totalItemsCount }}
-                        </span>
+                        <a class="cart-nav__icon-link" th:href="@{/register.html}" href="/register.html" aria-label="회원가입">
+                            <span class="material-symbols-outlined" aria-hidden="true">person_add</span>
+                        </a>
                     </div>
-                    <a class="material-symbols-outlined text-[#0066cc] duration-200" th:href="@{/login.html}"
-                        href="/login.html" aria-label="로그인">person</a>
+                    <div id="memberMenu" style="display: none;">
+                        <a class="cart-nav__icon-link cart-link" th:href="@{/cart.html}" href="/cart.html" aria-label="장바구니">
+                            <span class="material-symbols-outlined" aria-hidden="true">shopping_bag</span>
+                            <span
+                                class="cart-count-badge"
+                                v-if="cartItems.length > 0">
+                                {{ totalItemsCount > 99 ? '99+' : totalItemsCount }}
+                            </span>
+                        </a>
+                        <a class="cart-nav__icon-link" th:href="@{/dashboard.html}" href="/dashboard.html" aria-label="회원페이지">
+                            <span class="material-symbols-outlined" aria-hidden="true">person</span>
+                        </a>
+                        <a class="cart-nav__icon-link" id="logoutBtn" href="#" aria-label="로그아웃">
+                            <span class="material-symbols-outlined" aria-hidden="true">person_remove</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </header>
 
         <main class="pt-32 pb-20 px-6 max-w-7xl mx-auto">
             <header class="mb-12">
-                <h1 class="text-4xl font-extrabold tracking-tight mb-2 text-primary">나의&nbsp;&nbsp;장바구니</h1>
+                <h1 class="text-4xl font-extrabold tracking-tight mb-2 text-primary">나의&nbsp;장바구니</h1>
                 <p class="text-on-surface-variant font-body">남해 헤리티지 컬렉션에서 선택된 아이템들입니다.</p>
             </header>
 
             <div class="flex flex-col lg:flex-row gap-12" v-if="cartItems.length > 0">
                 <div class="flex-grow space-y-6">
+                    <div
+                        class="bg-surface-container-lowest rounded-xl px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <label class="inline-flex items-center gap-3 text-on-surface font-bold">
+                            <input type="checkbox" v-model="allSelected"
+                                class="w-5 h-5 text-primary rounded focus:ring-primary focus:ring-2">
+                            <span>전체 선택</span>
+                        </label>
+                        <button type="button" @click="removeSelectedItems" :disabled="selectedItemsCount === 0"
+                            :class="{'opacity-40 cursor-not-allowed': selectedItemsCount === 0}"
+                            class="inline-flex items-center justify-center gap-2 rounded-full border border-outline-variant px-5 py-2 text-sm font-bold text-primary transition-colors hover:bg-primary hover:text-white">
+                            <span class="material-symbols-outlined text-base">delete</span>
+                            선택한 상품 삭제
+                        </button>
+                    </div>
                     <transition-group class="space-y-6" name="list" tag="div">
                         <div :key="item.id"
                             class="bg-surface-container-lowest rounded-xl p-6 flex flex-col sm:flex-row items-center gap-6 transition-all duration-300 hover:shadow-sm"
@@ -107,7 +132,7 @@
                                             <p class="text-sm text-tertiary font-medium">{{ item.collection }}</p>
                                         </div>
                                     </div>
-                                    <button type="button" @click="removeItem(item.id)"
+                                    <button type="button" @click="removeItem(item)"
                                         class="material-symbols-outlined text-outline-variant hover:text-secondary transition-colors duration-200"
                                         aria-label="상품 삭제">close</button>
                                 </div>
@@ -263,11 +288,13 @@
             transform: translateX(30px);
         }
     </style>
+    <script th:src="@{/js/auth.js}" src="/js/auth.js"></script>
     <script>
         const { createApp, ref, computed, watch } = Vue;
 
         const NAMHAE_CART_STORAGE_KEY = "namhae_cart_v1";
         const NAMHAE_SELECTED_ITEMS_KEY = "namhae_selected_items";
+        const TOKEN_STORAGE_KEY = "accessToken";
 
         function loadCartFromStorage() {
             try {
@@ -294,6 +321,66 @@
 
         function persistCart(items) {
             localStorage.setItem(NAMHAE_CART_STORAGE_KEY, JSON.stringify(items));
+        }
+
+        async function deleteCartProductFromDatabase(productId) {
+            const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+
+            if (!token) {
+                window.location.href = "/login.html";
+                return false;
+            }
+
+            const response = await fetch(`/cart/items/${productId}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            if (response.status === 401 || response.status === 403) {
+                window.location.href = "/login.html";
+                return false;
+            }
+
+            if (!response.ok) {
+                throw new Error("Failed to delete cart item.");
+            }
+
+            return true;
+        }
+
+        async function updateCartProductQuantityInDatabase(productId, quantity) {
+            const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+
+            if (!token) {
+                window.location.href = "/login.html";
+                return null;
+            }
+
+            const response = await fetch("/cart/items", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    productId: Number(productId),
+                    quantity
+                })
+            });
+
+            if (response.status === 401 || response.status === 403) {
+                window.location.href = "/login.html";
+                return null;
+            }
+
+            if (!response.ok) {
+                const message = await response.text();
+                throw new Error(message || "Failed to update cart item quantity.");
+            }
+
+            return response.json();
         }
 
         createApp({
@@ -327,20 +414,83 @@
                     return cartItems.value.reduce((acc, item) => acc + (Number(item.quantity) || 0), 0);
                 });
 
-                const incrementQty = (item) => {
-                    item.quantity = (Number(item.quantity) || 0) + 1;
-                };
+                const selectedItemsCount = computed(() => {
+                    return cartItems.value.filter((item) => item.checked !== false).length;
+                });
 
-                const decrementQty = (item) => {
-                    const floor = minQtyFor(item);
-                    const currentQty = Number(item.quantity) || floor;
-                    if (currentQty > floor) {
-                        item.quantity = currentQty - 1;
+                const allSelected = computed({
+                    get() {
+                        return cartItems.value.length > 0 && cartItems.value.every((item) => item.checked !== false);
+                    },
+                    set(checked) {
+                        cartItems.value.forEach((item) => {
+                            item.checked = checked;
+                        });
+                    }
+                });
+
+                const updateItemQuantity = async (item, quantity) => {
+                    try {
+                        const updatedItem = await updateCartProductQuantityInDatabase(item.productId, quantity);
+                        if (!updatedItem) {
+                            return;
+                        }
+
+                        item.quantity = updatedItem.quantity;
+                    } catch {
+                        alert("장바구니 수량 변경에 실패했습니다.");
                     }
                 };
 
-                const removeItem = (id) => {
-                    cartItems.value = cartItems.value.filter((row) => row.id !== id);
+                const incrementQty = async (item) => {
+                    const nextQuantity = (Number(item.quantity) || 0) + 1;
+                    await updateItemQuantity(item, nextQuantity);
+                };
+
+                const decrementQty = async (item) => {
+                    const floor = minQtyFor(item);
+                    const currentQty = Number(item.quantity) || floor;
+                    if (currentQty > floor) {
+                        await updateItemQuantity(item, currentQty - 1);
+                    }
+                };
+
+                const removeItem = async (item) => {
+                    try {
+                        const deleted = await deleteCartProductFromDatabase(item.productId);
+                        if (!deleted) {
+                            return;
+                        }
+
+                        cartItems.value = cartItems.value.filter((row) => row.id !== item.id);
+                    } catch {
+                        alert("장바구니 상품 삭제에 실패했습니다.");
+                    }
+                };
+
+                const removeSelectedItems = async () => {
+                    if (selectedItemsCount.value === 0) {
+                        alert("선택된 상품이 없습니다.");
+                        return;
+                    }
+
+                    const selectedItems = cartItems.value.filter((item) => item.checked !== false);
+                    const selectedProductIds = [...new Set(selectedItems.map((item) => item.productId))];
+
+                    try {
+                        const results = await Promise.all(
+                            selectedProductIds.map((productId) => deleteCartProductFromDatabase(productId))
+                        );
+
+                        if (results.some((deleted) => !deleted)) {
+                            return;
+                        }
+
+                        const selectedIds = new Set(selectedItems.map((item) => item.id));
+                        cartItems.value = cartItems.value.filter((item) => !selectedIds.has(item.id));
+                    } catch {
+                        alert("선택한 상품 삭제에 실패했습니다.");
+                    }
                 };
 
                 const goToCheckout = (items) => {
@@ -365,11 +515,14 @@
                     cartItems,
                     totalPrice,
                     totalItemsCount,
+                    selectedItemsCount,
+                    allSelected,
                     minQtyFor,
                     lineTotal,
                     incrementQty,
                     decrementQty,
                     removeItem,
+                    removeSelectedItems,
                     orderAllItems,
                     orderSelectedItems
                 };

@@ -18,5 +18,7 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     @Transactional
     void deleteByMemberId(Long memberId);
 
-   
+    /** 회원 장바구니의 특정 상품 삭제 */
+    @Transactional
+    void deleteByMemberIdAndProductId(Long memberId, Long productId);
 }
