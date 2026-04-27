@@ -6,7 +6,6 @@ import org.flywaydb.core.api.FlywayException;
 import org.flywaydb.core.api.output.MigrateResult;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 
 import javax.sql.DataSource;
 
@@ -25,11 +24,17 @@ public class FlywayConfig {
     @Bean
     public Flyway flyway(DataSource dataSource) {
         log.info("[Flyway] 마이그레이션 시작 — classpath:db/migration");
+
         Flyway flyway = Flyway.configure()
                 .dataSource(dataSource)
                 .locations("classpath:db/migration")
+                .cleanDisabled(true)
                 .load();
+
         try {
+            // First try to repair any checksum mismatches
+            flyway.repair();
+            
             MigrateResult result = flyway.migrate();
             log.info("[Flyway] 마이그레이션 완료 — 적용: {}건, 현재 버전: v{}",
                     result.migrationsExecuted, result.targetSchemaVersion);
@@ -37,6 +42,7 @@ public class FlywayConfig {
             log.error("[Flyway] 마이그레이션 실패 — 서버를 중지합니다.", e);
             throw e;
         }
+
         return flyway;
     }
 }

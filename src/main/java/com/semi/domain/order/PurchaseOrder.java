@@ -52,6 +52,18 @@ public class PurchaseOrder {
     @Column(name = "is_auto", nullable = false)
     private Boolean isAuto;  // 자동발주 여부
 
+    @Column(name = "shipping_address", length = 500)
+    private String shippingAddress;  // shipping_address
+
+    @Column(name = "payment_method", length = 50)
+    private String paymentMethod;  // payment_method
+
+    @Column(name = "payment_status", length = 20)
+    private String paymentStatus;  // payment_status
+
+    @Column(name = "subtotal", nullable = false)
+    private Integer subtotal;  // subtotal
+
     @Column(name = "ordered_at", nullable = false, updatable = false)
     private LocalDateTime orderedAt;  // 발주일시
 
@@ -60,13 +72,18 @@ public class PurchaseOrder {
 
     @Builder
     public PurchaseOrder(String orderNumber, Member member, Supplier supplier,
-                         Integer totalPrice, Integer shippingFee, Boolean isAuto) {
+                         Integer totalPrice, Integer shippingFee, Boolean isAuto,
+                         Integer subtotal, String shippingAddress, String paymentMethod, String paymentStatus) {
         this.orderNumber  = orderNumber;
         this.member       = member;
         this.supplier     = supplier;
         this.totalPrice   = totalPrice;
         this.shippingFee  = shippingFee;
         this.isAuto       = isAuto != null ? isAuto : false;
+        this.subtotal     = subtotal != null ? subtotal : totalPrice; // fallback if null
+        this.shippingAddress = shippingAddress;
+        this.paymentMethod = paymentMethod;
+        this.paymentStatus = paymentStatus;
         this.status       = OrderStatus.RECEIVED;  // 기본값: 발주 접수 완
         this.orderedAt    = LocalDateTime.now();
     }

@@ -1,5 +1,7 @@
 package com.semi.controller;
 
+import com.semi.config.JwtProperties;
+import com.semi.domain.member.MemberRole;
 import com.semi.domain.member.MemberService;
 import com.semi.domain.member.dto.LoginRequest;
 import com.semi.domain.member.dto.LoginResponse;
@@ -9,7 +11,9 @@ import com.semi.security.JwtProvider;
 import com.semi.security.MemberDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -28,6 +32,7 @@ public class AuthController {
     private final MemberService memberService;
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
+    private final JwtProperties jwtProperties;
 
     /**
      * 회원가입
@@ -49,9 +54,17 @@ public class AuthController {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.memberId(), request.password())
             );
+
             MemberDetails memberDetails = (MemberDetails) authentication.getPrincipal();
             String token = jwtProvider.generateToken(authentication);
-            return ResponseEntity.ok(LoginResponse.of(token, memberDetails.getMember().getRole().name()));
+            ResponseCookie authCookie = buildAuthCookie(token, jwtProperties.getExpirySeconds());
+
+            String redirectPath = memberDetails.getMember().getRole() == MemberRole.ADMIN ? "/admin" : "/";
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.SET_COOKIE, authCookie.toString())
+                    .header(HttpHeaders.LOCATION, redirectPath)
+                    .body(LoginResponse.of(token, memberDetails.getMember().getRole().name()));
         } catch (BadCredentialsException e) {
             // 아이디/비밀번호 오류 — 구체적인 원인 노출 금지 (열거 공격 방지)
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -66,5 +79,24 @@ public class AuthController {
     @GetMapping("/me")
     public ResponseEntity<MemberResponse> me(@AuthenticationPrincipal MemberDetails memberDetails) {
         return ResponseEntity.ok(MemberResponse.from(memberDetails.getMember()));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Map<String, String>> logout() {
+        ResponseCookie clearCookie = buildAuthCookie("", 0);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, clearCookie.toString())
+                .body(Map.of("message", "로그아웃되었습니다."));
+    }
+
+    private ResponseCookie buildAuthCookie(String token, long maxAgeSeconds) {
+        return ResponseCookie.from("accessToken", token)
+                .httpOnly(true)
+                .secure(false)
+                .sameSite("Lax")
+                .path("/")
+                .maxAge(maxAgeSeconds)
+                .build();
     }
 }

@@ -1,12 +1,14 @@
 package com.semi.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.connector.ClientAbortException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,7 +30,7 @@ public class GlobalExceptionHandler {
                 .body(Map.of("message", "입력값을 확인해주세요.", "errors", errors));
     }
 
-    /** 아이디/이메일 중복 (409) */
+    /** 아이디/이메일 중복 (409) */    
     @ExceptionHandler(DuplicateMemberException.class)
     public ResponseEntity<Map<String, String>> handleDuplicate(DuplicateMemberException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
@@ -40,6 +42,25 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleNotFound(MemberNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Map.of("message", ex.getMessage()));
+    }
+
+    /** 관리자 계정 삭제 불가 (400) */
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<Map<String, String>> handleIllegalState(IllegalStateException ex) {
+        return ResponseEntity.badRequest()
+                .body(Map.of("message", ex.getMessage()));
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<Map<String, String>> handleNoResource(NoResourceFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("message", "요청한 리소스를 찾을 수 없습니다."));
+    }
+
+    @ExceptionHandler(ClientAbortException.class)
+    public void handleClientAbort(ClientAbortException ex) {
+        // Client disconnected - don't log as error, just debug
+        log.debug("Client disconnected during request processing: {}", ex.getMessage());
     }
 
     /** 예상치 못한 서버 오류 (500) — 내부 오류 내용 노출 금지 */

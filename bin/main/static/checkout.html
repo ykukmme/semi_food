@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>결제하기 | 남해몰</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Work+Sans:wght@400;500;600&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#6fd8cd",
+                    "on-surface": "#1b1c1c",
+                    "surface-container": "#efeded",
+                    "outline-variant": "#bcc9c6",
+                    "on-primary-fixed-variant": "#00504a",
+                    "tertiary-fixed": "#d7e9b6",
+                    "surface-bright": "#fbf9f8",
+                    "secondary-fixed": "#ffdbd0",
+                    "secondary-container": "#ff642d",
+                    "primary": "#006a63",
+                    "surface-tint": "#006a63",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "secondary": "#ad3300",
+                    "primary-container": "#4bb6ac",
+                    "outline": "#6d7a77",
+                    "tertiary-fixed-dim": "#bccd9c",
+                    "inverse-on-surface": "#f2f0f0",
+                    "primary-fixed": "#8cf4e9",
+                    "on-background": "#1b1c1c",
+                    "tertiary": "#54643b",
+                    "inverse-surface": "#303030",
+                    "on-error-container": "#93000a",
+                    "on-secondary-fixed-variant": "#842500",
+                    "on-secondary-fixed": "#3a0b00",
+                    "on-primary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed": "#131f01",
+                    "on-primary-container": "#00433f",
+                    "surface-variant": "#e4e2e2",
+                    "secondary-fixed-dim": "#ffb59e",
+                    "inverse-primary": "#6fd8cd",
+                    "surface-dim": "#dbdad9",
+                    "tertiary-container": "#9bac7d",
+                    "background": "#fbf9f8",
+                    "surface": "#fbf9f8",
+                    "error": "#ba1a1a",
+                    "on-surface-variant": "#3d4947",
+                    "surface-container-highest": "#e4e2e2",
+                    "on-primary-fixed": "#00201d",
+                    "on-secondary-container": "#5a1600",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#3d4c26",
+                    "on-tertiary-container": "#32401b",
+                    "surface-container-low": "#f5f3f3",
+                    "surface-container-high": "#eae8e7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Work Sans"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-gradient {
+            background: linear-gradient(135deg, #006a63 0%, #4bb6ac 100%);
+        }
+        body { font-family: 'Work Sans', sans-serif; }
+        h1, h2, h3 { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary-fixed-dim selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full flex justify-between items-center px-6 py-4 mx-auto bg-[#FBF9F8]/70 dark:bg-[#1B1C1C]/70 backdrop-blur-md z-50">
+<div class="text-xl font-extrabold text-[#006A63] dark:text-[#4BB6AC] tracking-tighter font-['Plus_Jakarta_Sans']">
+        Namhae Mall
+    </div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-[#1B1C1C] dark:text-[#FBF9F8] opacity-70 hover:opacity-100 transition-opacity duration-300 font-['Plus_Jakarta_Sans'] font-bold tracking-tight" href="#">브랜드 스토리</a>
+<a class="text-[#1B1C1C] dark:text-[#FBF9F8] opacity-70 hover:opacity-100 transition-opacity duration-300 font-['Plus_Jakarta_Sans'] font-bold tracking-tight" href="#">시즌 상품</a>
+<a class="text-[#1B1C1C] dark:text-[#FBF9F8] opacity-70 hover:opacity-100 transition-opacity duration-300 font-['Plus_Jakarta_Sans'] font-bold tracking-tight" href="#">큐레이션</a>
+</nav>
+<div class="flex gap-4 items-center">
+<button class="text-[#006A63] dark:text-[#4BB6AC] hover:scale-95 duration-200 ease-in-out">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+</button>
+<button class="text-[#006A63] dark:text-[#4BB6AC] hover:scale-95 duration-200 ease-in-out">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+<!-- Left Column: Details -->
+<div class="lg:col-span-7 space-y-12">
+<!-- Editorial Header -->
+<section class="space-y-2">
+<span class="font-label text-xs uppercase tracking-widest text-tertiary">마지막 결제 단계</span>
+<h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-on-surface">안전한 결제</h1>
+</section>
+<!-- Shipping Section -->
+<section class="bg-surface-container-low p-8 rounded-full">
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-xl font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="local_shipping">local_shipping</span>
+                    배송지 정보
+                </h2>
+<button class="text-primary font-semibold text-sm hover:underline">변경</button>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-bold text-lg mb-1">김남해</p>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+                            서울특별시 강남구 테헤란로 123 큐레이터 빌딩<br/>
+                            우편번호 06234<br/>
+                            대한민국
+                        </p>
+<p class="text-on-surface-variant text-sm mt-3">+82 10-1234-5678</p>
+</div>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">기본배송지</span>
+</div>
+</div>
+</section>
+<!-- Payment Methods -->
+<section class="space-y-6">
+<h2 class="text-xl font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="payments">payments</span>
+                결제 수단
+            </h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Naver Pay -->
+<label class="relative group cursor-pointer">
+<input checked="" class="peer sr-only" name="payment" type="radio"/>
+<div class="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all">
+<div class="flex flex-col items-center gap-3">
+<div class="w-12 h-12 bg-[#2DB400] rounded-lg flex items-center justify-center text-white font-extrabold text-xl">N</div>
+<span class="font-bold text-sm">네이버페이</span>
+</div>
+</div>
+</label>
+<!-- Credit Card -->
+<label class="relative group cursor-pointer">
+<input class="peer sr-only" name="payment" type="radio"/>
+<div class="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all">
+<div class="flex flex-col items-center gap-3">
+<span class="material-symbols-outlined text-3xl" data-icon="credit_card">credit_card</span>
+<span class="font-bold text-sm">신용카드</span>
+</div>
+</div>
+</label>
+<!-- Virtual Account -->
+<label class="relative group cursor-pointer">
+<input class="peer sr-only" name="payment" type="radio"/>
+<div class="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all">
+<div class="flex flex-col items-center gap-3">
+<span class="material-symbols-outlined text-3xl" data-icon="account_balance">account_balance</span>
+<span class="font-bold text-sm">가상계좌</span>
+</div>
+</div>
+</label>
+</div>
+</section>
+<!-- Loyalty & Offers -->
+<section class="bg-tertiary-fixed/30 p-8 rounded-full space-y-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-tertiary" data-icon="confirmation_number">confirmation_number</span>
+<h2 class="text-lg font-bold">할인 및 적립</h2>
+</div>
+<div class="space-y-4">
+<div>
+<label class="text-xs font-label font-bold text-tertiary-container uppercase tracking-widest mb-2 block">쿠폰 적용</label>
+<div class="flex gap-2">
+<input class="flex-1 bg-surface-container-lowest border-b border-outline-variant/20 focus:border-primary focus:ring-0 px-4 py-3 rounded-t-lg transition-colors font-label" placeholder="코드를 입력하세요" type="text"/>
+<button class="bg-tertiary text-on-tertiary px-6 py-2 rounded-xl font-bold hover:opacity-90 transition-opacity">적용</button>
+</div>
+</div>
+<div class="flex justify-between items-center p-4 bg-surface-container-lowest rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed-dim flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-fixed-variant" data-icon="stars">stars</span>
+</div>
+<div>
+<p class="text-sm font-bold">남해 포인트</p>
+<p class="text-xs text-on-surface-variant">보유: 4,500P</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<input class="w-24 text-right bg-transparent border-b border-outline-variant/20 focus:border-primary focus:ring-0 p-1 font-bold" type="number" value="0"/>
+<span class="text-xs font-bold">P</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Order Summary -->
+<aside class="lg:col-span-5">
+<div class="sticky top-24 space-y-6">
+<div class="bg-surface-container-lowest shadow-[0_24px_48px_rgba(0,0,0,0.04)] rounded-full p-8 border border-outline-variant/10">
+<h2 class="text-2xl font-extrabold tracking-tight mb-8">주문 요약</h2>
+<!-- Product List -->
+<div class="space-y-6 mb-8">
+<div class="flex gap-4">
+<div class="w-20 h-20 bg-surface-container-low rounded-xl overflow-hidden flex-shrink-0">
+<img alt="남해 프리미엄 죽염" class="w-full h-full object-cover" data-alt="close-up of handcrafted sea salt crystals in a minimalist ceramic bowl on a wooden surface with soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDv-H58t-i_Q-Qp3nBnsSa6ZUXqLxlgB-2zQ9nL1mWczpgPgf-TQiLsu-kFwJNyyG4DG8WKUMREZfgN9SXc4kdtCBObdArJapbCdoDa8Bggxx0BCWbI0UQfEeQ_-pkqmbSgLpt-LvaEIASI6r94zcQPNF0NeNXhr9aOZ65ZofQQynn8QKh2nk_EVH_k_3VJvW_zioQJW1cqG2OGkBOyobARzUvXBkqXkNt98Nq01EYdjV-_rrDenf2btaZIeTpYiR51wTgVF_SZEKQ"/>
+</div>
+<div class="flex-1">
+<p class="font-bold text-sm">남해 프리미엄 죽염</p>
+<p class="text-xs text-on-surface-variant mb-2 italic">3년 숙성</p>
+<div class="flex justify-between items-end">
+<span class="text-xs font-medium opacity-60">수량: 1</span>
+<span class="font-bold text-primary">₩24,500</span>
+</div>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-20 h-20 bg-surface-container-low rounded-xl overflow-hidden flex-shrink-0">
+<img alt="수제 곶감 선물세트" class="w-full h-full object-cover" data-alt="vibrant orange dried persimmons artistically arranged on a textured linen cloth with a rustic aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVTKTP2_I1hIGlaBFUzju5C9MkjsCv3JcS_6F5Vje7_nHXgIiyzQznxZT-l8k9LWL2A5GAGq06dlh3rUchTQBwKiyEuYNMr0YYmLcUChsL-p1bTFT4-2ZsqEMap_XjTMSe2UeM5u-wZ4QNdFZrVcacl2cl_CykMjk9ySR1nZjv-IOf5CfZJJNGy7rIRQuthzbmITVKTNKe-Aq_gjyAosc7eddSnz1Acu-BLvA3TbPzTy7HdpL0vi6DhJXC7ef3XgeBN3gi8pIf98w"/>
+</div>
+<div class="flex-1">
+<p class="font-bold text-sm">수제 곶감 선물세트</p>
+<p class="text-xs text-on-surface-variant mb-2 italic">시즌 특선</p>
+<div class="flex justify-between items-end">
+<span class="text-xs font-medium opacity-60">수량: 2</span>
+<span class="font-bold text-primary">₩52,000</span>
+</div>
+</div>
+</div>
+</div>
+<div class="h-px bg-outline-variant/10 mb-8"></div>
+<!-- Totals -->
+<div class="space-y-4 mb-8 font-label">
+<div class="flex justify-between text-sm">
+<span class="text-on-surface-variant">상품 금액</span>
+<span class="font-medium text-on-surface">₩76,500</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-on-surface-variant">배송비</span>
+<span class="font-medium text-on-surface">₩3,000</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-on-surface-variant">쿠폰 할인</span>
+<span class="font-bold text-secondary">-₩0</span>
+</div>
+<div class="flex justify-between pt-4 border-t border-outline-variant/5">
+<span class="text-lg font-extrabold text-on-surface">최종 결제 금액</span>
+<span class="text-2xl font-extrabold text-primary">₩79,500</span>
+</div>
+</div>
+<!-- Earn Points Badge -->
+<div class="bg-primary-fixed/20 p-4 rounded-xl flex items-center justify-between mb-8">
+<div class="flex items-center gap-2 text-on-primary-fixed-variant">
+<span class="material-symbols-outlined text-[20px]" data-icon="add_circle">add_circle</span>
+<span class="text-xs font-bold uppercase tracking-wider">적립 예정 포인트</span>
+</div>
+<span class="font-extrabold text-primary">795P</span>
+</div>
+<!-- Pay Button -->
+<a class="editorial-gradient text-on-primary w-full py-5 rounded-full font-extrabold text-lg flex items-center justify-center gap-3 shadow-lg shadow-primary/20 hover:scale-[0.98] transition-transform" href="payment_success.html">
+                    지금 결제하기
+                    <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</a>
+<p class="text-center text-[10px] text-on-surface-variant mt-4 font-label uppercase tracking-widest px-4">
+                    "지금 결제하기"를 클릭하면 당사의 이용 약관에 동의하는 것으로 간주됩니다.
+                </p>
+</div>
+<!-- Trust Badge -->
+<div class="flex justify-center gap-8 opacity-40">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+<span class="text-[8px] font-bold uppercase mt-1">보안결제</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined" data-icon="lock">lock</span>
+<span class="text-[8px] font-bold uppercase mt-1">암호화</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined" data-icon="eco">eco</span>
+<span class="text-[8px] font-bold uppercase mt-1">지속가능성</span>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-[#FFFFFF] dark:bg-[#1B1C1C] rounded-t-3xl shadow-[0_-4px_24px_rgba(27,28,28,0.04)]">
+<a class="flex flex-col items-center justify-center text-[#54643B] dark:text-[#9BAC7D] opacity-60" href="#">
+<span class="material-symbols-outlined" data-icon="home_rice">home</span>
+<span class="font-['Work_Sans'] text-[10px] font-medium tracking-wide uppercase">홈</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#54643B] dark:text-[#9BAC7D] opacity-60" href="#">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-['Work_Sans'] text-[10px] font-medium tracking-wide uppercase">큐레이션</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#F5F3F3] dark:bg-[#E4E2E2]/10 text-[#006A63] dark:text-[#4BB6AC] rounded-xl px-4 py-1" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-['Work_Sans'] text-[10px] font-medium tracking-wide uppercase">장바구니</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#54643B] dark:text-[#9BAC7D] opacity-60" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="font-['Work_Sans'] text-[10px] font-medium tracking-wide uppercase">마이 남해</span>
+</a>
+</nav>
+</body></html>

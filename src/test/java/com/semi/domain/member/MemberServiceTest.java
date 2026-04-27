@@ -2,6 +2,7 @@ package com.semi.domain.member;
 
 import com.semi.domain.member.dto.MemberResponse;
 import com.semi.domain.member.dto.RegisterRequest;
+import com.semi.domain.order.PurchaseOrderRepository;
 import com.semi.exception.DuplicateMemberException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,9 +13,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
@@ -24,6 +28,9 @@ class MemberServiceTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private PurchaseOrderRepository purchaseOrderRepository;
 
     @InjectMocks
     private MemberService memberService;
@@ -69,7 +76,7 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("아이디 중복 시 DuplicateMemberException 발생")
+    @DisplayName("아이디 중복 시 예외 발생")
     void register_duplicateMemberId() {
         // given
         given(memberRepository.existsByMemberId("testuser")).willReturn(true);
@@ -81,7 +88,7 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("이메일 중복 시 DuplicateMemberException 발생")
+    @DisplayName("이메일 중복 시 예외 발생")
     void register_duplicateEmail() {
         // given
         given(memberRepository.existsByMemberId(anyString())).willReturn(false);
