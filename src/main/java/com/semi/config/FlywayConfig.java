@@ -28,7 +28,7 @@ public class FlywayConfig {
         Flyway flyway = Flyway.configure()
                 .dataSource(dataSource)
                 
-                // [ ]TODO 배포시 주석처리, 개발용 임시 설정
+                // [ ]TODO 배포시 2줄 주석처리 할 것, 개발용 임시 설정
                 .validateOnMigrate(false) // 체크섬 검사 끄기
                 .outOfOrder(true)   // 순서 꼬임 허용
 

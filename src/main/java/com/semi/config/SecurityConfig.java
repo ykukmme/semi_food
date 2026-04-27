@@ -46,13 +46,16 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+
                 // 회원가입·로그인은 인증 없이 허용
                 .requestMatchers("/api/auth/**").permitAll()
                 // 관리자 API — ADMIN 역할 필수
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 // 정적 파일 허용 (루트 + 하위 디렉토리 HTML 모두 포함)
                 .requestMatchers("/*.html", "/**/*.html", "/css/**", "/js/**").permitAll()
-                .anyRequest().authenticated()
+                                //[ ]TODO 배포시 주석처리 할 것, 모든 페이지 허용
+                .anyRequest().permitAll()
+                // .anyRequest().authenticated()
             )
             // 401 응답을 일관된 JSON 형식으로 반환
             .exceptionHandling(ex -> ex
