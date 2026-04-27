@@ -48,7 +48,7 @@ public class Product {
     private String productUrl;  // 상품 구매처 링크
 
     @Column(name = "auto_order", nullable = false)
-    private Boolean autoOrder;  // 자동발주 플래그 (기본 OFF, 변경 시 audit 필수)
+    private Boolean autoOrder = false;  // 자동발주 플래그 (기본 OFF, 변경 시 audit 필수)
 
     @Column(name = "crawled_at", nullable = false)
     private LocalDateTime crawledAt;  // 크롤링 시간
