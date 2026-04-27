@@ -9,6 +9,7 @@ import com.semi.domain.rpa.parser.response.TrendKeywordResponse;
 
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,12 +40,8 @@ public class TrendKeywordService {
         
         List<TrendKeywordResponse.RankItem> response = restClient.get()
                 .uri(dataUrl)
-                // 핵심: JSON과 XML을 모두 수용한다고 헤더를 설정합니다.
-                // 브라우저인 것처럼 속이기 위해 User-Agent 추가 (가장 중요)
                 .header("User-Agent", userAgent)
-                // Accept 헤더 설정
                 .header("Accept", MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE)
-                // 추가적인 탐지 방지를 위해 언어 및 참조 정보 추가 (선택사항이지만 권장)
                 .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
                 .header("Referer", targetSiteUrl)
                 // .header("Referer", "https://snxbest.naver.com/")
@@ -68,9 +65,12 @@ public List<TrendKeyword> saveWithSequentialId(List<TrendKeywordResponse.RankIte
     List<TrendKeyword> newVOList = new ArrayList<>();
     List<TrendKeyword> parsedVOList = trendKeywordMapper.toVoList(items); // 파싱된 데이터
 
-    // 파싱한 데이터가 기존 데이터 보다 최신이 아니라면, 빈 List 반환
+    // 파싱한 데이터가 기존 데이터 보다 최신이 아니라면, 빈(설명) List 반환
 if ( ! parsedVOList.get(0).getCollectedAt().isAfter(lastRecord.getCollectedAt())){
-    return newVOList ; 
+    String tempStr = "추가로 저장된 값이 없습니다. 추가 Data CollectedAt:" + parsedVOList.get(0).getCollectedAt()+", 기존 Data CollectedAt:" + lastRecord.getCollectedAt() ;
+    newVOList.add(new TrendKeyword(0L, tempStr, 0, 0, LocalDateTime.now(), false)) ;
+    return newVOList ;
+            
 }
 // if ( repository.findFirstByOrderByIdDesc().getCollectedAt().isAfter(parsedVOList.get(0).getCollectedAt())){ }
     // 3. 중복 확인 후 새 ID 부여하여 리스트 구성

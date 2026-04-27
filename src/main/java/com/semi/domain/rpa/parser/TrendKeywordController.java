@@ -28,10 +28,7 @@ public class TrendKeywordController {
     public List<TrendKeyword> saveWithSequentialId() {
             List<TrendKeywordResponse.RankItem> trendList = trendKeywordService.getNaverKeywords();
             List<TrendKeyword> result = trendKeywordService.saveWithSequentialId(trendList);
-            
-            if (result.size() == 0) {
-                result.add(new TrendKeyword(0L, "추가로 저장된 값이 없습니다", 0, 0, LocalDateTime.now(), false)) ;
-            }
+
         return result;
     }
 }
