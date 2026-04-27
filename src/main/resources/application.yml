@@ -22,14 +22,20 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
 
   flyway:
-    # Flyway is executed by FlywayConfig so startup order stays explicit.
-    enabled: false
-    #순서가 뒤섞인 마이그레이션 파일도 실행 허용 (협업 필수) 
-    out-of-order: true
-    #로컬 개발 환경에서만: 체크섬 검증이 빌드를 막지 않게 설정 (주의해서 사용) 
-    # validate-on-migrate: false 
-    #실수로 DB를 직접 고쳤을 때 이력을 맞추기 위해 사용
-    baseline-on-migrate: true
+    # 실행 순서를 명확하게 제어하기 위해 FlywayConfig라는 별도의 설정 클래스에서 직접 실행.
+    enabled: false  # 기본 flyway설정을 무시하고, FlywayConfig.java파일에서 설정, true로 바꿀경우 오히려 flyway가 2번 실행될 수 있음
+
+    # # 1. 체크섬이 달라도 일단 실행 (가장 중요)
+    # validate-on-migrate: false
+    # # 2. 로컬에 없는 마이그레이션이 DB에 있어도 무시 (다른 팀원 브랜치 작업 건너뛰기)
+    # ignore-missing-migrations: true
+    
+    # #순서가 뒤섞인 마이그레이션 파일도 실행 허용 (협업 필수) 
+    # out-of-order: true
+    # #로컬 개발 환경에서만: 체크섬 검증이 빌드를 막지 않게 설정 (주의해서 사용) 
+    # # validate-on-migrate: false 
+    # #실수로 DB를 직접 고쳤을 때 이력을 맞추기 위해 사용
+    # baseline-on-migrate: true
 
 cors:
   # Local browser dev defaults only. Production must override with real origins.
@@ -47,9 +53,14 @@ jwt:
   secret: ${JWT_SECRET}
   expiry-seconds: ${JWT_EXPIRY_SECONDS:7200}
 
+#무료티어의 render, aws에서는 크롬브라우저 크롤링을 돌리는 것은 거의 불가능 하다고 함. 보류
 # [ ] TODO python 각 배포환경마다 python 환경 잡기
 # [ ] TODO 윈도우, 도커(리눅스)를 기준으로 진행
-  #무료티어의 render, aws에서는 크롬브라우저 크롤링을 돌리는 것은 거의 불가능 하다고 함.
+# [ ] TODO
+# [ ] TODO
+# [ ] TODO
+
+
 python:
   path: ${PYTHON_PATH:python} # 환경변수가 없으면 기본 python 실행
   script-path: ${PYTHON_SCRIPT_PATH:/path/to/script.py}

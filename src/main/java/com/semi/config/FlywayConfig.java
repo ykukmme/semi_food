@@ -27,6 +27,11 @@ public class FlywayConfig {
         log.info("[Flyway] 마이그레이션 시작 — classpath:db/migration");
         Flyway flyway = Flyway.configure()
                 .dataSource(dataSource)
+                
+                // [ ]TODO 배포시 주석처리, 개발용 임시 설정
+                .validateOnMigrate(false) // 체크섬 검사 끄기
+                .outOfOrder(true)   // 순서 꼬임 허용
+
                 .locations("classpath:db/migration")
                 .load();
         try {
