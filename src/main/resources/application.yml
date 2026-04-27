@@ -53,6 +53,11 @@ jwt:
   secret: ${JWT_SECRET}
   expiry-seconds: ${JWT_EXPIRY_SECONDS:7200}
 
+jackson:
+  serialization:
+    # 날짜를 숫자 배열([2026,4,27...])이 아닌 문자열로 출력하게 함
+    write-dates-as-timestamps: false
+
 #무료티어의 render, aws에서는 크롬브라우저 크롤링을 돌리는 것은 거의 불가능 하다고 함. 보류
 # [ ] TODO python 각 배포환경마다 python 환경 잡기
 # [ ] TODO 윈도우, 도커(리눅스)를 기준으로 진행

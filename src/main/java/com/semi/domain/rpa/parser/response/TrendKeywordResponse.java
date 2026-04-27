@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
-
+import jakarta.persistence.Column;
 import lombok.Data;
 import java.util.List;
 
@@ -64,19 +64,8 @@ public class TrendKeywordResponse {
         @JsonProperty("categoryId")
         @JacksonXmlProperty(localName = "categoryId")
         private String categoryId;
+        
     }
 
-// @Data
-// @JsonIgnoreProperties(ignoreUnknown = true) // 정의되지 않은 필드는 무시
-// public class TrendKeywordResponse {
-//     private List<RankItem> rankList;
 
-//     @Data
-//     @JsonIgnoreProperties(ignoreUnknown = true)
-//     public static class RankItem {
-//         private int rank;
-//         private String keyword;
-//         private String changeType;
-//         private int changeValue;
-//     }
 }

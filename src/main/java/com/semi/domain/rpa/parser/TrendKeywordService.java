@@ -1,18 +1,27 @@
 package com.semi.domain.rpa.parser;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
-import com.semi.domain.rpa.parser.response.TrendKeywordResponse;
-import com.semi.domain.rpa.parser.response.TrendKeywordResponse.RankItem;
 
+import com.semi.domain.keyword.TrendKeyword;
+import com.semi.domain.keyword.TrendKeywordRepository;
+import com.semi.domain.rpa.parser.response.TrendKeywordResponse;
+
+import lombok.RequiredArgsConstructor;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 
 @Service
+@RequiredArgsConstructor
 public class TrendKeywordService {
 
     private final RestClient restClient = RestClient.create();
+    private final TrendKeywordRepository repository;
+    private final TrendKeywordMapper trendKeywordMapper; // 매퍼 주입
 
     public List<TrendKeywordResponse.RankItem> getNaverKeywords() {
         String targetSiteUrl= "https://snxbest.naver.com/keyword/best?categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY&ageType=ALL&activeRankId=2165824835&syncDate=20260423" ;
@@ -46,6 +55,57 @@ public class TrendKeywordService {
 
                     System.out.println("수신된 데이터: " + response);
                     return response;
+    }
+
+@Transactional
+public List<TrendKeyword> saveWithSequentialId(List<TrendKeywordResponse.RankItem> items) {
+    
+    // 1. 현재 DB에서 가장 큰 ID 가져오기 (데이터 없으면 0으로 시작)
+    Long maxId = repository.findMaxId();
+    long nextId = (maxId == null) ? 0L : maxId;
+    TrendKeyword lastRecord = repository.findFirstByOrderByIdDesc();
+    // 2. DTO -> VO 변환 (MapStruct 사용)
+    List<TrendKeyword> newVOList = new ArrayList<>();
+    List<TrendKeyword> parsedVOList = trendKeywordMapper.toVoList(items); // 파싱된 데이터
+
+    // 파싱한 데이터가 기존 데이터 보다 최신이 아니라면, 빈 List 반환
+if ( ! parsedVOList.get(0).getCollectedAt().isAfter(lastRecord.getCollectedAt())){
+    return newVOList ; 
+}
+// if ( repository.findFirstByOrderByIdDesc().getCollectedAt().isAfter(parsedVOList.get(0).getCollectedAt())){ }
+    // 3. 중복 확인 후 새 ID 부여하여 리스트 구성
+    
+    for (TrendKeyword parsedVO : parsedVOList) {
+        // 이미 저장된 날짜와 키워드인지 확인
+        if (!repository.existsByCollectedAtAndKeyword(parsedVO.getCollectedAt(), parsedVO.getKeyword())) {
+            // 수동으로 ID를 부여하기 위해 새로운 객체 생성 (기존 필드는 유지)
+            // @Builder를 
+            TrendKeyword tempVO = TrendKeyword.builder()
+                    .id(++nextId) // 1 증가시킨 값을 ID로 부여
+                    .keyword(parsedVO.getKeyword())
+                    .rank(parsedVO.getRank())
+                    .frequency(0)
+                    .collectedAt(parsedVO.getCollectedAt())
+                    .isActive(true)
+                    .build();            
+            newVOList.add(tempVO);
+        }
+    }
+    // 4. 최종 저장
+    if (!newVOList.isEmpty()) {
+        repository.saveAll(newVOList);
+        System.out.println(newVOList.size() + "건 저장 완료 (마지막 ID: " + nextId + ")");
+    }
+    return newVOList;
+}
+
+
+    @Transactional
+    public List<TrendKeyword> saveTrendKeywords(List<TrendKeywordResponse.RankItem> items) {
+        // 매퍼로 리스트 전체 변환
+        List<TrendKeyword> voList = trendKeywordMapper.toVoList(items);
+        repository.saveAll(voList);
+        return voList;
     }
 }
 

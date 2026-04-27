@@ -35,6 +35,13 @@ dependencies {
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    implementation "org.mapstruct:mapstruct:1.5.2.Final"
+    // lombok과 mapstruct의 순서를 바꿀 경우 충돌 발생 할 수 있음
+    annotationProcessor 'org.projectlombok:lombok' 
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.5.2.Final"
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    // Json 날짜 데이터 출력관련
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
     // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
