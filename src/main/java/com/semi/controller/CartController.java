@@ -46,6 +46,7 @@ public class CartController {
             List<CartItem> cartItems = cartItemService.getCartItems(resolvedMemberId);
             model.addAttribute("cartItems", cartItems);
             model.addAttribute("cartRows", toCartRows(cartItems));
+            model.addAttribute("cartLoadedFromServer", true);
         }
         return "cart";
     }
@@ -71,6 +72,7 @@ public class CartController {
         List<CartItem> cartItems = cartItemService.getCartItems(resolvedMemberId);
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("cartRows", toCartRows(cartItems));
+        model.addAttribute("cartLoadedFromServer", true);
         return "cart";
     }
 

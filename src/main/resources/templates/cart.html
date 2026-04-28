@@ -297,9 +297,13 @@
         const NAMHAE_CHECKOUT_KEY = "namhae_checkout_v1";
         const TOKEN_STORAGE_KEY = "accessToken";
         const SERVER_CART_ITEMS = /*[[${cartRows}]]*/ [];
+        const SERVER_CART_LOADED = /*[[${cartLoadedFromServer ?: false}]]*/ false;
 
         function seedCartFromServerModel() {
             if (!Array.isArray(SERVER_CART_ITEMS) || SERVER_CART_ITEMS.length === 0) {
+                if (SERVER_CART_LOADED) {
+                    localStorage.removeItem(NAMHAE_CART_STORAGE_KEY);
+                }
                 return;
             }
 

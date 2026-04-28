@@ -761,10 +761,10 @@
         localStorage.removeItem(NAMHAE_CART_KEY);
         localStorage.removeItem(NAMHAE_CHECKOUT_KEY);
         localStorage.removeItem(NAMHAE_SELECTED_ITEMS_KEY);
-        window.location.href = `/order_detail?status=success&orderNumber=${encodeURIComponent(savedOrder.orderNumber)}`;
+        window.location.href = `/order_success?status=success&orderNumber=${encodeURIComponent(savedOrder.orderNumber)}`;
       } catch (error) {
         alert('주문 저장에 실패했습니다. 잠시 후 다시 시도해주세요.');
-        window.location.href = '/order_detail?status=fail';
+        window.location.href = '/order_success?status=fail';
       }
     }
 

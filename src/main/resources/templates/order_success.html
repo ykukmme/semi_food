@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>&#51452;&#47928;&#49457;&#44277; | Heritage Namhae</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script src="../static/js/auth.js" th:src="@{/js/auth.js}" defer></script>
+</head>
+<body class="bg-[#f0f7ff] text-[#003366] min-h-screen">
+    <header class="bg-white border-b border-[#99c2ff]/30">
+        <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="/" th:href="@{/}" class="text-2xl font-black tracking-tight text-[#0066cc]">Heritage Namhae</a>
+            <nav class="flex items-center gap-6" aria-label="상단 메뉴">
+                <div id="guestMenu" class="items-center gap-6">
+                    <a class="material-symbols-outlined text-[#0066cc] duration-200" th:href="@{/login.html}" href="/login.html" aria-label="로그인">person</a>
+                    <a class="material-symbols-outlined text-[#0066cc] duration-200" th:href="@{/register.html}" href="/register.html" aria-label="회원가입">person_add</a>
+                </div>
+                <div id="memberMenu" class="items-center gap-6" style="display: none;">
+                    <a href="/cart/view" th:href="@{/cart/view}" class="relative inline-flex items-center justify-center text-[#0066cc] duration-200" aria-label="장바구니">
+                        <span class="material-symbols-outlined">shopping_bag</span>
+                        <span id="cart-count-badge" class="hidden absolute -top-2 -right-3 min-w-[1.35rem] h-5 px-1 rounded-full bg-[#0066cc] text-white text-[10px] font-extrabold leading-5 text-center shadow-md shadow-[#0066cc]/30 border border-white">0</span>
+                    </a>
+                    <a class="material-symbols-outlined text-[#0066cc] duration-200" id="member-dashboard-link" th:href="@{/member}" href="/member" aria-label="마이페이지">person</a>
+                    <a class="material-symbols-outlined text-[#0066cc] duration-200 cursor-pointer" id="logoutBtn" href="#" aria-label="로그아웃">person_remove</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 py-10">
+        <section class="mb-8 rounded-2xl border bg-white p-6 shadow-sm">
+            <div th:if="${status == 'fail'}">
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-red-100 text-red-700 mb-4">
+                    <span class="material-symbols-outlined">error</span>
+                </div>
+                <h1 class="text-2xl font-extrabold text-red-700">&#51452;&#47928; &#52376;&#47532;&#50640; &#49892;&#54056;&#54664;&#49845;&#45768;&#45796;.</h1>
+                <p class="mt-2 text-sm text-red-600" th:text="${orderError ?: '잠시 후 다시 시도해주세요.'}">&#51104;&#49884; &#54980; &#45796;&#49884; &#49884;&#46020;&#54644;&#51452;&#49464;&#50836;.</p>
+            </div>
+            <div th:unless="${status == 'fail'}">
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#d1e9ff] text-[#0066cc] mb-4">
+                    <span class="material-symbols-outlined">check_circle</span>
+                </div>
+                <h1 class="text-3xl font-extrabold text-[#0066cc]">&#51452;&#47928;&#49457;&#44277;</h1>
+                <p class="mt-2 text-base font-semibold text-[#004080]">&#44208;&#51228;&#44032; &#50756;&#47308;&#46104;&#50632;&#49845;&#45768;&#45796;.</p>
+                <p th:if="${order != null}" class="mt-3 text-sm text-[#004080]">
+                    &#51452;&#47928;&#48264;&#54840;
+                    <span class="font-extrabold" th:text="${order.orderNumber}">PO-20260428-0001</span>
+                    &#51032; &#49345;&#49464; &#51221;&#48372;&#51077;&#45768;&#45796;.
+                </p>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 rounded-2xl border bg-white p-6 shadow-sm">
+                <h2 class="text-2xl font-extrabold mb-6">&#51452;&#47928; &#49345;&#49464;</h2>
+                <div th:if="${order != null}" class="space-y-3 text-sm">
+                    <p><span class="font-bold">&#51452;&#47928;&#48264;&#54840;</span> <span th:text="${order.orderNumber}">PO-20260428-0001</span></p>
+                    <p><span class="font-bold">&#51452;&#47928;&#51068;&#49884;</span> <span th:text="${#temporals.format(order.orderedAt, 'yyyy.MM.dd HH:mm')}">2026.04.28 15:30</span></p>
+                    <p><span class="font-bold">&#51452;&#47928;&#49345;&#53468;</span> <span th:text="${order.statusLabel}">주문 접수</span></p>
+                </div>
+                <p th:if="${order == null}" class="text-sm text-gray-500" th:text="${orderError ?: '주문 상세 정보를 불러올 수 없습니다.'}">&#51452;&#47928; &#49345;&#49464; &#51221;&#48372;&#47484; &#48520;&#47084;&#50732; &#49688; &#50630;&#49845;&#45768;&#45796;.</p>
+
+                <div class="mt-8">
+                    <h3 class="text-lg font-bold mb-4">&#51452;&#47928; &#49345;&#54408;</h3>
+                    <div class="divide-y divide-gray-100">
+                        <th:block th:if="${order != null}">
+                        <article th:each="item : ${order.items}" class="py-4 flex gap-4">
+                            <div class="w-20 h-20 rounded-xl bg-gray-100 overflow-hidden flex-shrink-0">
+                                <img th:if="${item.imageUrl != null and !#strings.isEmpty(item.imageUrl)}" th:src="${item.imageUrl}" th:alt="${item.productName}" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-bold" th:text="${item.productName}">상품명</h4>
+                                <p class="mt-1 text-sm text-gray-500">&#49688;&#47049; <span th:text="${item.quantity}">1</span>&#44060;</p>
+                                <p class="mt-2 font-bold text-[#0066cc]" th:text="${'&#8361;' + #numbers.formatInteger(item.subtotal, 0, 'COMMA')}">&#8361;0</p>
+                            </div>
+                        </article>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="rounded-2xl border bg-white p-6 shadow-sm h-fit">
+                <h2 class="text-lg font-bold mb-4">&#44208;&#51228; &#44552;&#50529;</h2>
+                <div th:if="${order != null}" class="space-y-3 text-sm">
+                    <div class="flex justify-between"><span>&#49345;&#54408; &#44552;&#50529;</span><strong th:text="${'&#8361;' + #numbers.formatInteger(order.totalPrice, 0, 'COMMA')}">&#8361;0</strong></div>
+                    <div class="flex justify-between"><span>&#48176;&#49569;&#48708;</span><strong th:text="${'&#8361;' + #numbers.formatInteger(order.shippingFee, 0, 'COMMA')}">&#8361;0</strong></div>
+                    <div class="flex justify-between border-t pt-3 text-lg"><span>&#52509; &#44208;&#51228;</span><strong class="text-[#0066cc]" th:text="${'&#8361;' + #numbers.formatInteger(order.totalPrice + order.shippingFee, 0, 'COMMA')}">&#8361;0</strong></div>
+                </div>
+                <div class="mt-6 space-y-3">
+                    <a href="/member" th:href="@{/member}" class="block w-full rounded-full border border-[#0066cc] px-5 py-3 text-center font-bold text-[#0066cc]">&#51452;&#47928;&#54788;&#54889; &#48372;&#44592;</a>
+                    <a href="/" th:href="@{/}" class="block w-full rounded-full bg-[#0066cc] px-5 py-3 text-center font-bold text-white">&#44228;&#49549; &#49660;&#54609;&#54616;&#44592;</a>
+                </div>
+            </aside>
+        </section>
+    </main>
+</body>
+</html>

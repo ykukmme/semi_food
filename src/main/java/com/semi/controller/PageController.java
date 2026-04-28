@@ -25,8 +25,46 @@ public class PageController {
     }
 
     @GetMapping("/order_detail")
-    public String orderDetail() {
+    public String orderDetail(
+            @RequestParam(required = false) String orderNumber,
+            Model model
+    ) {
+        if (orderNumber == null || orderNumber.isBlank()) {
+            return "order_detail";
+        }
+
+        model.addAttribute("requestedOrderNumber", orderNumber);
+        try {
+            PurchaseOrder order = purchaseOrderService.getOrderByOrderNumber(orderNumber);
+            model.addAttribute("order", OrderDetailRow.from(order));
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("orderError", "주문번호 " + orderNumber + "에 해당하는 주문 정보를 찾을 수 없습니다.");
+        }
         return "order_detail";
+    }
+
+    @GetMapping("/order_success")
+    public String orderSuccess(
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String orderNumber,
+            Model model
+    ) {
+        model.addAttribute("status", status);
+        if (orderNumber == null || orderNumber.isBlank()) {
+            if ("fail".equals(status)) {
+                model.addAttribute("orderError", "주문 저장에 실패했습니다. 잠시 후 다시 시도해주세요.");
+            }
+            return "order_success";
+        }
+
+        model.addAttribute("requestedOrderNumber", orderNumber);
+        try {
+            PurchaseOrder order = purchaseOrderService.getOrderByOrderNumber(orderNumber);
+            model.addAttribute("order", OrderDetailRow.from(order));
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("orderError", "주문번호 " + orderNumber + "에 해당하는 주문 정보를 찾을 수 없습니다.");
+        }
+        return "order_success";
     }
 
     @GetMapping("/all_orders")
@@ -45,6 +83,7 @@ public class PageController {
                 .map(OrderRow::from)
                 .toList();
         model.addAttribute("orders", orders);
+        model.addAttribute("memberId", resolvedMemberId);
         return "all_orders";
     }
 
@@ -64,6 +103,7 @@ public class PageController {
                 .map(OrderRow::from)
                 .toList();
         model.addAttribute("orders", orders);
+        model.addAttribute("memberId", resolvedMemberId);
         return "cancel_orders";
     }
 
@@ -98,5 +138,42 @@ public class PageController {
                 case CANCELLED -> "취소 완료";
             };
         }
+    }
+
+    public record OrderDetailRow(
+            String orderNumber,
+            String statusLabel,
+            Integer totalPrice,
+            Integer shippingFee,
+            LocalDateTime orderedAt,
+            List<OrderItemRow> items
+    ) {
+        private static OrderDetailRow from(PurchaseOrder order) {
+            return new OrderDetailRow(
+                    order.getOrderNumber(),
+                    OrderRow.statusLabel(order.getStatus()),
+                    order.getTotalPrice(),
+                    order.getShippingFee(),
+                    order.getOrderedAt(),
+                    order.getItems().stream()
+                            .map(item -> new OrderItemRow(
+                                    item.getProductName(),
+                                    item.getPrice(),
+                                    item.getQuantity(),
+                                    item.subtotal(),
+                                    item.getProduct().getImageUrl()
+                            ))
+                            .toList()
+            );
+        }
+    }
+
+    public record OrderItemRow(
+            String productName,
+            Integer price,
+            Integer quantity,
+            Integer subtotal,
+            String imageUrl
+    ) {
     }
 }

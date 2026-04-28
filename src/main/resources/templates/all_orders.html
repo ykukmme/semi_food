@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/css/all_orders.css">
 </head>
 <body class="min-h-screen text-on-surface bg-background">
-    <main class="max-w-7xl mx-auto px-6 py-10">
+    <main class="max-w-7xl mx-auto px-6 pt-0 pb-10">
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-on-surface">주문 현황</h1>
             <p class="mt-2 text-sm text-on-surface-variant">최근 주문 목록과 처리 상태를 확인할 수 있습니다.</p>
@@ -45,14 +45,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="order : ${orders}" class="border-t border-outline-variant/20" data-order-row>
-                            <td class="py-4 px-6 font-bold text-on-surface" th:text="${order.orderNumber}">PO-20260428-0001</td>
+                        <tr th:each="order : ${orders}" class="border-t border-outline-variant/20 hover:bg-surface-container-low/60 transition-colors" data-order-row>
+                            <td class="py-4 px-6 font-bold text-on-surface">
+                                <a class="text-primary hover:underline underline-offset-4" th:href="@{/order_detail(orderNumber=${order.orderNumber}, memberId=${memberId})}" th:text="${order.orderNumber}">PO-20260428-0001</a>
+                            </td>
                             <td class="py-4 px-6">
                                 <span class="inline-flex items-center rounded-full bg-primary-fixed px-3 py-1 text-xs font-extrabold text-primary" th:text="${order.statusLabel}">주문 접수</span>
                             </td>
                             <td class="py-4 px-6 font-bold text-on-surface" th:text="${'₩' + #numbers.formatInteger(order.totalPrice, 0, 'COMMA')}">₩0</td>
                             <td class="py-4 px-6 text-on-surface-variant" th:text="${#temporals.format(order.orderedAt, 'yyyy.MM.dd HH:mm')}">2026.04.28 15:30</td>
                             <td class="py-4 px-6 text-right">
+                                <a th:href="@{/order_detail(orderNumber=${order.orderNumber}, memberId=${memberId})}" class="mr-2 inline-flex items-center justify-center rounded-full border border-outline-variant px-4 py-2 text-xs font-extrabold text-on-surface hover:border-primary hover:text-primary transition">
+                                    &#49345;&#49464;&#48372;&#44592;
+                                </a>
                                 <a th:if="${order.cancellable}" th:href="@{/cancel_orders(orderNumber=${order.orderNumber})}" class="inline-flex items-center justify-center rounded-full border border-primary px-4 py-2 text-xs font-extrabold text-primary hover:bg-primary/10 transition">
                                     취소/환불
                                 </a>
@@ -64,8 +69,8 @@
                     </tbody>
                 </table>
             </div>
-            <div th:if="${orders != null and #lists.size(orders) > 4}" class="px-6 py-5 border-t border-outline-variant/20 text-center">
-                <button id="load-more-orders" type="button" class="inline-flex items-center justify-center rounded-full border border-primary px-6 py-3 text-sm font-extrabold text-primary hover:bg-primary/10 transition">
+            <div th:if="${orders != null and #lists.size(orders) > 3}" class="px-6 py-5 border-t border-outline-variant/20 text-center">
+                <button id="load-more-orders" type="button" data-expanded="false" class="inline-flex items-center justify-center rounded-full border border-primary px-6 py-3 text-sm font-extrabold text-primary hover:bg-primary/10 transition">
                     &#45908;&#48372;&#44592;
                 </button>
             </div>
@@ -73,10 +78,16 @@
     </main>
     <script>
         (() => {
-            const pageSize = 4;
+            const pageSize = 3;
             const rows = Array.from(document.querySelectorAll('[data-order-row]'));
             const button = document.getElementById('load-more-orders');
             let visibleCount = pageSize;
+
+            function updatePageScroll() {
+                const allowScroll = visibleCount > pageSize;
+                document.documentElement.style.overflowY = allowScroll ? 'auto' : 'hidden';
+                document.body.style.overflowY = allowScroll ? 'auto' : 'hidden';
+            }
 
             function renderRows() {
                 rows.forEach((row, index) => {
@@ -84,12 +95,18 @@
                 });
 
                 if (button) {
-                    button.hidden = visibleCount >= rows.length;
+                    const isExpanded = visibleCount >= rows.length;
+                    button.dataset.expanded = String(isExpanded);
+                    button.textContent = isExpanded ? '\uB2EB\uAE30' : '\uB354\uBCF4\uAE30';
+                    button.hidden = rows.length <= pageSize;
                 }
+
+                updatePageScroll();
             }
 
             button?.addEventListener('click', () => {
-                visibleCount += pageSize;
+                const isExpanded = button.dataset.expanded === 'true';
+                visibleCount = isExpanded ? pageSize : Math.min(visibleCount + pageSize, rows.length);
                 renderRows();
             });
 

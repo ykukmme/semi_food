@@ -109,7 +109,8 @@ class ProductControllerTemplateTest {
         assertThat(checkoutHtml).contains("processPayment");
         assertThat(checkoutHtml).contains("buildCheckoutOrder");
         assertThat(checkoutHtml).contains("formatWon");
-        assertThat(templateEngine.process("order_detail", context)).contains("주문 상세");
+        assertThat(templateEngine.process("order_detail", context)).contains("order-info");
+        assertThat(templateEngine.process("order_success", context)).contains("check_circle");
     }
 
     private SpringTemplateEngine createTemplateEngine() {

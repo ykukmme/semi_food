@@ -1,5 +1,6 @@
 package com.semi.domain.order;
 
+import com.semi.domain.cart.CartItemRepository;
 import com.semi.domain.member.Member;
 import com.semi.domain.member.MemberRepository;
 import com.semi.domain.order.dto.CreatePurchaseOrderRequest;
@@ -22,6 +23,7 @@ public class PurchaseOrderService {
     private final PurchaseOrderItemRepository purchaseOrderItemRepository;
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;
+    private final CartItemRepository cartItemRepository;
 
     @Transactional
     public PurchaseOrder createOrder(Long memberId, CreatePurchaseOrderRequest request) {
@@ -61,12 +63,26 @@ public class PurchaseOrderService {
                 .quantity(line.quantity())
                 .build()));
 
-        return purchaseOrderRepository.save(order);
+        PurchaseOrder savedOrder = purchaseOrderRepository.save(order);
+        cartItemRepository.deleteByMemberId(memberId);
+        return savedOrder;
     }
 
     @Transactional(readOnly = true)
     public List<PurchaseOrder> getOrdersByMemberId(Long memberId) {
         return purchaseOrderRepository.findByMemberIdOrderByOrderedAtDesc(memberId);
+    }
+
+    @Transactional(readOnly = true)
+    public PurchaseOrder getOrderByMemberIdAndOrderNumber(Long memberId, String orderNumber) {
+        return purchaseOrderRepository.findDetailByMemberIdAndOrderNumber(memberId, orderNumber)
+                .orElseThrow(() -> new IllegalArgumentException("order not found. orderNumber=" + orderNumber));
+    }
+
+    @Transactional(readOnly = true)
+    public PurchaseOrder getOrderByOrderNumber(String orderNumber) {
+        return purchaseOrderRepository.findDetailByOrderNumber(orderNumber)
+                .orElseThrow(() -> new IllegalArgumentException("order not found. orderNumber=" + orderNumber));
     }
 
     @Transactional(readOnly = true)
