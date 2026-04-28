@@ -3,6 +3,11 @@ package com.semi.constant;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+// [ ]TODO 아래와 같은 형식으로 클래서를 나누고, ParserConstants 내부에서 Http, SNXBEST, DB 같은 식으로 클래스를 나누고, 위치를 파서 패키지 쪽으로 옮길 것
+// public static final class Http {
+//     public static final String HEADER_AUTH = "X-Parser-Auth";
+// }
+
 // 상속과 인스턴스화를 방지하기 위해 final 클래스와 private 생성자 사용
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ParserHttpConstants {
