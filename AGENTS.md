@@ -1,46 +1,56 @@
-# AGENTS.md
+<!-- AI 하네스 관련 내용을 기입 할 것 -->
 
-## Project
 
-Semi is a Spring Boot backend for a smart food e-commerce platform. It uses Java 21, Gradle, Spring Security, JWT, JPA, Flyway, and MySQL/TiDB-compatible storage.
+# 🤖 AI Coding Agent Instruction (AGENTS.md)
 
-## Hard Rules
+이 문서는 이 프로젝트에서 AI 에이전트가 준수해야 할 **최우선 행동 지침**입니다. 모든 작업은 아래의 규칙을 엄격히 따릅니다.
 
-- Do not hardcode secrets. Database URLs, API keys, JWT secrets, tokens, and credentials must come from environment variables or the ignored `.env` file.
-- Keep `.env` out of Git. Update `.env.example` with placeholders only when new configuration keys are added.
-- Validate user input at API boundaries with Bean Validation and `@Valid` where applicable.
-- Keep schema changes in Flyway migrations under `src/main/resources/db/migration`; do not rely on Hibernate DDL generation.
-- Keep auto-ordering and RPA-style automation opt-in. Risky automation must default to off and require an explicit flag.
-- Add or update tests for behavior changes, especially auth, roles, JWT, and database migration behavior.
+---
 
-## Secrets Policy
+### 1. 작업 프로세스 및 Git 관리 (Operational & Git Flow)
+<!-- * **Branching:** 어떤 작업을 시작하기 전, 반드시 해당 작업의 목적이 드러나는 이름으로 **새로운 브랜치(Branch)**를 생성하십시오. (예: `feature/login-logic`, `fix/db-connection`) -->
+* **Atomic Task:** 한 번에 오직 하나의 기능이나 문제만 해결하십시오. 여러 기능을 동시에 수정하지 않습니다.
+* **Permission First:** 실제 파일을 수정하거나 저장하기 전, 반드시 사용자에게 변경 사항을 설명하고 **명시적인 승인**을 구하십시오.
+* **Commit:** 작업 완료 후에는 변경 내용에 대해 명확하고 구체적인 **커밋 메시지**를 남기십시오.
 
-- Never print, log, paste, or commit `.env` contents.
-- Required local secrets live in `.env`; example keys live in `.env.example` without real values.
-- `JWT_SECRET` must be at least 32 bytes.
-- Production must set `CORS_ALLOWED_ORIGINS` to real domains or IP origins. Do not use `*` in production.
+### 2. 코드 및 주석 보존 규칙 (Code & Comment Standards)
+* **Preserve Comments:** 기존 코드에 작성되어 있던 **기존 주석문은 가능한 보존**하십시오. 로직을 수정하더라도 기존의 설명이나 맥락이 담긴 주석을 함부로 삭제하지 마십시오.
+* **Documentation:** 새로운 라이브러리 설치나 파생 코드 작성 시, 아래 정보를 포함한 주석을 반드시 추가하십시오.
+    * **사용 이유(Reason):** 해당 라이브러리/코드가 도입된 목적
+    * **실제 동작(Behavior):** 구체적인 기능 및 동작 설명
+    * **출처(Source):** 공식 문서 주소 또는 참고한 레퍼런스 URL
 
-## Local Run
+### 3. 작업 이력 기록 (Work History Logging)
+* **History File:** 모든 작업의 시작 시간, 종료 시간, 그리고 작업 내용을 프로젝트 루트의 **`WORK_HISTORY.md`** 파일에 기록하십시오.
+* **Logging Format:** `[시작시간 - 종료시간] 작업명: 상세 내용 요약` 형식을 유지하십시오.
+* **Dependency Approval:** 새로운 라이브러리 설치가 필요할 경우 반드시 사전에 허락을 구하고, 설치 후에는 위 2번 규칙에 따라 주석을 남기십시오.
 
-- Gradle: `./gradlew bootRun`
-- VS Code F5: use the shared `SemiApplication` launch configuration.
-- Browser entry points: `http://localhost:8080/login.html` and `http://localhost:8080/register.html`
-- Tests: `./gradlew test`
+### 4. 기술 스택 및 명명 규칙 (Technical Standards)
+* **Framework:** **Spring Boot 4.0.5**의 표준 문법과 프로젝트 구조(Directory Structure)를 엄격히 준수하십시오.
+* **Global Search Optimization:** 모든 클래스, 함수, 변수 명명 시 **고유한 접두어(Unique Prefix)**를 활용하십시오. 에디터의 글로벌 검색에서 다른 요소와 중복되지 않고 쉽게 식별될 수 있어야 합니다.
+* **Library Conflict Check:** 동일한 기능을 수행하는 라이브러리를 둘 이상 사용해야 할 경우, 실제 도입 전 반드시 **역할 중복 여부, 버전 호환성, 의존성 충돌, 자동 설정(Auto Configuration) 충돌, Bean 등록 충돌 가능성**을 사전 검토하십시오. 불필요한 중복 사용은 지양하고, 병행 사용이 필요할 때는 그 이유와 충돌 방지 방법을 명확히 기록하십시오.
 
-Spring Boot imports `.env` through `spring.config.import`, so both Gradle `bootRun` and IDE main-class launches can use the same local config.
+### 5. DB 안전성 및 CRUD 작업 제약사항 (DB Safety Guardrails)
+* **DB Safety First:** AI가 CRUD(DB) 관련 기능을 추가하거나 수정할 때는 **데이터 무결성, 서비스 안정성, 운영 DB 보호**를 최우선으로 고려하십시오.
+* **No Destructive Change Without Review:** 대량 수정/삭제, 스키마 변경, 마이그레이션 유발 작업은 사용자 승인 없이 수행하거나 반영하지 마십시오.
+* **Safe Query Principle:** `UPDATE`, `DELETE` 쿼리 작성 시 반드시 대상 조건을 명확히 검토하고, **누락된 조건절(`WHERE`)이나 과도한 범위 반영 가능성**이 없는지 확인하십시오.
+* **Prefer Non-Destructive Design:** 가능한 경우 Hard Delete보다 **Soft Delete**, 물리 삭제보다 **상태값 변경**, 직접 수정 대신 **이력 추적 가능한 방식**을 우선 검토하십시오.
+* **Transactional Safety:** 다중 테이블 반영이나 상태 변경 로직은 반드시 **트랜잭션 범위, 롤백 가능성, 예외 처리 흐름**을 함께 검토하십시오.
+* **Test Before Production:** CRUD 로직은 운영 DB에 직접 가정하지 말고, **로컬/개발/테스트 환경 기준으로 먼저 검증 가능한 형태**로 작성하십시오.
+* **Bulk Operation Caution:** 대량 조회/수정/삭제가 예상되는 경우 **배치 처리, 페이지네이션, Limit, 인덱스 영향, 락(lock) 가능성**을 사전에 검토하십시오.
+* **Schema Change Warning:** 테이블 구조 변경, 컬럼 타입 변경, 인덱스 추가/삭제는 애플리케이션 영향도와 기존 데이터 영향도를 먼저 분석한 뒤 제안하십시오.
+* **Read/Write Separation Awareness:** 조회 로직과 쓰기 로직의 책임을 분리하고, 조회 전용 동작은 가능한 한 **읽기 전용(Read Only) 관점**으로 설계하십시오.
+* **Auditability:** 데이터 변경이 발생하는 기능에는 가능한 범위 내에서 **로그, 변경 이력, 감사 추적성**을 확보할 수 있도록 고려하십시오.
 
-## Code Review Graph
+---
 
-This project has a code-review-graph knowledge graph. Try the graph tools before broad file scanning when exploring architecture, reviewing changes, or tracing impact.
-
-Use file scanning as a fallback if graph tools time out or do not cover the needed context.
-
-Recommended graph tools:
-
-- `detect_changes` for code review.
-- `get_review_context` for review snippets.
-- `get_impact_radius` for blast radius.
-- `get_affected_flows` for impacted execution paths.
-- `query_graph` for callers, callees, imports, and tests.
-- `semantic_search_nodes` for finding functions/classes.
-- `get_architecture_overview` for high-level structure.
+## 💡 에이전트 체크리스트 (수행 전 최종 확인)
+<!-- 1. [ ] 작업 전용 브랜치를 생성했는가? -->
+2. [ ] 한 번에 하나의 기능만 수정하고 있는가?
+3. [ ] 기존 주석을 삭제하지 않고 보존했는가?
+4. [ ] 작업 완료 후 `WORK_HISTORY.md`에 시간과 내용을 기록했는가?
+5. [ ] 클래스/함수/변수명에 고유 접두어를 적용했는가?
+6. [ ] Spring Boot 표준 구조를 따르고 있는가?
+7. [ ] 파일 수정 및 라이브러리 설치 전 사용자의 승인을 받았는가?
+8. [ ] CRUD(DB) 작업이 운영 데이터에 악영향을 줄 가능성을 사전에 검토했는가?
+9. [ ] 동일 기능의 복수 라이브러리 사용 시 충돌 여부를 확인했는가?

@@ -12,15 +12,23 @@ import java.util.List;
 
 // [x]TODO 기존 트랜드 부분도 이름에  Parser 추가하기 -> ParserController로 통합
 
-// [ ]TODO !주의 파싱해야 할 데이 제품데이터 안에 Supplier도 같이 들어 있어있음
+// [x]TODO !주의 파싱해야 할 데이 제품데이터 안에 Supplier도 같이 들어 있어있음
     // [x]TODO ProductParserMapper 완성하기
-// [ ]TODO SupplierParserMapper 완성하기
+    // [x]TODO SupplierParserMapper 완성하기
 
-// [ ]TODO SupplierParserMapper 완성하기
-    // [x]TODO ProductParserResponse 완성하기
-// [ ]TODO SupplierParserResponse 완성하기
+// [x]TODO ProductParserResponse 완성하기
+// [x]TODO SupplierParserResponse 완성하기
 
 // [ ]TODO ParserControler 완성하기
+    // [x]TODO trendKeyword Service 완성하기
+    // [ ]TODO product Service 완성하기
+    // [ ]TODO supplier Service 완성하기
+
+// [x]TODO ParserRepository 완성하기
+    // [x]TODO trendKeyword Repository 완성하기
+    // [x]TODO 1차 product Repository 완성하기
+    // [x]TODO 1차 supplier Repository 완성하기
+
 
 @Mapper(componentModel = "spring" , imports = {LocalDate.class, DateTimeFormatter.class}) //스프링 빈으로 등록 , 클래스 임포트 추가) 
 public interface ProductMapper {

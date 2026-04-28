@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 
-//[ ]TODO <syncDate>20260426</syncDate> api 파싱을 통한 데이터의 경우 전날을 기준으로 syncDate가 적혀오는 거 같아서, DB에서 처리 할 때 기준 통일이 필요해 보임.
+//[x]TODO <syncDate>20260426</syncDate> api 파싱을 통한 데이터의 경우 전날을 기준으로 syncDate가 적혀오는 거 같아서, DB에서 처리 할 때 기준 통일이 필요해 보임.
+//[ ]TODO 날짜와 랭킹ID를 조합해서 접속 할 경우, 금일짜 1위를 보여줌, 키워드의 경우 파싱을 한 날짜로 덮는 과정이 필요
 
 /**
  * 트렌드 키워드 엔티티

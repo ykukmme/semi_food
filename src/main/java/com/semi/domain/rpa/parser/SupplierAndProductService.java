@@ -19,7 +19,7 @@ import org.springframework.http.MediaType;
 
 @Service
 @RequiredArgsConstructor
-public class TrendKeywordService {
+public class SupplierAndProductService {
 
     private final RestClient restClient = RestClient.create();
     private final TrendKeywordRepository repository;
