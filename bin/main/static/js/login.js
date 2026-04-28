@@ -23,7 +23,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async (event) =
         if (response.ok) {
             setToken(body.accessToken);
             localStorage.setItem('role', body.role);
-            await openMemberDashboard(data.memberId, body.accessToken);
+            window.location.href = 'http://localhost:8080';
             return;
         }
 
