@@ -6,10 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
-import jakarta.persistence.Column;
 import lombok.Data;
 import java.util.List;
-
 
 
 @Data
@@ -19,11 +17,11 @@ public class TrendKeywordResponse {
     @JsonProperty("rankList")
     @JacksonXmlProperty(localName = "rankList")
     @JacksonXmlElementWrapper(useWrapping = false) 
-    private List<RankItem> rankList;
+    private List<TrendKeywordItem> rankList;
 
     @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class RankItem {
+    public static class TrendKeywordItem {
         
         @JsonProperty("rank")
         @JacksonXmlProperty(localName = "rank")

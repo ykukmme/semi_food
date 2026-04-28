@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 //[ ]TODO <syncDate>20260426</syncDate> api 파싱을 통한 데이터의 경우 전날을 기준으로 syncDate가 적혀오는 거 같아서, DB에서 처리 할 때 기준 통일이 필요해 보임.
-//[ ]TODO syncDate문제가 있지만, 일단 Date비교 부분에 =로 비교를 하고 있어서, >로 비교하는 절차가 필요
 
 /**
  * 트렌드 키워드 엔티티

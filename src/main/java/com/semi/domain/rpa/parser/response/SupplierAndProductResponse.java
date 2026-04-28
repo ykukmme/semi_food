@@ -6,32 +6,49 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
-import jakarta.persistence.Column;
 import lombok.Data;
+import java.time.LocalDateTime;
 import java.util.List;
-// git 브런치 제거 및 이동 테스트
 
+//하나의 응답에 제품과 공급자가 모두 들어있음으로 동시에 처리, 단 공급자ID때문에 공급자를 먼저 처리
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ProductResponse {
+public class SupplierAndProductResponse {
 
     @JsonProperty("productList")
     @JacksonXmlProperty(localName = "productList")
     @JacksonXmlElementWrapper(useWrapping = false) 
     private List<ProductItem> productList;
+    private List<SupplierItem> supplierList;
+
+    @Data
+    @JsonIgnoreProperties(ignoreUnknown = true)
+
+    public static class SupplierItem {
+        // 공급자
+        @JsonProperty("mallNm")
+        @JacksonXmlProperty(localName = "mallNm")
+        private String mallNm; // 공급자
+        
+        @JsonProperty("mallLinkUrl")
+        @JacksonXmlProperty(localName = "mallLinkUrl")
+        private String mallLinkUrl; // 공급자 url, smartstore는 파라메터가 없을시 무조건 챕챠를 띄움
+
+        @JsonProperty("syncDate")
+        @JacksonXmlProperty(localName = "syncDate")
+        private LocalDateTime syncDate; // 수집 날짜 (예: 2024-06-01T00:00:00)
+    }
+
 
     @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ProductItem {
-        
+
+        // 제품
         @JsonProperty("rank")
         @JacksonXmlProperty(localName = "rank")
         private int rank;
-
-        @JsonProperty("productId")
-        @JacksonXmlProperty(localName = "productId")
-        private String productId; // "UP", "DOWN", "NEW" 등
 
         @JsonProperty("title")
         @JacksonXmlProperty(localName = "title")
@@ -49,18 +66,11 @@ public class ProductResponse {
         @JacksonXmlProperty(localName = "priceValue")
         private Integer priceValue; // 제품가격
 
+        // 문제 있을시 private String syncDate; 으로 바꾸기
         @JsonProperty("syncDate")
         @JacksonXmlProperty(localName = "syncDate")
-        private LocalDateTime syncDate; 
+        private LocalDateTime syncDate; // 수집 날짜 (예: 2024-06-01T00:00:00)
 
-        @JsonProperty("mallNm")
-        @JacksonXmlProperty(localName = "mallNm")
-        private String mallNm; // 공급자
-        
-        @JsonProperty("mallLinkUrl")
-        @JacksonXmlProperty(localName = "mallLinkUrl")
-        private String mallLinkUrl; // 공급자 url, smartstore는 파라메터가 없을시 무조건 챕챠를 띄움
-        
     }
 
 

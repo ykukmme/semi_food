@@ -5,6 +5,7 @@ import org.springframework.web.client.RestClient;
 
 import com.semi.domain.keyword.TrendKeyword;
 import com.semi.domain.keyword.TrendKeywordRepository;
+import com.semi.domain.rpa.parser.mapper.TrendKeywordMapper;
 import com.semi.domain.rpa.parser.response.TrendKeywordResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,9 @@ public class TrendKeywordService {
     private final TrendKeywordRepository repository;
     private final TrendKeywordMapper trendKeywordMapper; // 매퍼 주입
 
-    public List<TrendKeywordResponse.RankItem> getNaverKeywords() {
+    public List<TrendKeywordResponse.TrendKeywordItem> getNaverKeywords() {
+        // [ ]TODO RankId=2165824835의 값을 별도의 테이블에서 가져오거나, 리스트로 저장해 뒀다가 작업하는 게 필요.
+            // naver쪽 내부에서 쓰는 값인지, 기존에 수집해둔 Rank_id와 날짜를 동기화 시켜서 api를 보내도 변하는 게 없음.
         String targetSiteUrl= "https://snxbest.naver.com/keyword/best?categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY&ageType=ALL&activeRankId=2165824835&syncDate=20260423" ;
         String dataUrl = "https://snxbest.naver.com/api/v1/snxbest/keyword/rank?ageType=ALL&categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY" ;
         String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" ;
@@ -36,9 +39,10 @@ public class TrendKeywordService {
             .retrieve()
             .body(String.class);
 
-    System.out.println("네이버 응답 원문: " + rawJson);
+        System.out.println("네이버 응답 원문: " + rawJson);
         
-        List<TrendKeywordResponse.RankItem> response = restClient.get()
+        // data가 json/xml 둘 다 올 수 있기 때문에, Jackson이 자동으로 파싱하도록 설정
+        List<TrendKeywordResponse.TrendKeywordItem> response = restClient.get()
                 .uri(dataUrl)
                 .header("User-Agent", userAgent)
                 .header("Accept", MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE)
@@ -47,7 +51,7 @@ public class TrendKeywordService {
                 // .header("Referer", "https://snxbest.naver.com/")
                 // .header("Referer", "https://naver.com")
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<TrendKeywordResponse.RankItem>>() {});  // 여기서 Jackson MessageConverter가 자동 동작함
+                .body(new ParameterizedTypeReference<List<TrendKeywordResponse.TrendKeywordItem>>() {});  // 여기서 Jackson MessageConverter가 자동 동작함
                 // .body(TrendKeywordResponse.class); // 여기서 Jackson MessageConverter가 자동 동작함
 
                     System.out.println("수신된 데이터: " + response);
@@ -55,7 +59,7 @@ public class TrendKeywordService {
     }
 
 @Transactional
-public List<TrendKeyword> saveWithSequentialId(List<TrendKeywordResponse.RankItem> items) {
+public List<TrendKeyword> saveWithSequentialId(List<TrendKeywordResponse.TrendKeywordItem> items) {
     
     // 1. 현재 DB에서 가장 큰 ID 가져오기 (데이터 없으면 0으로 시작)
     Long maxId = repository.findMaxId();
@@ -65,7 +69,7 @@ public List<TrendKeyword> saveWithSequentialId(List<TrendKeywordResponse.RankIte
     List<TrendKeyword> newVOList = new ArrayList<>();
     List<TrendKeyword> parsedVOList = trendKeywordMapper.toVoList(items); // 파싱된 데이터
 
-    // 파싱한 데이터가 기존 데이터 보다 최신이 아니라면, 빈(설명) List 반환
+    // 파싱한 데이터가 기존 데이터 보다 최신이 아니라면, tempStr List 반환
 if ( ! parsedVOList.get(0).getCollectedAt().isAfter(lastRecord.getCollectedAt())){
     String tempStr = "추가로 저장된 값이 없습니다. 추가 Data CollectedAt:" + parsedVOList.get(0).getCollectedAt()+", 기존 Data CollectedAt:" + lastRecord.getCollectedAt() ;
     newVOList.add(new TrendKeyword(0L, tempStr, 0, 0, LocalDateTime.now(), false)) ;
@@ -79,7 +83,7 @@ if ( ! parsedVOList.get(0).getCollectedAt().isAfter(lastRecord.getCollectedAt())
         // 이미 저장된 날짜와 키워드인지 확인
         if (!repository.existsByCollectedAtAndKeyword(parsedVO.getCollectedAt(), parsedVO.getKeyword())) {
             // 수동으로 ID를 부여하기 위해 새로운 객체 생성 (기존 필드는 유지)
-            // @Builder를 
+            // @Builder
             TrendKeyword tempVO = TrendKeyword.builder()
                     .id(++nextId) // 1 증가시킨 값을 ID로 부여
                     .keyword(parsedVO.getKeyword())
@@ -87,7 +91,7 @@ if ( ! parsedVOList.get(0).getCollectedAt().isAfter(lastRecord.getCollectedAt())
                     .frequency(0)
                     .collectedAt(parsedVO.getCollectedAt())
                     .isActive(true)
-                    .build();            
+                    .build();
             newVOList.add(tempVO);
         }
     }
@@ -101,7 +105,7 @@ if ( ! parsedVOList.get(0).getCollectedAt().isAfter(lastRecord.getCollectedAt())
 
 
     @Transactional
-    public List<TrendKeyword> saveTrendKeywords(List<TrendKeywordResponse.RankItem> items) {
+    public List<TrendKeyword> saveTrendKeywords(List<TrendKeywordResponse.TrendKeywordItem> items) {
         // 매퍼로 리스트 전체 변환
         List<TrendKeyword> voList = trendKeywordMapper.toVoList(items);
         repository.saveAll(voList);

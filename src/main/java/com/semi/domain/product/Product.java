@@ -1,11 +1,13 @@
 package com.semi.domain.product;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.semi.domain.keyword.TrendKeyword;
 import com.semi.domain.supplier.Supplier;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -16,8 +18,11 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "product")
-@Getter
+@Data  // @Data, @Builder, @AllArgsConstructor, @NoArgsConstructor(access = AccessLevel.PROTECTED) 이 위치에 없을시 rpa/parser 패키지 쪽에서 에러 발생
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+
 public class Product {
 
     @Id
@@ -51,21 +56,21 @@ public class Product {
     private Boolean autoOrder = false;  // 자동발주 플래그 (기본 OFF, 변경 시 audit 필수)
 
     @Column(name = "crawled_at", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime crawledAt;  // 크롤링 시간
 
-    @Builder
-    public Product(TrendKeyword keyword, Supplier supplier, String name, String description,
-                   Integer price, String imageUrl, String productUrl, LocalDateTime crawledAt) {
-        this.keyword     = keyword;
-        this.supplier    = supplier;
-        this.name        = name;
-        this.description = description;
-        this.price       = price;
-        this.imageUrl    = imageUrl;
-        this.productUrl  = productUrl;
-        this.autoOrder   = false;  // 자동발주 기본 OFF (Hard Rule)
-        this.crawledAt   = crawledAt;
-    }
+    // public Product(TrendKeyword keyword, Supplier supplier, String name, String description,
+    //                Integer price, String imageUrl, String productUrl, LocalDateTime crawledAt) {
+    //     this.keyword     = keyword;
+    //     this.supplier    = supplier;
+    //     this.name        = name;
+    //     this.description = description;
+    //     this.price       = price;
+    //     this.imageUrl    = imageUrl;
+    //     this.productUrl  = productUrl;
+    //     this.autoOrder   = false;  // 자동발주 기본 OFF (Hard Rule)
+    //     this.crawledAt   = crawledAt;
+    // }
 
     /**
      * 자동발주 플래그 변경
