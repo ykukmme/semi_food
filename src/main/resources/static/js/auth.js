@@ -113,7 +113,7 @@ function handleLogout(event) {
 }
 
 function setupLogoutButton() {
-    document.querySelectorAll('#logoutBtn').forEach((button) => {
+    document.querySelectorAll('#logoutBtn, [data-logout-button]').forEach((button) => {
         if (button.dataset.logoutBound === 'true') {
             return;
         }
@@ -128,7 +128,7 @@ function setupLogoutButton() {
 
     document.body.dataset.logoutDelegated = 'true';
     document.body.addEventListener('click', (event) => {
-        const logoutButton = event.target.closest('#logoutBtn');
+        const logoutButton = event.target.closest('#logoutBtn, [data-logout-button]');
         if (!logoutButton) {
             return;
         }

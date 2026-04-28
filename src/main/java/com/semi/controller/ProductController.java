@@ -37,7 +37,7 @@ public class ProductController {
         return "product";
     }
 
-    @GetMapping("/dashboard_search_result.html")
+    @GetMapping("/dashboard_search_result")
     public String dashboardSearchResult(
             @RequestParam(name = "q", required = false) String query,
             Model model

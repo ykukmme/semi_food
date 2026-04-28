@@ -124,7 +124,7 @@ document.getElementById('dashboard-search-form')?.addEventListener('submit', (ev
     const form = event.currentTarget;
     const raw = document.getElementById('dashboard-search-input')?.value || '';
     const q = raw.trim();
-    const action = form.getAttribute('action') || '/dashboard_search_result.html';
+    const action = form.getAttribute('action') || '/dashboard_search_result';
     window.location.href = action + '?q=' + encodeURIComponent(q);
 });
 
