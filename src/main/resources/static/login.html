@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 — 스마트 식품 이커머스</title>
+    <!-- ✅ 추가: favicon 요청 방지 -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='50' font-size='50'>🍎</text></svg>">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <div class="login-container">
+
+        <div class="login-header">
+            <span class="badge">스마트 식품 이커머스</span>
+            <h1>로그인</h1>
+            <p>계정에 로그인하여 서비스를 이용하세요</p>
+        </div>
+
+        <form id="loginForm" novalidate>
+            <div class="form-group">
+                <label for="memberId">아이디 <span class="required">*</span></label>
+                <input type="text" id="memberId" name="memberId"
+                       placeholder="아이디를 입력해주세요"
+                       required>
+                <span class="error-msg" id="memberIdError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="password">비밀번호 <span class="required">*</span></label>
+                <input type="password" id="password" name="password"
+                       placeholder="비밀번호를 입력해주세요"
+                       required>
+                <span class="error-msg" id="passwordError"></span>
+            </div>
+
+            <div id="globalError" class="global-error hidden"></div>
+
+            <button type="submit" class="btn-submit">로그인</button>
+        </form>
+
+        <hr class="divider">
+        <p class="register-link">계정이 없으신가요? <a href="register.html">회원가입</a></p>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>

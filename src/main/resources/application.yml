@@ -1,0 +1,67 @@
+spring:
+  config:
+    # Load local secrets/config for both Gradle bootRun and IDE launches.
+    # The .env file is ignored by Git; keep real values out of source control.
+    import: optional:file:.env[.properties]
+
+  # Fix Korean character encoding issues
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+  datasource:
+    # TiDB Cloud / MySQL-compatible connection values come from environment config.
+    url: ${TIDB_URL}
+    username: ${TIDB_USERNAME}
+    password: ${TIDB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      # Flyway owns schema changes; JPA must not create or update tables implicitly.
+      ddl-auto: none
+    defer-datasource-initialization: true
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  flyway:
+    # Flyway is executed by FlywayConfig so startup order stays explicit.
+    enabled: false
+    clean-disabled: true
+
+cors:
+  # Local browser dev defaults only. Production must override with real origins.
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173,http://127.0.0.1:3000,http://127.0.0.1:5173}
+
+server:
+  port: ${SERVER_PORT:8080}
+  # Fix character encoding for requests and responses
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  tomcat:
+    uri-encoding: UTF-8
+
+# Jackson configuration for JSON serialization
+jackson:
+  default-property-inclusion: NON_NULL
+  serialization:
+    write-dates-as-timestamps: false
+    fail-on-empty-beans: false
+  deserialization:
+    fail-on-unknown-properties: false
+
+logging:
+  level:
+    com.semi: ${LOG_LEVEL:INFO}
+    org.flywaydb: ${FLYWAY_LOG_LEVEL:INFO}
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiry-seconds: ${JWT_EXPIRY_SECONDS:7200}
