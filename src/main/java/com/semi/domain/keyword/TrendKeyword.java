@@ -14,6 +14,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 //[x]TODO <syncDate>20260426</syncDate> api 파싱을 통한 데이터의 경우 전날을 기준으로 syncDate가 적혀오는 거 같아서, DB에서 처리 할 때 기준 통일이 필요해 보임.
 //[ ]TODO api 에서 syncDate와 rankingID 를 조합하면 일정한 제품 리스트가 나옴. 별도의 칼럼을 추가해서 관리 할 것, 파이썬 코드도 업데이트가 필요함.
+        // 확인결과 간헐적으로 불발
+// [ ] TODO DB에 데이터를 넣은 다음 작업을 시작하려 했으나 농속성으로 불발.
 
 /**
  * 트렌드 키워드 엔티티
