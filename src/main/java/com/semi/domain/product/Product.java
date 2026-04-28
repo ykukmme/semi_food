@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @GeneratedValue(strategy = GenerationType.IDENTITY) // TiDB의 ID생성 문제로 주석처리
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

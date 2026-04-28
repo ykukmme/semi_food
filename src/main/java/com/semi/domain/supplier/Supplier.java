@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Supplier {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @GeneratedValue(strategy = GenerationType.IDENTITY) // TiDB의 ID생성 문제로 주석처리
     private Long id;
 
     @Column(nullable = false, unique = true, length = 100)
