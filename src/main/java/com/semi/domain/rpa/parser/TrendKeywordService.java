@@ -29,10 +29,11 @@ public class TrendKeywordService {
 
     public List<TrendKeywordResponse.TrendKeywordItem> getNaverKeywords() {
 
-        // 기존 api url 의 경우 RankId와 syncDate 를 조합해서 제품 url api에서 처리가 가능, 테이블을 추가하는 방향으로 전환해야 겠음.
-            // [ ]TODO 기존로직을 일부 수정하고, TrendKeyword에 RankId와 syncDate를 추가하고 파싱으로 데이터를 받을 때만 사용
-        // [ ]TODO RankId=2165824835의 값을 별도의 테이블에서 가져오거나, 리스트로 저장해 뒀다가 작업하는 게 필요.
-            // naver쪽 내부에서 쓰는 값인지, 기존에 수집해둔 Rank_id와 날짜를 동기화 시켜서 api를 보내도 변하는 게 없음.
+        // api url 의 경우 RankId와 syncDate 를 조합해서 제품 url api에서 처리가 간헐적으로 가능
+        // [ ]TODO 기존 로직을 일부 수정하기
+        // [x]TODO TrendKeyword에 RankId와 syncDate를 추가
+        // [ ]TODO 기존 TrendKeywordService 클래스의 내용도 SupplierAndProductService 처럼 수정하기
+        
         String targetSiteUrl= "https://snxbest.naver.com/keyword/best?categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY&ageType=ALL&activeRankId=2165824835&syncDate=20260423" ;
         String dataUrl = "https://snxbest.naver.com/api/v1/snxbest/keyword/rank?ageType=ALL&categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY" ;
         
@@ -73,31 +74,34 @@ public List<TrendKeyword> saveWithSequentialId(List<TrendKeywordResponse.TrendKe
     List<TrendKeyword> newVOList = new ArrayList<>();
     List<TrendKeyword> parsedVOList = trendKeywordMapper.toVoList(items); // 파싱된 데이터
 
-    // 파싱한 데이터가 기존 데이터 보다 최신이 아니라면, tempStr List 반환
-if ( ! parsedVOList.get(0).getCollectedAt().isAfter(lastRecord.getCollectedAt())){
-    String tempStr = "추가로 저장된 값이 없습니다. 추가 Data CollectedAt:" + parsedVOList.get(0).getCollectedAt()+", 기존 Data CollectedAt:" + lastRecord.getCollectedAt() ;
-    newVOList.add(new TrendKeyword(0L, tempStr, 0, 0, LocalDateTime.now(), false)) ;
-    return newVOList ;
-            
-}
+    // 파싱한 데이터가 기존 데이터 보다 최신이 아니라면, tempStr List 반환, 이퀄쪽은 나중에 재시도 하는 로직이 있을 경우 수정 필요
+    if (newCollectedAt.isBefore(lastCollectedAt) || newCollectedAt.isEqual(lastCollectedAt)) {
+        log.info("새로운 데이터가 없습니다. (New: {}, DB: {})", newCollectedAt, lastCollectedAt);
+        
+        String tempStr = String.format("추가 저장 데이터 없음. 수집일: %s, 기존일: %s", newCollectedAt, lastCollectedAt);
+        newVOList.add(new TrendKeyword(0L, tempStr, 0, 0, LocalDateTime.now(), false));
+        return newVOList;
+    }
 // if ( repository.findFirstByOrderByIdDesc().getCollectedAt().isAfter(parsedVOList.get(0).getCollectedAt())){ }
     // 3. 중복 확인 후 새 ID 부여하여 리스트 구성
     
     for (TrendKeyword parsedVO : parsedVOList) {
         // 이미 저장된 날짜와 키워드인지 확인
         if (!repository.existsByCollectedAtAndKeyword(parsedVO.getCollectedAt(), parsedVO.getKeyword())) {
-            // 수동으로 ID를 부여하기 위해 새로운 객체 생성 (기존 필드는 유지)
-            // @Builder
-            TrendKeyword tempVO = TrendKeyword.builder()
-                    .id(++nextId) // 1 증가시킨 값을 ID로 부여
-                    .keyword(parsedVO.getKeyword())
-                    .rank(parsedVO.getRank())
-                    .frequency(0)
-                    .collectedAt(parsedVO.getCollectedAt())
-                    .isActive(true)
-                    .build();
-            newVOList.add(tempVO);
+            continue;
         }
+        // 수동으로 ID를 부여하기 위해 새로운 객체 생성 (기존 필드는 유지)
+        // @Builder
+        TrendKeyword tempVO = TrendKeyword.builder()
+                .id(++nextId) // 1 증가시킨 값을 ID로 부여
+                .keyword(parsedVO.getKeyword())
+                .rank(parsedVO.getRank())
+                .frequency(0)
+                .collectedAt(parsedVO.getCollectedAt())
+                .isActive(true)
+                .build();
+        newVOList.add(tempVO);
+
     }
     // 4. 최종 저장
     if (!newVOList.isEmpty()) {

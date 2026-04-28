@@ -39,13 +39,13 @@ public class SupplierAndProductService {
         String sapDataUrl = String.format(ParserHttpConstants.SNXBEST_TARGET_SITE_URL_TEMPLATE, sapRankId, sapSyncDate);
 
         SupplierAndProductResponse sapResponse = restClient.get()
-                .uri(sapDataUrl)
-                .header("User-Agent", ParserHttpConstants.USER_AGENT)
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE)
-                .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7") 
-                .header("Referer", sapTargetSiteUrl)
-                .retrieve()
-                .body(SupplierAndProductResponse.class);
+            .uri(sapDataUrl)
+            .header("User-Agent", ParserHttpConstants.USER_AGENT)
+            .header("Accept", MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE)
+            .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7") 
+            .header("Referer", sapTargetSiteUrl)
+            .retrieve()
+            .body(SupplierAndProductResponse.class);
 
         System.out.println("수신된 공급자/상품 데이터: " + sapResponse);
         return sapResponse;
@@ -87,17 +87,17 @@ public class SupplierAndProductService {
             Supplier sapSupplier = sapSupplierMap.get(sapSupplierName);
 
             Product sapProduct = Product.builder()
-                    .id(++sapNextId)
-                    .keyword(sapKeyword)
-                    .supplier(sapSupplier)
-                    .name(sapMappedProduct.getName())
-                    .description(null)
-                    .price(sapMappedProduct.getPrice())
-                    .imageUrl(sapMappedProduct.getImageUrl())
-                    .productUrl(sapMappedProduct.getProductUrl())
-                    .autoOrder(false)
-                    .crawledAt(sapMappedProduct.getCrawledAt())
-                    .build();
+                .id(++sapNextId)
+                .keyword(sapKeyword)
+                .supplier(sapSupplier)
+                .name(sapMappedProduct.getName())
+                .description(null)
+                .price(sapMappedProduct.getPrice())
+                .imageUrl(sapMappedProduct.getImageUrl())
+                .productUrl(sapMappedProduct.getProductUrl())
+                .autoOrder(false)
+                .crawledAt(sapMappedProduct.getCrawledAt())
+                .build();
             sapNewProducts.add(sapProduct);
         }
 
