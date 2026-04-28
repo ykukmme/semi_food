@@ -48,6 +48,19 @@ public class AdminProductController {
         return ResponseEntity.ok(product);
     }
 
+    @GetMapping("/search")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Product>> searchProducts(
+            @RequestParam String term,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        org.springframework.data.domain.Pageable pageable =
+            org.springframework.data.domain.PageRequest.of(page, size);
+        org.springframework.data.domain.Page<Product> productPage = 
+            productRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(term, term, pageable);
+        return ResponseEntity.ok(productPage.getContent());
+    }
+
     @PutMapping("/{id}/auto-order")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateAutoOrder(

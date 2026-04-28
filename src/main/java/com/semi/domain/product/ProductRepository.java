@@ -28,4 +28,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
            "CASE WHEN p.imageUrl IS NOT NULL AND p.imageUrl != '' THEN 0 ELSE 1 END, " +
            "p.name")
     org.springframework.data.domain.Page<Product> findProductsPaged(org.springframework.data.domain.Pageable pageable);
+
+    /** 제품명 또는 설명으로 검색 */
+    List<Product> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String name, String description);
+
+    /** 제품명 또는 설명으로 페이징 검색 */
+    org.springframework.data.domain.Page<Product> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String name, String description, org.springframework.data.domain.Pageable pageable);
 }
