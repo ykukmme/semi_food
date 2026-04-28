@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 
+import  com.semi.constant.ParserHttpConstants;
 import com.semi.domain.keyword.TrendKeyword;
 import com.semi.domain.product.Product;
 import com.semi.domain.product.ProductRepository;
@@ -27,15 +28,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SupplierAndProductService {
 
-    private static final String SAP_TARGET_SITE_URL_TEMPLATE =
-            "https://snxbest.naver.com/keyword/best?categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY&ageType=ALL&activeRankId=%d&syncDate=%s";
-    private static final String SAP_DATA_URL_TEMPLATE =
-            "https://snxbest.naver.com/api/v1/snxbest/keyword/rank/%d?showAd=true&channel=m.nplusstore.best.keyword.popular&stmsId=100410832&areaCode=bkeypop&ymd=%s";
-    private static final String SAP_USER_AGENT =
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36";
-    private static final String SAP_UNKNOWN_SUPPLIER_NAME = "알 수 없음";
-    private static final String SAP_UNKNOWN_SUPPLIER_URL = "알 수 없음";
-
     private final RestClient restClient = RestClient.create();
     private final SupplierRepository supplierRepository;
     private final ProductRepository productRepository;
@@ -43,14 +35,14 @@ public class SupplierAndProductService {
     private final ProductMapper productMapper;
 
     public SupplierAndProductResponse getSupplierAndProducts(Long sapRankId, String sapSyncDate) {
-        String sapTargetSiteUrl = String.format(SAP_TARGET_SITE_URL_TEMPLATE, sapRankId, sapSyncDate);
-        String sapDataUrl = String.format(SAP_DATA_URL_TEMPLATE, sapRankId, sapSyncDate);
+        String sapTargetSiteUrl = String.format(ParserHttpConstants.SNXBEST_TARGET_SITE_URL_TEMPLATE, sapRankId, sapSyncDate);
+        String sapDataUrl = String.format(ParserHttpConstants.SNXBEST_TARGET_SITE_URL_TEMPLATE, sapRankId, sapSyncDate);
 
         SupplierAndProductResponse sapResponse = restClient.get()
                 .uri(sapDataUrl)
-                .header("User-Agent", SAP_USER_AGENT)
+                .header("User-Agent", ParserHttpConstants.USER_AGENT)
                 .header("Accept", MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE)
-                .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
+                .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7") 
                 .header("Referer", sapTargetSiteUrl)
                 .retrieve()
                 .body(SupplierAndProductResponse.class);
@@ -91,7 +83,7 @@ public class SupplierAndProductService {
                 continue;
             }
 
-            String sapSupplierName = sapNormalizeText(sapSourceItem.getMallNm(), SAP_UNKNOWN_SUPPLIER_NAME);
+            String sapSupplierName = sapNormalizeText(sapSourceItem.getMallNm(), ParserHttpConstants.SAP_UNKNOWN_SUPPLIER_NAME);
             Supplier sapSupplier = sapSupplierMap.get(sapSupplierName);
 
             Product sapProduct = Product.builder()
@@ -131,8 +123,8 @@ public class SupplierAndProductService {
 
         for (SupplierItem sapSupplierItem : sapSupplierItems) {
             Supplier sapMappedSupplier = supplierMapper.toVo(sapSupplierItem);
-            String sapSupplierName = sapNormalizeText(sapMappedSupplier.getName(), SAP_UNKNOWN_SUPPLIER_NAME);
-            String sapSupplierUrl = sapNormalizeText(sapMappedSupplier.getUrl(), SAP_UNKNOWN_SUPPLIER_URL);
+            String sapSupplierName = sapNormalizeText(sapMappedSupplier.getName(), ParserHttpConstants.SAP_UNKNOWN_SUPPLIER_NAME);
+            String sapSupplierUrl = sapNormalizeText(sapMappedSupplier.getUrl(), ParserHttpConstants.SAP_UNKNOWN_SUPPLIER_URL);
 
             Supplier sapExistingSupplier = supplierRepository.findByName(sapSupplierName).orElse(null);
             if (sapExistingSupplier != null) {
@@ -171,8 +163,8 @@ public class SupplierAndProductService {
 
         for (ProductItem sapProductItem : sapProductItems) {
             SupplierItem sapSupplierItem = new SupplierItem();
-            String sapSupplierName = sapNormalizeText(sapProductItem.getMallNm(), SAP_UNKNOWN_SUPPLIER_NAME);
-            String sapSupplierUrl = sapNormalizeText(sapProductItem.getMallLinkUrl(), SAP_UNKNOWN_SUPPLIER_URL);
+            String sapSupplierName = sapNormalizeText(sapProductItem.getMallNm(), ParserHttpConstants.SAP_UNKNOWN_SUPPLIER_NAME);
+            String sapSupplierUrl = sapNormalizeText(sapProductItem.getMallLinkUrl(), ParserHttpConstants.SAP_UNKNOWN_SUPPLIER_URL);
 
             sapSupplierItem.setMallNm(sapSupplierName);
             sapSupplierItem.setMallLinkUrl(sapSupplierUrl);

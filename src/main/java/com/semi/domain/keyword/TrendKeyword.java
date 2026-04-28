@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 //[x]TODO <syncDate>20260426</syncDate> api 파싱을 통한 데이터의 경우 전날을 기준으로 syncDate가 적혀오는 거 같아서, DB에서 처리 할 때 기준 통일이 필요해 보임.
-//[ ]TODO 날짜와 랭킹ID를 조합해서 접속 할 경우, 금일짜 1위를 보여줌, 키워드의 경우 파싱을 한 날짜로 덮는 과정이 필요
+//[ ]TODO api 에서 syncDate와 rankingID 를 조합하면 일정한 제품 리스트가 나옴. 별도의 칼럼을 추가해서 관리 할 것, 파이썬 코드도 업데이트가 필요함.
 
 /**
  * 트렌드 키워드 엔티티
@@ -46,6 +46,13 @@ public class TrendKeyword {
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;  // 현재 활성 여부
+    
+    // 2026_04_28_Tue_1536 파싱에서 얻은 데이터 처리용
+    @Column(name = "ranking_id", nullable = true)
+    private Long rankingId;
+
+    @Column(name = "sync_date", nullable = true) // url에서 syncDate, ymd 등으로 쓰임, 기존크롤링에서는 수집불가했던 데이터
+    private LocalDateTime syncDate;
 
 
     // public TrendKeyword(String keyword, Integer rank, Integer frequency, LocalDateTime collectedAt) {

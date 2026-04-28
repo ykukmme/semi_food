@@ -3,6 +3,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 
+import static com.semi.constant.ParserHttpConstants.USER_AGENT;
+import static com.semi.constant.ParserHttpConstants.CONTENT_TYPE_JSON;
 import com.semi.domain.keyword.TrendKeyword;
 import com.semi.domain.keyword.TrendKeywordRepository;
 import com.semi.domain.rpa.parser.mapper.TrendKeywordMapper;
@@ -26,16 +28,18 @@ public class TrendKeywordService {
     private final TrendKeywordMapper trendKeywordMapper; // 매퍼 주입
 
     public List<TrendKeywordResponse.TrendKeywordItem> getNaverKeywords() {
+
+        // 기존 api url 의 경우 RankId와 syncDate 를 조합해서 제품 url api에서 처리가 가능, 테이블을 추가하는 방향으로 전환해야 겠음.
+            // [ ]TODO 기존로직을 일부 수정하고, TrendKeyword에 RankId와 syncDate를 추가하고 파싱으로 데이터를 받을 때만 사용
         // [ ]TODO RankId=2165824835의 값을 별도의 테이블에서 가져오거나, 리스트로 저장해 뒀다가 작업하는 게 필요.
             // naver쪽 내부에서 쓰는 값인지, 기존에 수집해둔 Rank_id와 날짜를 동기화 시켜서 api를 보내도 변하는 게 없음.
         String targetSiteUrl= "https://snxbest.naver.com/keyword/best?categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY&ageType=ALL&activeRankId=2165824835&syncDate=20260423" ;
         String dataUrl = "https://snxbest.naver.com/api/v1/snxbest/keyword/rank?ageType=ALL&categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY" ;
-        String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" ;
         
         String rawJson = restClient.get()
             .uri(dataUrl)
-            .header("User-Agent", userAgent)
-            .header("Accept", "application/json")
+            .header("User-Agent", USER_AGENT)
+            .header("Accept", CONTENT_TYPE_JSON)
             .retrieve()
             .body(String.class);
 
@@ -44,7 +48,7 @@ public class TrendKeywordService {
         // data가 json/xml 둘 다 올 수 있기 때문에, Jackson이 자동으로 파싱하도록 설정
         List<TrendKeywordResponse.TrendKeywordItem> response = restClient.get()
                 .uri(dataUrl)
-                .header("User-Agent", userAgent)
+                .header("User-Agent", USER_AGENT)
                 .header("Accept", MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE)
                 .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
                 .header("Referer", targetSiteUrl)

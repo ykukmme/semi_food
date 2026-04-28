@@ -59,6 +59,10 @@ public class Product {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime crawledAt;  // 크롤링 시간
 
+    // 2026_04_28_Tue_1536 파싱에서 얻은 데이터 처리용
+    @Column(name = "sync_date", nullable = true) // url에서 syncDate, ymd 등으로 쓰임, 기존크롤링에서는 수집불가했던 데이터
+    private LocalDateTime syncDate;
+
     // public Product(TrendKeyword keyword, Supplier supplier, String name, String description,
     //                Integer price, String imageUrl, String productUrl, LocalDateTime crawledAt) {
     //     this.keyword     = keyword;
