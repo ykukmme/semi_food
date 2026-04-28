@@ -15,4 +15,6 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Lo
 
     /** 당일 발주 수 조회 (발주번호 채번용) */
     long countByOrderedAtBetween(java.time.LocalDateTime start, java.time.LocalDateTime end);
+
+    long countByStatus(OrderStatus status);
 }

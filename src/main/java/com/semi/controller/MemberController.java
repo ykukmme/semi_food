@@ -4,8 +4,10 @@ import com.semi.domain.cart.CartItem;
 import com.semi.domain.cart.CartItemService;
 import com.semi.domain.keyword.TrendKeyword;
 import com.semi.domain.keyword.TrendKeywordService;
+import com.semi.domain.order.PurchaseOrderService;
 import com.semi.security.MemberDetails;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,6 +25,7 @@ public class MemberController {
 
     private final CartItemService cartItemService;
     private final TrendKeywordService trendKeywordService;
+    private final PurchaseOrderService purchaseOrderService;
 
     @PostMapping
     public String dashboard(
@@ -68,6 +71,14 @@ public class MemberController {
         model.addAttribute("dashboardMessage", "대시보드");
         model.addAttribute("member", memberDetails.getMember());
         model.addAttribute("recentCartItems", recentCartItems);
+        model.addAttribute("totalOrderCount", purchaseOrderService.getTotalOrderCount());
+        double orderCancellationRate = purchaseOrderService.getOrderCancellationRate();
+        model.addAttribute("orderCancellationRate", orderCancellationRate);
+        model.addAttribute("orderCancellationRateText", String.format(Locale.KOREA, "%.1f%%", orderCancellationRate));
+        model.addAttribute("totalOrderedProductCount", purchaseOrderService.getTotalOrderedProductCount());
+        double repeatPurchaseRate = purchaseOrderService.getRepeatPurchaseRate();
+        model.addAttribute("repeatPurchaseRate", repeatPurchaseRate);
+        model.addAttribute("repeatPurchaseRateText", String.format(Locale.KOREA, "%.1f%%", repeatPurchaseRate));
 
         return "dashboard";
     }

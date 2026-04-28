@@ -41,6 +41,7 @@ public class PageController {
         }
 
         List<OrderRow> orders = purchaseOrderService.getOrdersByMemberId(resolvedMemberId).stream()
+                .filter(order -> order.getStatus() != OrderStatus.CANCELLED)
                 .map(OrderRow::from)
                 .toList();
         model.addAttribute("orders", orders);
@@ -48,7 +49,21 @@ public class PageController {
     }
 
     @GetMapping("/cancel_orders")
-    public String cancelOrders() {
+    public String cancelOrders(
+            @AuthenticationPrincipal MemberDetails memberDetails,
+            @RequestParam(required = false) Long memberId,
+            Model model
+    ) {
+        Long resolvedMemberId = memberDetails != null ? memberDetails.getMember().getId() : memberId;
+        if (resolvedMemberId == null) {
+            return "redirect:/login.html";
+        }
+
+        List<OrderRow> orders = purchaseOrderService.getOrdersByMemberId(resolvedMemberId).stream()
+                .filter(order -> order.getStatus() == OrderStatus.CANCELLED)
+                .map(OrderRow::from)
+                .toList();
+        model.addAttribute("orders", orders);
         return "cancel_orders";
     }
 

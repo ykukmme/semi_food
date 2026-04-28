@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PurchaseOrderService {
 
     private final PurchaseOrderRepository purchaseOrderRepository;
+    private final PurchaseOrderItemRepository purchaseOrderItemRepository;
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;
 
@@ -66,6 +67,38 @@ public class PurchaseOrderService {
     @Transactional(readOnly = true)
     public List<PurchaseOrder> getOrdersByMemberId(Long memberId) {
         return purchaseOrderRepository.findByMemberIdOrderByOrderedAtDesc(memberId);
+    }
+
+    @Transactional(readOnly = true)
+    public long getTotalOrderCount() {
+        return purchaseOrderRepository.count();
+    }
+
+    @Transactional(readOnly = true)
+    public double getOrderCancellationRate() {
+        long totalOrderCount = purchaseOrderRepository.count();
+        if (totalOrderCount == 0) {
+            return 0.0;
+        }
+
+        long cancelledOrderCount = purchaseOrderRepository.countByStatus(OrderStatus.CANCELLED);
+        return (cancelledOrderCount * 100.0) / totalOrderCount;
+    }
+
+    @Transactional(readOnly = true)
+    public long getTotalOrderedProductCount() {
+        return purchaseOrderItemRepository.sumOrderedQuantity();
+    }
+
+    @Transactional(readOnly = true)
+    public double getRepeatPurchaseRate() {
+        long distinctProductCount = purchaseOrderItemRepository.countDistinctOrderedProducts();
+        if (distinctProductCount == 0) {
+            return 0.0;
+        }
+
+        long repeatOrderedProductCount = purchaseOrderItemRepository.countRepeatOrderedProducts();
+        return (repeatOrderedProductCount * 100.0) / distinctProductCount;
     }
 
     private String nextOrderNumber() {

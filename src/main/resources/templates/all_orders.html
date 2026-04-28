@@ -45,7 +45,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="order : ${orders}" class="border-t border-outline-variant/20">
+                        <tr th:each="order : ${orders}" class="border-t border-outline-variant/20" data-order-row>
                             <td class="py-4 px-6 font-bold text-on-surface" th:text="${order.orderNumber}">PO-20260428-0001</td>
                             <td class="py-4 px-6">
                                 <span class="inline-flex items-center rounded-full bg-primary-fixed px-3 py-1 text-xs font-extrabold text-primary" th:text="${order.statusLabel}">주문 접수</span>
@@ -64,7 +64,37 @@
                     </tbody>
                 </table>
             </div>
+            <div th:if="${orders != null and #lists.size(orders) > 4}" class="px-6 py-5 border-t border-outline-variant/20 text-center">
+                <button id="load-more-orders" type="button" class="inline-flex items-center justify-center rounded-full border border-primary px-6 py-3 text-sm font-extrabold text-primary hover:bg-primary/10 transition">
+                    &#45908;&#48372;&#44592;
+                </button>
+            </div>
         </section>
     </main>
+    <script>
+        (() => {
+            const pageSize = 4;
+            const rows = Array.from(document.querySelectorAll('[data-order-row]'));
+            const button = document.getElementById('load-more-orders');
+            let visibleCount = pageSize;
+
+            function renderRows() {
+                rows.forEach((row, index) => {
+                    row.hidden = index >= visibleCount;
+                });
+
+                if (button) {
+                    button.hidden = visibleCount >= rows.length;
+                }
+            }
+
+            button?.addEventListener('click', () => {
+                visibleCount += pageSize;
+                renderRows();
+            });
+
+            renderRows();
+        })();
+    </script>
 </body>
 </html>

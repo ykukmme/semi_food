@@ -7,6 +7,7 @@
   <title>결제하기 | Heritage Namhae</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script src="../static/js/auth.js" th:src="@{/js/auth.js}" defer></script>
   <link
     href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
     rel="stylesheet" />
@@ -66,15 +67,22 @@
   <!-- TopNavBar -->
   <header class="fixed top-0 left-0 right-0 z-50 bg-white/10 backdrop-blur-md border-b border-outline-variant/20 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-      <div class="text-2xl font-black tracking-tighter text-[#0066cc]"><a th:href="@{/}">
+      <div class="text-2xl font-black tracking-tighter text-[#0066cc]"><a th:href="@{/}" href="/">
         Heritage Namhae
       </a></div>
       <div class="flex items-center gap-6">
-        <a href="/cart/view" class="relative inline-flex items-center justify-center text-[#0066cc] duration-200">
-          <span class="material-symbols-outlined">shopping_bag</span>
-          <span id="cart-count-badge" class="hidden absolute -top-2 -right-3 min-w-[1.35rem] h-5 px-1 rounded-full bg-[#0066cc] text-white text-[10px] font-extrabold leading-5 text-center shadow-md shadow-[#0066cc]/30 border border-white">0</span>
-        </a>
-        <a class="material-symbols-outlined text-[#0066cc] duration-200" href="login.html">person</a>
+        <div id="guestMenu" class="items-center gap-6">
+          <a class="material-symbols-outlined text-[#0066cc] duration-200" th:href="@{/login.html}" href="/login.html" aria-label="로그인">person</a>
+          <a class="material-symbols-outlined text-[#0066cc] duration-200" th:href="@{/register.html}" href="/register.html" aria-label="회원가입">person_add</a>
+        </div>
+        <div id="memberMenu" class="items-center gap-6" style="display: none;">
+          <a href="/cart/view" th:href="@{/cart/view}" class="relative inline-flex items-center justify-center text-[#0066cc] duration-200" aria-label="장바구니">
+            <span class="material-symbols-outlined">shopping_bag</span>
+            <span id="cart-count-badge" class="hidden absolute -top-2 -right-3 min-w-[1.35rem] h-5 px-1 rounded-full bg-[#0066cc] text-white text-[10px] font-extrabold leading-5 text-center shadow-md shadow-[#0066cc]/30 border border-white">0</span>
+          </a>
+          <a class="material-symbols-outlined text-[#0066cc] duration-200" id="member-dashboard-link" th:href="@{/member}" href="/member" aria-label="회원페이지">person</a>
+          <a class="material-symbols-outlined text-[#0066cc] duration-200 cursor-pointer" id="logoutBtn" href="#" aria-label="로그아웃">person_remove</a>
+        </div>
       </div>
     </div>
   </header>

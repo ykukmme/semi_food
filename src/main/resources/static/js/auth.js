@@ -105,10 +105,35 @@ async function renderLoginMenu() {
     }
 }
 
+function handleLogout(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    clearToken();
+    location.href = '/';
+}
+
 function setupLogoutButton() {
-    document.getElementById('logoutBtn')?.addEventListener('click', () => {
-        clearToken();
-        location.href = '/';
+    document.querySelectorAll('#logoutBtn').forEach((button) => {
+        if (button.dataset.logoutBound === 'true') {
+            return;
+        }
+
+        button.dataset.logoutBound = 'true';
+        button.addEventListener('click', handleLogout);
+    });
+
+    if (document.body?.dataset.logoutDelegated === 'true') {
+        return;
+    }
+
+    document.body.dataset.logoutDelegated = 'true';
+    document.body.addEventListener('click', (event) => {
+        const logoutButton = event.target.closest('#logoutBtn');
+        if (!logoutButton) {
+            return;
+        }
+
+        handleLogout(event);
     });
 }
 
