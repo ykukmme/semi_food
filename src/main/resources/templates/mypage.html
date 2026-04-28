@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,21 +17,130 @@
         <section class="profile-section">
             <div class="form-group">
                 <label for="memberId">&#50500;&#51060;&#46356;</label>
-                <input type="text" id="memberId" value="user123" readonly>
+                <input type="text" id="memberId" th:value="${member != null ? member.memberId : ''}" value="user123" readonly>
             </div>
             <div class="form-group">
                 <label for="name">&#51060;&#47492;</label>
-                <input type="text" id="name" value="홍길동" readonly>
+                <input type="text" id="name" th:value="${member != null ? member.name : ''}" value="Hong Gil Dong" readonly>
             </div>
             <div class="form-group">
                 <label for="email">&#51060;&#47700;&#51068;</label>
-                <input type="email" id="email" value="honggildong@example.com" readonly>
+                <input type="email" id="email" th:value="${member != null ? member.email : ''}" value="honggildong@example.com" readonly data-editable-profile>
             </div>
             <div class="form-group">
                 <label for="phone">&#51204;&#54868;&#48264;&#54840;</label>
-                <input type="tel" id="phone" value="01012345678" readonly>
+                <input type="tel" id="phone" th:value="${member != null ? member.phone : ''}" value="01012345678" readonly data-editable-profile>
             </div>
         </section>
+
+        <div class="action-buttons">
+            <button type="button" id="editProfileButton" class="btn-edit">&#51221;&#48372;&#49688;&#51221;</button>
+        </div>
+        <p id="profileMessage" class="login-link" aria-live="polite"></p>
     </main>
+
+    <script>
+        (() => {
+            const editButton = document.getElementById('editProfileButton');
+            const message = document.getElementById('profileMessage');
+            const editableInputs = document.querySelectorAll('[data-editable-profile]');
+            const memberIdInput = document.getElementById('memberId');
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const phoneInput = document.getElementById('phone');
+            const token = localStorage.getItem('accessToken');
+            let editing = false;
+
+            function setEditable(enabled) {
+                editableInputs.forEach((input) => {
+                    input.readOnly = !enabled;
+                    input.disabled = false;
+                });
+                editing = enabled;
+                editButton.textContent = enabled ? '\uC800\uC7A5' : '\uC815\uBCF4\uC218\uC815';
+            }
+
+            function setMessage(text, isError = false) {
+                if (!message) {
+                    return;
+                }
+                message.textContent = text;
+                message.style.color = isError ? '#dd5b00' : '#0075de';
+            }
+
+            function fillProfile(profile) {
+                if (memberIdInput) memberIdInput.value = profile.memberId || '';
+                if (nameInput) nameInput.value = profile.name || '';
+                if (emailInput) emailInput.value = profile.email || '';
+                if (phoneInput) phoneInput.value = profile.phone || '';
+            }
+
+            async function loadProfile() {
+                if (!token) {
+                    return;
+                }
+
+                const response = await fetch('/api/auth/me', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    fillProfile(await response.json());
+                }
+            }
+
+            async function saveProfile() {
+                if (!token) {
+                    setMessage('\uB85C\uADF8\uC778\uC774 \uD544\uC694\uD569\uB2C8\uB2E4.', true);
+                    window.location.href = '/login.html';
+                    return;
+                }
+
+                editButton.disabled = true;
+                setMessage('');
+
+                try {
+                    const response = await fetch('/api/auth/me', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            email: emailInput.value.trim(),
+                            phone: phoneInput.value.trim()
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const error = await response.json().catch(() => ({}));
+                        throw new Error(error.message || '\uC815\uBCF4 \uC218\uC815\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4.');
+                    }
+
+                    setEditable(false);
+                    await loadProfile();
+                    setMessage('\uC815\uBCF4\uAC00 \uC218\uC815\uB418\uC5C8\uC2B5\uB2C8\uB2E4.');
+                } catch (error) {
+                    setMessage(error.message, true);
+                } finally {
+                    editButton.disabled = false;
+                }
+            }
+
+            editButton?.addEventListener('click', () => {
+                if (!editing) {
+                    setEditable(true);
+                    editableInputs[0]?.focus();
+                    return;
+                }
+
+                saveProfile();
+            });
+
+            loadProfile().catch(() => {});
+        })();
+    </script>
 </body>
 </html>

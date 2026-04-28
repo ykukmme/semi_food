@@ -108,7 +108,15 @@ public class PageController {
     }
 
     @GetMapping("/mypage")
-    public String myPage() {
+    public String myPage(
+            @AuthenticationPrincipal MemberDetails memberDetails,
+            Model model
+    ) {
+        if (memberDetails == null) {
+            return "redirect:/login.html";
+        }
+
+        model.addAttribute("member", memberDetails.getMember());
         return "mypage";
     }
 
