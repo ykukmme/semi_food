@@ -9,7 +9,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import jakarta.persistence.Column;
 import lombok.Data;
 import java.util.List;
-
+// git 브런치 제거 및 이동 테스트
 
 
 @Data
