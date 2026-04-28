@@ -34,11 +34,15 @@ import java.util.List;
 public interface ProductMapper {
 
     // 이름이 다른 필드들을 서로 연결해주는 설정 타겟= Product
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "keyword", ignore = true)
+    @Mapping(target = "supplier", ignore = true)
     @Mapping(source = "title", target = "name")      
-    @Mapping(source = "rank", target = "rank")          
+    @Mapping(target = "description", ignore = true)
     @Mapping(source = "priceValue", target = "price")          
     @Mapping(source = "imageUrl", target = "imageUrl")          
     @Mapping(source = "linkUrl", target = "productUrl")           
+    @Mapping(target = "autoOrder", ignore = true)
 
     // 날짜로 변환 후 시분초0000 추가
     @Mapping(expression = "java(LocalDate.parse(item.getSyncDate(), DateTimeFormatter.ofPattern(\"yyyyMMdd\")).atStartOfDay())", target = "crawledAt") 

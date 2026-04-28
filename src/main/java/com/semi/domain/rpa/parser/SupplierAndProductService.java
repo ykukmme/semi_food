@@ -1,114 +1,200 @@
 package com.semi.domain.rpa.parser;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 
 import com.semi.domain.keyword.TrendKeyword;
-import com.semi.domain.keyword.TrendKeywordRepository;
-import com.semi.domain.rpa.parser.mapper.TrendKeywordMapper;
-import com.semi.domain.rpa.parser.response.TrendKeywordResponse;
+import com.semi.domain.product.Product;
+import com.semi.domain.product.ProductRepository;
+import com.semi.domain.rpa.parser.mapper.ProductMapper;
+import com.semi.domain.rpa.parser.mapper.SupplierMapper;
+import com.semi.domain.rpa.parser.response.SupplierAndProductResponse;
+import com.semi.domain.rpa.parser.response.SupplierAndProductResponse.ProductItem;
+import com.semi.domain.rpa.parser.response.SupplierAndProductResponse.SupplierItem;
+import com.semi.domain.supplier.Supplier;
+import com.semi.domain.supplier.SupplierRepository;
 
 import lombok.RequiredArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.MediaType;
 
 @Service
 @RequiredArgsConstructor
 public class SupplierAndProductService {
 
+    private static final String SAP_TARGET_SITE_URL_TEMPLATE =
+            "https://snxbest.naver.com/keyword/best?categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY&ageType=ALL&activeRankId=%d&syncDate=%s";
+    private static final String SAP_DATA_URL_TEMPLATE =
+            "https://snxbest.naver.com/api/v1/snxbest/keyword/rank/%d?showAd=true&channel=m.nplusstore.best.keyword.popular&stmsId=100410832&areaCode=bkeypop&ymd=%s";
+    private static final String SAP_USER_AGENT =
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36";
+    private static final String SAP_UNKNOWN_SUPPLIER_NAME = "알 수 없음";
+    private static final String SAP_UNKNOWN_SUPPLIER_URL = "알 수 없음";
+
     private final RestClient restClient = RestClient.create();
-    private final TrendKeywordRepository repository;
-    private final TrendKeywordMapper trendKeywordMapper; // 매퍼 주입
+    private final SupplierRepository supplierRepository;
+    private final ProductRepository productRepository;
+    private final SupplierMapper supplierMapper;
+    private final ProductMapper productMapper;
 
-    public List<TrendKeywordResponse.TrendKeywordItem> getNaverKeywords() {
-        // [ ]TODO RankId=2165824835의 값을 별도의 테이블에서 가져오거나, 리스트로 저장해 뒀다가 작업하는 게 필요.
-            // naver쪽 내부에서 쓰는 값인지, 기존에 수집해둔 Rank_id와 날짜를 동기화 시켜서 api를 보내도 변하는 게 없음.
-        String targetSiteUrl= "https://snxbest.naver.com/keyword/best?categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY&ageType=ALL&activeRankId=2165824835&syncDate=20260423" ;
-        String dataUrl = "https://snxbest.naver.com/api/v1/snxbest/keyword/rank?ageType=ALL&categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY" ;
-        String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" ;
-        
-        String rawJson = restClient.get()
-            .uri(dataUrl)
-            .header("User-Agent", userAgent)
-            .header("Accept", "application/json")
-            .retrieve()
-            .body(String.class);
+    public SupplierAndProductResponse getSupplierAndProducts(Long sapRankId, String sapSyncDate) {
+        String sapTargetSiteUrl = String.format(SAP_TARGET_SITE_URL_TEMPLATE, sapRankId, sapSyncDate);
+        String sapDataUrl = String.format(SAP_DATA_URL_TEMPLATE, sapRankId, sapSyncDate);
 
-        System.out.println("네이버 응답 원문: " + rawJson);
-        
-        // data가 json/xml 둘 다 올 수 있기 때문에, Jackson이 자동으로 파싱하도록 설정
-        List<TrendKeywordResponse.TrendKeywordItem> response = restClient.get()
-                .uri(dataUrl)
-                .header("User-Agent", userAgent)
+        SupplierAndProductResponse sapResponse = restClient.get()
+                .uri(sapDataUrl)
+                .header("User-Agent", SAP_USER_AGENT)
                 .header("Accept", MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE)
                 .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
-                .header("Referer", targetSiteUrl)
-                // .header("Referer", "https://snxbest.naver.com/")
-                // .header("Referer", "https://naver.com")
+                .header("Referer", sapTargetSiteUrl)
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<TrendKeywordResponse.TrendKeywordItem>>() {});  // 여기서 Jackson MessageConverter가 자동 동작함
-                // .body(TrendKeywordResponse.class); // 여기서 Jackson MessageConverter가 자동 동작함
+                .body(SupplierAndProductResponse.class);
 
-                    System.out.println("수신된 데이터: " + response);
-                    return response;
+        System.out.println("수신된 공급자/상품 데이터: " + sapResponse);
+        return sapResponse;
     }
-
-@Transactional
-public List<TrendKeyword> saveWithSequentialId(List<TrendKeywordResponse.TrendKeywordItem> items) {
-    
-    // 1. 현재 DB에서 가장 큰 ID 가져오기 (데이터 없으면 0으로 시작)
-    Long maxId = repository.findMaxId();
-    long nextId = (maxId == null) ? 0L : maxId;
-    TrendKeyword lastRecord = repository.findFirstByOrderByIdDesc();
-    // 2. DTO -> VO 변환 (MapStruct 사용)
-    List<TrendKeyword> newVOList = new ArrayList<>();
-    List<TrendKeyword> parsedVOList = trendKeywordMapper.toVoList(items); // 파싱된 데이터
-
-    // 파싱한 데이터가 기존 데이터 보다 최신이 아니라면, tempStr List 반환
-if ( ! parsedVOList.get(0).getCollectedAt().isAfter(lastRecord.getCollectedAt())){
-    String tempStr = "추가로 저장된 값이 없습니다. 추가 Data CollectedAt:" + parsedVOList.get(0).getCollectedAt()+", 기존 Data CollectedAt:" + lastRecord.getCollectedAt() ;
-    newVOList.add(new TrendKeyword(0L, tempStr, 0, 0, LocalDateTime.now(), false)) ;
-    return newVOList ;
-            
-}
-// if ( repository.findFirstByOrderByIdDesc().getCollectedAt().isAfter(parsedVOList.get(0).getCollectedAt())){ }
-    // 3. 중복 확인 후 새 ID 부여하여 리스트 구성
-    
-    for (TrendKeyword parsedVO : parsedVOList) {
-        // 이미 저장된 날짜와 키워드인지 확인
-        if (!repository.existsByCollectedAtAndKeyword(parsedVO.getCollectedAt(), parsedVO.getKeyword())) {
-            // 수동으로 ID를 부여하기 위해 새로운 객체 생성 (기존 필드는 유지)
-            // @Builder
-            TrendKeyword tempVO = TrendKeyword.builder()
-                    .id(++nextId) // 1 증가시킨 값을 ID로 부여
-                    .keyword(parsedVO.getKeyword())
-                    .rank(parsedVO.getRank())
-                    .frequency(0)
-                    .collectedAt(parsedVO.getCollectedAt())
-                    .isActive(true)
-                    .build();
-            newVOList.add(tempVO);
-        }
-    }
-    // 4. 최종 저장
-    if (!newVOList.isEmpty()) {
-        repository.saveAll(newVOList);
-        System.out.println(newVOList.size() + "건 저장 완료 (마지막 ID: " + nextId + ")");
-    }
-    return newVOList;
-}
-
 
     @Transactional
-    public List<TrendKeyword> saveTrendKeywords(List<TrendKeywordResponse.TrendKeywordItem> items) {
-        // 매퍼로 리스트 전체 변환
-        List<TrendKeyword> voList = trendKeywordMapper.toVoList(items);
-        repository.saveAll(voList);
-        return voList;
+    public List<Supplier> saveSuppliersWithSequentialId(SupplierAndProductResponse sapResponse) {
+        List<ProductItem> sapProductItems = sapGetProductItems(sapResponse);
+        return new ArrayList<>(sapBuildSupplierMap(sapProductItems).values());
+    }
+
+    @Transactional
+    public List<Product> saveProductsWithSequentialId(TrendKeyword sapKeyword, SupplierAndProductResponse sapResponse) {
+        if (sapKeyword == null) {
+            throw new IllegalArgumentException("TrendKeyword 정보 없이 Product를 저장할 수 없습니다.");
+        }
+
+        List<ProductItem> sapProductItems = sapGetProductItems(sapResponse);
+        if (sapProductItems.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        Map<String, Supplier> sapSupplierMap = sapBuildSupplierMap(sapProductItems);
+        Long sapMaxId = productRepository.findMaxId();
+        long sapNextId = (sapMaxId == null) ? 0L : sapMaxId;
+
+        List<Product> sapMappedProducts = productMapper.toVoList(sapProductItems);
+        List<Product> sapNewProducts = new ArrayList<>();
+
+        for (int sapIndex = 0; sapIndex < sapMappedProducts.size(); sapIndex++) {
+            Product sapMappedProduct = sapMappedProducts.get(sapIndex);
+            ProductItem sapSourceItem = sapProductItems.get(sapIndex);
+
+            if (productRepository.existsByCrawledAtAndName(sapMappedProduct.getCrawledAt(), sapMappedProduct.getName())) {
+                continue;
+            }
+
+            String sapSupplierName = sapNormalizeText(sapSourceItem.getMallNm(), SAP_UNKNOWN_SUPPLIER_NAME);
+            Supplier sapSupplier = sapSupplierMap.get(sapSupplierName);
+
+            Product sapProduct = Product.builder()
+                    .id(++sapNextId)
+                    .keyword(sapKeyword)
+                    .supplier(sapSupplier)
+                    .name(sapMappedProduct.getName())
+                    .description(null)
+                    .price(sapMappedProduct.getPrice())
+                    .imageUrl(sapMappedProduct.getImageUrl())
+                    .productUrl(sapMappedProduct.getProductUrl())
+                    .autoOrder(false)
+                    .crawledAt(sapMappedProduct.getCrawledAt())
+                    .build();
+            sapNewProducts.add(sapProduct);
+        }
+
+        if (!sapNewProducts.isEmpty()) {
+            productRepository.saveAll(sapNewProducts);
+            System.out.println(sapNewProducts.size() + "건의 Product 저장 완료 (마지막 ID: " + sapNextId + ")");
+        }
+
+        return sapNewProducts;
+    }
+
+    private Map<String, Supplier> sapBuildSupplierMap(List<ProductItem> sapProductItems) {
+        Map<String, Supplier> sapSupplierMap = new LinkedHashMap<>();
+        List<SupplierItem> sapSupplierItems = sapExtractSupplierItems(sapProductItems);
+
+        if (sapSupplierItems.isEmpty()) {
+            return sapSupplierMap;
+        }
+
+        Long sapMaxId = supplierRepository.findMaxId();
+        long sapNextId = (sapMaxId == null) ? 0L : sapMaxId;
+        List<Supplier> sapNewSuppliers = new ArrayList<>();
+
+        for (SupplierItem sapSupplierItem : sapSupplierItems) {
+            Supplier sapMappedSupplier = supplierMapper.toVo(sapSupplierItem);
+            String sapSupplierName = sapNormalizeText(sapMappedSupplier.getName(), SAP_UNKNOWN_SUPPLIER_NAME);
+            String sapSupplierUrl = sapNormalizeText(sapMappedSupplier.getUrl(), SAP_UNKNOWN_SUPPLIER_URL);
+
+            Supplier sapExistingSupplier = supplierRepository.findByName(sapSupplierName).orElse(null);
+            if (sapExistingSupplier != null) {
+                sapSupplierMap.put(sapSupplierName, sapExistingSupplier);
+                continue;
+            }
+
+            if (supplierRepository.existsByCreatedAtAndName(sapMappedSupplier.getCreatedAt(), sapSupplierName)) {
+                Supplier sapDuplicatedSupplier = supplierRepository.findByName(sapSupplierName).orElse(null);
+                if (sapDuplicatedSupplier != null) {
+                    sapSupplierMap.put(sapSupplierName, sapDuplicatedSupplier);
+                }
+                continue;
+            }
+
+            Supplier sapNewSupplier = Supplier.builder()
+                    .id(++sapNextId)
+                    .name(sapSupplierName)
+                    .url(sapSupplierUrl)
+                    .createdAt(sapMappedSupplier.getCreatedAt())
+                    .build();
+            sapNewSuppliers.add(sapNewSupplier);
+            sapSupplierMap.put(sapSupplierName, sapNewSupplier);
+        }
+
+        if (!sapNewSuppliers.isEmpty()) {
+            supplierRepository.saveAll(sapNewSuppliers);
+            System.out.println(sapNewSuppliers.size() + "건의 Supplier 저장 완료 (마지막 ID: " + sapNextId + ")");
+        }
+
+        return sapSupplierMap;
+    }
+
+    private List<SupplierItem> sapExtractSupplierItems(List<ProductItem> sapProductItems) {
+        Map<String, SupplierItem> sapSupplierItemMap = new LinkedHashMap<>();
+
+        for (ProductItem sapProductItem : sapProductItems) {
+            SupplierItem sapSupplierItem = new SupplierItem();
+            String sapSupplierName = sapNormalizeText(sapProductItem.getMallNm(), SAP_UNKNOWN_SUPPLIER_NAME);
+            String sapSupplierUrl = sapNormalizeText(sapProductItem.getMallLinkUrl(), SAP_UNKNOWN_SUPPLIER_URL);
+
+            sapSupplierItem.setMallNm(sapSupplierName);
+            sapSupplierItem.setMallLinkUrl(sapSupplierUrl);
+            sapSupplierItem.setSyncDate(sapProductItem.getSyncDate());
+
+            sapSupplierItemMap.putIfAbsent(sapSupplierName, sapSupplierItem);
+        }
+
+        return new ArrayList<>(sapSupplierItemMap.values());
+    }
+
+    private List<ProductItem> sapGetProductItems(SupplierAndProductResponse sapResponse) {
+        if (sapResponse == null || sapResponse.getProductList() == null) {
+            return new ArrayList<>();
+        }
+        return sapResponse.getProductList();
+    }
+
+    private String sapNormalizeText(String sapValue, String sapDefaultValue) {
+        if (sapValue == null || sapValue.isBlank()) {
+            return sapDefaultValue;
+        }
+        return sapValue.trim();
     }
 }

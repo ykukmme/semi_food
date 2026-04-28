@@ -17,6 +17,7 @@ public interface SupplierMapper {
     // 이름이 다른 필드들을 서로 연결해주는 설정 타겟= Supplier
 
     // 광고가 아니면 mall(공급자)관련 필드가 누락됨.
+    @Mapping(target = "id", ignore = true)
     @Mapping(source = "mallNm", target = "name",  defaultValue = "알 수 없음")
     @Mapping(source = "mallLinkUrl", target = "url",  defaultValue = "알 수 없음")       
 
