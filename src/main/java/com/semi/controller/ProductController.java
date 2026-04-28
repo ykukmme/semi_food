@@ -1,15 +1,12 @@
 package com.semi.controller;
 
-import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.semi.domain.keyword.TrendKeyword;
-import com.semi.domain.keyword.TrendKeywordService;
 import com.semi.domain.product.Product;
 import com.semi.domain.product.ProductService;
 
@@ -24,19 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ProductController {
 
     private final ProductService productService;
-    private final TrendKeywordService trendKeywordService;
-
-
-
-    @GetMapping("/member")    
-    public String getTrendKeywords(Model model){
-        List<TrendKeyword> keywords = trendKeywordService.getKeywords();
-        // ID 필드를 기준으로 비교하는 규칙(Comparator) 생성
-        Comparator<TrendKeyword> idComparator = Comparator.comparing(TrendKeyword::getId);
-        model.addAttribute("idComparator", idComparator);
-        model.addAttribute("keywords", keywords);
-        return "dashboard";
-    }
+    
     @GetMapping("/")
     public String getAllProduct(Model model) {
         List<Product> products = productService.getAllProduct();
@@ -51,5 +36,18 @@ public class ProductController {
         model.addAttribute("product", product);
         return "product";
     }
+
+    @GetMapping("/dashboard_search_result.html")
+    public String dashboardSearchResult(
+            @RequestParam(name = "q", required = false) String query,
+            Model model
+    ) {
+        String trimmedQuery = query == null ? "" : query.trim();
+        List<Product> products = productService.searchProductsByName(trimmedQuery);
+        model.addAttribute("query", trimmedQuery);
+        model.addAttribute("products", products);
+        return "dashboard_search_result";
+    }
+
     
 }

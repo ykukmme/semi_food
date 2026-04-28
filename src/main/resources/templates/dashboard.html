@@ -64,16 +64,16 @@
                 <div class="flex items-center gap-6 md:gap-8">
                     <a th:href="@{/}" class="text-2xl font-headline font-bold tracking-tighter text-primary">Heritage Namhae</a>
                     <nav class="hidden md:flex items-center gap-8 text-sm font-bold tracking-tight">
-                        <a href="dashboard.html" data-dashboard-home class="dashboard-menu-link text-primary border-b-2 border-primary pb-1 transition-all duration-300 hover:text-primary hover:border-primary">대시보드</a>
-                        <a href="all_orders.html" data-dashboard-frame class="dashboard-menu-link text-on-surface-variant border-b-2 border-transparent pb-1 transition-all duration-300 hover:text-primary hover:border-primary">주문 현황</a>
-                        <a href="cancel_orders.html" data-dashboard-frame class="dashboard-menu-link text-on-surface-variant border-b-2 border-transparent pb-1 transition-all duration-300 hover:text-primary hover:border-primary">취소/환불</a>
-                        <a href="mypage.html" data-dashboard-frame class="dashboard-menu-link text-on-surface-variant border-b-2 border-transparent pb-1 transition-all duration-300 hover:text-primary hover:border-primary">내 정보</a>
+                        <a href="/member" data-dashboard-home class="dashboard-menu-link text-primary border-b-2 border-primary pb-1 transition-all duration-300 hover:text-primary hover:border-primary">대시보드</a>
+                        <a th:href="@{/all_orders(memberId=${member.id})}" href="/all_orders" data-dashboard-frame class="dashboard-menu-link text-on-surface-variant border-b-2 border-transparent pb-1 transition-all duration-300 hover:text-primary hover:border-primary">주문 현황</a>
+                        <a th:href="@{/cancel_orders(memberId=${member.id})}" href="/cancel_orders" data-dashboard-frame class="dashboard-menu-link text-on-surface-variant border-b-2 border-transparent pb-1 transition-all duration-300 hover:text-primary hover:border-primary">취소/환불</a>
+                        <a th:href="@{/mypage(memberId=${member.id})}" href="/mypage" data-dashboard-frame class="dashboard-menu-link text-on-surface-variant border-b-2 border-transparent pb-1 transition-all duration-300 hover:text-primary hover:border-primary">내 정보</a>
                         <button type="button" id="logoutBtn" class="text-on-surface-variant border-b-2 border-transparent pb-1 transition-all duration-300 hover:text-primary hover:border-primary">로그아웃</button>
                     </nav>
                 </div>
 
                 <div class="flex items-center gap-3 sm:gap-4">
-                    <form id="dashboard-search-form" action="dashboard_search_result.html" method="get" role="search" class="hidden lg:flex items-center bg-surface-container-lowest/80 rounded-full px-4 py-2 border border-outline-variant/30 focus-within:border-primary transition-colors">
+                    <form id="dashboard-search-form" th:action="@{/dashboard_search_result.html}" action="/dashboard_search_result.html" method="get" role="search" class="hidden lg:flex items-center bg-surface-container-lowest/80 rounded-full px-4 py-2 border border-outline-variant/30 focus-within:border-primary transition-colors">
                         <span class="material-symbols-outlined text-outline text-lg mr-2">search</span>
                         <input id="dashboard-search-input" name="q" type="search" placeholder="주문, 상품, 키워드 검색..." autocomplete="off" class="w-56 bg-transparent border-none p-0 text-sm font-label focus:ring-0 text-on-surface placeholder:text-on-surface-variant/70" />
                     </form>
@@ -138,6 +138,66 @@
             </article>
         </section>
 
+        <section class="panel rounded-[28px] p-6">
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-[0.24em] text-tertiary">&#51064;&#44592; &#53412;&#50892;&#46300;</p>
+                    <div class="mt-2 flex flex-wrap items-end gap-3">
+                        <h2 class="text-2xl font-headline font-bold text-on-surface">&#49892;&#49884;&#44036; &#51064;&#44592; &#53412;&#50892;&#46300; &#49692;&#50948;</h2>
+                        <span th:if="${keywordCollectedAt != null}" class="text-sm font-bold text-on-surface-variant">
+                            <span th:text="${#temporals.format(keywordCollectedAt, 'yyyy.MM.dd')}">2026.04.28</span>
+                            <span>&#32;&#44592;&#51456;</span>
+                        </span>
+                    </div>
+                </div>
+                <button
+                    type="button"
+                    id="keyword-more-button"
+                    th:if="${keywords != null and #lists.size(keywords) > 10}"
+                    data-expanded="false"
+                    class="text-sm font-bold text-primary hover:opacity-80 transition-opacity">
+                    &#45908;&#48372;&#44592;
+                </button>
+            </div>
+
+            <div th:if="${keywords == null or #lists.isEmpty(keywords)}" class="rounded-2xl bg-surface-container-low p-6 text-center text-on-surface-variant font-semibold">
+                &#54364;&#49884;&#54624; &#51064;&#44592; &#53412;&#50892;&#46300;&#44032; &#50630;&#49845;&#45768;&#45796;.
+            </div>
+
+            <div th:if="${keywords != null and !#lists.isEmpty(keywords)}" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+                <article
+                    th:each="keyword, keywordStat : ${keywords}"
+                    th:if="${keywordStat.index < 10}"
+                    class="rounded-2xl bg-surface-container-low p-4 border border-outline-variant/10 transition hover:border-primary/40">
+                    <a class="block" th:href="@{/dashboard_search_result.html(q=${keyword.keyword})}">
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-primary text-white text-sm font-extrabold">
+                                <span th:text="${keywordStat.index + 1}">1</span>&#50948;
+                            </span>
+                            <span class="material-symbols-outlined text-primary text-[20px]" aria-hidden="true">search</span>
+                        </div>
+                        <h3 class="mt-4 text-lg font-headline font-extrabold text-on-surface" th:text="${keyword.keyword}">&#53412;&#50892;&#46300;</h3>
+                        <p class="mt-2 text-sm font-semibold text-primary hidden">&#48712;&#46020; <span th:text="${keyword.frequency}">0</span></p>
+                    </a>
+                </article>
+
+                <article
+                    th:each="keyword, keywordStat : ${keywords}"
+                    th:if="${keywordStat.index >= 10 and keywordStat.index < 20}"
+                    class="rounded-2xl bg-surface-container-low p-4 border border-outline-variant/10 transition hover:border-primary/40 js-extra-keyword hidden">
+                    <a class="block" th:href="@{/dashboard_search_result.html(q=${keyword.keyword})}">
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-primary text-white text-sm font-extrabold">
+                                <span th:text="${keywordStat.index + 1}">11</span>&#50948;
+                            </span>
+                            <span class="material-symbols-outlined text-primary text-[20px]" aria-hidden="true">search</span>
+                        </div>
+                        <h3 class="mt-4 text-lg font-headline font-extrabold text-on-surface" th:text="${keyword.keyword}">&#53412;&#50892;&#46300;</h3>
+                        <p class="mt-2 text-sm font-semibold text-primary hidden">&#48712;&#46020; <span th:text="${keyword.frequency}">0</span></p>
+                    </a>
+                </article>
+            </div>
+        </section>
         <section class="grid grid-cols-1 xl:grid-cols-12 gap-6">
             <div class="xl:col-span-4 space-y-6">
                 <!-- <article class="panel rounded-[28px] p-6">
@@ -212,7 +272,7 @@
                     </div>
                 </article> -->
 
-                <article class="panel rounded-[28px] p-6">
+                <!-- <article class="panel rounded-[28px] p-6">
                     <p class="text-xs font-bold uppercase tracking-[0.24em] text-tertiary">Keyword Atmosphere</p>
                     <h2 class="mt-2 text-2xl font-headline font-bold text-on-surface">검색 키워드 무드</h2>
                     <div class="mt-6 rounded-[24px] bg-surface-container-low p-6 min-h-[220px] flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-center">
@@ -227,7 +287,7 @@
                         <span class="text-[16px] font-semibold text-tertiary">유자청</span>
                         <span class="text-[24px] font-headline font-bold text-primary">황금쌀</span>
                     </div>
-                </article>
+                </article> -->
             </div>
 
             <div class="xl:col-span-8 space-y-6">
@@ -306,7 +366,7 @@
                     </div>
                 </article> -->
 
-                <article class="panel rounded-[28px] p-6">
+                <!-- <article class="panel rounded-[28px] p-6">
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
                         <div>
                             <p class="text-xs font-bold uppercase tracking-[0.24em] text-tertiary">Recent Feed</p>
@@ -365,7 +425,7 @@
                             </tbody>
                         </table>
                     </div>
-                </article>
+                </article> -->
             </div>
         </section>
         </div>
@@ -418,7 +478,7 @@
     </div>
 </footer>
 
-    <script th:src="@{/js/dashboard.js}"></script>
+    <script th:src="@{/js/dashboard.js(v=7)}" src="/js/dashboard.js?v=7"></script>
     <script th:src="@{/js/auth.js}"></script>
     <script>
         (() => {

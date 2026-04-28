@@ -16,5 +16,10 @@ public class TrendKeywordService {
     public List<TrendKeyword> getKeywords(){
         return trendKeywordRepository.findByIsActiveTrueOrderByRankAsc();
     }
+
+    @Transactional(readOnly = true)
+    public List<TrendKeyword> getKeywordsOrderById() {
+        return trendKeywordRepository.findByIsActiveTrueOrderByIdAsc();
+    }
     
 }

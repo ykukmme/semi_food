@@ -1,250 +1,83 @@
-﻿<!DOCTYPE html>
-<html lang="ko">
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>??쒕낫??寃??寃곌낵 | Heritage Namhae</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <link rel="stylesheet" href="css/dashboard_search_result.css">
-    <link rel="stylesheet" href="css/vanilla-utilities.css">`r`n</head>
+    <title>&#44160;&#49353; &#44208;&#44284; | Heritage Namhae</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/dashboard_search_result.css">
+    <link rel="stylesheet" href="/css/vanilla-utilities.css">
+</head>
 <body class="min-h-screen text-gray-800">
     <header class="bg-white border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between gap-6">
-            <div class="flex items-center gap-3">
-                <a href="dashboard.html" class="inline-flex items-center gap-2 text-sm font-bold text-emerald-700 hover:text-emerald-800 transition-colors">
-                    <span class="material-symbols-outlined text-[18px]">arrow_back</span>
-                    ??쒕낫?쒕줈 ?뚯븘媛湲?                </a>
-            </div>
-            <form id="dashboard-search-form" action="dashboard_search_result.html" method="get" class="relative w-full max-w-md" role="search">
-                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-[20px]">search</span>
-                <input id="dashboard-search-input" name="q" type="search" placeholder="二쇰Ц/痍⑥냼/?곹뭹 寃??.." class="w-full pl-11 pr-4 py-2.5 bg-gray-100 border border-gray-200 rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-shadow" autocomplete="off">
+            <a id="member-dashboard-link" th:href="@{/member}" href="/member" class="inline-flex items-center gap-2 text-sm font-bold text-emerald-700 hover:text-emerald-800 transition-colors">
+                <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                &#45824;&#49884;&#48372;&#46300;&#47196; &#46028;&#50500;&#44032;&#44592;
+            </a>
+            <form id="dashboard-search-form" th:action="@{/dashboard_search_result.html}" action="/dashboard_search_result.html" method="get" class="result-search-form" role="search">
+                <span class="material-symbols-outlined result-search-icon">search</span>
+                <input
+                    id="dashboard-search-input"
+                    name="q"
+                    type="search"
+                    th:value="${query}"
+                    placeholder="&#49345;&#54408;, &#53412;&#50892;&#46300; &#44160;&#49353;"
+                    class="result-search-input"
+                    autocomplete="off">
             </form>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-6 py-10">
-        <h1 class="text-3xl font-bold text-gray-900">?듯빀 寃??寃곌낵</h1>
-        <p id="search-summary" class="text-gray-500 mt-3 mb-8"></p>
+        <h1 class="text-3xl font-bold text-gray-900">&#44160;&#49353; &#44208;&#44284;</h1>
+        <p class="text-gray-500 mt-3 mb-8">
+            <span th:if="${query == null or #strings.isEmpty(query)}">&#44160;&#49353;&#50612;&#47484; &#51077;&#47141;&#54644;&#51452;&#49464;&#50836;.</span>
+            <span th:if="${query != null and !#strings.isEmpty(query)}">
+                &quot;<strong class="text-gray-900" th:text="${query}">&#53412;&#50892;&#46300;</strong>&quot;
+                &#49345;&#54408;&#47749; &#44160;&#49353; &#44208;&#44284;
+                <strong class="text-emerald-700" th:text="${products != null ? #lists.size(products) : 0}">0</strong>&#44148;
+            </span>
+        </p>
 
-        <div id="result-wrap" class="space-y-8">
-            <section id="products-section" class="hidden bg-white rounded-2xl border border-gray-200 shadow-sm">
-                <div class="px-6 py-5 border-b border-gray-100">
-                    <h2 class="text-xl font-bold text-gray-900">?곹뭹 寃??寃곌낵</h2>
-                </div>
-                <div id="products-grid" class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-            </section>
+        <section th:if="${products != null and !#lists.isEmpty(products)}" class="bg-white rounded-2xl border border-gray-200 shadow-sm">
+            <div class="px-6 py-5 border-b border-gray-100">
+                <h2 class="text-xl font-bold text-gray-900">&#49345;&#54408; &#44160;&#49353; &#44208;&#44284;</h2>
+            </div>
+            <div class="p-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <a
+                    th:each="product : ${products}"
+                    th:href="@{/product/view(id=${product.id})}"
+                    href="/product/view?id=1"
+                    class="group block rounded-xl overflow-hidden bg-gray-50 border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all">
+                    <div class="aspect-[5/3] overflow-hidden bg-gray-100">
+                        <img
+                            th:src="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl) ? product.imageUrl : 'https://placehold.co/600x400?text=Product'}"
+                            src="https://placehold.co/600x400?text=Product"
+                            th:alt="${product.name}"
+                            alt="Product"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-3">
+                        <h3 class="font-bold text-gray-900 mb-1" th:text="${product.name}">&#49345;&#54408;&#47749;</h3>
+                        <p class="text-sm text-gray-500 mb-2" th:text="${product.description}">&#49345;&#54408; &#49444;&#47749;</p>
+                        <span class="font-bold text-emerald-700">
+                            <span th:if="${product.price != null}" th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}">0</span><span th:if="${product.price != null}">&#50896;</span>
+                            <span th:if="${product.price == null}">&#44032;&#44201; &#47928;&#51032;</span>
+                        </span>
+                    </div>
+                </a>
+            </div>
+        </section>
 
-            <section id="orders-section" class="hidden bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-                <div class="px-6 py-5 border-b border-gray-100">
-                    <h2 class="text-xl font-bold text-gray-900">二쇰Ц 紐⑸줉 寃??寃곌낵</h2>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full min-w-[980px] text-left border-collapse">
-                        <thead class="bg-gray-50/80">
-                            <tr>
-                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">二쇰Ц踰덊샇</th>
-                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">二쇰Ц?곹뭹</th>
-                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">諛곗넚?щ?</th>
-                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">二쇰Ц痍⑥냼 ?щ?</th>
-                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">二쇰Ц??/th>
-                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">諛곗넚吏</th>
-                            </tr>
-                        </thead>
-                        <tbody id="orders-body" class="text-sm"></tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section id="cancel-section" class="hidden bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-                <div class="px-6 py-5 border-b border-gray-100">
-                    <h2 class="text-xl font-bold text-gray-900">二쇰Ц 痍⑥냼 紐⑸줉 寃??寃곌낵</h2>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full min-w-[980px] text-left border-collapse">
-                        <thead class="bg-gray-50/80">
-                            <tr>
-                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">二쇰Ц踰덊샇</th>
-                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">痍⑥냼 ?좎껌 ?묒닔</th>
-                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">?꾨즺 ?щ?</th>
-                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">痍⑥냼 ?댁쑀</th>
-                                <th class="py-4 px-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">痍⑥냼 ?꾨즺??/th>
-                            </tr>
-                        </thead>
-                        <tbody id="cancel-body" class="text-sm"></tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
-
-        <div id="empty-state" class="hidden text-center py-16 px-4">
+        <div th:if="${products == null or #lists.isEmpty(products)}" class="text-center py-16 px-4">
             <span class="material-symbols-outlined text-5xl text-gray-400 mb-4">search_off</span>
-            <p id="empty-message" class="text-gray-500 text-lg"></p>
-            <a class="inline-block mt-8 px-8 py-3 bg-emerald-700 text-white rounded-full font-bold hover:brightness-110 transition-all" href="dashboard.html">??쒕낫?쒕줈 ?뚯븘媛湲?/a>
+            <p class="text-gray-500 text-lg">&#51068;&#52824;&#54616;&#45716; &#49345;&#54408;&#51060; &#50630;&#49845;&#45768;&#45796;.</p>
+            <a class="inline-block mt-8 px-8 py-3 bg-emerald-700 text-white rounded-full font-bold hover:brightness-110 transition-all" th:href="@{/}" href="/">
+                &#44228;&#49549; &#49660;&#54609;&#54616;&#44592;
+            </a>
         </div>
     </main>
-
-    <script>
-        (function () {
-            var PRODUCTS = [
-                { title: '?⑦빐 ?묐쭏????, desc: '60???숈꽦', price: '??5,000', url: 'product.html', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBvD8uIdVNYEyiWGHi8yFmVhG6kbg5-KXyFssfxmkrmP-JrJbYqvVD6RtXPpMp9e3q0oJT9JD1rgMsLvnW_N7Guc2UpVX3lrboH_s0l84ZsmqcHHbcMeGGSxCPSUrWw4kZobqPVHoybx0lTymFYoGlw4m66hm8W5HgmeTzDzx4u5Cm14ARuzsuwU-FgzJ9cvl2OMTwesvvWrLgPV0wO-VE5w86RDbjiJXooh7j6sTkPGKfugkB4AmON8LapwmBn12YwXpz-0x63ew4' },
-                { title: '諛붾떣諛붾엺 ?⑷툑?', desc: '2024???낆?', price: '??8,000', url: 'product.html', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBczyhcl-myvmsy97jzfGBOYvdcKPxAJBIwW-DN3Am5aqlg831CLfC3PUSo0sYcilP7G3PF57aahgUVvY6aK3EkSlrvGRSwgrIM5QtrTIP2MYFPDS4_WTv3M2dIN0uH4XLbljElwmXdT_b1KLtqq9wf5xlhJrLMuUKvrH4psKSO-h23HKyWP-GR9_zTer6zwtBGnvuYGz3F-_pqokzSF0tnYfdXbqkSe7GUawF3eSXJ9F1DsMuzxKnCXE_lgrLEwvRYNXCMiel9Izc' },
-                { title: '二쎈갑??硫몄튂', desc: '?꾨━誘몄뾼 ?깃툒 ?먯뿰 嫄댁“', price: '??2,000', url: 'product.html', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCtnOlqwxH7qQy3ChR7FmuXsVSSaxhYvOnns0ob-uiDx4zOr71NBx6Q94Wz385GUyjkNNQ5N5JxcRDKfABqITkNJgwySp4LsPMI-vQcuQuJwFqzjv8KCLkeQXUb2tis5ggjGam2O8DACKgg-cvn9SEBhXqCmnefnl0zlnctaNRUCXO92vpIkuO8xAeWFh6b5wDdgld1a9JrVKnBCD__TPAa3BKTgPblzey3Iu4AWPf0VZzS9B_Z7rYdGhncgkQMULAuYf5QSiJ20tM' },
-                { title: '?꾨━誘몄뾼 ?꾨났 ?명듃', desc: '?⑦빐 諛붾떎 吏곸넚', price: '??20,000', url: 'product.html', img: 'https://images.unsplash.com/photo-1560717789-0ac7c58ac90a?q=80&w=1000&auto=format&fit=crop' },
-                { title: '?좎옄 泥??', desc: '?섑솗 ?좎옄', price: '??8,000', url: 'product.html', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA6h2K_MVUBoM6e2g9pPgi1msYnPU-LqTPmHqzCmHfsvP_BBUDLS8stEczldwRW7Escn4_-JCFeGGjjyBtGHDmvzMEGEGzBojUCZqNvDtWyL-Jo2aVNs-7gLGycXcdjZL_FigVsA6YTvm5dy2Ze7AGvew5LlLXtPg4U6B9nTX5rrLUWH_b3tvv7BG4W0mZQCabL3COnRI52h3TOxTODA5LcENrvt5Lqj7OiQqdrw-dqt2bpXQuzWWqCWeN1X7WAsqMeGl46bGUZcjw' },
-                { title: '??섑솗 諛뺤뒪', desc: '怨꾩젅蹂??좏깮', price: '??5,000', url: 'product.html', img: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=1000&auto=format&fit=crop' }
-            ];
-
-            var ORDERS = [
-                { orderNo: 'NH-20260422-001', product: '?⑦빐 ?묐쭏????, delivery: '諛곗넚 ?꾨즺', cancel: '痍⑥냼 ?꾨떂', customer: '?띻만??, address: '寃쎌긽?⑤룄 ?⑦빐援??⑦빐??留앹슫濡?12' },
-                { orderNo: 'NH-20260421-014', product: '二쎈갑??硫몄튂 ?명듃', delivery: '諛곗넚 以?, cancel: '痍⑥냼 ?꾨떂', customer: '源?⑦빐', address: '遺?곌킅??떆 ?댁슫?援??쇳??숇줈 45' },
-                { orderNo: 'NH-20260420-009', product: '?좎옄 泥??', delivery: '諛곗넚 以鍮?, cancel: '痍⑥냼 ?꾨떂', customer: '?대컮??, address: '?쒖슱?밸퀎??留덊룷援??깆븫濡?77' },
-                { orderNo: 'NH-20260418-031', product: '?꾨━誘몄뾼 ?꾨났 ?명듃', delivery: '諛곗넚 蹂대쪟', cancel: '痍⑥냼 ?붿껌', customer: '理쒖닔??, address: '?몄쿇愿묒뿭???곗닔援?而⑤깽?쒖븘?濡?88' }
-            ];
-
-            var CANCEL_ORDERS = [
-                { orderNo: 'NH-20260418-031', requestedAt: '2026-04-18 10:12', status: '?꾨즺', reason: '?⑥닚 蹂??, completedAt: '2026-04-19' },
-                { orderNo: 'NH-20260417-022', requestedAt: '2026-04-17 14:46', status: '泥섎━ 以?, reason: '諛곗넚 吏??, completedAt: '吏꾪뻾 以? },
-                { orderNo: 'NH-20260415-008', requestedAt: '2026-04-15 09:28', status: '?꾨즺', reason: '?곹뭹 ?뚯넀', completedAt: '2026-04-16' },
-                { orderNo: 'NH-20260411-005', requestedAt: '2026-04-11 11:54', status: '諛섎젮', reason: '諛곗넚 ?꾨즺 ???⑥닚 痍⑥냼', completedAt: '諛섎젮 泥섎━' }
-            ];
-
-            function includesText(value, query) {
-                return String(value || '').toLowerCase().indexOf(query.toLowerCase()) !== -1;
-            }
-
-            function getParamsQuery() {
-                var params = new URLSearchParams(window.location.search);
-                var raw = params.get('q');
-                return raw ? String(raw).trim() : '';
-            }
-
-            function renderProducts(rows) {
-                var grid = document.getElementById('products-grid');
-                grid.innerHTML = rows.map(function (p) {
-                    return (
-                        '<a href="' + p.url + '" class="group block rounded-xl overflow-hidden bg-gray-50 border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all">' +
-                        '<div class="aspect-[4/3] overflow-hidden bg-gray-100">' +
-                        '<img src="' + escapeHtml(p.img) + '" alt="' + escapeHtml(p.title) + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>' +
-                        '</div>' +
-                        '<div class="p-4">' +
-                        '<h3 class="font-bold text-gray-900 mb-1">' + escapeHtml(p.title) + '</h3>' +
-                        '<p class="text-sm text-gray-500 mb-2">' + escapeHtml(p.desc) + '</p>' +
-                        '<span class="font-bold text-emerald-700">' + escapeHtml(p.price) + '</span>' +
-                        '</div></a>'
-                    );
-                }).join('');
-            }
-
-            function renderOrders(rows) {
-                var body = document.getElementById('orders-body');
-                body.innerHTML = rows.map(function (r) {
-                    return (
-                        '<tr class="border-t border-gray-100">' +
-                        '<td class="py-4 px-6 font-bold text-gray-800">' + escapeHtml(r.orderNo) + '</td>' +
-                        '<td class="py-4 px-6 text-gray-700">' + escapeHtml(r.product) + '</td>' +
-                        '<td class="py-4 px-6 text-gray-700">' + escapeHtml(r.delivery) + '</td>' +
-                        '<td class="py-4 px-6 text-gray-700">' + escapeHtml(r.cancel) + '</td>' +
-                        '<td class="py-4 px-6 text-gray-700">' + escapeHtml(r.customer) + '</td>' +
-                        '<td class="py-4 px-6 text-gray-700">' + escapeHtml(r.address) + '</td>' +
-                        '</tr>'
-                    );
-                }).join('');
-            }
-
-            function renderCancelOrders(rows) {
-                var body = document.getElementById('cancel-body');
-                body.innerHTML = rows.map(function (r) {
-                    return (
-                        '<tr class="border-t border-gray-100">' +
-                        '<td class="py-4 px-6 font-bold text-gray-800">' + escapeHtml(r.orderNo) + '</td>' +
-                        '<td class="py-4 px-6 text-gray-700">' + escapeHtml(r.requestedAt) + '</td>' +
-                        '<td class="py-4 px-6 text-gray-700">' + escapeHtml(r.status) + '</td>' +
-                        '<td class="py-4 px-6 text-gray-700">' + escapeHtml(r.reason) + '</td>' +
-                        '<td class="py-4 px-6 text-gray-700">' + escapeHtml(r.completedAt) + '</td>' +
-                        '</tr>'
-                    );
-                }).join('');
-            }
-
-            function escapeHtml(s) {
-                return String(s)
-                    .replace(/&/g, '&amp;')
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;');
-            }
-
-            function runSearch() {
-                var q = getParamsQuery();
-                var input = document.getElementById('dashboard-search-input');
-                var summary = document.getElementById('search-summary');
-                var empty = document.getElementById('empty-state');
-                var emptyMsg = document.getElementById('empty-message');
-                var productsSection = document.getElementById('products-section');
-                var ordersSection = document.getElementById('orders-section');
-                var cancelSection = document.getElementById('cancel-section');
-
-                input.value = q;
-
-                if (!q) {
-                    summary.textContent = '寃?됱뼱瑜??낅젰??二쇱꽭??';
-                    empty.classList.remove('hidden');
-                    emptyMsg.textContent = '?곷떒 寃?됱갹???곹뭹紐낆쓣 ?낅젰????寃?됲빐 二쇱꽭??';
-                    productsSection.classList.add('hidden');
-                    ordersSection.classList.add('hidden');
-                    cancelSection.classList.add('hidden');
-                    return;
-                }
-
-                var matchedProducts = PRODUCTS.filter(function (p) {
-                    return includesText(p.title, q);
-                });
-                var matchedOrders = ORDERS.filter(function (o) {
-                    return includesText(o.orderNo, q) || includesText(o.product, q) || includesText(o.customer, q) || includesText(o.address, q);
-                });
-                var matchedCancel = CANCEL_ORDERS.filter(function (c) {
-                    return includesText(c.orderNo, q) || includesText(c.reason, q) || includesText(c.status, q) || includesText(c.completedAt, q);
-                });
-
-                var total = matchedProducts.length + matchedOrders.length + matchedCancel.length;
-                summary.innerHTML = '??strong class="text-gray-900">' + escapeHtml(q) + '</strong>?앹뿉 ???寃곌낵 <strong class="text-emerald-700">' + total + '</strong>嫄?;
-
-                if (total === 0) {
-                    empty.classList.remove('hidden');
-                    emptyMsg.textContent = '?쇱튂?섎뒗 寃??寃곌낵媛 ?놁뒿?덈떎. ?ㅻⅨ 寃?됱뼱濡??쒕룄??蹂댁꽭??';
-                    productsSection.classList.add('hidden');
-                    ordersSection.classList.add('hidden');
-                    cancelSection.classList.add('hidden');
-                    return;
-                }
-
-                empty.classList.add('hidden');
-
-                if (matchedProducts.length > 0) {
-                    renderProducts(matchedProducts);
-                    productsSection.classList.remove('hidden');
-                } else {
-                    productsSection.classList.add('hidden');
-                }
-
-                if (matchedOrders.length > 0) {
-                    renderOrders(matchedOrders);
-                    ordersSection.classList.remove('hidden');
-                } else {
-                    ordersSection.classList.add('hidden');
-                }
-
-                if (matchedCancel.length > 0) {
-                    renderCancelOrders(matchedCancel);
-                    cancelSection.classList.remove('hidden');
-                } else {
-                    cancelSection.classList.add('hidden');
-                }
-            }
-
-            document.addEventListener('DOMContentLoaded', runSearch);
-        })();
-    </script>
+    <script th:src="@{/js/auth.js}" src="/js/auth.js"></script>
 </body>
 </html>

@@ -103,12 +103,38 @@ input {
     gap: 1.5rem;
 }
 
+#guestMenu,
+#memberMenu {
+    align-items: center;
+    gap: 0.75rem;
+}
+
+#guestMenu {
+    display: flex;
+}
+
+#memberMenu {
+    display: none;
+}
+
 .site-nav__icon-link {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font-size: 1.5rem;
+    line-height: 1;
     transition: transform 0.2s ease;
+}
+
+.site-nav__icon-link .material-symbols-outlined {
+    font-size: inherit;
+    line-height: 1;
 }
 
 .site-nav__icon-link:hover {
@@ -606,6 +632,7 @@ header .nav-search input.nav-search-input[type="search"]:focus {
     pointer-events: none;
     transform: translateY(-50%) translateX(0.75rem) scale(0.92);
     transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    cursor:pointer;
 }
 
 .scroll-top-btn.is-visible {

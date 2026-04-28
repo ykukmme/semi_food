@@ -12,13 +12,26 @@
     <div class="product-header__inner">
         <div class="product-brand"><a th:href="@{/}">Heritage Namhae</a></div>
         <nav class="product-nav" aria-label="상단 메뉴">
-            <a class="product-nav__icon-link cart-link" th:href="@{/cart.html}" href="/cart.html" aria-label="장바구니">
-                <span class="material-symbols-outlined">shopping_bag</span>
-                <span id="cart-count-badge" class="cart-count-badge is-hidden">0</span>
-            </a>
-            <a class="product-nav__icon-link" th:href="@{/login.html}" href="login.html" aria-label="로그인">
-                <span class="material-symbols-outlined">person</span>
-            </a>
+            <div id="guestMenu">
+                <a class="product-nav__icon-link" th:href="@{/login.html}" href="/login.html" aria-label="로그인">
+                    <span class="material-symbols-outlined" aria-hidden="true">person</span>
+                </a>
+                <a class="product-nav__icon-link" th:href="@{/register.html}" href="/register.html" aria-label="회원가입">
+                    <span class="material-symbols-outlined" aria-hidden="true">person_add</span>
+                </a>
+            </div>
+            <div id="memberMenu" style="display: none;">
+                <a class="product-nav__icon-link cart-link" th:href="@{/cart/view}" href="/cart/view" aria-label="장바구니">
+                    <span class="material-symbols-outlined" aria-hidden="true">shopping_bag</span>
+                    <span id="cart-count-badge" class="cart-count-badge is-hidden">0</span>
+                </a>
+                <a class="product-nav__icon-link" id="member-dashboard-link" th:href="@{/member}" href="/member" aria-label="회원페이지">
+                    <span class="material-symbols-outlined" aria-hidden="true">person</span>
+                </a>
+                <a class="product-nav__icon-link" id="logoutBtn" href="#" aria-label="로그아웃">
+                    <span class="material-symbols-outlined" aria-hidden="true">person_remove</span>
+                </a>
+            </div>
         </nav>
     </div>
 </header>
@@ -95,20 +108,23 @@
                 </div>
             </div>
 
-            <div class="cta-row" id="cta-row">
+            <div class="cta-row" id="cart-action-row">
+                <input type="hidden" name="memberId" id="cart-member-id">
+                <input type="hidden" name="productId" th:value="${product.id}">
+                <input type="hidden" name="quantity" id="cart-quantity" value="1">
                 <button type="button" class="button button--secondary" id="btn-add-to-cart">
                     <span class="material-symbols-outlined">shopping_cart</span>
                     장바구니에 추가
                 </button>
-                <a class="button button--primary" id="btn-go-to-cart" th:href="@{/cart.html}" href="/cart.html">
+                <a class="button button--primary" id="btn-go-to-cart" th:href="@{/cart/view}" href="/cart/view">
                     <span class="material-symbols-outlined">shopping_bag</span>
                     장바구니로 가기
                 </a>
             </div>
-            <button type="button" class="button button--primary button--full" id="btn-buy-now">
-                <span class="material-symbols-outlined">shopping_bag</span>
-                바로 구매
-            </button>
+            <a class="button button--primary button--full" id="btn-continue-shopping" th:href="@{/}" href="/">
+                <span class="material-symbols-outlined">storefront</span>
+                쇼핑 계속하기
+            </a>
 
             <div class="trust-grid">
                 <div class="trust-item">
@@ -128,30 +144,53 @@
     </div>
 </main>
 
-<footer class="product-footer">
-    <div class="product-footer__grid">
+<footer class="site-footer">
+    <div class="site-footer__grid">
         <div>
-            <div class="product-footer__brand">Heritage Namhae</div>
-            <p class="product-footer__copy">남해의 지역 먹거리를 더 편하게 만나는 스마트 푸드 커머스입니다.</p>
+            <div class="site-footer__brand">Heritage Namhae</div>
+            <p class="site-footer__copy">
+                남해군 공식 헤리티지 몰, 우리 해안 낙원의 진짜 맛을 당신의 집으로 바로 전달합니다.
+            </p>
+            <div class="footer-socials">
+                <a class="footer-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img class="footer-social-icon" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="Instagram" /></a>
+                <a class="footer-social-link" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img class="footer-social-icon" src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook" /></a>
+                <a class="footer-social-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><img class="footer-social-icon" src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn" /></a>
+                <a class="footer-social-link" href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X"><img class="footer-social-icon" src="https://img.icons8.com/color/48/twitterx--v1.png" alt="X" /></a>
+            </div>
         </div>
         <div>
-            <h4>서비스</h4>
-            <ul>
+            <h4 class="site-footer__title">서비스</h4>
+            <ul class="site-footer__list">
                 <li><a href="#">회사 소개</a></li>
-                <li><a href="#">배송 안내</a></li>
+                <li><a href="#">배송 및 추적</a></li>
                 <li><a href="#">이용 약관</a></li>
             </ul>
         </div>
         <div>
-            <h4>연락처</h4>
-            <ul>
-                <li>055-123-4567</li>
-                <li>help@namhaeheritage.kr</li>
+            <h4 class="site-footer__title">연락처</h4>
+            <ul class="site-footer__list">
+                <li>전화: 055-123-4567</li>
+                <li>이메일: help@namhaeheritage.kr</li>
             </ul>
+        </div>
+        <div>
+            <h4 class="site-footer__title">위치</h4>
+            <p class="site-footer__text">대한민국 경상남도 남해군</p>
+            <div class="footer-map">
+                <img alt="Location Map" class="footer-map-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2F8UAsYBf8f-PXSCkWz8tPMj1yPAwzNqFnUHdLvbP3NxWzmKZvO52Qb76KLXKdR7GifJMom5TfallzE3oUiWx6wj1VUqfQ-OWmzQVYplGPmVjO52jxg3e8NQdFOU-O_t0DJrzvtWD0uaWIpCc4fRIYzS0-oPNzSMqm3dfpC4iojREb1bO_k-endojrJHEh2Vek1i1HWAgmAM27qGPEC2EUe-1x_hxNJOM3j_NI-TicipehzW-arsFab0btwNoZOq5wXODkjGdXZM"/>
+            </div>
+        </div>
+    </div>
+    <div class="site-footer__bottom">
+        <p>&copy; 2024 에디토리얼 헤리티지 남해. 모든 권리 보유.</p>
+        <div class="site-footer__links">
+            <a href="#">개인정보 처리방침</a>
+            <a href="#">라이선스 정보</a>
         </div>
     </div>
 </footer>
 
+<script th:src="@{/js/auth.js}" src="../static/js/auth.js"></script>
 <script th:src="@{/js/product.js}" src="../static/js/product.js"></script>
 </body>
 </html>

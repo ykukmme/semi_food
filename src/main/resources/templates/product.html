@@ -21,11 +21,11 @@
                 </a>
             </div>
             <div id="memberMenu" style="display: none;">
-                <a class="product-nav__icon-link cart-link" th:href="@{/cart.html}" href="/cart.html" aria-label="장바구니">
+                <a class="product-nav__icon-link cart-link" th:href="@{/cart/view}" href="/cart/view" aria-label="장바구니">
                     <span class="material-symbols-outlined" aria-hidden="true">shopping_bag</span>
                     <span id="cart-count-badge" class="cart-count-badge is-hidden">0</span>
                 </a>
-                <a class="product-nav__icon-link" th:href="@{/dashboard.html}" href="/dashboard.html" aria-label="회원페이지">
+                <a class="product-nav__icon-link" id="member-dashboard-link" th:href="@{/member}" href="/member" aria-label="회원페이지">
                     <span class="material-symbols-outlined" aria-hidden="true">person</span>
                 </a>
                 <a class="product-nav__icon-link" id="logoutBtn" href="#" aria-label="로그아웃">
@@ -108,12 +108,15 @@
                 </div>
             </div>
 
-            <div class="cta-row" id="cta-row">
+            <div class="cta-row" id="cart-action-row">
+                <input type="hidden" name="memberId" id="cart-member-id">
+                <input type="hidden" name="productId" th:value="${product.id}">
+                <input type="hidden" name="quantity" id="cart-quantity" value="1">
                 <button type="button" class="button button--secondary" id="btn-add-to-cart">
                     <span class="material-symbols-outlined">shopping_cart</span>
                     장바구니에 추가
                 </button>
-                <a class="button button--primary" id="btn-go-to-cart" th:href="@{/cart.html}" href="/cart.html">
+                <a class="button button--primary" id="btn-go-to-cart" th:href="@{/cart/view}" href="/cart/view">
                     <span class="material-symbols-outlined">shopping_bag</span>
                     장바구니로 가기
                 </a>

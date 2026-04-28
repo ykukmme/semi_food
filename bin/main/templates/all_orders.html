@@ -1,177 +1,70 @@
-﻿<!DOCTYPE html>
-<html lang="ko" class="light">
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>紐⑤뱺 二쇰Ц | Heritage Namhae</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Work+Sans:wght@300;400;500;600&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/all_orders.css">
-    <link rel="stylesheet" href="css/vanilla-utilities.css">`r`n</head>
+    <title>주문 현황 | Heritage Namhae</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/vanilla-utilities.css">
+    <link rel="stylesheet" href="/css/all_orders.css">
+</head>
 <body class="min-h-screen text-on-surface bg-background">
-    <div class="max-w-7xl mx-auto px-6 py-10">
-        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-8">
-            <div>
-                <a href="dashboard.html" class="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-secondary transition-colors">
-                    <span class="material-symbols-outlined text-[18px]">arrow_back</span>
-                    ??쒕낫?쒕줈 ?뚯븘媛湲?                </a>
-                <h1 class="mt-4 text-3xl font-bold text-on-surface">?닿? 二쇰Ц??紐⑤뱺 二쇰Ц</h1>
-                <p class="mt-2 text-sm text-on-surface-variant">理쒓렐 二쇰Ц ?댁뿭怨?諛곗넚 ?곹깭, ?ш뎄留??먮쫫????踰덉뿉 ?뺤씤?????덉뒿?덈떎.</p>
-            </div>
-            <div class="grid grid-cols-2 gap-4 sm:flex">
-                <div class="bg-surface rounded-2xl px-5 py-4 shadow-sm border border-outline-variant min-w-[140px]">
-                    <p class="text-[11px] font-bold text-outline-variant uppercase tracking-widest">?꾩껜 二쇰Ц</p>
-                    <p class="mt-2 text-2xl font-bold text-on-surface">24嫄?/p>
-                </div>
-                <div class="bg-surface rounded-2xl px-5 py-4 shadow-sm border border-outline-variant min-w-[140px]">
-                    <p class="text-[11px] font-bold text-outline-variant uppercase tracking-widest">?됯퇏 ?ш뎄留ㅼ쑉</p>
-                    <p class="mt-2 text-2xl font-bold text-primary">90.2%</p>
-                </div>
-            </div>
+    <main class="max-w-7xl mx-auto px-6 py-10">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-on-surface">주문 현황</h1>
+            <p class="mt-2 text-sm text-on-surface-variant">최근 주문 목록과 처리 상태를 확인할 수 있습니다.</p>
         </div>
 
-        <div class="bg-surface rounded-2xl shadow-sm border border-outline-variant overflow-hidden">
+        <section class="bg-surface rounded-2xl shadow-sm border border-outline-variant overflow-hidden">
             <div class="px-6 py-5 border-b border-outline-variant/20 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
-                    <h2 class="text-lg font-bold text-on-surface">二쇰Ц 紐⑸줉</h2>
-                    <p class="text-sm text-on-surface-variant mt-1">二쇰Ц踰덊샇, 二쇰Ц?곹뭹, 諛곗넚 ?곹깭? 諛곗넚吏 ?뺣낫瑜??뺤씤?섏꽭??</p>
-                </div>
-                <div class="relative">
-                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant text-[18px]">search</span>
-                    <input type="text" placeholder="二쇰Ц踰덊샇 ?먮뒗 ?곹뭹 寃?? class="w-full md:w-72 pl-11 pr-4 py-2.5 bg-surface-container-low border border-transparent rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary transition-shadow">
+                    <h2 class="text-lg font-bold text-on-surface">주문 목록</h2>
+                    <p class="text-sm text-on-surface-variant mt-1">주문번호, 주문상태, 총가격, 주문일시를 한눈에 볼 수 있습니다.</p>
                 </div>
             </div>
 
-            <div class="overflow-x-auto">
-                <table class="w-full min-w-[980px] text-left border-collapse">
+            <div th:if="${orders == null or #lists.isEmpty(orders)}" class="min-h-[320px] flex flex-col items-center justify-center text-center px-6 py-14">
+                <span class="material-symbols-outlined text-5xl text-outline-variant mb-4" aria-hidden="true">receipt_long</span>
+                <h3 class="text-xl font-extrabold text-on-surface">주문 내역이 없습니다.</h3>
+                <p class="mt-2 text-sm text-on-surface-variant">마음에 드는 남해 상품을 둘러보고 첫 주문을 시작해보세요.</p>
+                <a href="/" class="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-extrabold text-white shadow-sm hover:brightness-105 transition">
+                    <span class="material-symbols-outlined text-[18px]" aria-hidden="true">storefront</span>
+                    쇼핑하기
+                </a>
+            </div>
+
+            <div th:if="${orders != null and !#lists.isEmpty(orders)}" class="overflow-x-auto">
+                <table class="w-full min-w-[860px] text-left border-collapse">
                     <thead class="bg-surface-container-low">
                         <tr>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">二쇰Ц踰덊샇</th>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">二쇰Ц?곹뭹</th>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">諛곗넚?щ?</th>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">二쇰Ц痍⑥냼 ?щ?</th>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">痍⑥냼 ?붿껌</th>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">二쇰Ц??/th>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">?ш뎄留??잛닔</th>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">諛곗넚吏</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">주문번호</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">주문상태</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">총가격</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">주문일시</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest text-right">관리</th>
                         </tr>
                     </thead>
-                    <tbody class="text-sm">
-                        <tr class="border-t border-gray-100 hover:bg-emerald-50/40 transition-colors">
-                            <td class="py-5 px-6 font-bold text-gray-800">NH-20260422-001</td>
-                            <td class="py-5 px-6">
-                                <p class="font-semibold text-gray-900">?⑦빐 ?묐쭏????/p>
-                                <p class="text-xs text-gray-400 mt-1">以??ъ씠利?/ 2媛?/p>
+                    <tbody>
+                        <tr th:each="order : ${orders}" class="border-t border-outline-variant/20">
+                            <td class="py-4 px-6 font-bold text-on-surface" th:text="${order.orderNumber}">PO-20260428-0001</td>
+                            <td class="py-4 px-6">
+                                <span class="inline-flex items-center rounded-full bg-primary-fixed px-3 py-1 text-xs font-extrabold text-primary" th:text="${order.statusLabel}">주문 접수</span>
                             </td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>諛곗넚 ?꾨즺</span></td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>痍⑥냼 ?꾨떂</span></td>
-                            <td class="py-5 px-6"><button type="button" class="inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-rose-50 text-rose-600 text-xs font-bold border border-rose-200 hover:bg-rose-100 transition-colors">痍⑥냼</button></td>
-                            <td class="py-5 px-6 font-medium text-gray-700">?띻만??/td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center justify-center min-w-10 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold">4??/span></td>
-                            <td class="py-5 px-6 text-gray-600">寃쎌긽?⑤룄 ?⑦빐援??⑦빐??留앹슫濡?12</td>
-                        </tr>
-                        <tr class="border-t border-gray-100 hover:bg-emerald-50/40 transition-colors">
-                            <td class="py-5 px-6 font-bold text-gray-800">NH-20260421-014</td>
-                            <td class="py-5 px-6">
-                                <p class="font-semibold text-gray-900">二쎈갑??硫몄튂 ?명듃</p>
-                                <p class="text-xs text-gray-400 mt-1">?꾨━誘몄뾼 / 1諛뺤뒪</p>
+                            <td class="py-4 px-6 font-bold text-on-surface" th:text="${'₩' + #numbers.formatInteger(order.totalPrice, 0, 'COMMA')}">₩0</td>
+                            <td class="py-4 px-6 text-on-surface-variant" th:text="${#temporals.format(order.orderedAt, 'yyyy.MM.dd HH:mm')}">2026.04.28 15:30</td>
+                            <td class="py-4 px-6 text-right">
+                                <a th:if="${order.cancellable}" th:href="@{/cancel_orders(orderNumber=${order.orderNumber})}" class="inline-flex items-center justify-center rounded-full border border-primary px-4 py-2 text-xs font-extrabold text-primary hover:bg-primary/10 transition">
+                                    취소/환불
+                                </a>
+                                <button th:unless="${order.cancellable}" type="button" disabled class="inline-flex items-center justify-center rounded-full border border-outline-variant px-4 py-2 text-xs font-extrabold text-on-surface-variant opacity-60">
+                                    취소/환불
+                                </button>
                             </td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-100 text-sky-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>諛곗넚 以?/span></td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>痍⑥냼 ?꾨떂</span></td>
-                            <td class="py-5 px-6"><button type="button" class="inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-rose-50 text-rose-600 text-xs font-bold border border-rose-200 hover:bg-rose-100 transition-colors">痍⑥냼</button></td>
-                            <td class="py-5 px-6 font-medium text-gray-700">源?⑦빐</td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center justify-center min-w-10 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold">2??/span></td>
-                            <td class="py-5 px-6 text-gray-600">遺?곌킅??떆 ?댁슫?援??쇳??숇줈 45</td>
-                        </tr>
-                        <tr class="border-t border-gray-100 hover:bg-emerald-50/40 transition-colors">
-                            <td class="py-5 px-6 font-bold text-gray-800">NH-20260420-009</td>
-                            <td class="py-5 px-6">
-                                <p class="font-semibold text-gray-900">?좎옄 泥??</p>
-                                <p class="text-xs text-gray-400 mt-1">?좊Ъ ?ъ옣 / 3蹂?/p>
-                            </td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>諛곗넚 以鍮?/span></td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>痍⑥냼 ?꾨떂</span></td>
-                            <td class="py-5 px-6"><button type="button" class="inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-rose-50 text-rose-600 text-xs font-bold border border-rose-200 hover:bg-rose-100 transition-colors">痍⑥냼</button></td>
-                            <td class="py-5 px-6 font-medium text-gray-700">?대컮??/td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center justify-center min-w-10 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold">5??/span></td>
-                            <td class="py-5 px-6 text-gray-600">?쒖슱?밸퀎??留덊룷援??깆븫濡?77</td>
-                        </tr>
-                        <tr class="border-t border-gray-100 hover:bg-emerald-50/40 transition-colors">
-                            <td class="py-5 px-6 font-bold text-gray-800">NH-20260419-023</td>
-                            <td class="py-5 px-6">
-                                <p class="font-semibold text-gray-900">諛붾떣諛붾엺 ?⑷툑?</p>
-                                <p class="text-xs text-gray-400 mt-1">10kg / ?뺢린諛곗넚</p>
-                            </td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>諛곗넚 ?꾨즺</span></td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>痍⑥냼 ?꾨떂</span></td>
-                            <td class="py-5 px-6"><button type="button" class="inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-rose-50 text-rose-600 text-xs font-bold border border-rose-200 hover:bg-rose-100 transition-colors">痍⑥냼</button></td>
-                            <td class="py-5 px-6 font-medium text-gray-700">諛뺤옱二쇰Ц</td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center justify-center min-w-10 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold">7??/span></td>
-                            <td class="py-5 px-6 text-gray-600">?援ш킅??떆 ?섏꽦援??ш뎄踰뚮?濡?201</td>
-                        </tr>
-                        <tr class="border-t border-gray-100 hover:bg-emerald-50/40 transition-colors">
-                            <td class="py-5 px-6 font-bold text-gray-800">NH-20260418-031</td>
-                            <td class="py-5 px-6">
-                                <p class="font-semibold text-gray-900">?꾨━誘몄뾼 ?꾨났 ?명듃</p>
-                                <p class="text-xs text-gray-400 mt-1">?밸? / 1?명듃</p>
-                            </td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>諛곗넚 蹂대쪟</span></td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-700 text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>痍⑥냼 ?붿껌</span></td>
-                            <td class="py-5 px-6"><button type="button" class="inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-400 text-xs font-bold border border-gray-200 cursor-not-allowed">?붿껌??/button></td>
-                            <td class="py-5 px-6 font-medium text-gray-700">理쒖닔??/td>
-                            <td class="py-5 px-6"><span class="inline-flex items-center justify-center min-w-10 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold">1??/span></td>
-                            <td class="py-5 px-6 text-gray-600">?몄쿇愿묒뿭???곗닔援?而⑤깽?쒖븘?濡?88</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </div>
-    </div>
-<!-- Footer -->
-<footer class="full-width py-16 px-8 mt-24 bg-[#003366] border-t border-[#0066cc] transition-colors duration-200 font-inter text-xs leading-relaxed text-white">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-7xl mx-auto">
-        <div class="col-span-1 md:col-span-1">
-            <div class="text-lg font-bold text-white mb-6 font-headline">Heritage Namhae</div>
-            <p class="text-white/80 mb-8 max-w-xs">
-                ?⑦빐援?怨듭떇 ?ㅻ━?곗? 紐? ?곕━ ?댁븞 ?숈썝??吏꾩쭨 留쏆쓣 ?뱀떊??吏묒쑝濡?諛붾줈 ?꾨떖?⑸땲??
-            </p>
-            <div class="flex gap-4">
-                <a class="footer-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img class="footer-social-icon" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="Instagram" /></a>
-                <a class="footer-social-link" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img class="footer-social-icon" src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook" /></a>
-                <a class="footer-social-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><img class="footer-social-icon" src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn" /></a>
-                <a class="footer-social-link" href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X"><img class="footer-social-icon" src="https://img.icons8.com/color/48/twitterx--v1.png" alt="X" /></a>
-            </div>
-        </div>
-        <div>
-            <h4 class="font-bold text-white mb-6">?쒕퉬??/h4>
-            <ul class="space-y-4">
-                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">?뚯궗 ?뚭컻</a></li>
-                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">諛곗넚 諛?異붿쟻</a></li>
-                <li><a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">?댁슜 ?쎄?</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4 class="font-bold text-white mb-6">?곕씫泥?/h4>
-            <ul class="space-y-4">
-                <li class="text-white/70">?꾪솕: 055-123-4567</li>
-                <li class="text-white/70">?대찓?? help@namhaeheritage.kr</li>
-            </ul>
-        </div>
-        <div>
-            <h4 class="font-bold text-white mb-6">?꾩튂</h4>
-            <p class="text-white/70 mb-4">??쒕?援?寃쎌긽?⑤룄 ?⑦빐援곗껌</p>
-            <div class="h-32 w-full rounded-xl bg-[#0066cc]/20 overflow-hidden">
-                <img alt="Location Map" class="w-full h-full object-cover" style="filter: grayscale(100%) sepia(100%) hue-rotate(200deg) saturate(150%);"
-                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2F8UAsYBf8f-PXSCkWz8tPMj1yPAwzNqFnUHdLvbP3NxWzmKZvO52Qb76KLXKdR7GifJMom5TfallzE3oUiWx6wj1VUqfQ-OWmzQVYplGPmVjO52jxg3e8NQdFOU-O_t0DJrzvtWD0uaWIpCc4fRIYzS0-oPNzSMqm3dfpC4iojREb1bO_k-endojrJHEh2Vek1i1HWAgmAM27qGPEC2EUe-1x_hxNJOM3j_NI-TicipehzW-arsFab0btwNoZOq5wXODkjGdXZM"/>
-            </div>
-        </div>
-    </div>
-    <div class="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-zinc-200/50 flex flex-col md:flex-row justify-between gap-4">
-        <p class="text-white/60">짤 2024 ?먮뵒?좊━???ㅻ━?곗? ?⑦빐. 紐⑤뱺 沅뚮━ 蹂댁쑀.</p>
-        <div class="flex gap-6">
-            <a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">媛쒖씤?뺣낫 泥섎━諛⑹묠</a>
-            <a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">?쇱씠?좎뒪 ?뺣낫</a>
-        </div>
-    </div>
-</footer>
+        </section>
+    </main>
 </body>
 </html>

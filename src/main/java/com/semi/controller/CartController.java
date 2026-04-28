@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.semi.domain.cart.CartItem;
@@ -23,6 +24,9 @@ import com.semi.security.MemberDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+import java.util.Map;
+
 @Controller
 @RequestMapping("/cart")
 @RequiredArgsConstructor
@@ -32,12 +36,41 @@ public class CartController {
     private final ProductService productService;
 
     @GetMapping("/view")
-    public String saveCartItem(Long memberId, Long productId, int quantity, Model model){
-        CartItem cartItem = cartItemService.addToCartItem(memberId, productId, quantity);
-        Product product = productService.getProductDetail(productId);
+    public String viewCart(
+            @AuthenticationPrincipal MemberDetails memberDetails,
+            @RequestParam(required = false) Long memberId,
+            Model model
+    ) {
+        Long resolvedMemberId = memberDetails != null ? memberDetails.getMember().getId() : memberId;
+        if (resolvedMemberId != null) {
+            List<CartItem> cartItems = cartItemService.getCartItems(resolvedMemberId);
+            model.addAttribute("cartItems", cartItems);
+            model.addAttribute("cartRows", toCartRows(cartItems));
+        }
+        return "cart";
+    }
+
+    @PostMapping("/view")
+    public String addCartItemAndViewCart(
+            @AuthenticationPrincipal MemberDetails memberDetails,
+            @RequestParam(required = false) Long memberId,
+            @RequestParam Long productId,
+            @RequestParam(defaultValue = "1") int quantity,
+            Model model
+    ) {
+        Long resolvedMemberId = memberDetails != null ? memberDetails.getMember().getId() : memberId;
+        if (resolvedMemberId == null) {
+            return "redirect:/login.html";
+        }
+
+        CartItem cartItem = cartItemService.addToCartItem(resolvedMemberId, productId, quantity);
+        Product product = productService.getProductDetail(cartItem.getProduct().getId());
+
         model.addAttribute("cartItem", cartItem);
         model.addAttribute("product", product);
-        System.out.println(cartItem.toString());
+        List<CartItem> cartItems = cartItemService.getCartItems(resolvedMemberId);
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("cartRows", toCartRows(cartItems));
         return "cart";
     }
 
@@ -87,5 +120,29 @@ public class CartController {
                 "productId", request.productId(),
                 "quantity", cartItem.getQuantity()
         ));
+    }
+
+    private List<Map<String, Object>> toCartRows(List<CartItem> cartItems) {
+        if (cartItems == null) {
+            return List.of();
+        }
+
+        return cartItems.stream()
+                .map(cartItem -> {
+                    Product product = cartItem.getProduct();
+                    return Map.<String, Object>of(
+                            "id", cartItem.getId(),
+                            "cartItemId", cartItem.getId(),
+                            "productId", product.getId(),
+                            "name", product.getName(),
+                            "collection", "Heritage Namhae",
+                            "price", product.getPrice() == null ? 0 : product.getPrice(),
+                            "quantity", cartItem.getQuantity(),
+                            "image", product.getImageUrl() == null ? "" : product.getImageUrl(),
+                            "minQty", 1,
+                            "checked", true
+                    );
+                })
+                .toList();
     }
 }

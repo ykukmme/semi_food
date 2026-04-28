@@ -1,5 +1,7 @@
 package com.semi.domain.cart;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.semi.domain.member.Member;
@@ -18,6 +20,10 @@ public class CartItemService {
 
     @Transactional
     public CartItem addToCartItem(Long memberId, Long productId, int quantity){
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("quantity must be greater than 0.");
+        }
+
         Member member = memberRepository.findById(memberId).orElseThrow();
         Product product = productRepository.findById(productId).orElseThrow();
         CartItem cartItem = cartItemRepository.findByMemberIdAndProductId(memberId, productId)
@@ -30,6 +36,16 @@ public class CartItemService {
             .quantity(quantity)
             .build());
         return cartItemRepository.save(cartItem);
+    }
+
+    @Transactional(readOnly = true)
+    public List<CartItem> getRecentCartItems(Long memberId) {
+        return cartItemRepository.findTop5ByMemberIdOrderByCreatedAtDesc(memberId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<CartItem> getCartItems(Long memberId) {
+        return cartItemRepository.findByMemberId(memberId);
     }
 
     @Transactional

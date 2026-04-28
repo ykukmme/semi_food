@@ -74,7 +74,7 @@
                         </a>
                     </div>
                     <div id="memberMenu" style="display: none;">
-                        <a class="cart-nav__icon-link cart-link" th:href="@{/cart.html}" href="/cart.html" aria-label="장바구니">
+                        <a class="cart-nav__icon-link cart-link" th:href="@{/cart/view}" href="/cart/view" aria-label="장바구니">
                             <span class="material-symbols-outlined" aria-hidden="true">shopping_bag</span>
                             <span
                                 class="cart-count-badge"
@@ -82,7 +82,7 @@
                                 {{ totalItemsCount > 99 ? '99+' : totalItemsCount }}
                             </span>
                         </a>
-                        <a class="cart-nav__icon-link" th:href="@{/dashboard.html}" href="/dashboard.html" aria-label="회원페이지">
+                        <a class="cart-nav__icon-link" id="member-dashboard-link" th:href="@{/member}" href="/member" aria-label="회원페이지">
                             <span class="material-symbols-outlined" aria-hidden="true">person</span>
                         </a>
                         <a class="cart-nav__icon-link" id="logoutBtn" href="#" aria-label="로그아웃">
@@ -289,13 +289,48 @@
         }
     </style>
     <script th:src="@{/js/auth.js}" src="/js/auth.js"></script>
-    <script>
+    <script th:inline="javascript">
         const { createApp, ref, computed, watch } = Vue;
 
         const NAMHAE_CART_STORAGE_KEY = "namhae_cart_v1";
         const NAMHAE_SELECTED_ITEMS_KEY = "namhae_selected_items";
+        const NAMHAE_CHECKOUT_KEY = "namhae_checkout_v1";
         const TOKEN_STORAGE_KEY = "accessToken";
+        const SERVER_CART_ITEMS = /*[[${cartRows}]]*/ [];
 
+        function seedCartFromServerModel() {
+            if (!Array.isArray(SERVER_CART_ITEMS) || SERVER_CART_ITEMS.length === 0) {
+                return;
+            }
+
+            const cart = loadCartFromStorage();
+            SERVER_CART_ITEMS.forEach((serverItem) => {
+                const item = {
+                    id: `${serverItem.productId}-server`,
+                    cartItemId: Number(serverItem.cartItemId || serverItem.id),
+                    productId: serverItem.productId,
+                    name: serverItem.name || "상품",
+                    collection: serverItem.collection || "Heritage Namhae",
+                    price: Number(serverItem.price) || 0,
+                    quantity: Number(serverItem.quantity) || 1,
+                    image: serverItem.image || "",
+                    minQty: Number(serverItem.minQty) || 1,
+                    checked: serverItem.checked !== false
+                };
+                const existingIndex = cart.findIndex((row) => String(row.productId) === String(item.productId));
+
+                if (existingIndex >= 0) {
+                    cart[existingIndex] = {
+                        ...cart[existingIndex],
+                        ...item
+                    };
+                } else {
+                    cart.push(item);
+                }
+            });
+
+            persistCart(cart);
+        }
         function loadCartFromStorage() {
             try {
                 const raw = localStorage.getItem(NAMHAE_CART_STORAGE_KEY);
@@ -321,6 +356,42 @@
 
         function persistCart(items) {
             localStorage.setItem(NAMHAE_CART_STORAGE_KEY, JSON.stringify(items));
+        }
+
+        function toNumber(value, fallback = 0) {
+            const number = Number(value);
+            return Number.isFinite(number) ? number : fallback;
+        }
+
+        function toCheckoutItem(item) {
+            const productId = toNumber(item.productId || String(item.id || "").split("-")[0]);
+            const quantity = Math.max(1, toNumber(item.quantity, 1));
+            const price = Math.max(0, toNumber(item.price, 0));
+
+            return {
+                id: String(item.id || `${productId}-cart`),
+                cartItemId: item.cartItemId ? toNumber(item.cartItemId) : null,
+                productId,
+                name: item.name || "상품",
+                collection: item.collection || "Heritage Namhae",
+                image: item.image || "",
+                price,
+                quantity,
+                lineTotal: price * quantity
+            };
+        }
+
+        function buildCheckoutOrder(items) {
+            const checkoutItems = items
+                .map(toCheckoutItem)
+                .filter((item) => Number.isFinite(item.productId) && item.productId > 0);
+            const totalPrice = checkoutItems.reduce((sum, item) => sum + item.lineTotal, 0);
+
+            return {
+                items: checkoutItems,
+                totalPrice,
+                finalTotal: totalPrice
+            };
         }
 
         async function deleteCartProductFromDatabase(productId) {
@@ -382,6 +453,8 @@
 
             return response.json();
         }
+
+        seedCartFromServerModel();
 
         createApp({
             setup() {
@@ -494,13 +567,16 @@
                 };
 
                 const goToCheckout = (items) => {
-                    if (items.length === 0) {
+                    const order = buildCheckoutOrder(items);
+
+                    if (order.items.length === 0) {
                         alert("선택된 상품이 없습니다.");
                         return;
                     }
 
-                    localStorage.setItem(NAMHAE_SELECTED_ITEMS_KEY, JSON.stringify(items));
-                    window.location.href = "/checkout.html";
+                    localStorage.setItem(NAMHAE_SELECTED_ITEMS_KEY, JSON.stringify(order.items));
+                    localStorage.setItem(NAMHAE_CHECKOUT_KEY, JSON.stringify(order));
+                    window.location.href = "/checkout";
                 };
 
                 const orderAllItems = () => {

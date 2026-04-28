@@ -40,6 +40,32 @@ h1, h2, h3, .font-headline {
     transition: background-color 0.5s ease, backdrop-filter 0.5s ease, border-bottom-color 0.5s ease, opacity 0.5s ease;
 }
 
+.dashboard-main {
+    padding-top: 7rem;
+}
+
+.dashboard-frame-section {
+    min-height: 42rem;
+}
+
+.dashboard-frame-section[hidden] {
+    display: none;
+}
+
+.dashboard-frame-section iframe {
+    display: block;
+    width: 100%;
+    min-height: 42rem;
+    border: 0;
+    background: #fff;
+}
+
+.glass-nav button {
+    background: transparent;
+    cursor: pointer;
+    font: inherit;
+}
+
 .panel {
     background: rgba(255, 255, 255, 0.86);
     backdrop-filter: blur(10px);

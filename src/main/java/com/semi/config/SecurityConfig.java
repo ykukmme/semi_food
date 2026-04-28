@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,15 +45,29 @@ public class SecurityConfig {
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(AbstractHttpConfigurer::disable)
+            .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 // 회원가입·로그인은 인증 없이 허용
-                .requestMatchers("/", "/error", "/trend/**", "/product/**", "/api/auth/**").permitAll()
+                .requestMatchers(
+                    "/",
+                    "/member",
+                    "/error",
+                    "/trend/**",
+                    "/product/**",
+                    "/cart/view",
+                    "/checkout",
+                    "/order_detail",
+                    "/all_orders",
+                    "/cancel_orders",
+                    "/mypage",
+                    "/api/auth/**"
+                ).permitAll()
                 // 관리자 API — ADMIN 역할 필수
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 // 정적 파일 허용 (루트 + 하위 디렉토리 HTML 모두 포함)
                 .requestMatchers("/index.html", "/*.html", "/**/*.html", "/css/**", "/js/**","/images/**").permitAll()
-               .anyRequest().authenticated()
+                .anyRequest().authenticated()
             )
             // 401 응답을 일관된 JSON 형식으로 반환
             .exceptionHandling(ex -> ex

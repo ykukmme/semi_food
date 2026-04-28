@@ -47,6 +47,7 @@ function formatWon(value) {
 function updatePrices() {
     const displayPrice = document.getElementById("display-price");
     const qtyValue = document.getElementById("qty-value");
+    const cartQuantity = document.getElementById("cart-quantity");
 
     if (displayPrice) {
         displayPrice.textContent = formatWon(currentUnitPrice * quantity);
@@ -54,6 +55,10 @@ function updatePrices() {
 
     if (qtyValue) {
         qtyValue.textContent = String(quantity);
+    }
+
+    if (cartQuantity) {
+        cartQuantity.value = String(quantity);
     }
 }
 
@@ -213,10 +218,6 @@ function setupCartButtons() {
         }
     });
 
-    document.getElementById("btn-go-to-cart")?.addEventListener("click", () => {
-        window.location.href = "/cart.html";
-    });
-
     document.getElementById("btn-buy-now")?.addEventListener("click", async () => {
         addCurrentProductToCart();
         try {
@@ -225,10 +226,22 @@ function setupCartButtons() {
                 return;
             }
             updateCartBadge();
-            window.location.href = "/cart.html";
+            window.location.href = "/cart/view";
         } catch {
             showNotification("장바구니 저장에 실패했습니다.");
         }
+    });
+}
+
+async function setupCartViewLink() {
+    const goToCartButton = document.getElementById("btn-go-to-cart");
+    if (!goToCartButton) {
+        return;
+    }
+
+    goToCartButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        window.location.href = "/cart/view";
     });
 }
 
@@ -237,5 +250,6 @@ document.addEventListener("DOMContentLoaded", () => {
     setupOptions();
     setupQuantityControls();
     setupCartButtons();
+    setupCartViewLink();
     updateCartBadge();
 });
