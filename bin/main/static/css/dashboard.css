@@ -66,6 +66,16 @@ h1, h2, h3, .font-headline {
     font: inherit;
 }
 
+.dashboard-nav {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .dashboard-nav {
+        display: flex !important;
+    }
+}
+
 .panel {
     background: rgba(255, 255, 255, 0.86);
     backdrop-filter: blur(10px);

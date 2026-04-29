@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Shopping Cart | Namhae Mall</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Work+Sans:wght@300;400;500;600&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-container": "#5a1600",
+                    "outline-variant": "#bcc9c6",
+                    "inverse-primary": "#6fd8cd",
+                    "primary-container": "#4bb6ac",
+                    "surface-dim": "#dbdad9",
+                    "surface-container-high": "#eae8e7",
+                    "on-secondary-fixed": "#3a0b00",
+                    "on-tertiary-fixed-variant": "#3d4c26",
+                    "tertiary-container": "#9bac7d",
+                    "secondary-fixed": "#ffdbd0",
+                    "on-surface-variant": "#3d4947",
+                    "on-secondary-fixed-variant": "#842500",
+                    "surface-container": "#efeded",
+                    "on-tertiary-fixed": "#131f01",
+                    "primary-fixed": "#8cf4e9",
+                    "surface-container-low": "#f5f3f3",
+                    "secondary": "#ad3300",
+                    "outline": "#6d7a77",
+                    "on-error": "#ffffff",
+                    "background": "#fbf9f8",
+                    "surface-tint": "#006a63",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed-variant": "#00504a",
+                    "surface-bright": "#fbf9f8",
+                    "primary": "#006a63",
+                    "on-surface": "#1b1c1c",
+                    "tertiary-fixed": "#d7e9b6",
+                    "on-primary-fixed": "#00201d",
+                    "primary-fixed-dim": "#6fd8cd",
+                    "on-primary-container": "#00433f",
+                    "on-tertiary": "#ffffff",
+                    "tertiary": "#54643b",
+                    "surface-variant": "#e4e2e2",
+                    "on-primary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-highest": "#e4e2e2",
+                    "on-tertiary-container": "#32401b",
+                    "error-container": "#ffdad6",
+                    "inverse-on-surface": "#f2f0f0",
+                    "surface": "#fbf9f8",
+                    "secondary-container": "#ff642d",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed-dim": "#bccd9c",
+                    "secondary-fixed-dim": "#ffb59e",
+                    "on-background": "#1b1c1c",
+                    "inverse-surface": "#303030"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Work Sans"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Work Sans', sans-serif; background-color: #fbf9f8; color: #1b1c1c; }
+        h1, h2, h3 { font-family: 'Plus Jakarta Sans', sans-serif; }
+        [v-cloak] { display: none; }
+    </style>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body class="bg-background text-on-surface min-h-screen">
+<div id="app" v-cloak="">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#FBF9F8]/70 dark:bg-stone-900/70 backdrop-blur-md">
+<div class="flex justify-between items-center px-8 h-20 w-full max-w-7xl mx-auto">
+<a class="text-2xl font-black tracking-tighter text-[#006A63] dark:text-[#4BB6AC]" href="index.html">Namhae Mall</a>
+<div class="hidden md:flex items-center gap-8 font-['Plus_Jakarta_Sans'] tracking-tight font-bold">
+<a class="text-[#1B1C1C]/60 dark:text-stone-400 hover:text-[#006A63] transition-colors duration-300" href="#">Heritage</a>
+<a class="text-[#1B1C1C]/60 dark:text-stone-400 hover:text-[#006A63] transition-colors duration-300" href="#">Collection</a>
+<a class="text-[#1B1C1C]/60 dark:text-stone-400 hover:text-[#006A63] transition-colors duration-300" href="#">Harvest</a>
+<a class="text-[#1B1C1C]/60 dark:text-stone-400 hover:text-[#006A63] transition-colors duration-300" href="#">Stories</a>
+</div>
+<div class="flex items-center gap-6 text-[#006A63] dark:text-[#4BB6AC]">
+<div class="relative">
+<button class="material-symbols-outlined scale-95 duration-200">shopping_bag</button>
+<span class="absolute -top-1 -right-1 bg-secondary text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold" v-if="cartItems.length &gt; 0">{{ totalItemsCount }}</span>
+</div>
+<button class="material-symbols-outlined scale-95 duration-200">person</button>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-20 px-6 max-w-7xl mx-auto">
+<header class="mb-12">
+<h1 class="text-4xl font-extrabold tracking-tight mb-2 text-primary">Your Harvest Basket</h1>
+<p class="text-on-surface-variant font-body">Selected artifacts from the Namhae Heritage collection.</p>
+</header>
+<div class="flex flex-col lg:flex-row gap-12" v-if="cartItems.length &gt; 0">
+<!-- Cart Items List -->
+<div class="flex-grow space-y-6">
+<transition-group class="space-y-6" name="list" tag="div">
+<div :key="item.id" class="bg-surface-container-lowest rounded-xl p-6 flex flex-col sm:flex-row items-center gap-6 transition-all duration-300 hover:shadow-sm" v-for="item in cartItems">
+<div class="w-32 h-32 rounded-lg bg-surface-container-low overflow-hidden flex-shrink-0">
+<img :alt="item.name" :src="item.image" class="w-full h-full object-cover"/>
+</div>
+<div class="flex-grow w-full">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-xl font-bold text-on-surface">{{ item.name }}</h3>
+<p class="text-sm text-tertiary font-medium">{{ item.collection }}</p>
+</div>
+<button @click="removeItem(item.id)" class="material-symbols-outlined text-outline-variant hover:text-secondary transition-colors duration-200">close</button>
+</div>
+<div class="mt-6 flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center bg-surface-container-high rounded-full px-3 py-1">
+<button :class="{'opacity-30 cursor-not-allowed': item.quantity &lt;= 1}" :disabled="item.quantity &lt;= 1" @click="decrementQty(item)" class="material-symbols-outlined text-on-surface-variant p-1 hover:text-primary transition-colors">remove</button>
+<span class="px-4 font-bold text-on-surface w-8 text-center">{{ item.quantity }}</span>
+<button @click="incrementQty(item)" class="material-symbols-outlined text-on-surface-variant p-1 hover:text-primary transition-colors">add</button>
+</div>
+<div class="text-lg font-bold text-on-surface">₩{{ (item.price * item.quantity).toLocaleString() }}</div>
+</div>
+</div>
+</div>
+</transition-group>
+</div>
+<!-- Price Summary -->
+<aside class="lg:w-96">
+<div class="bg-surface-container-low rounded-xl p-8 sticky top-32">
+<h2 class="text-2xl font-bold mb-8 text-on-surface">Price Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex justify-between text-on-surface-variant">
+<span class="font-body">Total Product Price</span>
+<span class="font-bold text-on-surface">₩{{ totalPrice.toLocaleString() }}</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span class="font-body">Shipping Fee</span>
+<span class="font-bold text-on-surface">₩{{ shippingFee.toLocaleString() }}</span>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex justify-between items-end">
+<span class="font-headline font-bold text-lg text-on-surface">Total Amount</span>
+<span class="font-headline font-extrabold text-3xl text-primary">₩{{ finalTotal.toLocaleString() }}</span>
+</div>
+</div>
+<div class="space-y-4">
+<a class="block w-full" href="checkout.html">
+<button class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary py-4 rounded-full font-headline font-bold text-lg tracking-tight hover:brightness-110 transition-all duration-300 shadow-md shadow-primary/20">
+        Order All Items
+    </button>
+</a>
+<a class="block w-full text-center bg-surface-container-lowest text-primary py-4 rounded-full font-headline font-bold border border-outline-variant/30 hover:bg-surface-container-highest transition-colors" href="index.html">
+                                Continue Shopping
+                            </a>
+</div>
+<div class="mt-8 flex items-center gap-3 p-4 bg-tertiary-fixed/30 rounded-lg">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">verified</span>
+<p class="text-xs text-on-tertiary-fixed-variant leading-relaxed">
+                                Your purchase supports the traditional farming heritage of Namhae island.
+                            </p>
+</div>
+</div>
+</aside>
+</div>
+<!-- Empty Cart State -->
+<div class="flex flex-col items-center justify-center py-20 text-center animate-in fade-in zoom-in duration-500" v-else="">
+<div class="w-24 h-24 bg-surface-container rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-5xl text-outline-variant">shopping_basket</span>
+</div>
+<h2 class="text-2xl font-bold text-on-surface mb-2">Your basket is empty</h2>
+<p class="text-on-surface-variant mb-8 max-w-xs">Looks like you haven't added any Namhae treasures to your collection yet.</p>
+<a class="inline-flex items-center gap-2 bg-primary text-on-primary px-8 py-4 rounded-full font-headline font-bold hover:brightness-110 transition-all" href="index.html">
+                    Start Exploring
+                    <span class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-[#F5F3F3] dark:bg-stone-950 w-full py-12 px-8 mt-20">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto font-['Work_Sans'] text-sm leading-relaxed">
+<div>
+<div class="text-lg font-black text-[#006A63] mb-4">Namhae Mall</div>
+<p class="text-[#1B1C1C]/70">Curating the essence of Korea's coastal harvest with digital precision.</p>
+</div>
+<div class="flex flex-col gap-3">
+<h4 class="font-bold text-[#006A63]">Customer Support</h4>
+<a class="text-[#1B1C1C]/70 hover:text-[#AD3300] transition-opacity opacity-80 hover:opacity-100" href="#">Contact Us</a>
+<a class="text-[#1B1C1C]/70 hover:text-[#AD3300] transition-opacity opacity-80 hover:opacity-100" href="#">Shipping Info</a>
+</div>
+<div class="flex flex-col gap-3">
+<h4 class="font-bold text-[#006A63]">Legal</h4>
+<a class="text-[#1B1C1C]/70 hover:text-[#AD3300] transition-opacity opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="text-[#1B1C1C]/70 hover:text-[#AD3300] transition-opacity opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+</div>
+<div class="flex flex-col gap-3">
+<h4 class="font-bold text-[#006A63]">Heritage</h4>
+<p class="text-[#1B1C1C]/70">© 2024 Namhae Mall. Curating Korean Heritage.</p>
+</div>
+</div>
+</footer>
+</div>
+<style>
+        /* Animation for removing items */
+        .list-enter-active,
+        .list-leave-active {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .list-enter-from,
+        .list-leave-to {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+    </style>
+<script>
+        const { createApp, ref, computed } = Vue;
+
+        createApp({
+            setup() {
+                const cartItems = ref([
+                    {
+                        id: 1,
+                        name: 'Namhae Premium Dureup',
+                        collection: 'Spring Harvest Collection',
+                        price: 24500,
+                        quantity: 1,
+                        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBMQWyqAWo9uC3RXt8HduQ4O_5KFZzTxmTzshy7sSSBXyUadok95y01o1qasDKIwxGLpYRRzVPMapJwM2E-dAkzRodr0-JVEH9_wDwEX29EmsJpPLJ840omMPdu1BM5j3yE9N_sMgYfNYza1N0chTr9a8S8aXPTH31jeNUx4yzkzxrz5SjkkFvtUwqPgz83SQILu92KAzGcF8LvnsBV1XCJ9urlPjSnQ8-BIeiw-EckcaZ9jnnDVRWebYbNjx0ORT8bqcHfj9jg8_s'
+                    },
+                    {
+                        id: 2,
+                        name: 'Aged Garlic',
+                        collection: 'Namhae Fermentation Heritage',
+                        price: 32000,
+                        quantity: 2,
+                        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAPBoIb-3MJShiVhMMcsV8s-ywGWg44NEPAFxB2VJppEWvKE0Nk_QRftDtElAtePujL9v8kUhaB57enbzgJP22KQS7TKfKUXwZuS_XgPAJLL9mxxgvozaq99RIUVSl8hunR0P42V5lKURZHrQNrIcLHsdfsDCKpFxk4kR0iHKtyRB4uMSzce4SCA6Ig2Gc2whcUwp_wsEqeoie2Htk0TqrgVYa-4GNtLbpaaGAX_60Wu99gHhfd5DLHC-eviImEvSDf4DW0PeOFHHg'
+                    }
+                ]);
+
+                const shippingFee = computed(() => cartItems.value.length > 0 ? 3000 : 0);
+
+                const totalPrice = computed(() => {
+                    return cartItems.value.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+                });
+
+                const finalTotal = computed(() => {
+                    return totalPrice.value + shippingFee.value;
+                });
+
+                const totalItemsCount = computed(() => {
+                    return cartItems.value.reduce((acc, item) => acc + item.quantity, 0);
+                });
+
+                const incrementQty = (item) => {
+                    item.quantity++;
+                };
+
+                const decrementQty = (item) => {
+                    if (item.quantity > 1) {
+                        item.quantity--;
+                    }
+                };
+
+                const removeItem = (id) => {
+                    cartItems.value = cartItems.value.filter(item => item.id !== id);
+                };
+
+                return {
+                    cartItems,
+                    totalPrice,
+                    shippingFee,
+                    finalTotal,
+                    totalItemsCount,
+                    incrementQty,
+                    decrementQty,
+                    removeItem
+                };
+            }
+        }).mount('#app');
+    </script>
+</body></html>

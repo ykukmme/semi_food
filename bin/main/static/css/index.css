@@ -294,6 +294,22 @@ header .nav-search input.nav-search-input[type="search"]:focus {
     margin: 0 auto;
 }
 
+.member-welcome {
+    margin: 0 0 1.35rem;
+    padding: 0.95rem 1.15rem;
+    border: 1px solid rgba(0, 102, 204, 0.14);
+    border-radius: 8px;
+    background: #f5fbff;
+    color: var(--color-primary-deep);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.member-welcome__name {
+    color: var(--color-primary);
+    font-weight: 900;
+}
+
 .products-section__header {
     display: flex;
     align-items: flex-end;

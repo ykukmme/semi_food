@@ -15,6 +15,57 @@ function clearToken() {
     document.cookie = `${TOKEN_KEY}=; path=/; max-age=0; SameSite=Lax`;
 }
 
+function ensureAuthToastStyles() {
+    if (document.getElementById('auth-toast-styles')) {
+        return;
+    }
+
+    const style = document.createElement('style');
+    style.id = 'auth-toast-styles';
+    style.textContent = `
+        .product-toast {
+            position: fixed;
+            top: 5.5rem;
+            right: 1.25rem;
+            z-index: 1000;
+            padding: 0.85rem 1.15rem;
+            border-radius: 8px;
+            background: #0066cc;
+            color: #fff;
+            font-weight: 800;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+            transform: translateX(calc(100% + 2rem));
+            transition: transform 0.25s ease;
+        }
+
+        .product-toast.is-visible {
+            transform: translateX(0);
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+function showAuthNotification(message, onComplete) {
+    ensureAuthToastStyles();
+
+    const notification = document.createElement('div');
+    notification.className = 'product-toast';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    requestAnimationFrame(() => notification.classList.add('is-visible'));
+
+    window.setTimeout(() => {
+        notification.classList.remove('is-visible');
+        window.setTimeout(() => {
+            notification.remove();
+            if (typeof onComplete === 'function') {
+                onComplete();
+            }
+        }, 300);
+    }, 2000);
+}
+
 async function fetchWithAuth(url, options = {}) {
     const token = getToken();
     const headers = {
@@ -105,10 +156,37 @@ async function renderLoginMenu() {
     }
 }
 
-function setupLogoutButton() {
-    document.getElementById('logoutBtn')?.addEventListener('click', () => {
-        clearToken();
+function handleLogout(event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    clearToken();
+    showAuthNotification('로그아웃되었습니다.', () => {
         location.href = '/';
+    });
+}
+
+function setupLogoutButton() {
+    document.querySelectorAll('#logoutBtn, [data-logout-button]').forEach((button) => {
+        if (button.dataset.logoutBound === 'true') {
+            return;
+        }
+
+        button.dataset.logoutBound = 'true';
+        button.addEventListener('click', handleLogout);
+    });
+
+    if (document.body?.dataset.logoutDelegated === 'true') {
+        return;
+    }
+
+    document.body.dataset.logoutDelegated = 'true';
+    document.body.addEventListener('click', (event) => {
+        const logoutButton = event.target.closest('#logoutBtn, [data-logout-button]');
+        if (!logoutButton) {
+            return;
+        }
+
+        handleLogout(event);
     });
 }
 

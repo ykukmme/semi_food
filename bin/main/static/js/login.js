@@ -1,3 +1,7 @@
+if (localStorage.getItem('accessToken')) {
+    window.location.replace('/');
+}
+
 document.getElementById('loginForm')?.addEventListener('submit', async (event) => {
     event.preventDefault();
     clearErrors();
@@ -23,7 +27,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async (event) =
         if (response.ok) {
             setToken(body.accessToken);
             localStorage.setItem('role', body.role);
-            window.location.href = 'http://localhost:8080';
+            window.location.href = '/';
             return;
         }
 

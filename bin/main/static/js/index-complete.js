@@ -43,6 +43,51 @@
         });
     }
 
+    async function updateMemberWelcome() {
+        const welcome = document.getElementById("member-welcome");
+        const nameTarget = document.getElementById("member-welcome-name");
+        const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+
+        if (!welcome || !nameTarget) {
+            return;
+        }
+
+        if (!token) {
+            welcome.classList.add("is-hidden");
+            nameTarget.textContent = "";
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/auth/me", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                welcome.classList.add("is-hidden");
+                nameTarget.textContent = "";
+                return;
+            }
+
+            const member = await response.json();
+            const displayName = member.name || member.memberId || getLoginMemberId();
+
+            if (!displayName) {
+                welcome.classList.add("is-hidden");
+                nameTarget.textContent = "";
+                return;
+            }
+
+            nameTarget.textContent = displayName;
+            welcome.classList.remove("is-hidden");
+        } catch {
+            welcome.classList.add("is-hidden");
+            nameTarget.textContent = "";
+        }
+    }
+
     window.getLoginMemberId = getLoginMemberId;
 
     function loadCartFromStorage() {
@@ -230,6 +275,7 @@
     function init() {
         updateCartBadge();
         updateLoginMemberId();
+        updateMemberWelcome();
         setupProductListControls();
         setupScrollTopButton();
         updateHeaderBackground();
