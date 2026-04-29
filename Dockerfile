@@ -13,8 +13,5 @@ WORKDIR /app
 # build/libs 폴더 안의 jar 파일을 가져옴
 COPY --from=build /app/build/libs/*-SNAPSHOT.jar app.jar
 
-# 크롤러 파일 복사
-COPY crawler /app/crawler
-
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
