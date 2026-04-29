@@ -61,18 +61,8 @@ public class Member {
         this.role = newRole;
     }
 
-    /** 비밀번호 변경 시 사용 */
-    public void updatePassword(String password) {
-        this.password = password;
-    }
-
-    /** ID 설정 시 사용 (하드코딩용) */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /** 역할 설정 시 사용 (하드코딩용) */
-    public void setRole(MemberRole role) {
-        this.role = role;
+    public void updateProfile(String email, String phone) {
+        this.email = email;
+        this.phone = phone;
     }
 }

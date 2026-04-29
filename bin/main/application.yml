@@ -5,11 +5,7 @@ spring:
     import: optional:file:.env[.properties]
 
   # Fix Korean character encoding issues
-  http:
-    encoding:
-      charset: UTF-8
-      enabled: true
-      force: true
+ 
 
   datasource:
     # TiDB Cloud / MySQL-compatible connection values come from environment config.
@@ -31,8 +27,14 @@ spring:
   flyway:
     # Flyway is executed by FlywayConfig so startup order stays explicit.
     enabled: false
-    clean-disabled: true
-
+    
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    cache: false # 개발 환경에서는 false, 운영 환경에서는 true
+    out-of-order: true # 순서가 바뀐마이그레이션 파일도 허용 (협업용)
+    
 cors:
   # Local browser dev defaults only. Production must override with real origins.
   allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173,http://127.0.0.1:3000,http://127.0.0.1:5173}
@@ -40,11 +42,7 @@ cors:
 server:
   port: ${SERVER_PORT:8080}
   # Fix character encoding for requests and responses
-  servlet:
-    encoding:
-      charset: UTF-8
-      enabled: true
-      force: true
+  
   tomcat:
     uri-encoding: UTF-8
 
@@ -65,3 +63,4 @@ logging:
 jwt:
   secret: ${JWT_SECRET}
   expiry-seconds: ${JWT_EXPIRY_SECONDS:7200}
+  

@@ -1709,7 +1709,8 @@ body {
 
 .product-poster {
     width: 100%;
-    height: 380px;
+    height: 200px;
+    min-height: 200px;
     background: linear-gradient(135deg, #f5f2ec 0%, #e8ece8 100%);
     display: flex;
     align-items: center;
@@ -1718,6 +1719,7 @@ body {
     font-size: 14px;
     position: relative;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .product-poster img {
@@ -1734,7 +1736,7 @@ body {
     bottom: 0;
     background: rgba(45, 154, 94, 0.95);
     color: #fff;
-    padding: 15px;
+    padding: 0;
     font-size: 12px;
     line-height: 1.4;
     overflow-y: auto;
@@ -1744,11 +1746,67 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
 }
 
 .product-poster:hover .product-synopsis {
     opacity: 1;
     visibility: visible;
+}
+
+.product-synopsis-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 20px 18px;
+}
+
+.product-description {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 0;
+    margin: 0;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    max-width: 100%;
+    width: 100%;
+}
+
+.product-overlay-details {
+    display: none;
+    width: 100%;
+    max-width: 220px;
+    gap: 8px;
+}
+
+.product-overlay-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+.product-overlay-row .detail-label {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.product-overlay-row .detail-value {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
 }
 
 .product-info {
@@ -1807,6 +1865,125 @@ body {
     align-items: center;
     gap: 2px;
     white-space: nowrap;
+}
+
+/* Responsive design for product details */
+@media (max-width: 1200px) {
+    .product-card .detail-row {
+        font-size: 7.5px;
+        gap: 8px;
+    }
+    
+    .product-card .detail-label {
+        font-size: 7px;
+    }
+    
+    .product-card .detail-value {
+        font-size: 8px;
+    }
+}
+
+@media (max-width: 900px) {
+    .product-card .detail-row {
+        font-size: 6.5px;
+        gap: 6px;
+        padding: 0.5px 0;
+    }
+    
+    .product-card .detail-label {
+        font-size: 6px;
+    }
+    
+    .product-card .detail-value {
+        font-size: 7px;
+    }
+}
+
+@media (max-width: 768px) {
+    .product-card .detail-row {
+        font-size: 7px;
+        gap: 6px;
+        padding: 0.5px 0;
+    }
+    
+    .product-card .detail-label {
+        font-size: 6px;
+    }
+    
+    .product-card .detail-value {
+        font-size: 7px;
+    }
+    
+    .product-card .product-details {
+        display: none;
+    }
+
+    .product-overlay-details {
+        display: grid;
+    }
+
+    .product-synopsis {
+        align-items: center;
+        justify-content: center;
+    }
+
+    .product-synopsis-inner {
+        justify-content: center;
+    }
+
+    .product-description {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .product-poster {
+        height: 150px;
+        min-height: 150px;
+    }
+}
+
+/* Responsive grid layout */
+@media (max-width: 1400px) {
+    .prod-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .prod-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 18px;
+    }
+    
+    .product-poster {
+        height: 180px;
+        min-height: 180px;
+    }
+}
+
+@media (max-width: 900px) {
+    .prod-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+    }
+    
+    .product-poster {
+        height: 160px;
+        min-height: 160px;
+    }
+}
+
+@media (max-width: 600px) {
+    .prod-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 12px;
+    }
+    
+    .product-poster {
+        height: 140px;
+        min-height: 140px;
+    }
 }
 
 .product-card .detail-value.price {

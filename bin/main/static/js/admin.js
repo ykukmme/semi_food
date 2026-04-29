@@ -83,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const searchTerm = e.target.value.toLowerCase();
                 const cards = document.querySelectorAll('.product-card');
 
+                // Real-time filtering for displayed products
                 cards.forEach(card => {
                     const name = card.querySelector('.product-title').textContent.toLowerCase();
                     const description = card.querySelector('.detail-value.price') ? 
@@ -94,6 +95,19 @@ document.addEventListener('DOMContentLoaded', function () {
                         card.style.display = 'none';
                     }
                 });
+            });
+
+            // Enter key for DB search
+            productSearch.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const searchTerm = e.target.value.trim();
+                    // Reset search term if it's different from current
+                    if (searchTerm !== currentSearchTerm) {
+                        currentSearchTerm = null;
+                    }
+                    searchProductsFromDB(searchTerm);
+                }
             });
         }
         
@@ -891,6 +905,7 @@ let currentPage = 0;
 const pageSize = 10;
 let isLoading = false;
 let hasMore = true;
+let currentSearchTerm = null;
 
 function loadProducts() {
     console.log('Loading products...');
@@ -928,6 +943,63 @@ function loadProductsPage(page = 0) {
         })
         .catch(error => {
             console.error('Error loading products:', error);
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'none';
+            }
+            isLoading = false;
+        });
+}
+
+function searchProductsFromDB(searchTerm, page = 0) {
+    if (!searchTerm) {
+        // If search term is empty, load default products
+        loadProductsPage(0);
+        return;
+    }
+
+    isLoading = true;
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    if (loadingIndicator) {
+        loadingIndicator.style.display = 'block';
+    }
+
+    // Store current search term for pagination
+    currentSearchTerm = searchTerm;
+
+    fetch(`/api/admin/products/search?term=${encodeURIComponent(searchTerm)}&page=${page}&size=${pageSize}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Search failed');
+            }
+            return response.json();
+        })
+        .then(products => {
+            const grid = document.getElementById('productGrid');
+            if (grid) {
+                grid.innerHTML = products.map(product => createProductCard(product)).join('');
+            }
+            
+            // Apply dynamic sizing to newly created cards
+            setTimeout(() => {
+                adjustLayoutForScreenSize();
+                if (loadingIndicator) {
+                    loadingIndicator.style.display = 'none';
+                }
+            }, 50);
+            
+            // Update pagination for search results
+            updatePaginationControls(page, products.length);
+            
+            // Show search result count only for first page
+            if (page === 0) {
+                showToast(`${products.length}개의 제품을 찾았습니다.`);
+            }
+            
+            isLoading = false;
+        })
+        .catch(error => {
+            console.error('Error searching products:', error);
+            showToast('제품 검색에 실패했습니다.');
             if (loadingIndicator) {
                 loadingIndicator.style.display = 'none';
             }
@@ -1099,7 +1171,13 @@ function adjustLayoutForScreenSize() {
 
 function goToPage(page) {
     currentPage = page;
-    loadProductsPage(page);
+    
+    // If we have an active search, continue searching
+    if (currentSearchTerm) {
+        searchProductsFromDB(currentSearchTerm, page);
+    } else {
+        loadProductsPage(page);
+    }
 }
 
 function createProductCard(product) {
@@ -1107,6 +1185,9 @@ function createProductCard(product) {
     const tag = getProductTag(product.name);
     const stockStatus = product.stock < 10 ? 'Low Stock' : 'In Stock';
     const stockColor = product.stock < 10 ? '#c0392b' : '#2d6a4f';
+    const description = product.description && product.description.trim()
+        ? product.description
+        : '상품 설명이 없습니다.';
 
     return `
         <div class="product-card">
@@ -1116,22 +1197,27 @@ function createProductCard(product) {
                     `<span>이미지 로드 실패</span>`
                 }
                 <div class="product-synopsis">
-                    <div class="product-meta">
-                        <div class="meta-item">
-                            <span>가격</span>
-                            <span class="booking-rate">${formatPrice(product.price)}</span>
+                    <div class="product-synopsis-inner">
+                        <div class="product-description">
+                            ${description}
                         </div>
-                        <div class="meta-item">
-                            <span>재고</span>
-                            <span class="release-date" style="color: ${stockColor}">${product.stock}개</span>
-                        </div>
-                        <div class="meta-item">
-                            <span>발주가능</span>
-                            <span class="release-date">${product.stock * 3}개</span>
-                        </div>
-                        <div class="meta-item">
-                            <span>상태</span>
-                            <span>${stockStatus}</span>
+                        <div class="product-overlay-details">
+                            <div class="product-overlay-row">
+                                <span class="detail-label">가격</span>
+                                <span class="detail-value price">${formatPrice(product.price)}</span>
+                            </div>
+                            <div class="product-overlay-row">
+                                <span class="detail-label">재고</span>
+                                <span class="detail-value stock" style="color: ${stockColor}">${product.stock}개</span>
+                            </div>
+                            <div class="product-overlay-row">
+                                <span class="detail-label">발주가능</span>
+                                <span class="detail-value available">${product.stock * 3}개</span>
+                            </div>
+                            <div class="product-overlay-row">
+                                <span class="detail-label">상태</span>
+                                <span class="detail-value status">${stockStatus}</span>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,53 +1,263 @@
-// 인증 토큰 유틸 — 모든 페이지에서 공통 사용
-
 const TOKEN_KEY = 'accessToken';
 
-/** localStorage에서 토큰 조회 */
 function getToken() {
     return localStorage.getItem(TOKEN_KEY);
 }
 
-/** localStorage에 토큰 저장 */
 function setToken(token) {
     localStorage.setItem(TOKEN_KEY, token);
+    document.cookie = `${TOKEN_KEY}=${encodeURIComponent(token)}; path=/; max-age=86400; SameSite=Lax`;
 }
 
-/** localStorage에서 토큰 삭제 (로그아웃) */
 function clearToken() {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem('role');
+    document.cookie = `${TOKEN_KEY}=; path=/; max-age=0; SameSite=Lax`;
 }
 
-/**
- * Authorization 헤더를 자동으로 포함하는 fetch 래퍼
- * 401 응답 시 자동으로 로그인 페이지로 리다이렉트
- */
+function ensureAuthToastStyles() {
+    if (document.getElementById('auth-toast-styles')) {
+        return;
+    }
+
+    const style = document.createElement('style');
+    style.id = 'auth-toast-styles';
+    style.textContent = `
+        .product-toast {
+            position: fixed;
+            top: 5.5rem;
+            right: 1.25rem;
+            z-index: 1000;
+            padding: 0.85rem 1.15rem;
+            border-radius: 8px;
+            background: #0066cc;
+            color: #fff;
+            font-weight: 800;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+            transform: translateX(calc(100% + 2rem));
+            transition: transform 0.25s ease;
+        }
+
+        .product-toast.is-visible {
+            transform: translateX(0);
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+function showAuthNotification(message, onComplete) {
+    ensureAuthToastStyles();
+
+    const notification = document.createElement('div');
+    notification.className = 'product-toast';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    requestAnimationFrame(() => notification.classList.add('is-visible'));
+
+    window.setTimeout(() => {
+        notification.classList.remove('is-visible');
+        window.setTimeout(() => {
+            notification.remove();
+            if (typeof onComplete === 'function') {
+                onComplete();
+            }
+        }, 300);
+    }, 2000);
+}
+
 async function fetchWithAuth(url, options = {}) {
     const token = getToken();
     const headers = {
         'Content-Type': 'application/json',
         ...(options.headers || {}),
-        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
     };
 
     const response = await fetch(url, { ...options, headers });
 
-    // 토큰 만료 또는 미인증 → 로그아웃 후 로그인 페이지로
     if (response.status === 401) {
         clearToken();
-        window.location.href = 'login.html';
+        window.location.href = '/login.html';
         return;
     }
 
     return response;
 }
 
-/**
- * 토큰이 없으면 지정 경로로 리다이렉트
- * 인증이 필요한 페이지 상단에서 호출
- */
-function redirectIfNoToken(redirectUrl = 'login.html') {
+function redirectIfNoToken(redirectUrl = 'index.html') {
     if (!getToken()) {
         window.location.href = redirectUrl;
     }
+}
+
+function showGuestMenu() {
+    const guestMenu = document.getElementById('guestMenu');
+    const memberMenu = document.getElementById('memberMenu');
+
+    if (guestMenu) {
+        guestMenu.style.display = 'flex';
+    }
+
+    if (memberMenu) {
+        memberMenu.style.display = 'none';
+    }
+}
+
+function showMemberMenu() {
+    const guestMenu = document.getElementById('guestMenu');
+    const memberMenu = document.getElementById('memberMenu');
+
+    if (guestMenu) {
+        guestMenu.style.display = 'none';
+    }
+
+    if (memberMenu) {
+        memberMenu.style.display = 'flex';
+    }
+}
+
+async function renderLoginMenu() {
+    const token = getToken();
+    const guestMenu = document.getElementById('guestMenu');
+    const memberMenu = document.getElementById('memberMenu');
+
+    if (!guestMenu && !memberMenu) {
+        return;
+    }
+
+    if (!token) {
+        showGuestMenu();
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/auth/me', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            clearToken();
+            showGuestMenu();
+            return;
+        }
+
+        const member = await response.json();
+        if (member.memberId) {
+            showMemberMenu();
+            return;
+        }
+
+        showGuestMenu();
+    } catch (error) {
+        showGuestMenu();
+    }
+}
+
+function handleLogout(event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    clearToken();
+    showAuthNotification('로그아웃되었습니다.', () => {
+        location.href = '/';
+    });
+}
+
+function setupLogoutButton() {
+    document.querySelectorAll('#logoutBtn, [data-logout-button]').forEach((button) => {
+        if (button.dataset.logoutBound === 'true') {
+            return;
+        }
+
+        button.dataset.logoutBound = 'true';
+        button.addEventListener('click', handleLogout);
+    });
+
+    if (document.body?.dataset.logoutDelegated === 'true') {
+        return;
+    }
+
+    document.body.dataset.logoutDelegated = 'true';
+    document.body.addEventListener('click', (event) => {
+        const logoutButton = event.target.closest('#logoutBtn, [data-logout-button]');
+        if (!logoutButton) {
+            return;
+        }
+
+        handleLogout(event);
+    });
+}
+
+async function openMemberDashboard(memberId, token = getToken()) {
+    if (!token || !memberId) {
+        window.location.href = '/login.html';
+        return;
+    }
+
+    const dashboardResponse = await fetch('/member', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+            Authorization: `Bearer ${token}`,
+        },
+        body: new URLSearchParams({
+            memberId,
+        }),
+    });
+
+    if (!dashboardResponse.ok || dashboardResponse.url.includes('/login.html')) {
+        window.location.href = '/login.html';
+        return;
+    }
+
+    const html = await dashboardResponse.text();
+    window.history.pushState({}, '', '/member');
+    document.open();
+    document.write(html);
+    document.close();
+}
+
+function setupMemberDashboardLink() {
+    document.getElementById('member-dashboard-link')?.addEventListener('click', async (event) => {
+        event.preventDefault();
+
+        const token = getToken();
+        if (!token) {
+            window.location.href = '/login.html';
+            return;
+        }
+
+        try {
+            const meResponse = await fetch('/api/auth/me', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!meResponse.ok) {
+                clearToken();
+                window.location.href = '/login.html';
+                return;
+            }
+
+            const member = await meResponse.json();
+            await openMemberDashboard(member.memberId, token);
+        } catch (error) {
+            window.location.href = '/login.html';
+        }
+    });
+}
+
+function initAuthMenu() {
+    renderLoginMenu();
+    setupLogoutButton();
+    setupMemberDashboardLink();
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAuthMenu);
+} else {
+    initAuthMenu();
 }

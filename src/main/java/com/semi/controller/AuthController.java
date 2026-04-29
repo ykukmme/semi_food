@@ -7,6 +7,7 @@ import com.semi.domain.member.dto.LoginRequest;
 import com.semi.domain.member.dto.LoginResponse;
 import com.semi.domain.member.dto.MemberResponse;
 import com.semi.domain.member.dto.RegisterRequest;
+import com.semi.domain.member.dto.UpdateProfileRequest;
 import com.semi.security.JwtProvider;
 import com.semi.security.MemberDetails;
 import jakarta.validation.Valid;
@@ -52,8 +53,7 @@ public class AuthController {
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.memberId(), request.password())
-            );
+                    new UsernamePasswordAuthenticationToken(request.memberId(), request.password()));
 
             MemberDetails memberDetails = (MemberDetails) authentication.getPrincipal();
             String token = jwtProvider.generateToken(authentication);
@@ -73,30 +73,40 @@ public class AuthController {
     }
 
     /**
+     * 없어서 추가 / 문제시 삭제
+     */
+
+    private ResponseCookie buildAuthCookie(String token, long expirySeconds) {
+        return ResponseCookie.from("accessToken", token) // 쿠키 이름을 설정하세요 (예: accessToken)
+                .httpOnly(true) // 자바스크립트에서 접근 불가 (보안 설정)
+                .secure(true) // HTTPS 환경에서만 전송
+                .path("/") // 모든 경로에서 쿠키 유효
+                .maxAge(expirySeconds) // 쿠키 만료 시간
+                .sameSite("Lax") // CSRF 방지 설정
+                .build();
+    }
+
+    /**
      * 내 정보 조회 — 토큰 유효성 확인용
      * GET /api/auth/me
      */
     @GetMapping("/me")
     public ResponseEntity<MemberResponse> me(@AuthenticationPrincipal MemberDetails memberDetails) {
+        if (memberDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         return ResponseEntity.ok(MemberResponse.from(memberDetails.getMember()));
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<Map<String, String>> logout() {
-        ResponseCookie clearCookie = buildAuthCookie("", 0);
+    @PutMapping("/me")
+    public ResponseEntity<MemberResponse> updateMe(
+            @AuthenticationPrincipal MemberDetails memberDetails,
+            @Valid @RequestBody UpdateProfileRequest request) {
+        if (memberDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, clearCookie.toString())
-                .body(Map.of("message", "로그아웃되었습니다."));
-    }
-
-    private ResponseCookie buildAuthCookie(String token, long maxAgeSeconds) {
-        return ResponseCookie.from("accessToken", token)
-                .httpOnly(true)
-                .secure(false)
-                .sameSite("Lax")
-                .path("/")
-                .maxAge(maxAgeSeconds)
-                .build();
+        MemberResponse response = memberService.updateProfile(memberDetails.getMember().getId(), request);
+        return ResponseEntity.ok(response);
     }
 }

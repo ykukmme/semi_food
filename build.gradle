@@ -33,8 +33,11 @@ dependencies {
     implementation 'org.flywaydb:flyway-mysql'
 
     // Lombok
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+    // compileOnly 'org.projectlombok:lombok'
+    // annotationProcessor 'org.projectlombok:lombok'
+    // 1. Lombok 라이브러리 추가
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6'

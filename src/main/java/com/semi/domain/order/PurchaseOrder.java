@@ -85,6 +85,8 @@ public class PurchaseOrder {
         this.paymentMethod = paymentMethod;
         this.paymentStatus = paymentStatus;
         this.status       = OrderStatus.RECEIVED;  // 기본값: 발주 접수 완
+        this.status       = OrderStatus.RECEIVED;
+        this.orderedAt    = LocalDateTime.now();
         this.orderedAt    = LocalDateTime.now();
     }
 

@@ -1,8 +1,9 @@
-// 로그인 API 요청 및 폼 유효성 검사
-// API_BASE는 api.js에서 환경에 따라 자동 주입됨 (localhost → 8080 직접, EC2 → Nginx 상대경로)
+if (localStorage.getItem('accessToken')) {
+    window.location.replace('/');
+}
 
-document.getElementById('loginForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+document.getElementById('loginForm')?.addEventListener('submit', async (event) => {
+    event.preventDefault();
     clearErrors();
 
     const data = {
@@ -12,71 +13,71 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 
     const submitBtn = document.querySelector('.btn-submit');
     submitBtn.disabled = true;
-    submitBtn.textContent = '처리 중...';
+    submitBtn.textContent = 'Processing...';
 
     try {
-        const res = await fetch(`${API_BASE}/api/auth/login`, {
+        const response = await fetch(`${API_BASE}/api/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
         });
 
-        const json = await res.json();
+        const body = await response.json();
 
-        if (res.status === 200) {
-            // 로그인 성공 — 토큰 저장 후 이동
-            setToken(json.accessToken);
-            localStorage.setItem('role', json.role);
+        if (response.ok) {
+            setToken(body.accessToken);
+            localStorage.setItem('role', body.role);
             
-            console.log('Login successful!');  // ✅ 추가
-            console.log('Role:', json.role);   // ✅ 추가
-            console.log('Token:', json.accessToken.substring(0, 20) + '...');  // ✅ 추가
-
-            // Role-based redirect
-            // ✅ 약간의 지연을 추가해서 토큰 저장을 확인
-            setTimeout(() => {
-                // Role-based redirect
-                if (json.role === 'ADMIN') {
-                    console.log('🔄 Redirecting to /admin...');
-                    window.location.href = '/admin';
-                } else {
-                    console.log('🔄 Redirecting to /...');
-                    window.location.href = '/';
-                }
-            }, 100);  // ← 100ms 지연
-        } else if (res.status === 400 && json.errors) {
-            // 입력값 검증 실패
-            Object.entries(json.errors).forEach(([field, msg]) => {
-                showFieldError(field, msg);
-            });
-        } else {
-            // 401 등 인증 실패
-            showGlobalError(json.message || '로그인 중 오류가 발생했습니다.');
+            // 권한에 따라 리디렉션
+            if (body.role === 'ADMIN') {
+                window.location.href = '/admin';
+            } else {
+                window.location.href = '/';
+            }
+            return;
         }
-    } catch (err) {
-        showGlobalError('서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.');
+
+        if (response.status === 400 && body.errors) {
+            Object.entries(body.errors).forEach(([field, message]) => {
+                showFieldError(field, message);
+            });
+            return;
+        }
+
+        showGlobalError(body.message || 'Login failed.');
+    } catch (error) {
+        showGlobalError('Could not connect to the server.');
     } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = '로그인';
+        submitBtn.textContent = 'Login';
     }
 });
 
 function showFieldError(field, message) {
     const input = document.getElementById(field);
-    const errEl = document.getElementById(`${field}Error`);
-    if (input) input.classList.add('error');
-    if (errEl) errEl.textContent = message;
+    const errorElement = document.getElementById(`${field}Error`);
+    if (input) {
+        input.classList.add('error');
+    }
+    if (errorElement) {
+        errorElement.textContent = message;
+    }
 }
 
 function showGlobalError(message) {
-    const el = document.getElementById('globalError');
-    el.textContent = message;
-    el.classList.remove('hidden');
+    const element = document.getElementById('globalError');
+    element.textContent = message;
+    element.classList.remove('hidden');
 }
 
 function clearErrors() {
-    document.querySelectorAll('.error-msg').forEach(el => el.textContent = '');
-    document.querySelectorAll('input.error').forEach(el => el.classList.remove('error'));
+    document.querySelectorAll('.error-msg').forEach((element) => {
+        element.textContent = '';
+    });
+    document.querySelectorAll('input.error').forEach((element) => {
+        element.classList.remove('error');
+    });
+
     const global = document.getElementById('globalError');
     global.textContent = '';
     global.classList.add('hidden');

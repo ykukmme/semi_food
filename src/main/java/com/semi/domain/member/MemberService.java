@@ -2,6 +2,7 @@ package com.semi.domain.member;
 
 import com.semi.domain.member.dto.MemberResponse;
 import com.semi.domain.member.dto.RegisterRequest;
+import com.semi.domain.member.dto.UpdateProfileRequest;
 import com.semi.domain.order.PurchaseOrder;
 import com.semi.domain.order.PurchaseOrderRepository;
 import com.semi.exception.DuplicateMemberException;
@@ -98,5 +99,18 @@ public class MemberService {
         memberRepository.delete(member);
 
         log.info("[AUDIT] member_deleted | target={} | deletedBy={}", member.getMemberId(), deletedBy);
+    }
+    
+    @Transactional
+    public MemberResponse updateProfile(Long memberId, UpdateProfileRequest request) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException("회원을 찾을 수 없습니다."));
+
+        if (memberRepository.existsByEmailAndIdNot(request.email(), memberId)) {
+            throw new DuplicateMemberException("이미 사용 중인 이메일입니다.");
+        }
+
+        member.updateProfile(request.email(), request.phone());
+        return MemberResponse.from(member);
     }
 }
