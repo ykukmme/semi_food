@@ -3,6 +3,7 @@ package com.semi.domain.member;
 import com.semi.domain.member.dto.MemberResponse;
 import com.semi.domain.member.dto.RegisterRequest;
 import com.semi.domain.member.dto.UpdateProfileRequest;
+import com.semi.domain.order.PurchaseOrderRepository;
 import com.semi.exception.DuplicateMemberException;
 import com.semi.exception.MemberNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +71,6 @@ public class MemberService {
         return MemberResponse.from(member);
     }
 
-<<<<<<< HEAD
     /**
      * 관리자용 회원 목록 조회.
      */
@@ -98,7 +98,6 @@ public class MemberService {
         memberRepository.delete(member);
 
         log.info("[AUDIT] member_deleted | target={} | deletedBy={}", member.getMemberId(), deletedBy);
-=======
     @Transactional
     public MemberResponse updateProfile(Long memberId, UpdateProfileRequest request) {
         Member member = memberRepository.findById(memberId)
@@ -110,6 +109,5 @@ public class MemberService {
 
         member.updateProfile(request.email(), request.phone());
         return MemberResponse.from(member);
->>>>>>> origin/feature/wooree
     }
 }

@@ -110,12 +110,9 @@ public class Product {
         this.price       = price;
         this.imageUrl    = imageUrl;
         this.productUrl  = productUrl;
-<<<<<<< HEAD
         this.stock       = stock != null ? stock : this.stock;
         this.availableStock = availableStock != null ? availableStock : this.availableStock;
-=======
         this.category    = ProductCategoryClassifier.classify(name);
->>>>>>> origin/feature/wooree
         this.crawledAt   = crawledAt;
     }
 
