@@ -27,7 +27,13 @@ document.getElementById('loginForm')?.addEventListener('submit', async (event) =
         if (response.ok) {
             setToken(body.accessToken);
             localStorage.setItem('role', body.role);
-            window.location.href = '/';
+            
+            // 권한에 따라 리디렉션
+            if (body.role === 'ADMIN') {
+                window.location.href = '/admin';
+            } else {
+                window.location.href = '/';
+            }
             return;
         }
 
