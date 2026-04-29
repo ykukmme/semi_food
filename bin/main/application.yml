@@ -5,11 +5,7 @@ spring:
     import: optional:file:.env[.properties]
 
   # Fix Korean character encoding issues
-  http:
-    encoding:
-      charset: UTF-8
-      enabled: true
-      force: true
+ 
 
   datasource:
     # TiDB Cloud / MySQL-compatible connection values come from environment config.
@@ -46,11 +42,7 @@ cors:
 server:
   port: ${SERVER_PORT:8080}
   # Fix character encoding for requests and responses
-  servlet:
-    encoding:
-      charset: UTF-8
-      enabled: true
-      force: true
+  
   tomcat:
     uri-encoding: UTF-8
 

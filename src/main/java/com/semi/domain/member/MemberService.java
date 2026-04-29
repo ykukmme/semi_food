@@ -3,6 +3,7 @@ package com.semi.domain.member;
 import com.semi.domain.member.dto.MemberResponse;
 import com.semi.domain.member.dto.RegisterRequest;
 import com.semi.domain.member.dto.UpdateProfileRequest;
+import com.semi.domain.order.PurchaseOrder;
 import com.semi.domain.order.PurchaseOrderRepository;
 import com.semi.exception.DuplicateMemberException;
 import com.semi.exception.MemberNotFoundException;
@@ -98,6 +99,8 @@ public class MemberService {
         memberRepository.delete(member);
 
         log.info("[AUDIT] member_deleted | target={} | deletedBy={}", member.getMemberId(), deletedBy);
+    }
+    
     @Transactional
     public MemberResponse updateProfile(Long memberId, UpdateProfileRequest request) {
         Member member = memberRepository.findById(memberId)
