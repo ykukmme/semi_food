@@ -44,7 +44,10 @@ public class PageController {
 
         model.addAttribute("requestedOrderNumber", orderNumber);
         try {
-            PurchaseOrder order = purchaseOrderService.getOrderByOrderNumber(orderNumber);
+            PurchaseOrder order = purchaseOrderService.getOrderByMemberIdAndOrderNumber(
+                    memberDetails.getMember().getId(),
+                    orderNumber
+            );
             model.addAttribute("order", OrderDetailRow.from(order));
         } catch (IllegalArgumentException ex) {
             model.addAttribute("orderError", "주문번호 " + orderNumber + "에 해당하는 주문 정보를 찾을 수 없습니다.");

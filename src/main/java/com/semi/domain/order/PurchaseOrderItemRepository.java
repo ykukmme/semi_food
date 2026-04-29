@@ -2,6 +2,9 @@ package com.semi.domain.order;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface PurchaseOrderItemRepository extends JpaRepository<PurchaseOrderItem, Long> {
 
@@ -21,4 +24,24 @@ public interface PurchaseOrderItemRepository extends JpaRepository<PurchaseOrder
             ) repeated_products
             """, nativeQuery = true)
     long countRepeatOrderedProducts();
+
+    @Query("""
+            select item
+            from PurchaseOrderItem item
+            join fetch item.purchaseOrder po
+            left join fetch item.product product
+            where po.member.id = :memberId
+              and (
+                :query = ''
+                or lower(item.productName) like lower(concat('%', :query, '%'))
+                or lower(product.name) like lower(concat('%', :query, '%'))
+                or lower(coalesce(product.description, '')) like lower(concat('%', :query, '%'))
+                or lower(po.orderNumber) like lower(concat('%', :query, '%'))
+              )
+            order by po.orderedAt desc, item.id desc
+            """)
+    List<PurchaseOrderItem> searchMemberOrderItems(
+            @Param("memberId") Long memberId,
+            @Param("query") String query
+    );
 }

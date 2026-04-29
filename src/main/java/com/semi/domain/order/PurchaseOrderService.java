@@ -87,6 +87,16 @@ public class PurchaseOrderService {
     }
 
     @Transactional(readOnly = true)
+    public List<PurchaseOrderItem> searchOrderedItems(Long memberId, String query) {
+        String trimmedQuery = query == null ? "" : query.trim();
+        if (trimmedQuery.isEmpty()) {
+            return List.of();
+        }
+
+        return purchaseOrderItemRepository.searchMemberOrderItems(memberId, trimmedQuery);
+    }
+
+    @Transactional(readOnly = true)
     public PurchaseOrder getOrderByMemberIdAndOrderNumber(Long memberId, String orderNumber) {
         return purchaseOrderRepository.findDetailByMemberIdAndOrderNumber(memberId, orderNumber)
                 .orElseThrow(() -> new IllegalArgumentException("order not found. orderNumber=" + orderNumber));

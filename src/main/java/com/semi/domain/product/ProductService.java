@@ -25,7 +25,12 @@ public class ProductService {
 
     @Transactional
     public List<Product> searchProductsByNameOrDescription(String keyword) {
-        return productRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(keyword, keyword);
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return List.of();
+        }
+
+        String trimmedKeyword = keyword.trim();
+        return productRepository.searchByNameDescriptionOrKeyword(trimmedKeyword);
     }
 
     @Transactional(readOnly = true)

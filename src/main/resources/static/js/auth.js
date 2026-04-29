@@ -27,7 +27,7 @@ function ensureAuthToastStyles() {
             position: fixed;
             top: 5.5rem;
             right: 1.25rem;
-            z-index: 10000;
+            z-index: 1000;
             padding: 0.85rem 1.15rem;
             border-radius: 8px;
             background: #0066cc;
@@ -63,7 +63,7 @@ function showAuthNotification(message, onComplete) {
                 onComplete();
             }
         }, 300);
-    }, 900);
+    }, 2000);
 }
 
 async function fetchWithAuth(url, options = {}) {
@@ -160,7 +160,7 @@ function handleLogout(event) {
     event.preventDefault();
     event.stopImmediatePropagation();
     clearToken();
-    showAuthNotification('\uB85C\uADF8\uC544\uC6C3\uB418\uC5C8\uC2B5\uB2C8\uB2E4.', () => {
+    showAuthNotification('로그아웃되었습니다.', () => {
         location.href = '/';
     });
 }
