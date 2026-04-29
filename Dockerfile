@@ -4,7 +4,9 @@ WORKDIR /app
 COPY . .
 
 # gradlew 대신 시스템 설치된 gradle 명령어로 빌드 (Wrapper 파일 필요 없음)
-RUN gradle build -x test
+# render.com 의 메모리 문제라고 하여 명령어 수정
+# test하지 않음, 데몬 생성 X, 빌드정보출력, jvm 메모리 384m제한
+RUN ./gradlew build -x test --no-daemon --info -Dorg.gradle.jvmargs="-Xmx384m" 
 
 # 2단계: 실행
 FROM eclipse-temurin:21-jdk-jammy
