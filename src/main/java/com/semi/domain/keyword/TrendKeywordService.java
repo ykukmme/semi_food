@@ -1,5 +1,6 @@
 package com.semi.domain.keyword;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -20,6 +21,14 @@ public class TrendKeywordService {
     @Transactional(readOnly = true)
     public List<TrendKeyword> getKeywordsOrderById() {
         return trendKeywordRepository.findByIsActiveTrueOrderByIdAsc();
+    }
+
+    @Transactional(readOnly = true)
+    public List<TrendKeyword> getKeywordsCollectedOnOrderById(LocalDate collectedDate) {
+        return trendKeywordRepository.findTop20ByCollectedAtGreaterThanEqualAndCollectedAtLessThanOrderByIdAsc(
+                collectedDate.atStartOfDay(),
+                collectedDate.plusDays(1).atStartOfDay()
+        );
     }
     
 }

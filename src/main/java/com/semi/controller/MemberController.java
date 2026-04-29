@@ -2,13 +2,10 @@ package com.semi.controller;
 
 import com.semi.domain.cart.CartItem;
 import com.semi.domain.cart.CartItemService;
-import com.semi.domain.keyword.TrendKeyword;
-import com.semi.domain.keyword.TrendKeywordService;
 import com.semi.domain.order.PurchaseOrderService;
 import com.semi.security.MemberDetails;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -24,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MemberController {
 
     private final CartItemService cartItemService;
-    private final TrendKeywordService trendKeywordService;
     private final PurchaseOrderService purchaseOrderService;
 
     @PostMapping
@@ -58,15 +54,6 @@ public class MemberController {
     }
 
     private String buildDashboard(MemberDetails memberDetails, Model model) {
-        List<TrendKeyword> keywords = trendKeywordService.getKeywordsOrderById();
-        keywords.sort((a, b) -> a.getId().compareTo(b.getId()));
-
-        Optional<TrendKeyword> latestKeyword = keywords.stream()
-                .filter(keyword -> keyword.getCollectedAt() != null)
-                .max((left, right) -> left.getCollectedAt().compareTo(right.getCollectedAt()));
-        model.addAttribute("keywords", keywords);
-        latestKeyword.ifPresent(keyword -> model.addAttribute("keywordCollectedAt", keyword.getCollectedAt()));
-
         Long memberId = memberDetails.getMember().getId();
         List<CartItem> recentCartItems = cartItemService.getRecentCartItems(memberId);
         model.addAttribute("dashboardMessage", "대시보드");

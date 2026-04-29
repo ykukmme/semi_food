@@ -1,5 +1,6 @@
 package com.semi.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,8 @@ import com.semi.domain.order.OrderStatus;
 import com.semi.domain.order.PurchaseOrder;
 import com.semi.domain.order.PurchaseOrderItem;
 import com.semi.domain.order.PurchaseOrderService;
+import com.semi.domain.keyword.TrendKeyword;
+import com.semi.domain.keyword.TrendKeywordService;
 import com.semi.domain.product.Product;
 import com.semi.domain.product.ProductService;
 import com.semi.security.MemberDetails;
@@ -27,11 +30,19 @@ public class ProductController {
 
     private final ProductService productService;
     private final PurchaseOrderService purchaseOrderService;
+    private final TrendKeywordService trendKeywordService;
     
     @GetMapping("/")
     public String getAllProduct(Model model) {
         List<Product> products = productService.getAllProduct();
+        LocalDate keywordCollectedDate = LocalDate.of(2026, 4, 27);
+        List<TrendKeyword> keywords = trendKeywordService.getKeywordsCollectedOnOrderById(keywordCollectedDate);
+        keywords.stream()
+                .filter(keyword -> keyword.getCollectedAt() != null)
+                .max((left, right) -> left.getCollectedAt().compareTo(right.getCollectedAt()))
+                .ifPresent(keyword -> model.addAttribute("keywordCollectedAt", keyword.getCollectedAt()));
         model.addAttribute("products", products);
+        model.addAttribute("keywords", keywords);
         return "index";
     }
 

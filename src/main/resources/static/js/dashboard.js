@@ -101,24 +101,6 @@ function renderRecentCartItems() {
     homeContent.prepend(section);
 }
 
-function setupKeywordMoreButton() {
-    const button = document.getElementById('keyword-more-button');
-    if (!button) {
-        return;
-    }
-
-    button.addEventListener('click', () => {
-        const extraKeywords = document.querySelectorAll('.js-extra-keyword');
-        const isExpanded = button.dataset.expanded === 'true';
-
-        extraKeywords.forEach((item) => {
-            item.classList.toggle('hidden', isExpanded);
-        });
-        button.dataset.expanded = String(!isExpanded);
-        button.textContent = isExpanded ? '\uB354\uBCF4\uAE30' : '\uB2EB\uAE30';
-    });
-}
-
 document.getElementById('dashboard-search-form')?.addEventListener('submit', (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -130,6 +112,5 @@ document.getElementById('dashboard-search-form')?.addEventListener('submit', (ev
 
 updateDashboardHeaderBackground();
 renderRecentCartItems();
-setupKeywordMoreButton();
 window.addEventListener('scroll', updateDashboardHeaderBackground, { passive: true });
 window.addEventListener('resize', updateDashboardHeaderBackground);

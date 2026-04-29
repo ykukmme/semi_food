@@ -15,10 +15,10 @@
     <div class="site-header__inner">
         <div class="site-brand"><a th:href="@{/}">Heritage Namhae</a></div>
         <nav class="site-nav" aria-label="상단 메뉴">
-            <form class="nav-search" id="nav-search-form" role="search">
+            <form class="nav-search" id="nav-search-form" role="search" action="#best">
                 <label class="sr-only" for="nav-search-input">상품 검색</label>
                 <span class="material-symbols-outlined nav-search-icon" aria-hidden="true">search</span>
-                <input id="nav-search-input" class="nav-search-input" type="search" placeholder="상품 검색" autocomplete="off"/>
+                <input id="nav-search-input" class="nav-search-input" type="search" name="q" placeholder="상품명 검색" autocomplete="off"/>
             </form>
             <div id="guestMenu">
                 <a class="site-nav__icon-link material-symbols-outlined" th:href="@{/login.html}" aria-label="로그인">person</a>
@@ -56,6 +56,47 @@
             <div class="member-welcome is-hidden" id="member-welcome" aria-live="polite">
                 <span class="member-welcome__name" id="member-welcome-name"></span>님 반갑습니다
             </div>
+            <section class="trend-keyword-section" aria-labelledby="trend-keyword-title">
+                <div class="trend-keyword-section__header">
+                    <div>
+                        <p class="trend-keyword-section__eyebrow">&#51064;&#44592; &#53412;&#50892;&#46300;</p>
+                        <div class="trend-keyword-section__title-row">
+                            <h2 class="trend-keyword-section__title" id="trend-keyword-title">&#49892;&#49884;&#44036; &#51064;&#44592; &#53412;&#50892;&#46300; &#49692;&#50948;</h2>
+                            <span th:if="${keywordCollectedAt != null}" class="trend-keyword-section__date">
+                                <span th:text="${#temporals.format(keywordCollectedAt, 'yyyy.MM.dd')}">2026.04.28</span>
+                                <span>&#32;&#44592;&#51456;</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div th:if="${keywords == null or #lists.isEmpty(keywords)}" class="trend-keyword-empty">
+                    &#54364;&#49884;&#54624; &#51064;&#44592; &#53412;&#50892;&#46300;&#44032; &#50630;&#49845;&#45768;&#45796;.
+                </div>
+
+                <div th:if="${keywords != null and !#lists.isEmpty(keywords)}" class="trend-keyword-grid">
+                    <article
+                        th:each="keyword, keywordStat : ${keywords}"
+                        th:if="${keywordStat.index < 20}"
+                        th:classappend="${keywordStat.index >= 10} ? ' trend-keyword-card--extra is-hidden' : ''"
+                        class="trend-keyword-card">
+                        <a class="trend-keyword-card__link js-trend-keyword-link" th:href="@{/dashboard_search_result(q=${keyword.keyword})}">
+                            <div class="trend-keyword-card__top">
+                                <span class="trend-keyword-card__rank">
+                                    <span th:text="${keywordStat.index + 1}">1</span>&#50948;
+                                </span>
+                                <span class="material-symbols-outlined trend-keyword-card__icon" aria-hidden="true">search</span>
+                            </div>
+                            <h3 class="trend-keyword-card__name" th:text="${keyword.keyword}">&#53412;&#50892;&#46300;</h3>
+                            <p class="trend-keyword-card__frequency">&#48712;&#46020; <span th:text="${keyword.frequency}">0</span></p>
+                        </a>
+                    </article>
+                </div>
+
+                <div th:if="${keywords != null and #lists.size(keywords) > 10}" class="trend-keyword-more">
+                    <button class="trend-keyword-more__button" id="trend-keyword-more-button" type="button" data-expanded="false">&#45908;&#48372;&#44592;</button>
+                </div>
+            </section>
             <div class="products-section__header">
                 <div>
                     <h2 class="best-section-title">베스트 큐레이션</h2>

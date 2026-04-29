@@ -11,13 +11,18 @@ public interface PurchaseOrderItemRepository extends JpaRepository<PurchaseOrder
     @Query("select coalesce(sum(item.quantity), 0) from PurchaseOrderItem item")
     long sumOrderedQuantity();
 
-    @Query("select count(distinct item.product.id) from PurchaseOrderItem item")
+    @Query("""
+            select count(distinct item.product.id)
+            from PurchaseOrderItem item
+            where item.purchaseOrder.status <> com.semi.domain.order.OrderStatus.CANCELLED
+            """)
     long countDistinctOrderedProducts();
 
     @Query("""
             select count(distinct item.product.id)
             from PurchaseOrderItem item
             where item.purchaseOrder.member.id = :memberId
+              and item.purchaseOrder.status <> com.semi.domain.order.OrderStatus.CANCELLED
             """)
     long countDistinctOrderedProductsByMemberId(@Param("memberId") Long memberId);
 
@@ -25,8 +30,10 @@ public interface PurchaseOrderItemRepository extends JpaRepository<PurchaseOrder
             select count(*)
             from (
                 select product_id
-                from purchase_order_item
-                group by product_id
+                from purchase_order_item poi
+                join purchase_order po on po.id = poi.order_id
+                where po.status <> 'CANCELLED'
+                group by poi.product_id
                 having count(*) > 1
             ) repeated_products
             """, nativeQuery = true)
@@ -39,6 +46,7 @@ public interface PurchaseOrderItemRepository extends JpaRepository<PurchaseOrder
                 from purchase_order_item poi
                 join purchase_order po on po.id = poi.order_id
                 where po.member_id = :memberId
+                  and po.status <> 'CANCELLED'
                 group by poi.product_id
                 having count(*) > 1
             ) repeated_products

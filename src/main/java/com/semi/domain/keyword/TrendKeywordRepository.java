@@ -2,6 +2,7 @@ package com.semi.domain.keyword;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TrendKeywordRepository extends JpaRepository<TrendKeyword, Long> {
@@ -10,4 +11,9 @@ public interface TrendKeywordRepository extends JpaRepository<TrendKeyword, Long
     List<TrendKeyword> findByIsActiveTrueOrderByRankAsc();
 
     List<TrendKeyword> findByIsActiveTrueOrderByIdAsc();
+
+    List<TrendKeyword> findTop20ByCollectedAtGreaterThanEqualAndCollectedAtLessThanOrderByIdAsc(
+            LocalDateTime start,
+            LocalDateTime end
+    );
 }

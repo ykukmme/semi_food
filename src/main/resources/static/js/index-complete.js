@@ -165,6 +165,11 @@
         const moreButton = document.getElementById("product-more-btn");
         let visibleLimit = initialVisibleCount;
 
+        const initialQuery = new URLSearchParams(window.location.search).get("q");
+        if (input && initialQuery) {
+            input.value = initialQuery;
+        }
+
         if (!productItems.length) {
             if (moreButton) {
                 moreButton.disabled = true;
@@ -190,7 +195,7 @@
 
             productItems.forEach((item) => {
                 const productName = item.querySelector(".product-card__name")?.textContent.trim().toLowerCase() || "";
-                const matchesCategory = category === "all" || item.dataset.category === category;
+                const matchesCategory = Boolean(query) || category === "all" || item.dataset.category === category;
                 const matchesQuery = !query || productName.includes(query);
                 const isMatched = matchesCategory && matchesQuery;
                 const isVisible = isMatched && matchedCount < visibleLimit;
@@ -230,7 +235,9 @@
         if (form) {
             form.addEventListener("submit", (event) => {
                 event.preventDefault();
+                visibleLimit = initialVisibleCount;
                 filterProducts();
+                document.getElementById("best")?.scrollIntoView({ behavior: "smooth", block: "start" });
             });
         }
 
@@ -249,6 +256,39 @@
         }
 
         filterProducts();
+    }
+
+    function setupTrendKeywordMoreButton() {
+        const button = document.getElementById("trend-keyword-more-button");
+        const extraKeywords = document.querySelectorAll(".trend-keyword-card--extra");
+
+        if (!button || !extraKeywords.length) {
+            return;
+        }
+
+        button.addEventListener("click", () => {
+            const isExpanded = button.dataset.expanded === "true";
+
+            extraKeywords.forEach((item) => {
+                item.classList.toggle("is-hidden", isExpanded);
+            });
+
+            button.dataset.expanded = String(!isExpanded);
+            button.textContent = isExpanded ? "\uB354\uBCF4\uAE30" : "\uB2EB\uAE30";
+        });
+    }
+
+    function setupTrendKeywordAuthLinks() {
+        document.querySelectorAll(".js-trend-keyword-link").forEach((link) => {
+            link.addEventListener("click", (event) => {
+                if (localStorage.getItem(TOKEN_STORAGE_KEY)) {
+                    return;
+                }
+
+                event.preventDefault();
+                window.location.href = "/login.html";
+            });
+        });
     }
 
     function setupScrollTopButton() {
@@ -277,6 +317,8 @@
         updateLoginMemberId();
         updateMemberWelcome();
         setupProductListControls();
+        setupTrendKeywordMoreButton();
+        setupTrendKeywordAuthLinks();
         setupScrollTopButton();
         updateHeaderBackground();
 
