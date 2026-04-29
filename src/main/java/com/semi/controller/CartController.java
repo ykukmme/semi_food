@@ -41,13 +41,15 @@ public class CartController {
             @RequestParam(required = false) Long memberId,
             Model model
     ) {
-        Long resolvedMemberId = memberDetails != null ? memberDetails.getMember().getId() : memberId;
-        if (resolvedMemberId != null) {
-            List<CartItem> cartItems = cartItemService.getCartItems(resolvedMemberId);
-            model.addAttribute("cartItems", cartItems);
-            model.addAttribute("cartRows", toCartRows(cartItems));
-            model.addAttribute("cartLoadedFromServer", true);
+        if (memberDetails == null) {
+            return "redirect:/login.html";
         }
+
+        Long resolvedMemberId = memberDetails.getMember().getId();
+        List<CartItem> cartItems = cartItemService.getCartItems(resolvedMemberId);
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("cartRows", toCartRows(cartItems));
+        model.addAttribute("cartLoadedFromServer", true);
         return "cart";
     }
 

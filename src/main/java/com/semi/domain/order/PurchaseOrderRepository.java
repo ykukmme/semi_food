@@ -15,6 +15,8 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Lo
     /** 발주번호로 조회 */
     Optional<PurchaseOrder> findByOrderNumber(String orderNumber);
 
+    Optional<PurchaseOrder> findByMemberIdAndOrderNumber(Long memberId, String orderNumber);
+
     @Query("""
             select distinct po
             from PurchaseOrder po

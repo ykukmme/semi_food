@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.semi.domain.product.Product;
 import com.semi.domain.product.ProductService;
+import com.semi.security.MemberDetails;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -30,7 +32,15 @@ public class ProductController {
     }
 
     @GetMapping("/view")
-    public String viewProductDetail(@RequestParam("id") String id, Model model) {
+    public String viewProductDetail(
+            @AuthenticationPrincipal MemberDetails memberDetails,
+            @RequestParam("id") String id,
+            Model model
+    ) {
+        if (memberDetails == null) {
+            return "redirect:/login.html";
+        }
+
         Product product = productService.getProductDetail(Long.parseLong(id));
         System.out.println(product.toString());
         model.addAttribute("product", product);
@@ -39,9 +49,14 @@ public class ProductController {
 
     @GetMapping("/dashboard_search_result")
     public String dashboardSearchResult(
+            @AuthenticationPrincipal MemberDetails memberDetails,
             @RequestParam(name = "q", required = false) String query,
             Model model
     ) {
+        if (memberDetails == null) {
+            return "redirect:/login.html";
+        }
+
         String trimmedQuery = query == null ? "" : query.trim();
         List<Product> products = productService.searchProductsByName(trimmedQuery);
         model.addAttribute("query", trimmedQuery);

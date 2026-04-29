@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,19 @@ public class PurchaseOrderController {
         }
 
         PurchaseOrder order = purchaseOrderService.createOrder(memberDetails.getMember().getId(), request);
+        return ResponseEntity.ok(PurchaseOrderResponse.from(order));
+    }
+
+    @PostMapping("/{orderNumber}/cancel")
+    public ResponseEntity<PurchaseOrderResponse> cancelOrder(
+            @AuthenticationPrincipal MemberDetails memberDetails,
+            @PathVariable String orderNumber
+    ) {
+        if (memberDetails == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        PurchaseOrder order = purchaseOrderService.cancelOrder(memberDetails.getMember().getId(), orderNumber);
         return ResponseEntity.ok(PurchaseOrderResponse.from(order));
     }
 }

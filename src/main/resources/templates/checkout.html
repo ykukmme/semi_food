@@ -8,6 +8,7 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script src="../static/js/auth.js" th:src="@{/js/auth.js}" defer></script>
+  <script src="../static/js/auth-guard.js" th:src="@{/js/auth-guard.js}"></script>
   <link
     href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
     rel="stylesheet" />
@@ -237,43 +238,6 @@
         </div>
       </section>
 
-      <!-- Loyalty & Offers -->
-      <section class="bg-tertiary-fixed/30 p-5 sm:p-6 rounded-2xl space-y-4">
-        <div class="flex items-center gap-2 mb-2">
-          <span class="material-symbols-outlined text-tertiary">confirmation_number</span>
-          <h2 class="text-lg font-bold">할인 및 적립</h2>
-        </div>
-        <div class="space-y-4">
-          <div>
-            <label class="text-xs font-label font-bold text-tertiary-container uppercase tracking-widest mb-2 block">쿠폰
-              적용</label>
-            <div class="flex gap-2">
-              <input
-                class="flex-1 bg-surface-container-lowest border-b border-outline-variant/20 focus:border-primary focus:ring-0 px-4 py-3 rounded-t-lg transition-colors font-label"
-                placeholder="코드를 입력하세요" type="text" />
-              <button
-                class="bg-tertiary text-on-tertiary px-6 py-2 rounded-xl font-bold hover:opacity-90 transition-opacity">적용</button>
-            </div>
-          </div>
-          <div class="flex justify-between items-center p-4 bg-surface-container-lowest rounded-xl">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-primary-fixed-dim flex items-center justify-center">
-                <span class="material-symbols-outlined text-on-primary-fixed-variant">stars</span>
-              </div>
-              <div>
-                <p class="text-sm font-bold">남해 포인트</p>
-                <p class="text-xs text-on-surface-variant">보유: <span id="points-balance">4,500</span>P</p>
-              </div>
-            </div>
-            <div class="flex items-center gap-2">
-              <input
-                class="w-24 text-right bg-transparent border-b border-outline-variant/20 focus:border-primary focus:ring-0 p-1 font-bold"
-                id="points-input" max="4500" min="0" oninput="updatePoints(this)" type="number" value="0" />
-              <span class="text-xs font-bold">P</span>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
 
     <!-- Right Column: Order Summary -->
@@ -300,27 +264,10 @@
               <span class="text-on-surface-variant">상품 금액</span>
               <span class="font-medium text-on-surface" id="summary-product-total">₩0</span>
             </div>
-                        <div class="flex justify-between text-sm">
-              <span class="text-on-surface-variant">쿠폰 할인</span>
-              <span class="font-bold text-secondary">-₩0</span>
-            </div>
-            <div class="flex justify-between text-sm">
-              <span class="text-on-surface-variant">포인트 할인</span>
-              <span class="font-bold text-secondary" id="summary-points-discount">-₩0</span>
-            </div>
             <div class="flex justify-between pt-4 border-t border-outline-variant/5">
               <span class="text-lg font-extrabold text-on-surface">최종 결제 금액</span>
               <span class="text-2xl font-extrabold text-primary" id="summary-final-total">₩0</span>
             </div>
-          </div>
-
-          <!-- Earn Points Badge -->
-          <div class="bg-primary-fixed/20 p-3 rounded-xl flex items-center justify-between mb-5">
-            <div class="flex items-center gap-2 text-on-primary-fixed-variant">
-              <span class="material-symbols-outlined text-[20px]">add_circle</span>
-              <span class="text-xs font-bold uppercase tracking-wider">적립 예정 포인트</span>
-            </div>
-            <span class="font-extrabold text-primary" id="summary-points">0P</span>
           </div>
 
           <!-- Pay Button -->
@@ -450,7 +397,6 @@
     const NAMHAE_SELECTED_ITEMS_KEY = 'namhae_selected_items';
     const NAMHAE_CART_KEY = 'namhae_cart_v1';
     const NAMHAE_ORDER_KEY = 'namhae_order_v1';
-    const TOTAL_POINTS = 4500;
 
     function toNumber(value, fallback = 0) {
       const number = Number(value);
@@ -510,12 +456,6 @@
       }
     }
 
-    function getUsedPoints() {
-      const input = document.getElementById('points-input');
-      if (!input) return 0;
-      return Math.min(Math.max(parseInt(input.value, 10) || 0, 0), TOTAL_POINTS);
-    }
-
     function loadCheckoutOrder() {
       const storedOrder = readJsonStorage(NAMHAE_CHECKOUT_KEY);
       let order = storedOrder && Array.isArray(storedOrder.items)
@@ -546,19 +486,13 @@
     function updateOrderSummary(order) {
       const totalEl = document.getElementById('summary-product-total');
       const finalEl = document.getElementById('summary-final-total');
-      const pointsEl = document.getElementById('summary-points');
-      const pointsDiscountEl = document.getElementById('summary-points-discount');
 
-      if (!totalEl || !finalEl || !pointsEl || !pointsDiscountEl) return;
+      if (!totalEl || !finalEl) return;
 
       const totalPrice = toNumber(order?.totalPrice, 0);
-      const usedPoints = Math.min(getUsedPoints(), totalPrice);
-      const finalTotal = Math.max(totalPrice - usedPoints, 0);
 
       totalEl.textContent = formatWon(totalPrice);
-      pointsDiscountEl.textContent = `-${formatWon(usedPoints)}`;
-      finalEl.textContent = formatWon(finalTotal);
-      pointsEl.textContent = `${Math.floor(finalTotal * 0.01).toLocaleString('ko-KR')}P`;
+      finalEl.textContent = formatWon(totalPrice);
     }
 
     function loadAndRenderOrder() {
@@ -615,17 +549,6 @@
         button.classList.remove('ring-2', 'ring-offset-2', 'ring-primary');
       });
       btn.classList.add('ring-2', 'ring-offset-2', 'ring-primary');
-    }
-
-    function updatePoints(input) {
-      const used = Math.min(Math.max(parseInt(input.value, 10) || 0, 0), TOTAL_POINTS);
-      input.value = used;
-
-      const balanceEl = document.getElementById('points-balance');
-      if (balanceEl) balanceEl.textContent = (TOTAL_POINTS - used).toLocaleString('ko-KR');
-
-      const order = loadCheckoutOrder();
-      updateOrderSummary(order || { totalPrice: 0 });
     }
 
     function openAddressModal() {
@@ -726,7 +649,7 @@
           },
           body: JSON.stringify({
             items: orderItems,
-            usedPoints: Math.min(getUsedPoints(), order.totalPrice)
+            usedPoints: 0
           })
         });
 
@@ -735,8 +658,6 @@
         }
 
         const savedOrder = await response.json();
-        const usedPoints = Math.min(getUsedPoints(), order.totalPrice);
-        const finalTotal = Math.max(order.totalPrice - usedPoints, 0);
         const orderDate = new Date();
         const estimatedDate = new Date(orderDate.getTime() + 3 * 24 * 60 * 60 * 1000);
         const days = ['일', '월', '화', '수', '목', '금', '토'];
@@ -753,8 +674,8 @@
           estimatedArrival: formattedEstimated,
           items: order.items,
           totalPrice: order.totalPrice,
-          usedPoints,
-          finalTotal: savedOrder.finalTotal || finalTotal
+          usedPoints: 0,
+          finalTotal: savedOrder.finalTotal || order.totalPrice
         };
 
         localStorage.setItem(NAMHAE_ORDER_KEY, JSON.stringify(orderData));

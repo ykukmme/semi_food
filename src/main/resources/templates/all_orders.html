@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/vanilla-utilities.css">
     <link rel="stylesheet" href="/css/all_orders.css">
+    <script th:src="@{/js/auth-guard.js}" src="/js/auth-guard.js"></script>
 </head>
 <body class="min-h-screen text-on-surface bg-background">
     <main class="max-w-7xl mx-auto px-6 pt-0 pb-10">
@@ -55,9 +56,9 @@
                             <td class="py-4 px-6 font-bold text-on-surface" th:text="${'₩' + #numbers.formatInteger(order.totalPrice, 0, 'COMMA')}">₩0</td>
                             <td class="py-4 px-6 text-on-surface-variant" th:text="${#temporals.format(order.orderedAt, 'yyyy.MM.dd HH:mm')}">2026.04.28 15:30</td>
                             <td class="py-4 px-6 text-right">
-                                <a th:if="${order.cancellable}" th:href="@{/cancel_orders(orderNumber=${order.orderNumber})}" class="inline-flex items-center justify-center rounded-full border border-primary px-4 py-2 text-xs font-extrabold text-primary hover:bg-primary/10 transition">
+                                <button th:if="${order.cancellable}" type="button" th:data-order-number="${order.orderNumber}" data-cancel-order-button class="inline-flex items-center justify-center rounded-full border border-primary px-4 py-2 text-xs font-extrabold text-primary hover:bg-primary/10 transition">
                                     취소/환불
-                                </a>
+                                </button>
                                 <button th:unless="${order.cancellable}" type="button" disabled class="inline-flex items-center justify-center rounded-full border border-outline-variant px-4 py-2 text-xs font-extrabold text-on-surface-variant opacity-60">
                                     취소/환불
                                 </button>
@@ -105,6 +106,47 @@
                 const isExpanded = button.dataset.expanded === 'true';
                 visibleCount = isExpanded ? pageSize : Math.min(visibleCount + pageSize, rows.length);
                 renderRows();
+            });
+
+            document.querySelectorAll('[data-cancel-order-button]').forEach((cancelButton) => {
+                cancelButton.addEventListener('click', async () => {
+                    const orderNumber = cancelButton.dataset.orderNumber;
+                    const token = localStorage.getItem('accessToken');
+
+                    if (!token) {
+                        window.location.href = '/login.html';
+                        return;
+                    }
+
+                    if (!orderNumber || !confirm('주문을 취소/환불 처리하시겠습니까?')) {
+                        return;
+                    }
+
+                    cancelButton.disabled = true;
+
+                    try {
+                        const response = await fetch(`/api/orders/${encodeURIComponent(orderNumber)}/cancel`, {
+                            method: 'POST',
+                            headers: {
+                                Authorization: `Bearer ${token}`
+                            }
+                        });
+
+                        if (response.status === 401 || response.status === 403) {
+                            window.location.href = '/login.html';
+                            return;
+                        }
+
+                        if (!response.ok) {
+                            throw new Error('cancel failed');
+                        }
+
+                        window.location.href = '/cancel_orders';
+                    } catch (error) {
+                        alert('주문 취소 처리에 실패했습니다. 잠시 후 다시 시도해주세요.');
+                        cancelButton.disabled = false;
+                    }
+                });
             });
 
             renderRows();

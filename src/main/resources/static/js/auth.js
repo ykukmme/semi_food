@@ -15,6 +15,57 @@ function clearToken() {
     document.cookie = `${TOKEN_KEY}=; path=/; max-age=0; SameSite=Lax`;
 }
 
+function ensureAuthToastStyles() {
+    if (document.getElementById('auth-toast-styles')) {
+        return;
+    }
+
+    const style = document.createElement('style');
+    style.id = 'auth-toast-styles';
+    style.textContent = `
+        .product-toast {
+            position: fixed;
+            top: 5.5rem;
+            right: 1.25rem;
+            z-index: 10000;
+            padding: 0.85rem 1.15rem;
+            border-radius: 8px;
+            background: #0066cc;
+            color: #fff;
+            font-weight: 800;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+            transform: translateX(calc(100% + 2rem));
+            transition: transform 0.25s ease;
+        }
+
+        .product-toast.is-visible {
+            transform: translateX(0);
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+function showAuthNotification(message, onComplete) {
+    ensureAuthToastStyles();
+
+    const notification = document.createElement('div');
+    notification.className = 'product-toast';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    requestAnimationFrame(() => notification.classList.add('is-visible'));
+
+    window.setTimeout(() => {
+        notification.classList.remove('is-visible');
+        window.setTimeout(() => {
+            notification.remove();
+            if (typeof onComplete === 'function') {
+                onComplete();
+            }
+        }, 300);
+    }, 900);
+}
+
 async function fetchWithAuth(url, options = {}) {
     const token = getToken();
     const headers = {
@@ -107,9 +158,11 @@ async function renderLoginMenu() {
 
 function handleLogout(event) {
     event.preventDefault();
-    event.stopPropagation();
+    event.stopImmediatePropagation();
     clearToken();
-    location.href = '/';
+    showAuthNotification('\uB85C\uADF8\uC544\uC6C3\uB418\uC5C8\uC2B5\uB2C8\uB2E4.', () => {
+        location.href = '/';
+    });
 }
 
 function setupLogoutButton() {

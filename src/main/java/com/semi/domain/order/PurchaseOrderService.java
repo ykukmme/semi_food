@@ -50,7 +50,7 @@ public class PurchaseOrderService {
                 .orderNumber(nextOrderNumber())
                 .member(member)
                 .supplier(lines.get(0).product().getSupplier())
-                .totalPrice(Math.max(totalPrice - request.usedPoints(), 0))
+                .totalPrice(totalPrice)
                 .shippingFee(0)
                 .isAuto(false)
                 .build();
@@ -66,6 +66,19 @@ public class PurchaseOrderService {
         PurchaseOrder savedOrder = purchaseOrderRepository.save(order);
         cartItemRepository.deleteByMemberId(memberId);
         return savedOrder;
+    }
+
+    @Transactional
+    public PurchaseOrder cancelOrder(Long memberId, String orderNumber) {
+        PurchaseOrder order = purchaseOrderRepository.findByMemberIdAndOrderNumber(memberId, orderNumber)
+                .orElseThrow(() -> new IllegalArgumentException("order not found. orderNumber=" + orderNumber));
+
+        if (order.getStatus() != OrderStatus.RECEIVED && order.getStatus() != OrderStatus.IN_PROGRESS) {
+            throw new IllegalStateException("order cannot be cancelled. orderNumber=" + orderNumber);
+        }
+
+        order.updateStatus(OrderStatus.CANCELLED);
+        return order;
     }
 
     @Transactional(readOnly = true)

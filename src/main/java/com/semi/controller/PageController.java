@@ -20,15 +20,24 @@ public class PageController {
     private final PurchaseOrderService purchaseOrderService;
 
     @GetMapping("/checkout")
-    public String checkout() {
+    public String checkout(@AuthenticationPrincipal MemberDetails memberDetails) {
+        if (memberDetails == null) {
+            return "redirect:/login.html";
+        }
+
         return "checkout";
     }
 
     @GetMapping("/order_detail")
     public String orderDetail(
+            @AuthenticationPrincipal MemberDetails memberDetails,
             @RequestParam(required = false) String orderNumber,
             Model model
     ) {
+        if (memberDetails == null) {
+            return "redirect:/login.html";
+        }
+
         if (orderNumber == null || orderNumber.isBlank()) {
             return "order_detail";
         }
@@ -45,10 +54,15 @@ public class PageController {
 
     @GetMapping("/order_success")
     public String orderSuccess(
+            @AuthenticationPrincipal MemberDetails memberDetails,
             @RequestParam(required = false) String status,
             @RequestParam(required = false) String orderNumber,
             Model model
     ) {
+        if (memberDetails == null) {
+            return "redirect:/login.html";
+        }
+
         model.addAttribute("status", status);
         if (orderNumber == null || orderNumber.isBlank()) {
             if ("fail".equals(status)) {
@@ -73,11 +87,11 @@ public class PageController {
             @RequestParam(required = false) Long memberId,
             Model model
     ) {
-        Long resolvedMemberId = memberDetails != null ? memberDetails.getMember().getId() : memberId;
-        if (resolvedMemberId == null) {
+        if (memberDetails == null) {
             return "redirect:/login.html";
         }
 
+        Long resolvedMemberId = memberDetails.getMember().getId();
         List<OrderRow> orders = purchaseOrderService.getOrdersByMemberId(resolvedMemberId).stream()
                 .filter(order -> order.getStatus() != OrderStatus.CANCELLED)
                 .map(OrderRow::from)
@@ -93,11 +107,11 @@ public class PageController {
             @RequestParam(required = false) Long memberId,
             Model model
     ) {
-        Long resolvedMemberId = memberDetails != null ? memberDetails.getMember().getId() : memberId;
-        if (resolvedMemberId == null) {
+        if (memberDetails == null) {
             return "redirect:/login.html";
         }
 
+        Long resolvedMemberId = memberDetails.getMember().getId();
         List<OrderRow> orders = purchaseOrderService.getOrdersByMemberId(resolvedMemberId).stream()
                 .filter(order -> order.getStatus() == OrderStatus.CANCELLED)
                 .map(OrderRow::from)

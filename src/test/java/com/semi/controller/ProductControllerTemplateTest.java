@@ -33,6 +33,7 @@ class ProductControllerTemplateTest {
         String html = templateEngine.process("index", context);
 
         assertThat(html).contains("Heritage Namhae");
+        assertThat(html).contains("member-welcome");
     }
 
     @Test
@@ -109,6 +110,10 @@ class ProductControllerTemplateTest {
         assertThat(checkoutHtml).contains("processPayment");
         assertThat(checkoutHtml).contains("buildCheckoutOrder");
         assertThat(checkoutHtml).contains("formatWon");
+        assertThat(checkoutHtml).doesNotContain("points-input");
+        assertThat(checkoutHtml).doesNotContain("summary-points-discount");
+        assertThat(checkoutHtml).doesNotContain("쿠폰 할인");
+        assertThat(checkoutHtml).doesNotContain("포인트 할인");
         assertThat(templateEngine.process("order_detail", context)).contains("order-info");
         assertThat(templateEngine.process("order_success", context)).contains("check_circle");
     }
