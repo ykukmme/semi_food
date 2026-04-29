@@ -39,7 +39,7 @@ dependencies {
     // lombok과 mapstruct의 순서를 바꿀 경우 충돌 발생 할 수 있음
     annotationProcessor 'org.projectlombok:lombok' 
     annotationProcessor "org.mapstruct:mapstruct-processor:1.5.2.Final"
-    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'  
     // Json 날짜 데이터 출력관련
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
@@ -50,7 +50,8 @@ dependencies {
 
     // XML 파싱을 위한 라이브러리 (XML 응답 시 자동으로 객체 변환)
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
-
+    implementation 'org.jsoup:jsoup:1.19.1'
+    
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'

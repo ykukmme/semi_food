@@ -7,8 +7,10 @@ import lombok.RequiredArgsConstructor;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /*
@@ -47,6 +49,41 @@ public class ParserController {
 
 
     // Product
+
+
+
+    // jsop 테스트 코드
+    private final JsoupTestService jsoupTestService;
+
+    /**
+     * 엔드포인트: http://localhost:8080/api/resolve-url?linkUrl=https://ader.naver.com/v1/Nkes2ua21RrfgCrAkVdOmlIaZxdQYluqoX2QqxIFALimCP7508fx8LfDlPtd0XGBWFtFBd-kWt0RnZjphtrLcYlHS1VLvwME1SdniesspcQcAgE6RL7Ufmaqb05Ui_kq7bDtG9QdwgQb_nADLqtjk0CeOQYMRdJ_c9zUDoSn3HqVS9HlX_X6M29-M6nqb-wGPNI51AU6vhAwB1X6S7lNchwnD11h95qC4f5FRYowlnyUQuBUU00cBHVaEyUGWjmwe6gqzJBjVv7eC0ZUJ6Bi5kKlJnNR93ax6ES-msolNhM_njomLgbiKuhZMhpXUANJ?c=m.nplusstore.best.keyword.popular&NaPm=1
+     */
+    @GetMapping("/api/resolve-url")
+    public String resolveUrl(@RequestParam String linkUrl) {
+        // 서비스 호출 후 최종 URL 반환
+        return jsoupTestService.getFinalDestinationUrl(linkUrl);
+    }
+
+        /**
+     * 엔드포인트: http://localhost:8080/api/saveWithSequentialId_resolve_url?linkUrl=https://ader.naver.com/v1/Nkes2ua21RrfgCrAkVdOmlIaZxdQYluqoX2QqxIFALimCP7508fx8LfDlPtd0XGBWFtFBd-kWt0RnZjphtrLcYlHS1VLvwME1SdniesspcQcAgE6RL7Ufmaqb05Ui_kq7bDtG9QdwgQb_nADLqtjk0CeOQYMRdJ_c9zUDoSn3HqVS9HlX_X6M29-M6nqb-wGPNI51AU6vhAwB1X6S7lNchwnD11h95qC4f5FRYowlnyUQuBUU00cBHVaEyUGWjmwe6gqzJBjVv7eC0ZUJ6Bi5kKlJnNR93ax6ES-msolNhM_njomLgbiKuhZMhpXUANJ?c=m.nplusstore.best.keyword.popular&NaPm=1
+     */
+    @GetMapping("/api/saveWithSequentialId_resolve_url")
+    public Map<String, Object> saveWithSequentialId_resolve_url(@RequestParam String linkUrl) {
+        // 서비스 호출 후 최종 URL 반환
+        Map<String, Object> result = jsoupTestService.getAllAvailableInfo(linkUrl);
+        return result;
+    }
+
+
+        /**
+     * 엔드포인트: http://localhost:8080/api/getJsonFromHtml?linkUrl=https://snxbest.naver.com/keyword/best?categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY&ageType=ALL
+     */
+    @GetMapping("/api/getJsonFromHtml")
+    public String getJsonFromHtml(@RequestParam String linkUrl) {
+        // 서비스 호출 후 최종 URL 반환
+        String result = jsoupTestService.getJsonFromHtml(linkUrl);
+        return result;
+    }
 
 
 
