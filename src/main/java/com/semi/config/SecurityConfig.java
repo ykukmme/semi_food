@@ -63,7 +63,8 @@ public class SecurityConfig {
                     "/mypage",
                     "/api/auth/**"
                 ).permitAll()
-                // 관리자 API — ADMIN 역할 필수
+                // 관리자 페이지 및 API — ADMIN 역할 필수
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 // 정적 파일 허용 (루트 + 하위 디렉토리 HTML 모두 포함)
                 .requestMatchers("/index.html", "/*.html", "/**/*.html", "/css/**", "/js/**","/images/**").permitAll()
