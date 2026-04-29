@@ -10,12 +10,27 @@ import java.util.Optional;
 public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Long> {
 
     /** 회원의 발주 목록 조회 (최신순) */
-    List<PurchaseOrder> findByMemberIdOrderByOrderedAtDesc(Long memberId);
+    @Query("""
+            select po
+            from PurchaseOrder po
+            where po.member.id = :memberId
+            order by po.orderedAt desc
+            """)
+    List<PurchaseOrder> findByMemberIdOrderByOrderedAtDesc(@Param("memberId") Long memberId);
 
     /** 발주번호로 조회 */
     Optional<PurchaseOrder> findByOrderNumber(String orderNumber);
 
-    Optional<PurchaseOrder> findByMemberIdAndOrderNumber(Long memberId, String orderNumber);
+    @Query("""
+            select po
+            from PurchaseOrder po
+            where po.member.id = :memberId
+              and po.orderNumber = :orderNumber
+            """)
+    Optional<PurchaseOrder> findByMemberIdAndOrderNumber(
+            @Param("memberId") Long memberId,
+            @Param("orderNumber") String orderNumber
+    );
 
     @Query("""
             select distinct po
@@ -43,4 +58,22 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Lo
     long countByOrderedAtBetween(java.time.LocalDateTime start, java.time.LocalDateTime end);
 
     long countByStatus(OrderStatus status);
+
+    @Query("""
+            select count(po)
+            from PurchaseOrder po
+            where po.member.id = :memberId
+            """)
+    long countByMemberId(@Param("memberId") Long memberId);
+
+    @Query("""
+            select count(po)
+            from PurchaseOrder po
+            where po.member.id = :memberId
+              and po.status = :status
+            """)
+    long countByMemberIdAndStatus(
+            @Param("memberId") Long memberId,
+            @Param("status") OrderStatus status
+    );
 }

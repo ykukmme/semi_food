@@ -14,6 +14,13 @@ public interface PurchaseOrderItemRepository extends JpaRepository<PurchaseOrder
     @Query("select count(distinct item.product.id) from PurchaseOrderItem item")
     long countDistinctOrderedProducts();
 
+    @Query("""
+            select count(distinct item.product.id)
+            from PurchaseOrderItem item
+            where item.purchaseOrder.member.id = :memberId
+            """)
+    long countDistinctOrderedProductsByMemberId(@Param("memberId") Long memberId);
+
     @Query(value = """
             select count(*)
             from (
@@ -24,6 +31,19 @@ public interface PurchaseOrderItemRepository extends JpaRepository<PurchaseOrder
             ) repeated_products
             """, nativeQuery = true)
     long countRepeatOrderedProducts();
+
+    @Query(value = """
+            select count(*)
+            from (
+                select poi.product_id
+                from purchase_order_item poi
+                join purchase_order po on po.id = poi.order_id
+                where po.member_id = :memberId
+                group by poi.product_id
+                having count(*) > 1
+            ) repeated_products
+            """, nativeQuery = true)
+    long countRepeatOrderedProductsByMemberId(@Param("memberId") Long memberId);
 
     @Query("""
             select item

@@ -1,6 +1,8 @@
 package com.semi.domain.product;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -21,6 +23,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     /** 상품명 또는 설명으로 검색 */
     List<Product> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String name, String description);
 
+    Page<Product> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String name, String description, Pageable pageable);
+
     List<Product> findByNameContainingIgnoreCase(String name);
 
     @Query("""
@@ -33,6 +37,28 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             order by product.id desc
             """)
     List<Product> searchByNameDescriptionOrKeyword(@Param("query") String query);
+
+    @Query("""
+            select product
+            from Product product
+            left join fetch product.keyword
+            left join fetch product.supplier
+            order by product.id desc
+            """)
+    List<Product> findAllOptimized();
+
+    @Query(
+            value = """
+                    select product
+                    from Product product
+                    order by product.id desc
+                    """,
+            countQuery = """
+                    select count(product)
+                    from Product product
+                    """
+    )
+    Page<Product> findProductsPaged(Pageable pageable);
 
     
 }

@@ -38,7 +38,7 @@ public class PurchaseOrderController {
     @PostMapping("/{orderNumber}/cancel")
     public ResponseEntity<PurchaseOrderResponse> cancelOrder(
             @AuthenticationPrincipal MemberDetails memberDetails,
-            @PathVariable String orderNumber
+            @PathVariable("orderNumber") String orderNumber
     ) {
         if (memberDetails == null) {
             return ResponseEntity.status(401).build();

@@ -114,6 +114,11 @@ public class PurchaseOrderService {
     }
 
     @Transactional(readOnly = true)
+    public long getTotalOrderCount(Long memberId) {
+        return purchaseOrderRepository.countByMemberId(memberId);
+    }
+
+    @Transactional(readOnly = true)
     public double getOrderCancellationRate() {
         long totalOrderCount = purchaseOrderRepository.count();
         if (totalOrderCount == 0) {
@@ -125,8 +130,24 @@ public class PurchaseOrderService {
     }
 
     @Transactional(readOnly = true)
+    public double getOrderCancellationRate(Long memberId) {
+        long totalOrderCount = purchaseOrderRepository.countByMemberId(memberId);
+        if (totalOrderCount == 0) {
+            return 0.0;
+        }
+
+        long cancelledOrderCount = purchaseOrderRepository.countByMemberIdAndStatus(memberId, OrderStatus.CANCELLED);
+        return (cancelledOrderCount * 100.0) / totalOrderCount;
+    }
+
+    @Transactional(readOnly = true)
     public long getTotalOrderedProductCount() {
         return purchaseOrderItemRepository.sumOrderedQuantity();
+    }
+
+    @Transactional(readOnly = true)
+    public long getTotalOrderedProductCount(Long memberId) {
+        return purchaseOrderItemRepository.countDistinctOrderedProductsByMemberId(memberId);
     }
 
     @Transactional(readOnly = true)
@@ -137,6 +158,17 @@ public class PurchaseOrderService {
         }
 
         long repeatOrderedProductCount = purchaseOrderItemRepository.countRepeatOrderedProducts();
+        return (repeatOrderedProductCount * 100.0) / distinctProductCount;
+    }
+
+    @Transactional(readOnly = true)
+    public double getRepeatPurchaseRate(Long memberId) {
+        long distinctProductCount = purchaseOrderItemRepository.countDistinctOrderedProductsByMemberId(memberId);
+        if (distinctProductCount == 0) {
+            return 0.0;
+        }
+
+        long repeatOrderedProductCount = purchaseOrderItemRepository.countRepeatOrderedProductsByMemberId(memberId);
         return (repeatOrderedProductCount * 100.0) / distinctProductCount;
     }
 

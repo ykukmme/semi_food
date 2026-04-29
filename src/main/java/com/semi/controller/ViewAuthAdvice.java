@@ -12,19 +12,19 @@ public class ViewAuthAdvice {
     @ModelAttribute("currentAdminName")
     public String currentAdminName() {
         MemberDetails memberDetails = getCurrentMemberDetails();
-        return memberDetails != null ? memberDetails.getName() : "Admin";
+        return memberDetails != null ? memberDetails.getMember().getName() : "Admin";
     }
 
     @ModelAttribute("currentAdminEmail")
     public String currentAdminEmail() {
         MemberDetails memberDetails = getCurrentMemberDetails();
-        return memberDetails != null ? memberDetails.getEmail() : "admin@dadream.com";
+        return memberDetails != null ? memberDetails.getMember().getEmail() : "admin@dadream.com";
     }
 
     @ModelAttribute("currentAdminInitial")
     public String currentAdminInitial() {
         MemberDetails memberDetails = getCurrentMemberDetails();
-        String source = memberDetails != null ? memberDetails.getName() : "A";
+        String source = memberDetails != null ? memberDetails.getMember().getName() : "A";
         return source != null && !source.isBlank()
                 ? source.substring(0, 1).toUpperCase()
                 : "A";

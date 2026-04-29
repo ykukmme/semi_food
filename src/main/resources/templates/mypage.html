@@ -6,6 +6,31 @@
     <title>&#45236; &#51221;&#48372; | Heritage Namhae</title>
     <link rel="stylesheet" href="/css/register.css">
     <script th:src="@{/js/auth-guard.js}" src="/js/auth-guard.js"></script>
+    <style>
+        .dashboard-return-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            margin-top: 1rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid #0075de;
+            border-radius: 999px;
+            background: #ffffff;
+            color: #0075de;
+            font-size: 0.9rem;
+            font-weight: 800;
+            text-decoration: none;
+            box-shadow: 0 10px 24px rgba(0, 117, 222, 0.12);
+            transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+
+        .dashboard-return-link:hover {
+            background: #0075de;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+    </style>
 </head>
 <body>
     <main class="register-container">
@@ -13,6 +38,7 @@
             <a href="/" class="badge">Heritage Namhae</a>
             <h1>&#45236; &#51221;&#48372;</h1>
             <p>&#47196;&#44536;&#51064;&#54620; &#54924;&#50896;&#51032; &#44228;&#51221; &#51221;&#48372;&#47484; &#54869;&#51064;&#54633;&#45768;&#45796;.</p>
+            <a href="/member" class="dashboard-return-link">대시보드로 돌아가기</a>
         </div>
 
         <section class="profile-section">

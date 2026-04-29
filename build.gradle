@@ -60,6 +60,10 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += '-parameters'
+}
+
 // Keep Gradle bootRun friendly for teammates who run the app from the terminal.
 // application.yml also imports .env so IDE launches work the same way.
 tasks.named('bootRun') {

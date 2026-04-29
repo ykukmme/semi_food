@@ -190,33 +190,13 @@ function setupLogoutButton() {
     });
 }
 
-async function openMemberDashboard(memberId, token = getToken()) {
-    if (!token || !memberId) {
+function openMemberDashboard(token = getToken()) {
+    if (!token) {
         window.location.href = '/login.html';
         return;
     }
 
-    const dashboardResponse = await fetch('/member', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-            Authorization: `Bearer ${token}`,
-        },
-        body: new URLSearchParams({
-            memberId,
-        }),
-    });
-
-    if (!dashboardResponse.ok || dashboardResponse.url.includes('/login.html')) {
-        window.location.href = '/login.html';
-        return;
-    }
-
-    const html = await dashboardResponse.text();
-    window.history.pushState({}, '', '/member');
-    document.open();
-    document.write(html);
-    document.close();
+    window.location.href = '/member';
 }
 
 function setupMemberDashboardLink() {
@@ -242,8 +222,7 @@ function setupMemberDashboardLink() {
                 return;
             }
 
-            const member = await meResponse.json();
-            await openMemberDashboard(member.memberId, token);
+            openMemberDashboard(token);
         } catch (error) {
             window.location.href = '/login.html';
         }

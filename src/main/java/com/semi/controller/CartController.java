@@ -38,7 +38,7 @@ public class CartController {
     @GetMapping("/view")
     public String viewCart(
             @AuthenticationPrincipal MemberDetails memberDetails,
-            @RequestParam(required = false) Long memberId,
+            @RequestParam(name = "memberId", required = false) Long memberId,
             Model model
     ) {
         if (memberDetails == null) {
@@ -56,9 +56,9 @@ public class CartController {
     @PostMapping("/view")
     public String addCartItemAndViewCart(
             @AuthenticationPrincipal MemberDetails memberDetails,
-            @RequestParam(required = false) Long memberId,
-            @RequestParam Long productId,
-            @RequestParam(defaultValue = "1") int quantity,
+            @RequestParam(name = "memberId", required = false) Long memberId,
+            @RequestParam(name = "productId") Long productId,
+            @RequestParam(name = "quantity", defaultValue = "1") int quantity,
             Model model
     ) {
         Long resolvedMemberId = memberDetails != null ? memberDetails.getMember().getId() : memberId;
@@ -101,7 +101,7 @@ public class CartController {
     @ResponseBody
     public ResponseEntity<Void> deleteCartItem(
             @AuthenticationPrincipal MemberDetails memberDetails,
-            @PathVariable Long productId
+            @PathVariable("productId") Long productId
     ) {
         cartItemService.deleteCartItem(memberDetails.getMember().getId(), productId);
         return ResponseEntity.noContent().build();

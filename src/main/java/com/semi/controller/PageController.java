@@ -5,7 +5,9 @@ import com.semi.domain.order.PurchaseOrder;
 import com.semi.domain.order.PurchaseOrderService;
 import com.semi.security.MemberDetails;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class PageController {
 
     private final PurchaseOrderService purchaseOrderService;
+    private static final DateTimeFormatter ORDERED_AT_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
+    private static final DateTimeFormatter ORDERED_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
     @GetMapping("/checkout")
     public String checkout(@AuthenticationPrincipal MemberDetails memberDetails) {
@@ -31,7 +35,7 @@ public class PageController {
     @GetMapping("/order_detail")
     public String orderDetail(
             @AuthenticationPrincipal MemberDetails memberDetails,
-            @RequestParam(required = false) String orderNumber,
+            @RequestParam(name = "orderNumber", required = false) String orderNumber,
             Model model
     ) {
         if (memberDetails == null) {
@@ -58,8 +62,8 @@ public class PageController {
     @GetMapping("/order_success")
     public String orderSuccess(
             @AuthenticationPrincipal MemberDetails memberDetails,
-            @RequestParam(required = false) String status,
-            @RequestParam(required = false) String orderNumber,
+            @RequestParam(name = "status", required = false) String status,
+            @RequestParam(name = "orderNumber", required = false) String orderNumber,
             Model model
     ) {
         if (memberDetails == null) {
@@ -87,7 +91,7 @@ public class PageController {
     @GetMapping("/all_orders")
     public String allOrders(
             @AuthenticationPrincipal MemberDetails memberDetails,
-            @RequestParam(required = false) Long memberId,
+            @RequestParam(name = "memberId", required = false) Long memberId,
             Model model
     ) {
         if (memberDetails == null) {
@@ -95,19 +99,24 @@ public class PageController {
         }
 
         Long resolvedMemberId = memberDetails.getMember().getId();
-        List<OrderRow> orders = purchaseOrderService.getOrdersByMemberId(resolvedMemberId).stream()
-                .filter(order -> order.getStatus() != OrderStatus.CANCELLED)
-                .map(OrderRow::from)
-                .toList();
-        model.addAttribute("orders", orders);
         model.addAttribute("memberId", resolvedMemberId);
+        try {
+            List<OrderRow> orders = purchaseOrderService.getOrdersByMemberId(resolvedMemberId).stream()
+                    .filter(order -> order.getStatus() != OrderStatus.CANCELLED)
+                    .map(OrderRow::from)
+                    .toList();
+            model.addAttribute("orders", orders);
+        } catch (Exception ex) {
+            model.addAttribute("orders", List.of());
+            model.addAttribute("ordersError", "주문 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.");
+        }
         return "all_orders";
     }
 
     @GetMapping("/cancel_orders")
     public String cancelOrders(
             @AuthenticationPrincipal MemberDetails memberDetails,
-            @RequestParam(required = false) Long memberId,
+            @RequestParam(name = "memberId", required = false) Long memberId,
             Model model
     ) {
         if (memberDetails == null) {
@@ -115,12 +124,17 @@ public class PageController {
         }
 
         Long resolvedMemberId = memberDetails.getMember().getId();
-        List<OrderRow> orders = purchaseOrderService.getOrdersByMemberId(resolvedMemberId).stream()
-                .filter(order -> order.getStatus() == OrderStatus.CANCELLED)
-                .map(OrderRow::from)
-                .toList();
-        model.addAttribute("orders", orders);
         model.addAttribute("memberId", resolvedMemberId);
+        try {
+            List<OrderRow> orders = purchaseOrderService.getOrdersByMemberId(resolvedMemberId).stream()
+                    .filter(order -> order.getStatus() == OrderStatus.CANCELLED)
+                    .map(OrderRow::from)
+                    .toList();
+            model.addAttribute("orders", orders);
+        } catch (Exception ex) {
+            model.addAttribute("orders", List.of());
+            model.addAttribute("ordersError", "취소/환불 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.");
+        }
         return "cancel_orders";
     }
 
@@ -140,21 +154,27 @@ public class PageController {
     public record OrderRow(
             String orderNumber,
             String statusLabel,
-            Integer totalPrice,
-            LocalDateTime orderedAt,
+            String totalPriceText,
+            String orderedAtText,
+            String orderedDateText,
             boolean cancellable
     ) {
         private static OrderRow from(PurchaseOrder order) {
+            OrderStatus status = order.getStatus();
             return new OrderRow(
                     order.getOrderNumber(),
-                    statusLabel(order.getStatus()),
-                    order.getTotalPrice(),
-                    order.getOrderedAt(),
-                    order.getStatus() == OrderStatus.RECEIVED || order.getStatus() == OrderStatus.IN_PROGRESS
+                    statusLabel(status),
+                    formatWon(order.getTotalPrice()),
+                    formatDateTime(order.getOrderedAt()),
+                    formatDate(order.getOrderedAt()),
+                    status == OrderStatus.RECEIVED || status == OrderStatus.IN_PROGRESS
             );
         }
 
         private static String statusLabel(OrderStatus status) {
+            if (status == null) {
+                return "상태 확인 중";
+            }
             return switch (status) {
                 case RECEIVED -> "주문 접수";
                 case IN_PROGRESS -> "처리 중";
@@ -162,6 +182,19 @@ public class PageController {
                 case COMPLETED -> "주문 완료";
                 case CANCELLED -> "취소 완료";
             };
+        }
+
+        private static String formatWon(Integer amount) {
+            int safeAmount = amount == null ? 0 : amount;
+            return String.format(Locale.KOREA, "₩%,d", safeAmount);
+        }
+
+        private static String formatDateTime(LocalDateTime orderedAt) {
+            return orderedAt == null ? "-" : orderedAt.format(ORDERED_AT_FORMATTER);
+        }
+
+        private static String formatDate(LocalDateTime orderedAt) {
+            return orderedAt == null ? "-" : orderedAt.format(ORDERED_DATE_FORMATTER);
         }
     }
 

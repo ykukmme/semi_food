@@ -30,7 +30,7 @@ public class MemberController {
     @PostMapping
     public String dashboard(
             @AuthenticationPrincipal MemberDetails memberDetails,
-            @RequestParam String memberId,
+            @RequestParam("memberId") String memberId,
             Model model
     ) {
         if (memberDetails == null) {
@@ -67,16 +67,17 @@ public class MemberController {
         model.addAttribute("keywords", keywords);
         latestKeyword.ifPresent(keyword -> model.addAttribute("keywordCollectedAt", keyword.getCollectedAt()));
 
-        List<CartItem> recentCartItems = cartItemService.getRecentCartItems(memberDetails.getMember().getId());
+        Long memberId = memberDetails.getMember().getId();
+        List<CartItem> recentCartItems = cartItemService.getRecentCartItems(memberId);
         model.addAttribute("dashboardMessage", "대시보드");
         model.addAttribute("member", memberDetails.getMember());
         model.addAttribute("recentCartItems", recentCartItems);
-        model.addAttribute("totalOrderCount", purchaseOrderService.getTotalOrderCount());
-        double orderCancellationRate = purchaseOrderService.getOrderCancellationRate();
+        model.addAttribute("totalOrderCount", purchaseOrderService.getTotalOrderCount(memberId));
+        double orderCancellationRate = purchaseOrderService.getOrderCancellationRate(memberId);
         model.addAttribute("orderCancellationRate", orderCancellationRate);
         model.addAttribute("orderCancellationRateText", String.format(Locale.KOREA, "%.1f%%", orderCancellationRate));
-        model.addAttribute("totalOrderedProductCount", purchaseOrderService.getTotalOrderedProductCount());
-        double repeatPurchaseRate = purchaseOrderService.getRepeatPurchaseRate();
+        model.addAttribute("totalOrderedProductCount", purchaseOrderService.getTotalOrderedProductCount(memberId));
+        double repeatPurchaseRate = purchaseOrderService.getRepeatPurchaseRate(memberId);
         model.addAttribute("repeatPurchaseRate", repeatPurchaseRate);
         model.addAttribute("repeatPurchaseRateText", String.format(Locale.KOREA, "%.1f%%", repeatPurchaseRate));
 

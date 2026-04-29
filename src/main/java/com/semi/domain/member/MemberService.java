@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -18,6 +19,13 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Transactional(readOnly = true)
+    public List<MemberResponse> getAllMembers() {
+        return memberRepository.findAll().stream()
+                .map(MemberResponse::from)
+                .toList();
+    }
 
     /**
      * 회원가입
@@ -77,5 +85,14 @@ public class MemberService {
 
         member.updateProfile(request.email(), request.phone());
         return MemberResponse.from(member);
+    }
+
+    @Transactional
+    public void deleteMember(Long memberId, String deletedBy) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException("회원을 찾을 수 없습니다."));
+
+        log.info("[AUDIT] member_delete | target={} | deletedBy={}", member.getMemberId(), deletedBy);
+        memberRepository.delete(member);
     }
 }

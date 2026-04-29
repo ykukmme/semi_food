@@ -36,7 +36,7 @@ public class AdminOrderController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long id) {
+    public ResponseEntity<OrderResponse> getOrderById(@PathVariable("id") Long id) {
         PurchaseOrder order = purchaseOrderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
         
@@ -51,10 +51,10 @@ public class AdminOrderController {
                     OrderItemResponse response = new OrderItemResponse(
                             item.getId(),
                             item.getProductName(),
-                            item.getDescription(),
+                            item.getProduct() != null ? item.getProduct().getDescription() : "",
                             item.getQuantity(),
-                            item.getUnitPrice(),  // Use getUnitPrice() method
-                            item.getTotalPrice()   // Use getTotalPrice() method
+                            item.getPrice(),
+                            item.subtotal()
                     );
                     return response;
                 })
@@ -69,12 +69,12 @@ public class AdminOrderController {
                 order.getMember().getName(),
                 order.getMember().getEmail(),
                 order.getMember().getPhone(),
-                order.getShippingAddress(),
-                order.getPaymentMethod(),
-                order.getPaymentStatus(),
+                "",
+                "",
+                "",
                 status,
                 order.getOrderedAt(),
-                order.getSubtotal(),
+                order.getTotalPrice(),
                 order.getShippingFee(),
                 order.getTotalPrice(),
                 items
@@ -109,14 +109,14 @@ public class AdminOrderController {
                 row.createCell(1).setCellValue(order.getMember().getName());
                 row.createCell(2).setCellValue(order.getMember().getEmail());
                 row.createCell(3).setCellValue(order.getMember().getPhone());
-                row.createCell(4).setCellValue(order.getShippingAddress());
-                row.createCell(5).setCellValue(order.getPaymentMethod());
-                row.createCell(6).setCellValue(order.getPaymentStatus());
-                row.createCell(7).setCellValue(order.getStatus().toString());
-                row.createCell(8).setCellValue(order.getOrderedAt().toString());
-                row.createCell(9).setCellValue(order.getSubtotal());
-                row.createCell(10).setCellValue(order.getShippingFee());
-                row.createCell(11).setCellValue(order.getTotalPrice());
+                row.createCell(4).setCellValue("");
+                row.createCell(5).setCellValue("");
+                row.createCell(6).setCellValue("");
+                row.createCell(7).setCellValue(order.getStatus() != null ? order.getStatus().toString() : "");
+                row.createCell(8).setCellValue(order.getOrderedAt() != null ? order.getOrderedAt().toString() : "");
+                row.createCell(9).setCellValue(order.getTotalPrice() != null ? order.getTotalPrice() : 0);
+                row.createCell(10).setCellValue(order.getShippingFee() != null ? order.getShippingFee() : 0);
+                row.createCell(11).setCellValue(order.getTotalPrice() != null ? order.getTotalPrice() : 0);
             }
             
             // Auto-size columns
@@ -173,14 +173,14 @@ public class AdminOrderController {
                 row.createCell(1).setCellValue(order.getMember().getName());
                 row.createCell(2).setCellValue(order.getMember().getEmail());
                 row.createCell(3).setCellValue(order.getMember().getPhone());
-                row.createCell(4).setCellValue(order.getShippingAddress());
-                row.createCell(5).setCellValue(order.getPaymentMethod());
-                row.createCell(6).setCellValue(order.getPaymentStatus());
-                row.createCell(7).setCellValue(order.getStatus().toString());
-                row.createCell(8).setCellValue(order.getOrderedAt().toString());
-                row.createCell(9).setCellValue(order.getSubtotal());
-                row.createCell(10).setCellValue(order.getShippingFee());
-                row.createCell(11).setCellValue(order.getTotalPrice());
+                row.createCell(4).setCellValue("");
+                row.createCell(5).setCellValue("");
+                row.createCell(6).setCellValue("");
+                row.createCell(7).setCellValue(order.getStatus() != null ? order.getStatus().toString() : "");
+                row.createCell(8).setCellValue(order.getOrderedAt() != null ? order.getOrderedAt().toString() : "");
+                row.createCell(9).setCellValue(order.getTotalPrice() != null ? order.getTotalPrice() : 0);
+                row.createCell(10).setCellValue(order.getShippingFee() != null ? order.getShippingFee() : 0);
+                row.createCell(11).setCellValue(order.getTotalPrice() != null ? order.getTotalPrice() : 0);
             }
             
             // Auto-size columns
