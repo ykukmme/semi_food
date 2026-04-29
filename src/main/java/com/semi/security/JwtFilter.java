@@ -58,15 +58,13 @@ public class JwtFilter extends OncePerRequestFilter {
             return header.substring(7);
         }
 
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
                 if ("accessToken".equals(cookie.getName()) && StringUtils.hasText(cookie.getValue())) {
                     return cookie.getValue();
                 }
             }
         }
-
         return null;
     }
 

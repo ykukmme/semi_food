@@ -80,11 +80,16 @@ public class PurchaseOrder {
         this.totalPrice   = totalPrice;
         this.shippingFee  = shippingFee;
         this.isAuto       = isAuto != null ? isAuto : false;
+<<<<<<< HEAD
         this.subtotal     = subtotal != null ? subtotal : totalPrice; // fallback if null
         this.shippingAddress = shippingAddress;
         this.paymentMethod = paymentMethod;
         this.paymentStatus = paymentStatus;
         this.status       = OrderStatus.RECEIVED;  // 기본값: 발주 접수 완
+=======
+        this.status       = OrderStatus.RECEIVED;
+        this.orderedAt    = LocalDateTime.now();
+>>>>>>> origin/feature/wooree
         this.orderedAt    = LocalDateTime.now();
     }
 

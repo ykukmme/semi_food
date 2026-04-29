@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문 상세 | Heritage Namhae</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script src="../static/js/auth.js" th:src="@{/js/auth.js}" defer></script>
+    <script src="../static/js/auth-guard.js" th:src="@{/js/auth-guard.js}"></script>
+</head>
+<body class="bg-[#f0f7ff] text-[#003366] min-h-screen" th:data-server-order="${order != null}">
+    <header class="bg-white border-b border-[#99c2ff]/30">
+        <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="/" th:href="@{/}" class="text-2xl font-black tracking-tight text-[#0066cc]">Heritage Namhae</a>
+            <nav class="flex items-center gap-6" aria-label="상단 메뉴">
+                <div id="guestMenu" class="items-center gap-6">
+                    <a class="material-symbols-outlined text-[#0066cc] duration-200" th:href="@{/login.html}" href="/login.html" aria-label="로그인">person</a>
+                    <a class="material-symbols-outlined text-[#0066cc] duration-200" th:href="@{/register.html}" href="/register.html" aria-label="회원가입">person_add</a>
+                </div>
+                <div id="memberMenu" class="items-center gap-6" style="display: none;">
+                    <a href="/cart/view" th:href="@{/cart/view}" class="relative inline-flex items-center justify-center text-[#0066cc] duration-200" aria-label="장바구니">
+                        <span class="material-symbols-outlined">shopping_bag</span>
+                        <span id="cart-count-badge" class="hidden absolute -top-2 -right-3 min-w-[1.35rem] h-5 px-1 rounded-full bg-[#0066cc] text-white text-[10px] font-extrabold leading-5 text-center shadow-md shadow-[#0066cc]/30 border border-white">0</span>
+                    </a>
+                    <a class="material-symbols-outlined text-[#0066cc] duration-200" id="member-dashboard-link" th:href="@{/member}" href="/member" aria-label="회원페이지">person</a>
+                    <a class="material-symbols-outlined text-[#0066cc] duration-200 cursor-pointer" id="logoutBtn" href="#" aria-label="로그아웃">person_remove</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 pt-3 pb-10">
+        <section id="status-panel" class="hidden">
+            <div th:if="${order != null}">
+                <h2 class="text-xl font-extrabold text-[#0066cc]">&#51452;&#47928; &#49345;&#49464;&#47484; &#54869;&#51064;&#54616;&#49464;&#50836;.</h2>
+                <p class="mt-2 text-sm text-[#004080]">&#51452;&#47928;&#54788;&#54889;&#50640;&#49436; &#49440;&#53469;&#54620; &#51452;&#47928;&#51032; &#49345;&#49464; &#51221;&#48372;&#51077;&#45768;&#45796;.</p>
+            </div>
+            <div th:if="${orderError != null}">
+                <h2 class="text-xl font-extrabold text-red-700">&#51452;&#47928; &#51221;&#48372;&#47484; &#48520;&#47084;&#50724;&#51648; &#47803;&#54664;&#49845;&#45768;&#45796;.</h2>
+                <p class="mt-2 text-sm text-red-600" th:text="${orderError}">&#51452;&#47928; &#51221;&#48372;&#44032; &#50630;&#49845;&#45768;&#45796;.</p>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 rounded-2xl border bg-white p-6 shadow-sm">
+                <h1 class="text-2xl font-extrabold mb-6">주문 상세</h1>
+                <div id="order-info" class="space-y-3 text-sm">
+                    <div th:if="${order != null}" class="space-y-3">
+                        <p><span class="font-bold">&#51452;&#47928;&#48264;&#54840;</span> <span th:text="${order.orderNumber}">PO-20260428-0001</span></p>
+                        <p><span class="font-bold">&#51452;&#47928;&#51068;&#49884;</span> <span th:text="${#temporals.format(order.orderedAt, 'yyyy.MM.dd HH:mm')}">2026.04.28 15:30</span></p>
+                        <p><span class="font-bold">&#51452;&#47928;&#49345;&#53468;</span> <span th:text="${order.statusLabel}">received</span></p>
+                    </div>
+                    <p th:if="${order == null and requestedOrderNumber != null}" class="text-gray-500">&#49440;&#53469;&#54620; &#51452;&#47928;&#51032; &#49345;&#49464; &#51221;&#48372;&#47484; &#54869;&#51064;&#54624; &#49688; &#50630;&#49845;&#45768;&#45796;.</p>
+                </div>
+                <div class="mt-8">
+                    <h2 class="text-lg font-bold mb-4">주문 상품</h2>
+                    <div id="order-items" class="divide-y divide-gray-100">
+                        <th:block th:if="${order != null}">
+                        <article th:each="item : ${order.items}" class="py-4 flex gap-4">
+                            <div class="w-20 h-20 rounded-xl bg-gray-100 overflow-hidden flex-shrink-0">
+                                <img th:if="${item.imageUrl != null and !#strings.isEmpty(item.imageUrl)}" th:src="${item.imageUrl}" th:alt="${item.productName}" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-bold" th:text="${item.productName}">&#49345;&#54408;&#47749;</h3>
+                                <p class="mt-1 text-sm text-gray-500">&#49688;&#47049; <span th:text="${item.quantity}">1</span>&#44060;</p>
+                                <p class="mt-2 font-bold text-[#0066cc]" th:text="${'&#8361;' + #numbers.formatInteger(item.subtotal, 0, 'COMMA')}">&#8361;0</p>
+                            </div>
+                        </article>
+                        </th:block>
+                        <p th:if="${order == null and requestedOrderNumber != null}" class="py-6 text-gray-500">&#51452;&#47928; &#49345;&#54408; &#51221;&#48372;&#44032; &#50630;&#49845;&#45768;&#45796;.</p>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="rounded-2xl border bg-white p-6 shadow-sm h-fit">
+                <h2 class="text-lg font-bold mb-4">결제 금액</h2>
+                <div id="payment-summary" class="space-y-3 text-sm">
+                    <div th:if="${order != null}" class="space-y-3">
+                        <div class="flex justify-between"><span>&#49345;&#54408; &#44552;&#50529;</span><strong th:text="${'&#8361;' + #numbers.formatInteger(order.totalPrice, 0, 'COMMA')}">&#8361;0</strong></div>
+                        <div class="flex justify-between"><span>&#48176;&#49569;&#48708;</span><strong th:text="${'&#8361;' + #numbers.formatInteger(order.shippingFee, 0, 'COMMA')}">&#8361;0</strong></div>
+                        <div class="flex justify-between border-t pt-3 text-lg"><span>&#52509; &#44208;&#51228;</span><strong class="text-[#0066cc]" th:text="${'&#8361;' + #numbers.formatInteger(order.totalPrice + order.shippingFee, 0, 'COMMA')}">&#8361;0</strong></div>
+                    </div>
+                    <p th:if="${order == null and requestedOrderNumber != null}" class="text-gray-500">&#44208;&#51228; &#44552;&#50529; &#51221;&#48372;&#44032; &#50630;&#49845;&#45768;&#45796;.</p>
+                </div>
+                <a href="/" target="_blank" rel="noopener noreferrer" class="mt-6 block w-full rounded-full bg-[#0066cc] px-5 py-3 text-center font-bold text-white">계속 쇼핑하기</a>
+            </aside>
+        </section>
+    </main>
+
+    <script>
+        function money(value) {
+            return '₩' + (Number(value) || 0).toLocaleString('ko-KR');
+        }
+
+        function escapeHtml(value) {
+            return String(value || '')
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#39;');
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        const status = params.get('status');
+        const requestedOrderNumber = params.get('orderNumber');
+        const order = JSON.parse(localStorage.getItem('namhae_order_v1') || 'null');
+        const statusPanel = document.getElementById('status-panel');
+        const orderInfo = document.getElementById('order-info');
+        const orderItems = document.getElementById('order-items');
+        const paymentSummary = document.getElementById('payment-summary');
+
+        if (document.body.dataset.serverOrder !== 'true' && !requestedOrderNumber) {
+        if (status === 'success') {
+            statusPanel.innerHTML = '<h2 class="text-xl font-extrabold text-[#0066cc]">결제가 완료되었습니다.</h2><p class="mt-2 text-sm text-[#004080]">주문 정보가 정상적으로 저장되었습니다.</p>';
+        } else if (status === 'fail') {
+            statusPanel.innerHTML = '<h2 class="text-xl font-extrabold text-red-700">결제 처리에 실패했습니다.</h2><p class="mt-2 text-sm text-red-600">장바구니에서 다시 시도해주세요.</p>';
+        } else {
+            statusPanel.innerHTML = '<h2 class="text-xl font-extrabold">주문 정보를 확인합니다.</h2>';
+        }
+
+        if (!order || !Array.isArray(order.items) || order.items.length === 0) {
+            orderInfo.innerHTML = '<p class="text-gray-500">표시할 주문 정보가 없습니다.</p>';
+            orderItems.innerHTML = '<p class="py-6 text-gray-500">주문 상품이 없습니다.</p>';
+            paymentSummary.innerHTML = '<p class="text-gray-500">결제 금액 정보가 없습니다.</p>';
+        } else {
+            orderInfo.innerHTML = `
+                <p><span class="font-bold">주문번호</span> ${escapeHtml(order.orderNumber)}</p>
+                <p><span class="font-bold">주문일시</span> ${escapeHtml(order.orderDate)}</p>
+                <p><span class="font-bold">수령인</span> ${escapeHtml(order.buyerName)} ${escapeHtml(order.buyerPhone)}</p>
+                <p><span class="font-bold">배송지</span> ${escapeHtml(order.shippingAddress)}</p>
+                <p><span class="font-bold">도착 예정</span> ${escapeHtml(order.estimatedArrival)}</p>
+            `;
+
+            orderItems.innerHTML = order.items.map((item) => `
+                <article class="py-4 flex gap-4">
+                    <div class="w-20 h-20 rounded-xl bg-gray-100 overflow-hidden flex-shrink-0">
+                        <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-bold">${escapeHtml(item.name)}</h3>
+                        <p class="mt-1 text-sm text-gray-500">수량 ${Number(item.quantity) || 1}개</p>
+                        <p class="mt-2 font-bold text-[#0066cc]">${money((Number(item.price) || 0) * (Number(item.quantity) || 1))}</p>
+                    </div>
+                </article>
+            `).join('');
+
+            paymentSummary.innerHTML = `
+                <div class="flex justify-between"><span>상품 금액</span><strong>${money(order.totalPrice)}</strong></div>
+                <div class="flex justify-between"><span>포인트 할인</span><strong>-${money(order.usedPoints).slice(1)}</strong></div>
+                <div class="flex justify-between border-t pt-3 text-lg"><span>최종 결제</span><strong class="text-[#0066cc]">${money(order.finalTotal)}</strong></div>
+            `;
+        }
+        }
+    </script>
+</body>
+</html>

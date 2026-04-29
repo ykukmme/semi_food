@@ -30,7 +30,12 @@ public class FlywayConfig {
                 .locations("classpath:db/migration")
                 .cleanDisabled(true)
                 .load();
-
+            // [중요] 체크섬이 달라도 무시하고 DB 기록을 로컬 파일에 맞춰 갱신합니다.
+            // System.out.println(">>> Flyway Repair 실행 중...");
+            // flyway.repair();
+            // 갱신된 정보를 바탕으로 마이그레이션 수행
+            // System.out.println(">>> Flyway Migrate 실행 중...");
+            // flyway.migrate();
         try {
             // First try to repair any checksum mismatches
             flyway.repair();

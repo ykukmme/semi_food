@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,24 +45,28 @@ public class SecurityConfig {
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(AbstractHttpConfigurer::disable)
+            .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                // 인증 필요 없는 엔드포인트
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/login.html", "/register.html", "/main.html", "/index.html").permitAll()
-                .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                .requestMatchers("/").permitAll()
-                
-                // ✅ 추가: favicon, robots.txt 등 정적 리소스는 누구나 접근 가능
-                .requestMatchers("/favicon.ico", "/robots.txt").permitAll()
-
-                // ✅ 수정: /admin 페이지는 ADMIN 역할 필요 (더 엄격한 설정)
-                .requestMatchers("/admin", "/admin/**").hasRole("ADMIN")
-                
-                // API ADMIN endpoints require ADMIN role
+                // 회원가입·로그인은 인증 없이 허용
+                .requestMatchers(
+                    "/",
+                    "/member",
+                    "/error",
+                    "/trend/**",
+                    "/product/**",
+                    "/cart/view",
+                    "/checkout",
+                    "/order_detail",
+                    "/all_orders",
+                    "/cancel_orders",
+                    "/mypage",
+                    "/api/auth/**"
+                ).permitAll()
+                // 관리자 API — ADMIN 역할 필수
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                
-                // 나머지는 인증 필수
+                // 정적 파일 허용 (루트 + 하위 디렉토리 HTML 모두 포함)
+                .requestMatchers("/index.html", "/*.html", "/**/*.html", "/css/**", "/js/**","/images/**").permitAll()
                 .anyRequest().authenticated()
             )
             // 401 응답을 일관된 JSON 형식으로 반환

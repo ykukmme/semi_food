@@ -7,6 +7,7 @@ import com.semi.domain.member.dto.LoginRequest;
 import com.semi.domain.member.dto.LoginResponse;
 import com.semi.domain.member.dto.MemberResponse;
 import com.semi.domain.member.dto.RegisterRequest;
+import com.semi.domain.member.dto.UpdateProfileRequest;
 import com.semi.security.JwtProvider;
 import com.semi.security.MemberDetails;
 import jakarta.validation.Valid;
@@ -78,25 +79,22 @@ public class AuthController {
      */
     @GetMapping("/me")
     public ResponseEntity<MemberResponse> me(@AuthenticationPrincipal MemberDetails memberDetails) {
+        if (memberDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         return ResponseEntity.ok(MemberResponse.from(memberDetails.getMember()));
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<Map<String, String>> logout() {
-        ResponseCookie clearCookie = buildAuthCookie("", 0);
+    @PutMapping("/me")
+    public ResponseEntity<MemberResponse> updateMe(
+            @AuthenticationPrincipal MemberDetails memberDetails,
+            @Valid @RequestBody UpdateProfileRequest request
+    ) {
+        if (memberDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, clearCookie.toString())
-                .body(Map.of("message", "로그아웃되었습니다."));
-    }
-
-    private ResponseCookie buildAuthCookie(String token, long maxAgeSeconds) {
-        return ResponseCookie.from("accessToken", token)
-                .httpOnly(true)
-                .secure(false)
-                .sameSite("Lax")
-                .path("/")
-                .maxAge(maxAgeSeconds)
-                .build();
+        MemberResponse response = memberService.updateProfile(memberDetails.getMember().getId(), request);
+        return ResponseEntity.ok(response);
     }
 }

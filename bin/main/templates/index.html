@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Heritage Namhae</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="../static/js/auth.js" th:src="@{/js/auth.js}" defer></script>
+<script src="../static/js/index-complete.js" th:src="@{/js/index-complete.js}" defer></script>
+<link rel="stylesheet" href="../static/css/common.css" th:href="@{/css/common.css}">
+<link rel="stylesheet" href="../static/css/index.css" th:href="@{/css/index.css}">
+</head>
+<body class="index-page">
+<header class="site-header main-header">
+    <div class="site-header__inner">
+        <div class="site-brand"><a th:href="@{/}">Heritage Namhae</a></div>
+        <nav class="site-nav" aria-label="상단 메뉴">
+            <form class="nav-search" id="nav-search-form" role="search">
+                <label class="sr-only" for="nav-search-input">상품 검색</label>
+                <span class="material-symbols-outlined nav-search-icon" aria-hidden="true">search</span>
+                <input id="nav-search-input" class="nav-search-input" type="search" placeholder="상품 검색" autocomplete="off"/>
+            </form>
+            <div id="guestMenu">
+                <a class="site-nav__icon-link material-symbols-outlined" th:href="@{/login.html}" aria-label="로그인">person</a>
+                <a class="site-nav__icon-link material-symbols-outlined" th:href="@{/register.html}" aria-label="회원가입">person_add</a>
+            </div>
+            <div id="memberMenu" style="display: none;">
+                <a class="site-nav__icon-link cart-link" href="/cart/view" aria-label="장바구니">
+                    <span class="material-symbols-outlined" aria-hidden="true">shopping_bag</span>
+                    <span id="cart-count-badge" class="cart-count-badge is-hidden">0</span>
+                </a>
+                <a class="site-nav__icon-link material-symbols-outlined" href="/product/member" id="member-dashboard-link" aria-label="회원페이지">person</a>
+                <a class="site-nav__icon-link material-symbols-outlined" type="button" id="logoutBtn">person_remove</a>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="hero" id="newRecommendation">
+        <div class="hero__media">
+            <img alt="Namhae Winter Spinach" class="hero__image" data-alt="Close-up of vibrant green organic spinach leaves with dew drops in a sun-drenched coastal field of Namhae island at dawn" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCewXvdNEluXrX_ptA0lh3Q9dIkXMP__IJb6BNdazMSZSSGXL-q29RAd7OrG4IZdVi-nqkHWw4LUsVqSUFy2enS5fH4etAP45twTc1Wy5pbYbU4oVsIRXAa2h5f7qPJ5t6TbvynJ2Tm-XqA47pCo9WhFPlU1J0Fn0CDmht-aydrLGvYkbwRaadeQf0JnVS4MWZ7UhtY6nQCCkmM1wDREZUCJVr-rXfmp2PRUeGMAclzWZOpbO9-dXuUEKLx_C3AoqFPOO9Y62ZD9Ns"/>
+            <div class="hero__overlay"></div>
+        </div>
+        <div class="hero__inner">
+            <div class="hero__content">
+                <span class="season-badge">계절 특선</span>
+                <h1 class="hero__title">남해<br/>봄<br/>시금치.</h1>
+                <p class="hero__copy">바닷바람과 남쪽 태양 아래 자라난 헤리티지 시금치는 남해의 겨울에만 느낄 수 있는 달콤함을 간직하고 있습니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="products-section" id="best">
+        <div class="section-container">
+            <div class="member-welcome is-hidden" id="member-welcome" aria-live="polite">
+                <span class="member-welcome__name" id="member-welcome-name"></span>님 반갑습니다
+            </div>
+            <div class="products-section__header">
+                <div>
+                    <h2 class="best-section-title">베스트 큐레이션</h2>
+                    <p class="section-lead">남해의 해안 들판과 깊은 바다에서 온 우리 커뮤니티가 가장 사랑하는 보물들입니다.</p>
+                </div>
+                <div class="category-tabs" id="category-tabs">
+                    <button class="tab-btn is-active" data-category="all">전체</button>
+                    <button class="tab-btn" data-category="agricultural">농산물</button>
+                    <button class="tab-btn" data-category="marine">수산물</button>
+                    <button class="tab-btn" data-category="processed">가공품</button>
+                    <button class="tab-btn" data-category="gift">선물세트</button>
+                </div>
+            </div>
+
+            <p class="products-empty-message is-hidden" id="products-empty-message">검색 결과가 없습니다.</p>
+            <div class="products-grid" id="products-grid">
+                <div class="product-item" th:each="product : ${products}" th:data-category="${product.category != null ? product.category.tabKey : 'agricultural'}">
+                    <div class="product-card" th:data-url="@{/product/view(id=${product.id})}" onclick="location.href=this.getAttribute('data-url')">
+                        <div class="product-card__media">
+                            <img alt="Premium Garlic" class="product-card__image" th:src="${product.imageUrl}"/>
+                            <div class="product-card__action">
+                                <a class="product-card__button" th:href="@{/product/view(id=${product.id})}">상품 보기</a>
+                            </div>
+                        </div>
+                        <h3 class="product-card__name" th:text="${product.name}">상품명</h3>
+                        <div class="product-card__price">
+                            <span th:text="${product.price != null} ? |₩${#numbers.formatInteger(product.price, 3, 'COMMA')}| : '가격 미정'"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-more-wrap">
+                <button class="product-more-btn" id="product-more-btn" type="button">상품 더 보기</button>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="site-footer__grid">
+        <div>
+            <div class="site-footer__brand">Heritage Namhae</div>
+            <p class="site-footer__copy">
+                남해군 공식 헤리티지 몰, 우리 해안 낙원의 진짜 맛을 당신의 집으로 바로 전달합니다.
+            </p>
+            <div class="footer-socials">
+                <a class="footer-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img class="footer-social-icon" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="Instagram" /></a>
+                <a class="footer-social-link" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img class="footer-social-icon" src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook" /></a>
+                <a class="footer-social-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><img class="footer-social-icon" src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn" /></a>
+                <a class="footer-social-link" href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X"><img class="footer-social-icon" src="https://img.icons8.com/color/48/twitterx--v1.png" alt="X" /></a>
+            </div>
+        </div>
+        <div>
+            <h4 class="site-footer__title">서비스</h4>
+            <ul class="site-footer__list">
+                <li><a href="#">회사 소개</a></li>
+                <li><a href="#">배송 및 추적</a></li>
+                <li><a href="#">이용 약관</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="site-footer__title">연락처</h4>
+            <ul class="site-footer__list">
+                <li>전화: 055-123-4567</li>
+                <li>이메일: help@namhaeheritage.kr</li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="site-footer__title">위치</h4>
+            <p class="site-footer__text">대한민국 경상남도 남해군</p>
+            <div class="footer-map">
+                <img alt="Location Map" class="footer-map-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2F8UAsYBf8f-PXSCkWz8tPMj1yPAwzNqFnUHdLvbP3NxWzmKZvO52Qb76KLXKdR7GifJMom5TfallzE3oUiWx6wj1VUqfQ-OWmzQVYplGPmVjO52jxg3e8NQdFOU-O_t0DJrzvtWD0uaWIpCc4fRIYzS0-oPNzSMqm3dfpC4iojREb1bO_k-endojrJHEh2Vek1i1HWAgmAM27qGPEC2EUe-1x_hxNJOM3j_NI-TicipehzW-arsFab0btwNoZOq5wXODkjGdXZM"/>
+            </div>
+        </div>
+    </div>
+    <div class="site-footer__bottom">
+        <p>&copy; 2024 에디토리얼 헤리티지 남해. 모든 권리 보유.</p>
+        <div class="site-footer__links">
+            <a href="#">개인정보 처리방침</a>
+            <a href="#">라이선스 정보</a>
+        </div>
+    </div>
+</footer>
+
+<button class="scroll-top-btn" id="scroll-top-btn" type="button" aria-label="상단으로 이동">
+    <span class="material-symbols-outlined" aria-hidden="true">keyboard_arrow_up</span>
+</button>
+</body>
+</html>

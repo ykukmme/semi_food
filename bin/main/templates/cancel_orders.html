@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>&#52712;&#49548;/&#54872;&#48520; | Heritage Namhae</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/vanilla-utilities.css">
+    <link rel="stylesheet" href="/css/cancel_orders.css">
+    <script th:src="@{/js/auth-guard.js}" src="/js/auth-guard.js"></script>
+</head>
+<body class="min-h-screen text-on-surface bg-background">
+    <main class="max-w-7xl mx-auto px-6 pt-0 pb-10">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-on-surface">&#52712;&#49548;/&#54872;&#48520;</h1>
+            <p class="mt-2 text-sm text-on-surface-variant">&#51452;&#47928; &#52712;&#49548;&#50752; &#54872;&#48520; &#52376;&#47532; &#49345;&#53468;&#47484; &#54869;&#51064;&#54624; &#49688; &#51080;&#49845;&#45768;&#45796;.</p>
+        </div>
+
+        <section class="bg-surface rounded-2xl shadow-sm border border-outline-variant overflow-hidden">
+            <div class="px-6 py-5 border-b border-outline-variant/20 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <div>
+                    <h2 class="text-lg font-bold text-on-surface">&#52712;&#49548; &#47785;&#47197;</h2>
+                    <p class="text-sm text-on-surface-variant mt-1">&#52712;&#49548; &#50836;&#52397;&#51032; &#52376;&#47532; &#49345;&#53468;&#47484; &#48372;&#50668;&#51469;&#45768;&#45796;.</p>
+                </div>
+                <div class="relative hidden">
+                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant text-[18px]">search</span>
+                    <input type="text" placeholder="&#52712;&#49548; &#45236;&#50669; &#44160;&#49353;" class="w-full md:w-72 pl-11 pr-4 py-2.5 bg-surface-container-low border border-transparent rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary transition-shadow">
+                </div>
+            </div>
+
+            <div th:if="${orders == null or #lists.isEmpty(orders)}" class="min-h-[280px] flex flex-col items-center justify-center text-center px-6 py-14">
+                <span class="material-symbols-outlined text-5xl text-outline-variant mb-4" aria-hidden="true">assignment_return</span>
+                <h3 class="text-xl font-extrabold text-on-surface">&#52712;&#49548;&#46108; &#51452;&#47928;&#51060; &#50630;&#49845;&#45768;&#45796;.</h3>
+                <p class="mt-2 text-sm text-on-surface-variant">&#52712;&#49548; &#52376;&#47532;&#46108; &#51452;&#47928;&#51060; &#50668;&#44592;&#50640; &#54364;&#49884;&#46121;&#45768;&#45796;.</p>
+            </div>
+
+            <div th:if="${orders != null and !#lists.isEmpty(orders)}" class="overflow-x-auto">
+                <table class="w-full min-w-[760px] text-left border-collapse">
+                    <thead class="bg-surface-container-low">
+                        <tr>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">&#51452;&#47928;&#48264;&#54840;</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">&#49345;&#53468;</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">&#44208;&#51228;&#44552;&#50529;</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">&#50836;&#52397;&#51068;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="order : ${orders}" class="border-t border-outline-variant/20 hover:bg-surface-container-low/60 transition-colors" data-order-row>
+                            <td class="py-4 px-6 font-bold">
+                                <a class="text-primary hover:underline underline-offset-4" th:href="@{/order_detail(orderNumber=${order.orderNumber})}" th:text="${order.orderNumber}">PO-20260428-0001</a>
+                            </td>
+                            <td class="py-4 px-6">
+                                <span class="inline-flex items-center rounded-full bg-primary-fixed px-3 py-1 text-xs font-extrabold text-primary" th:text="${order.statusLabel}">&#52712;&#49548; &#50756;&#47308;</span>
+                            </td>
+                            <td class="py-4 px-6 font-bold" th:text="${'₩' + #numbers.formatInteger(order.totalPrice, 0, 'COMMA')}">₩0</td>
+                            <td class="py-4 px-6" th:text="${#temporals.format(order.orderedAt, 'yyyy.MM.dd')}">2026.04.21</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:if="${orders != null and #lists.size(orders) > 4}" class="px-6 py-5 border-t border-outline-variant/20 text-center">
+                <button id="load-more-orders" type="button" class="inline-flex items-center justify-center rounded-full border border-primary px-6 py-3 text-sm font-extrabold text-primary hover:bg-primary/10 transition">
+                    &#45908;&#48372;&#44592;
+                </button>
+            </div>
+        </section>
+    </main>
+    <script>
+        (() => {
+            const pageSize = 4;
+            const rows = Array.from(document.querySelectorAll('[data-order-row]'));
+            const button = document.getElementById('load-more-orders');
+            let visibleCount = pageSize;
+
+            function updatePageScroll() {
+                const allowScroll = visibleCount > pageSize;
+                document.documentElement.style.overflowY = allowScroll ? 'auto' : 'hidden';
+                document.body.style.overflowY = allowScroll ? 'auto' : 'hidden';
+            }
+
+            function renderRows() {
+                rows.forEach((row, index) => {
+                    row.hidden = index >= visibleCount;
+                });
+
+                if (button) {
+                    button.hidden = visibleCount >= rows.length;
+                }
+
+                updatePageScroll();
+            }
+
+            button?.addEventListener('click', () => {
+                visibleCount += pageSize;
+                renderRows();
+            });
+
+            renderRows();
+        })();
+    </script>
+</body>
+</html>
