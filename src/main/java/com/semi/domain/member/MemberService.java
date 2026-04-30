@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -26,12 +24,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final PurchaseOrderRepository purchaseOrderRepository;
 
-    @Transactional(readOnly = true)
-    public List<MemberResponse> getAllMembers() {
-        return memberRepository.findAll().stream()
-                .map(MemberResponse::from)
-                .toList();
-    }
+  
 
     /**
      * 회원가입
@@ -83,12 +76,17 @@ public class MemberService {
     /**
      * 관리자용 회원 목록 조회.
      */
+    // public List<MemberResponse> getAllMembers() {
+    //     return memberRepository.findAll().stream()
+    //             .map(MemberResponse::from)
+    //             .collect(Collectors.toList());
+    // }
+  @Transactional(readOnly = true)
     public List<MemberResponse> getAllMembers() {
         return memberRepository.findAll().stream()
                 .map(MemberResponse::from)
-                .collect(Collectors.toList());
+                .toList();
     }
-
     /**
      * 회원 삭제. 연결된 주문도 함께 정리한다.
      */
@@ -122,12 +120,5 @@ public class MemberService {
         return MemberResponse.from(member);
     }
 
-    @Transactional
-    public void deleteMember(Long memberId, String deletedBy) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException("회원을 찾을 수 없습니다."));
-
-        log.info("[AUDIT] member_delete | target={} | deletedBy={}", member.getMemberId(), deletedBy);
-        memberRepository.delete(member);
-    }
+  
 }

@@ -31,13 +31,8 @@ public class AdminProductController {
     @GetMapping("/list/paged")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Product>> getProductsPaged(
-<<<<<<< HEAD
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size) {
-=======
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
->>>>>>> 06bd07ce57b7c275cfb7b67c399149dd1ff20276
         // 페이징 처리 - 한 번에 50개씩 로드
         org.springframework.data.domain.Pageable pageable = 
             org.springframework.data.domain.PageRequest.of(page, size);
@@ -47,11 +42,7 @@ public class AdminProductController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-<<<<<<< HEAD
-    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) {
-=======
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
->>>>>>> 06bd07ce57b7c275cfb7b67c399149dd1ff20276
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         return ResponseEntity.ok(product);
@@ -60,15 +51,9 @@ public class AdminProductController {
     @GetMapping("/search")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Product>> searchProducts(
-<<<<<<< HEAD
-            @RequestParam("term") String term,
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size) {
-=======
             @RequestParam String term,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
->>>>>>> 06bd07ce57b7c275cfb7b67c399149dd1ff20276
         org.springframework.data.domain.Pageable pageable =
             org.springframework.data.domain.PageRequest.of(page, size);
         org.springframework.data.domain.Page<Product> productPage = 
@@ -79,11 +64,7 @@ public class AdminProductController {
     @PutMapping("/{id}/auto-order")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateAutoOrder(
-<<<<<<< HEAD
-            @PathVariable("id") Long id,
-=======
             @PathVariable Long id,
->>>>>>> 06bd07ce57b7c275cfb7b67c399149dd1ff20276
             @Valid @RequestBody UpdateAutoOrderRequest request,
             @AuthenticationPrincipal MemberDetails changedBy
     ) {

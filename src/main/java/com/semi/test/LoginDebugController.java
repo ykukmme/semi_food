@@ -25,11 +25,7 @@ public class LoginDebugController {
      * admin 비밀번호 테스트
      */
     @PostMapping("/test-password")
-<<<<<<< HEAD
-    public Map<String, Object> testPassword(@RequestParam("testPassword") String testPassword) {
-=======
     public Map<String, Object> testPassword(@RequestParam String testPassword) {
->>>>>>> 06bd07ce57b7c275cfb7b67c399149dd1ff20276
         Map<String, Object> result = new HashMap<>();
         
         // admin 계정 조회

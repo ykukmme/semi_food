@@ -42,14 +42,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     /** ID에 해당하는 상품 단건 조회 */
     Optional<Product> findProductById(Long id);
 
-<<<<<<< HEAD
-    /** 상품명 또는 설명으로 검색 */
-    List<Product> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String name, String description);
-
-    Page<Product> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String name, String description, Pageable pageable);
-
-=======
->>>>>>> 06bd07ce57b7c275cfb7b67c399149dd1ff20276
     List<Product> findByNameContainingIgnoreCase(String name);
 
     @Query("""
@@ -63,27 +55,27 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             """)
     List<Product> searchByNameDescriptionOrKeyword(@Param("query") String query);
 
-    @Query("""
-            select product
-            from Product product
-            left join fetch product.keyword
-            left join fetch product.supplier
-            order by product.id desc
-            """)
-    List<Product> findAllOptimized();
+//     @Query("""
+//             select product
+//             from Product product
+//             left join fetch product.keyword
+//             left join fetch product.supplier
+//             order by product.id desc
+//             """)
+//     List<Product> findAllOptimized();
 
-    @Query(
-            value = """
-                    select product
-                    from Product product
-                    order by product.id desc
-                    """,
-            countQuery = """
-                    select count(product)
-                    from Product product
-                    """
-    )
-    Page<Product> findProductsPaged(Pageable pageable);
+//     @Query(
+//             value = """
+//                     select product
+//                     from Product product
+//                     order by product.id desc
+//                     """,
+//             countQuery = """
+//                     select count(product)
+//                     from Product product
+//                     """
+//     )
+//     Page<Product> findProductsPaged(Pageable pageable);
 
     
 }
