@@ -28,13 +28,13 @@ public class ParserController {
     // TrendKeyord
     private final TrendKeywordService trendKeywordService;
     
-    @GetMapping("/api/TrandKeywords") // http://localhost:8080/api/keywords
+    @GetMapping("/api/TrandKeywords") // http://localhost:8080/api/TrandKeywords
     public List<TrendKeywordResponse.TrendKeywordItem> keywordsFetch() {
             List<TrendKeywordResponse.TrendKeywordItem> result = trendKeywordService.getNaverKeywords();
         return result;
     }
 
-    @GetMapping("/api/TrandKeywords/saveWithSequentialId") // http://localhost:8080/api/keywords/saveWithSequentialId
+    @GetMapping("/api/TrandKeywords/saveWithSequentialId") // http://localhost:8080/api/TrandKeywords/saveWithSequentialId
     public List<TrendKeyword> saveWithSequentialId() {
             List<TrendKeywordResponse.TrendKeywordItem> trendList = trendKeywordService.getNaverKeywords();
             List<TrendKeyword> result = trendKeywordService.saveWithSequentialId(trendList);

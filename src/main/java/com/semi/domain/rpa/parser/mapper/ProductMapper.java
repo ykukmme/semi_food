@@ -6,6 +6,7 @@ import org.mapstruct.Mapping;
 import com.semi.domain.product.Product;
 import com.semi.domain.rpa.parser.response.SupplierAndProductResponse.ProductItem;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import java.util.List;
@@ -29,7 +30,7 @@ import java.util.List;
     // [x]TODO 1차 supplier Repository 완성하기
 
 
-@Mapper(componentModel = "spring" , imports = {LocalDate.class, DateTimeFormatter.class}) //스프링 빈으로 등록 , 클래스 임포트 추가) 
+@Mapper(componentModel = "spring" , imports = {LocalDate.class, DateTimeFormatter.class, LocalDateTime.class}) //스프링 빈으로 등록 , 클래스 임포트 추가) 
 public interface ProductMapper {
 
     // 이름이 다른 필드들을 서로 연결해주는 설정 타겟= Product
@@ -43,8 +44,7 @@ public interface ProductMapper {
     @Mapping(source = "linkUrl", target = "productUrl")           
     @Mapping(target = "autoOrder", ignore = true)
 
-    // 날짜로 변환 후 시분초0000 추가
-    @Mapping(expression = "java(LocalDate.parse(item.getSyncDate(), DateTimeFormatter.ofPattern(\"yyyyMMdd\")).atStartOfDay())", target = "crawledAt") 
+    @Mapping(target = "crawledAt" , expression = "java(LocalDateTime.now())")  
     // @Mapping(source = "isActive", target = "isActive") 
 
     // 리스트 변환도 메서드 한 줄 선언으로 해결 (toVo를 내부적으로 반복 호출함)

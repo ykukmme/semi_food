@@ -1,12 +1,15 @@
 package com.semi.domain.rpa.parser.response;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -43,8 +46,13 @@ public class TrendKeywordResponse {
         @JacksonXmlProperty(localName = "subTitle")
         private String subTitle;
 
+        @JsonProperty("rankId")
+        @JacksonXmlProperty(localName = "rankId")
+        private Long rankId;
+
         @JsonProperty("syncDate")
         @JacksonXmlProperty(localName = "syncDate")
+        // @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd")
         private String syncDate;
 
         @JsonProperty("catNm1")

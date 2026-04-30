@@ -7,6 +7,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 //하나의 응답에 제품과 공급자가 모두 들어있음으로 동시에 처리, 단 공급자ID때문에 공급자를 먼저 처리
@@ -39,7 +41,7 @@ public class SupplierAndProductResponse {
         
         @JsonProperty("syncDate")
         @JacksonXmlProperty(localName = "syncDate")
-        private String syncDate; // 수집 날짜 (예: 20260427)
+        private LocalDateTime syncDate; // 수집 날짜 (예: 20260427)
     }
 
 
@@ -78,7 +80,7 @@ public class SupplierAndProductResponse {
 
         @JsonProperty("syncDate")
         @JacksonXmlProperty(localName = "syncDate")
-        private String syncDate; // 수집 날짜 (예: 20260427)
+        private LocalDateTime syncDate; // 수집 날짜 (예: 20260427)
 
     }
 

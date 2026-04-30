@@ -54,6 +54,7 @@ public class TrendKeyword {
     private Long rankingId;
 
     @Column(name = "sync_date", nullable = true) // url에서 syncDate, ymd 등으로 쓰임, 기존크롤링에서는 수집불가했던 데이터
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime syncDate;
 
 
