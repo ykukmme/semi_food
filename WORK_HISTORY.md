@@ -1,1 +1,2 @@
 [2026-04-28 14:15:04 - 2026-04-28 14:19:24] SupplierAndProductService 정리: TrendKeywordService 복사본이던 SupplierAndProductService를 실제 Supplier/Product 저장 흐름에 맞게 수정하고, 상세 응답 DTO 및 mapper를 실제 네이버 상품 상세 응답 구조와 맞도록 보정한 뒤 compileJava로 컴파일 검증 완료.
+[2026-04-30 16:43:16 - 2026-04-30 16:51:33] TrendKeywordService 가독성 정리: 들여쓰기와 import 배치를 정리하고, 조건문 가독성을 개선했으며, 최신성 비교와 중복 저장 판단 로직을 읽기 쉽게 정돈하고 null/빈 리스트 방어를 추가한 뒤 compileJava로 빌드 검증 완료.
