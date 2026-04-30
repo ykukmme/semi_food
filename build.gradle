@@ -50,7 +50,6 @@ dependencies {
 
     // XML 파싱을 위한 라이브러리 (XML 응답 시 자동으로 객체 변환)
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
-    implementation 'org.jsoup:jsoup:1.19.1'
     
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

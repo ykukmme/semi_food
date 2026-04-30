@@ -12,10 +12,11 @@ import java.util.List;
 
 
 
-// []TODO Jsoup 관련 테스트부분 파일들 제거하기, 아마도 남길만한 파일은 없는 것으로 추정됨.
-    // []TODO gradle에서 jsoup 관련 의존성 제거하기
-    // []TODO ParserController에서 jsoup 테스트 부분 제거하기
-    // []TODO JsoupTestService 제거하기
+// [x]TODO Jsoup 관련 테스트부분 파일들 제거하기, 아마도 남길만한 파일은 없는 것으로 추정됨.
+    // [x]TODO gradle에서 jsoup 관련 의존성 제거하기
+    // [x]TODO ParserController에서 jsoup 테스트 부분 제거하기
+    // [x]TODO JsoupTestService 제거하기
+    // [x]TODO Jsoup관련 test 폴더 제거하기
 
 
 // [x]TODO 기존 트랜드 부분도 이름에  Parser 추가하기 -> ParserController로 통합
