@@ -29,6 +29,8 @@ public class TrendKeywordService {
 
         // api url 의 경우 RankId와 syncDate 를 조합해서 제품 url api에서 처리가 간헐적으로 가능
         // [ ]TODO 기존 로직을 일부 수정하기
+            // []TODO 표준에 맞지 않는 구문 수정하기
+            // []TODO 
         // [x]TODO TrendKeyword에 RankId와 syncDate를 추가
         // [ ]TODO 기존 TrendKeywordService 클래스의 내용도 SupplierAndProductService 처럼 수정하기
         

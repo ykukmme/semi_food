@@ -41,7 +41,7 @@ public class SupplierAndProductService {
             .uri(sapDataUrl)
             .header("User-Agent", Constants.Http.USER_AGENT)
             .header("Accept", MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE)
-            .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7") 
+            .header("Accept-Language",  Constants.Http.ACCEPT_LANGUAGE)
             .header("Referer", sapTargetSiteUrl)
             .retrieve()
             .body(SupplierAndProductResponse.class);
