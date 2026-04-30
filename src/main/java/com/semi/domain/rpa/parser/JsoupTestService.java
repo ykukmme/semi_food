@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class JsoupTestService {
 
+// [ ]todo: 바로 타겟url로 접속하는 것이 아닌, 타겟 url의 메인페이지
+
     /**
      * 네이버 쇼핑 linkUrl을 받아 최종 목적지 URL을 반환합니다.
      */
