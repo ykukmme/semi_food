@@ -1,6 +1,6 @@
 -- 장바구니 테이블
 -- 사용자가 발주 전 담아두는 상품 목록
-CREATE TABLE IF NOT EXISTS cart_item (
+CREATE TABLE cart_item (
     id         BIGINT   AUTO_INCREMENT PRIMARY KEY,
     member_id  BIGINT   NOT NULL COMMENT '회원',
     product_id BIGINT   NOT NULL COMMENT '상품',

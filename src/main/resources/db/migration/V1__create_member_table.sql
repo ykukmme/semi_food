@@ -1,5 +1,5 @@
 -- 회원 테이블
-CREATE TABLE IF NOT EXISTS member (
+CREATE TABLE member (
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
     member_id   VARCHAR(50)  NOT NULL UNIQUE COMMENT '로그인용 아이디',
     password    VARCHAR(255) NOT NULL COMMENT 'BCrypt 해시',

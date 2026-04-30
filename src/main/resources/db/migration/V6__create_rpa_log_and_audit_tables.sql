@@ -1,6 +1,6 @@
 -- RPA 실행 로그 테이블
 -- 대시보드의 'RPA 가동 여부' 판별 기준: 최신 레코드의 status
-CREATE TABLE IF NOT EXISTS rpa_log (
+CREATE TABLE rpa_log (
     id            BIGINT   AUTO_INCREMENT PRIMARY KEY,
     status        ENUM('RUNNING', 'COMPLETED', 'FAILED') NOT NULL COMMENT 'RPA 상태',
     started_at    DATETIME NOT NULL COMMENT '시작 시간',
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS rpa_log (
 
 -- 자동발주 플래그 변경 이력 테이블
 -- Hard Rule: auto_order 변경 시 반드시 이 테이블에 기록
-CREATE TABLE IF NOT EXISTS auto_order_audit (
+CREATE TABLE auto_order_audit (
     id         BIGINT       AUTO_INCREMENT PRIMARY KEY,
     product_id BIGINT       NOT NULL COMMENT '대상 상품',
     changed_by BIGINT       NOT NULL COMMENT '변경한 관리자',

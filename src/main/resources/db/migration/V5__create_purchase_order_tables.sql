@@ -1,6 +1,6 @@
 -- 발주 테이블
 -- 사용자가 장바구니에서 발주한 내역 (1건 = 1구매처)
-CREATE TABLE IF NOT EXISTS purchase_order (
+CREATE TABLE purchase_order (
     id           BIGINT      AUTO_INCREMENT PRIMARY KEY,
     order_number VARCHAR(20) NOT NULL UNIQUE COMMENT '발주번호 (PO-YYYYMMDD-NNNN)',
     member_id    BIGINT      NOT NULL COMMENT '발주자',
@@ -10,11 +10,7 @@ CREATE TABLE IF NOT EXISTS purchase_order (
     total_price  INT         NOT NULL COMMENT '총 가격 (원)',
     shipping_fee INT         NOT NULL DEFAULT 0 COMMENT '배송비 (원)',
     is_auto      BOOLEAN     NOT NULL DEFAULT FALSE COMMENT '자동발주 여부',
-    subtotal         INT          NOT NULL DEFAULT 0 COMMENT '소계 (원)',
-    shipping_address VARCHAR(500) COMMENT '배송지 주소',
-    payment_method   VARCHAR(50)  COMMENT '결제수단',
-    payment_status   VARCHAR(20)  COMMENT '결제상태',
-    ordered_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '발주일시',
+    ordered_at   DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '발주일시',
 
     CONSTRAINT fk_order_member   FOREIGN KEY (member_id)   REFERENCES member (id),
     CONSTRAINT fk_order_supplier FOREIGN KEY (supplier_id) REFERENCES supplier (id)
