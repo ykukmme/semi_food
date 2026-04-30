@@ -25,7 +25,7 @@ public class TrendKeywordService {
 
     @Transactional(readOnly = true)
     public List<TrendKeyword> getKeywordsCollectedOnOrderById(LocalDate collectedDate) {
-        return trendKeywordRepository.findTop20ByCollectedAtGreaterThanEqualAndCollectedAtLessThanOrderByIdAsc(
+        return trendKeywordRepository.findTop20KeywordsCollectedBetweenOrderById(
                 collectedDate.atStartOfDay(),
                 collectedDate.plusDays(1).atStartOfDay()
         );

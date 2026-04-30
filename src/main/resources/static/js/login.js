@@ -1,5 +1,27 @@
-if (localStorage.getItem('accessToken')) {
-    window.location.replace('/');
+validateExistingLogin();
+
+async function validateExistingLogin() {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE}/api/auth/me`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (response.ok) {
+            window.location.replace('/');
+            return;
+        }
+    } catch (error) {
+        // Let the user log in again below.
+    }
+
+    clearToken();
 }
 
 document.getElementById('loginForm')?.addEventListener('submit', async (event) => {

@@ -32,7 +32,7 @@ public class ProductController {
     private final PurchaseOrderService purchaseOrderService;
     private final TrendKeywordService trendKeywordService;
     
-    @GetMapping("/")
+    @GetMapping({"/", "/index.html"})
     public String getAllProduct(Model model) {
         List<Product> products = productService.getAllProduct();
         LocalDate keywordCollectedDate = LocalDate.of(2026, 4, 27);

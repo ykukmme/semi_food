@@ -1,6 +1,5 @@
 package com.semi.domain.order;
 
-import com.semi.domain.cart.CartItemRepository;
 import com.semi.domain.member.Member;
 import com.semi.domain.member.MemberRepository;
 import com.semi.domain.order.dto.CreatePurchaseOrderRequest;
@@ -23,7 +22,6 @@ public class PurchaseOrderService {
     private final PurchaseOrderItemRepository purchaseOrderItemRepository;
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;
-    private final CartItemRepository cartItemRepository;
 
     @Transactional
     public PurchaseOrder createOrder(Long memberId, CreatePurchaseOrderRequest request) {
@@ -64,7 +62,6 @@ public class PurchaseOrderService {
                 .build()));
 
         PurchaseOrder savedOrder = purchaseOrderRepository.save(order);
-        cartItemRepository.deleteByMemberId(memberId);
         return savedOrder;
     }
 

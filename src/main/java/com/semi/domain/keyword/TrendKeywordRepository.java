@@ -1,6 +1,8 @@
 package com.semi.domain.keyword;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,8 +14,15 @@ public interface TrendKeywordRepository extends JpaRepository<TrendKeyword, Long
 
     List<TrendKeyword> findByIsActiveTrueOrderByIdAsc();
 
-    List<TrendKeyword> findTop20ByCollectedAtGreaterThanEqualAndCollectedAtLessThanOrderByIdAsc(
-            LocalDateTime start,
-            LocalDateTime end
-    );
+    @Query(value = """
+            SELECT *
+            FROM trend_keyword
+            WHERE collected_at >= :start
+              AND collected_at < :end
+            ORDER BY id ASC
+            LIMIT 20
+            """, nativeQuery = true)
+    List<TrendKeyword> findTop20KeywordsCollectedBetweenOrderById(
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end);
 }
