@@ -170,6 +170,34 @@ function setupLogoutButton() {
         if (button.dataset.logoutBound === 'true') {
             return;
         }
+<<<<<<< HEAD
+=======
+
+        button.dataset.logoutBound = 'true';
+        button.addEventListener('click', handleLogout);
+    });
+
+    if (document.body?.dataset.logoutDelegated === 'true') {
+        return;
+    }
+
+    document.body.dataset.logoutDelegated = 'true';
+    document.body.addEventListener('click', (event) => {
+        const logoutButton = event.target.closest('#logoutBtn, [data-logout-button]');
+        if (!logoutButton) {
+            return;
+        }
+
+        handleLogout(event);
+    });
+}
+
+async function openMemberDashboard(memberId, token = getToken()) {
+    if (!token || !memberId) {
+        window.location.href = '/login.html';
+        return;
+    }
+>>>>>>> 06bd07ce57b7c275cfb7b67c399149dd1ff20276
 
         button.dataset.logoutBound = 'true';
         button.addEventListener('click', handleLogout);

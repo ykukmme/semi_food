@@ -54,12 +54,28 @@ public class Product {
     @Column(name = "auto_order", nullable = false)
     private Boolean autoOrder;  // 자동발주 플래그 (기본 OFF, 변경 시 audit 필수)
 
+    @Column(name = "stock", nullable = false)
+    private Integer stock;  // 재고 수량
+
+    @Column(name = "available_stock", nullable = false)
+    private Integer availableStock;  // 주문 가능 수량
+
     @Column(name = "crawled_at", nullable = false)
     private LocalDateTime crawledAt;  // 크롤링 시간
 
+    @Column(name = "reg_date", updatable = false)
+    private LocalDateTime regDate;
+
+    @Column(name = "mod_date")
+    private LocalDateTime modDate;
+
+    @Column(name = "del_date")
+    private LocalDateTime delDate;
+
     @Builder
     public Product(TrendKeyword keyword, Supplier supplier, String name, String description,
-                   Integer price, String imageUrl, String productUrl, LocalDateTime crawledAt) {
+                   Integer price, String imageUrl, String productUrl, LocalDateTime crawledAt,
+                   Integer stock, Integer availableStock) {
         this.keyword     = keyword;
         this.supplier    = supplier;
         this.name        = name;
@@ -69,6 +85,8 @@ public class Product {
         this.productUrl  = productUrl;
         this.category    = ProductCategoryClassifier.classify(name);
         this.autoOrder   = false;  // 자동발주 기본 OFF (Hard Rule)
+        this.stock       = stock != null ? stock : 0;
+        this.availableStock = availableStock != null ? availableStock : this.stock;
         this.crawledAt   = crawledAt;
     }
 
@@ -85,13 +103,27 @@ public class Product {
 
     /** 크롤링 재수집 시 정보 갱신 */
     public void updateCrawledInfo(String name, String description, Integer price,
-                                   String imageUrl, String productUrl, LocalDateTime crawledAt) {
+                                   String imageUrl, String productUrl, LocalDateTime crawledAt,
+                                   Integer stock, Integer availableStock) {
         this.name        = name;
         this.description = description;
         this.price       = price;
         this.imageUrl    = imageUrl;
         this.productUrl  = productUrl;
+        this.stock       = stock != null ? stock : this.stock;
+        this.availableStock = availableStock != null ? availableStock : this.availableStock;
         this.category    = ProductCategoryClassifier.classify(name);
         this.crawledAt   = crawledAt;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.regDate = LocalDateTime.now();
+        this.modDate = this.regDate;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.modDate = LocalDateTime.now();
     }
 }

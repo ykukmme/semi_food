@@ -31,15 +31,21 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = extractToken(request);
 
         if (StringUtils.hasText(token) && jwtProvider.validateToken(token)) {
-            String memberId = jwtProvider.extractUsername(token);
-            // MemberDetails 로드 → principal로 설정 (수정안 반영)
-            MemberDetails memberDetails = (MemberDetails) memberDetailsService.loadUserByUsername(memberId);
+            try {
+                String memberId = jwtProvider.extractUsername(token);
+                // MemberDetails 로드 → principal로 설정 (수정안 반영)
+                MemberDetails memberDetails = (MemberDetails) memberDetailsService.loadUserByUsername(memberId);
 
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(memberDetails, null, memberDetails.getAuthorities());
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(memberDetails, null, memberDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (Exception e) {
+                // 사용자를 찾지 못하면 토큰을 무시하고 계속 진행
+                // 브라우저의 오래된 토큰을 자동으로 정리
+                clearToken(response);
+            }
         }
 
         filterChain.doFilter(request, response);
@@ -60,5 +66,14 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
         return null;
+    }
+
+    private void clearToken(HttpServletResponse response) {
+        // 쿠키 토큰 삭제
+        Cookie cookie = new Cookie("accessToken", "");
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
     }
 }

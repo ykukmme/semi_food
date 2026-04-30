@@ -64,7 +64,8 @@ public class SecurityConfig {
                     "/mypage",
                     "/api/auth/**"
                 ).permitAll()
-                // 관리자 API — ADMIN 역할 필수
+                // 관리자 페이지 및 API — ADMIN 역할 필수
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 // 정적 파일 허용 (루트 + 하위 디렉토리 HTML 모두 포함)
                 .requestMatchers("/index.html", "/*.html", "/**/*.html", "/css/**", "/js/**","/images/**").permitAll()
@@ -73,26 +74,30 @@ public class SecurityConfig {
             // 401 응답을 일관된 JSON 형식으로 반환
             .exceptionHandling(ex -> ex
                 .authenticationEntryPoint((request, response, authException) -> {
-                    response.setStatus(401);
-                    response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
-                    response.getWriter().write("{\"message\":\"인증이 필요합니다.\"}");
+                    if (request.getRequestURI().startsWith("/api")) {
+                        response.setStatus(401);
+                        response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
+                        response.getWriter().write("{\"message\":\"인증이 필요합니다.\"}");
+                    } else {
+                        response.sendRedirect("/login.html");
+                    }
                 })
                 .accessDeniedHandler((request, response, accessDeniedException) -> {
-                    response.setStatus(403);
-                    response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
-                    response.getWriter().write("{\"message\":\"접근 권한이 없습니다.\"}");
+                    if (request.getRequestURI().startsWith("/api")) {
+                        response.setStatus(403);
+                        response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
+                        response.getWriter().write("{\"message\":\"접근 권한이 없습니다.\"}");
+                    } else {
+                        response.sendRedirect("/login.html");
+                    }
                 })
             )
-            .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(new JwtFilter(jwtProvider, memberDetailsService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    @Bean
-    public JwtFilter jwtFilter() {
-        return new JwtFilter(jwtProvider, memberDetailsService);
-    }
-
+    
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();

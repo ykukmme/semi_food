@@ -30,7 +30,11 @@ public class AdminMemberController {
     @PutMapping("/{id}/role")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MemberResponse> updateRole(
+<<<<<<< HEAD
             @PathVariable("id") Long id,
+=======
+            @PathVariable Long id,
+>>>>>>> 06bd07ce57b7c275cfb7b67c399149dd1ff20276
             @Valid @RequestBody UpdateRoleRequest request,
             @AuthenticationPrincipal MemberDetails changedBy
     ) {
@@ -45,7 +49,11 @@ public class AdminMemberController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteMember(
+<<<<<<< HEAD
             @PathVariable("id") Long id,
+=======
+            @PathVariable Long id,
+>>>>>>> 06bd07ce57b7c275cfb7b67c399149dd1ff20276
             @AuthenticationPrincipal MemberDetails deletedBy
     ) {
         memberService.deleteMember(id, deletedBy.getMember().getMemberId());
