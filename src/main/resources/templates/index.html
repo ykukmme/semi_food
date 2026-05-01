@@ -87,8 +87,16 @@
                                 </span>
                                 <span class="material-symbols-outlined trend-keyword-card__icon" aria-hidden="true">search</span>
                             </div>
-                            <h3 class="trend-keyword-card__name" th:text="${keyword.keyword}">&#53412;&#50892;&#46300;</h3>
-                            <p class="trend-keyword-card__frequency">&#48712;&#46020; <span th:text="${keyword.frequency}">0</span></p>
+                            <div class="trend-keyword-card__name-row">
+                                <h3 class="trend-keyword-card__name" th:text="${keyword.keyword}">&#53412;&#50892;&#46300;</h3>
+                            </div>
+                            <img
+                                class="trend-keyword-card__keyword-image"
+                                data-keyword-image
+                                th:attr="data-keyword=${keyword.keyword}"
+                                src="https://placehold.co/320x240/e6f3ff/0066cc?text=Food"
+                                alt=""
+                                loading="lazy">
                         </a>
                     </article>
                 </div>
