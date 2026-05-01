@@ -50,6 +50,29 @@ function escapeHtml(value) {
         .replaceAll("'", '&#39;');
 }
 
+function renderMemberWelcome() {
+    const homeContent = document.getElementById('dashboardHomeContent');
+    if (!homeContent || document.getElementById('dashboard-member-welcome')) {
+        return;
+    }
+
+    const memberName = homeContent.dataset.memberName?.trim();
+    if (!memberName) {
+        return;
+    }
+
+    const welcome = document.createElement('section');
+    welcome.id = 'dashboard-member-welcome';
+    welcome.className = 'panel rounded-[28px] p-6';
+
+    const message = document.createElement('p');
+    message.className = 'text-2xl font-headline font-bold text-on-surface';
+    message.textContent = `${memberName}님 어서오세요 :)`;
+
+    welcome.append(message);
+    homeContent.prepend(welcome);
+}
+
 function renderRecentCartItems() {
     const homeContent = document.getElementById('dashboardHomeContent');
     if (!homeContent || document.getElementById('recent-cart-section')) {
@@ -98,6 +121,12 @@ function renderRecentCartItems() {
             ${cards}
         </div>`;
 
+    const welcome = document.getElementById('dashboard-member-welcome');
+    if (welcome && welcome.parentElement === homeContent) {
+        welcome.insertAdjacentElement('afterend', section);
+        return;
+    }
+
     homeContent.prepend(section);
 }
 
@@ -111,6 +140,7 @@ document.getElementById('dashboard-search-form')?.addEventListener('submit', (ev
 });
 
 updateDashboardHeaderBackground();
+renderMemberWelcome();
 renderRecentCartItems();
 window.addEventListener('scroll', updateDashboardHeaderBackground, { passive: true });
 window.addEventListener('resize', updateDashboardHeaderBackground);
