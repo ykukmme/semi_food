@@ -262,11 +262,11 @@
           <div class="space-y-3 mb-5 font-label">
             <div class="flex justify-between text-sm">
               <span class="text-on-surface-variant">상품 금액</span>
-              <span class="font-medium text-on-surface" id="summary-product-total">₩0</span>
+              <span class="font-medium text-[#991b1b]" id="summary-product-total">₩0</span>
             </div>
             <div class="flex justify-between pt-4 border-t border-outline-variant/5">
               <span class="text-lg font-extrabold text-on-surface">최종 결제 금액</span>
-              <span class="text-2xl font-extrabold text-primary" id="summary-final-total">₩0</span>
+              <span class="text-2xl font-extrabold text-[#991b1b]" id="summary-final-total">₩0</span>
             </div>
           </div>
 
@@ -528,11 +528,11 @@
             <div class="flex justify-between items-end flex-wrap gap-1">
               <div class="text-xs text-on-surface-variant">
                 <span class="font-medium">단가</span>
-                <span class="font-bold text-on-surface ml-1">${formatWon(item.price)}</span>
+                <span class="font-bold text-[#991b1b] ml-1">${formatWon(item.price)}</span>
                 <span class="mx-1 opacity-40">×</span>
                 <span class="font-bold text-on-surface">${item.quantity.toLocaleString('ko-KR')}</span>
               </div>
-              <span class="font-bold text-primary text-sm">${formatWon(item.lineTotal)}</span>
+              <span class="font-bold text-[#991b1b] text-sm">${formatWon(item.lineTotal)}</span>
             </div>
           </div>
         </div>`).join('');

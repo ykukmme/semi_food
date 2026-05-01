@@ -647,8 +647,16 @@ header .nav-search input.nav-search-input[type="search"]:focus {
 .product-card__price {
     display: flex;
     align-items: center;
-    color: var(--color-text);
+    justify-content: flex-end;
+    color: #991b1b;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.product-card__price-number {
     font-weight: 900;
+    -webkit-text-stroke: 0.35px currentColor;
+    text-shadow: 0 0 0 currentColor;
 }
 
 .product-more-wrap {

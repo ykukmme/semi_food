@@ -44,7 +44,7 @@ function updateCartBadge() {
 
 function formatWon(value) {
     const price = Number(value) || 0;
-    return price > 0 ? `₩${price.toLocaleString("ko-KR")}` : "가격 미정";
+    return price > 0 ? `${price.toLocaleString("ko-KR")}원` : "가격 미정";
 }
 
 function updatePrices() {
