@@ -295,8 +295,9 @@
             {
                 words: ["두릅", "dureup", "aralia"],
                 urls: [
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Aralia_elata_(2).jpg",
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Aralia_elata.JPG"
+                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Dureup_(Korean_angelica-tree_shoots).jpg",
+                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Dureup_2.jpg",
+                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Blanched_dureup.jpg"
                 ]
             },
             {
@@ -379,7 +380,7 @@
         document.querySelectorAll("[data-keyword-image]").forEach((image) => {
             const rawKeyword = image.dataset.keyword || "";
             const keyword = normalize(rawKeyword);
-            const preferProductImage = ["가죽나물", "쌀국수"].some((word) => keyword.includes(normalize(word)));
+            const preferProductImage = ["가죽나물", "쌀국수", "명가삼대떡집"].some((word) => keyword.includes(normalize(word)));
             const matchedRule = imageRules.find((rule) => rule.words.some((word) => keyword.includes(normalize(word))));
             const matchedProducts = products.filter((product) => {
                 const productName = normalize(product.name);

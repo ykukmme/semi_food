@@ -416,7 +416,7 @@ header .nav-search input.nav-search-input[type="search"]:focus {
     height: 2.25rem;
     padding: 0 0.55rem;
     border-radius: 999px;
-    background: var(--color-primary);
+    background: #003f88;
     color: #fff;
     font-size: 0.82rem;
     font-weight: 900;
@@ -453,8 +453,6 @@ header .nav-search input.nav-search-input[type="search"]:focus {
     pointer-events: none;
     transform: scale(1.08);
     transform-origin: center right;
-    mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.72) 18%, #000 34%);
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.72) 18%, #000 34%);
 }
 
 .trend-keyword-card__name {
