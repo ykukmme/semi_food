@@ -30,13 +30,15 @@ public class TrendKeywordService {
         // [ ]TODO 기존 로직을 일부 수정하기
         // []TODO 표준에 맞지 않는 구문 수정하기
         // [x]TODO TrendKeyword에 RankId와 syncDate를 추가
+            // [x]TODO Trend_keyword 테이블에 RankId와 syncDate가 null로 들어가는 문제가 있음=> repo저장단계에서 추가
         // [ ]TODO 기존 TrendKeywordService 클래스의 내용도 SupplierAndProductService 처럼 수정하기
 
-        final String targetSiteUrl = "https://snxbest.naver.com/keyword/best?categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY&ageType=ALL&activeRankId=2165824835&syncDate=20260423";
-        final String dataUrl = "https://snxbest.naver.com/api/v1/snxbest/keyword/rank?ageType=ALL&categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY";
+        // final String targetSiteUrl = "https://snxbest.naver.com/keyword/best?categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY&ageType=ALL&activeRankId=2165824835&syncDate=20260423";
+        final String targetSiteUrl = "https://snxbest.naver.com/keyword/best?categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY&ageType=ALL";
+        final String targetDataUrl = "https://snxbest.naver.com/api/v1/snxbest/keyword/rank?ageType=ALL&categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY";
 
         final String rawJson = restClient.get()
-            .uri(dataUrl)
+            .uri(targetDataUrl)
             .header("User-Agent", Constants.Http.USER_AGENT)
             .header("Accept", Constants.Http.CONTENT_TYPE_JSON)
             .retrieve()
@@ -46,7 +48,7 @@ public class TrendKeywordService {
         
         // data가 json/xml 둘 다 올 수 있기 때문에, Jackson이 자동으로 파싱하도록 설정
         final List<TrendKeywordResponse.TrendKeywordItem> response = restClient.get()
-            .uri(dataUrl)
+            .uri(targetDataUrl)
             .header("User-Agent", Constants.Http.USER_AGENT)
             .header("Accept", MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE)
             .header("Accept-Language", Constants.Http.ACCEPT_LANGUAGE)
@@ -113,9 +115,11 @@ public class TrendKeywordService {
                 .id(++nextId) // 1 증가시킨 값을 ID로 부여
                 .keyword(parsedKeyword.getKeyword())
                 .rank(parsedKeyword.getRank())
-                .frequency(0)
+                .frequency(1)
                 .collectedAt(parsedKeyword.getCollectedAt())
                 .isActive(true)
+                .rankingId(parsedKeyword.getRankingId())
+                .syncDate(parsedKeyword.getSyncDate())
                 .build();
             keywordsToSave.add(keywordToSave);
         }

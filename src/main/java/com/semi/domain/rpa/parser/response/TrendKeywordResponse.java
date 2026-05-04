@@ -12,7 +12,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
+// 멤버 변수명을 외부데이터 기준으로 작성 (예: title, rank, rankId, syncDate 등) -> 매퍼에서 TrendKeyword의 필드명과 매핑해주는 방식으로 처리
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TrendKeywordResponse {

@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 트렌드 키워드 엔티티
- * RPA가 네이버 쇼핑 식품 카테고리에서 수집한 키워드 (1~10위)
+ * RPA가 네이버 쇼핑 식품 카테고리에서 수집한 키워드 (1~20위)
  */
 @Entity
 @Table(name = "trend_keyword")
