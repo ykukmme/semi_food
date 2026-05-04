@@ -25,8 +25,8 @@ function saveCartToStorage(items) {
 }
 
 function updateCartBadge() {
-    const badge = document.getElementById("cart-count-badge");
-    if (!badge) {
+    const badges = document.querySelectorAll(".cart-count-badge");
+    if (!badges.length) {
         return;
     }
 
@@ -35,13 +35,16 @@ function updateCartBadge() {
         return sum + itemQuantity;
     }, 0);
 
-    badge.textContent = totalCount > 99 ? "99+" : String(totalCount);
-    badge.classList.toggle("is-hidden", totalCount <= 0);
+    badges.forEach((badge) => {
+        badge.textContent = totalCount > 99 ? "99+" : String(totalCount);
+        badge.classList.toggle("hidden", totalCount <= 0);
+        badge.classList.toggle("is-hidden", totalCount <= 0);
+    });
 }
 
 function formatWon(value) {
     const price = Number(value) || 0;
-    return price > 0 ? `₩${price.toLocaleString("ko-KR")}` : "가격 미정";
+    return price > 0 ? `${price.toLocaleString("ko-KR")}원` : "가격 미정";
 }
 
 function updatePrices() {

@@ -90,49 +90,45 @@
 
     <main class="dashboard-main max-w-7xl mx-auto px-4 sm:px-6 pb-12 space-y-8">
 
-        <div id="dashboardHomeContent" class="space-y-8">
+        <div id="dashboardHomeContent" class="space-y-8" th:data-member-name="${member != null ? member.name : ''}">
         <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
             <article class="panel metric-card relative rounded-[24px] p-6 overflow-hidden">
-                <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-on-surface-variant">총 주문 수</p>
+                <p class="text-[16px] font-bold uppercase tracking-[0.24em] text-on-surface-variant">총 주문 수</p>
                 <div class="mt-6 flex items-end justify-between gap-4">
-                    <div>
-                        <p class="text-4xl font-headline font-extrabold text-on-surface" th:text="${#numbers.formatInteger(totalOrderCount ?: 0, 1, 'COMMA')}">24,892</p>
-                        <p class="mt-2 text-sm text-on-surface-variant">지난주 대비 주문량 상승</p>
+                    <div class="w-full">
+                        <p class="text-4xl font-headline font-extrabold text-on-surface text-center">
+                            <span th:text="${#numbers.formatInteger(totalOrderCount ?: 0, 1, 'COMMA')}">24,892</span><span>건</span>
+                        </p>
                     </div>
-                    <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-fixed/35 text-primary text-xs font-bold">+12% <span class="material-symbols-outlined text-[16px]">north</span></span>
                 </div>
             </article>
 
             <article class="panel metric-card relative rounded-[24px] p-6 overflow-hidden">
-                <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-on-surface-variant">주문 취소율</p>
+                <p class="text-[16px] font-bold uppercase tracking-[0.24em] text-on-surface-variant">주문 취소율</p>
                 <div class="mt-6 flex items-end justify-between gap-4">
-                    <div>
-                        <p class="text-4xl font-headline font-extrabold text-on-surface" th:text="${orderCancellationRateText ?: '0.0%'}">9.4%</p>
-                        <p class="mt-2 text-sm text-on-surface-variant">안정적인 범위 유지</p>
+                    <div class="w-full">
+                        <p class="text-4xl font-headline font-extrabold text-on-surface text-center" th:text="${orderCancellationRateText ?: '0.0%'}">9.4%</p>
                     </div>
-                    <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-tertiary-fixed/60 text-tertiary text-xs font-bold">Stable</span>
                 </div>
             </article>
 
             <article class="panel metric-card relative rounded-[24px] p-6 overflow-hidden">
-                <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-on-surface-variant">신규 상품 구매</p>
+                <p class="text-[16px] font-bold uppercase tracking-[0.24em] text-on-surface-variant">신규 상품 구매</p>
                 <div class="mt-6 flex items-end justify-between gap-4">
-                    <div>
-                        <p class="text-4xl font-headline font-extrabold text-on-surface" th:text="${#numbers.formatInteger(totalOrderedProductCount ?: 0, 1, 'COMMA')}">158</p>
-                        <p class="mt-2 text-sm text-on-surface-variant">런칭 상품 유입 집중</p>
+                    <div class="w-full">
+                        <p class="text-4xl font-headline font-extrabold text-on-surface text-center">
+                            <span th:text="${#numbers.formatInteger(totalOrderedProductCount ?: 0, 1, 'COMMA')}">158</span><span>건</span>
+                        </p>
                     </div>
-                    <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-secondary-container/15 text-secondary text-xs font-bold">+42 <span class="material-symbols-outlined text-[16px]">trending_up</span></span>
                 </div>
             </article>
 
             <article class="panel metric-card relative rounded-[24px] p-6 overflow-hidden">
-                <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-on-surface-variant">재구매율</p>
+                <p class="text-[16px] font-bold uppercase tracking-[0.24em] text-on-surface-variant">재구매율</p>
                 <div class="mt-6 flex items-end justify-between gap-4">
-                    <div>
-                        <p class="text-4xl font-headline font-extrabold text-on-surface" th:text="${repeatPurchaseRateText ?: '0.0%'}">87.2%</p>
-                        <p class="mt-2 text-sm text-on-surface-variant">2회 이상 구매 상품 비율</p>
+                    <div class="w-full">
+                        <p class="text-4xl font-headline font-extrabold text-on-surface text-center" th:text="${repeatPurchaseRateText ?: '0.0%'}">87.2%</p>
                     </div>
-                    <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-fixed/35 text-primary text-xs font-bold">+6.4%</span>
                 </div>
             </article>
         </section>

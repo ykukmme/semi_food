@@ -58,13 +58,13 @@
     padding: 0 0.25rem;
     border: 1px solid #fff;
     border-radius: 999px;
-    background: #0066cc;
+    background: #dc2626;
     color: #fff;
     font-size: 0.625rem;
     font-weight: 900;
     line-height: 1.2rem;
     text-align: center;
-    box-shadow: 0 6px 16px rgba(0, 102, 204, 0.3);
+    box-shadow: 0 6px 16px rgba(220, 38, 38, 0.35);
 }
 
 /* 메인 이미지 높이를 장바구니 버튼 bottom에 맞춤 */

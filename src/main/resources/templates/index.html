@@ -85,10 +85,17 @@
                                 <span class="trend-keyword-card__rank">
                                     <span th:text="${keywordStat.index + 1}">1</span>&#50948;
                                 </span>
-                                <span class="material-symbols-outlined trend-keyword-card__icon" aria-hidden="true">search</span>
                             </div>
-                            <h3 class="trend-keyword-card__name" th:text="${keyword.keyword}">&#53412;&#50892;&#46300;</h3>
-                            <p class="trend-keyword-card__frequency">&#48712;&#46020; <span th:text="${keyword.frequency}">0</span></p>
+                            <div class="trend-keyword-card__name-row">
+                                <h3 class="trend-keyword-card__name" th:text="${keyword.keyword}">&#53412;&#50892;&#46300;</h3>
+                            </div>
+                            <img
+                                class="trend-keyword-card__keyword-image"
+                                data-keyword-image
+                                th:attr="data-keyword=${keyword.keyword}"
+                                src="https://placehold.co/320x240/e6f3ff/0066cc?text=Food"
+                                alt=""
+                                loading="lazy">
                         </a>
                     </article>
                 </div>
@@ -123,7 +130,9 @@
                         </div>
                         <h3 class="product-card__name" th:text="${product.name}">상품명</h3>
                         <div class="product-card__price">
-                            <span th:text="${product.price != null} ? |₩${#numbers.formatInteger(product.price, 3, 'COMMA')}| : '가격 미정'"></span>
+                            <span class="product-card__price-number" th:if="${product.price != null}" th:text="${#numbers.formatInteger(product.price, 3, 'COMMA')}"></span>
+                            <span th:if="${product.price != null}">원</span>
+                            <span th:unless="${product.price != null}">가격 미정</span>
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,5 @@
 const TOKEN_KEY = 'accessToken';
+const CART_STORAGE_KEY = 'namhae_cart_v1';
 
 function getToken() {
     return localStorage.getItem(TOKEN_KEY);
@@ -14,6 +15,106 @@ function clearToken() {
     localStorage.removeItem('role');
     document.cookie = `${TOKEN_KEY}=; path=/; max-age=0; SameSite=Lax`;
 }
+
+function readCartItems() {
+    try {
+        const raw = localStorage.getItem(CART_STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+    } catch {
+        return [];
+    }
+}
+
+function getCartItemsCount() {
+    return readCartItems().reduce((sum, item) => {
+        const quantity = Number(item && item.quantity) || 0;
+        return sum + quantity;
+    }, 0);
+}
+
+function ensureCartBadgeStyles() {
+    if (document.getElementById('cart-badge-styles')) {
+        return;
+    }
+
+    const style = document.createElement('style');
+    style.id = 'cart-badge-styles';
+    style.textContent = `
+        .cart-link-with-badge {
+            position: relative;
+        }
+
+        .cart-count-badge {
+            position: absolute;
+            top: -0.5rem;
+            right: -0.75rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 1.35rem;
+            height: 1.25rem;
+            padding: 0 0.25rem;
+            border: 1px solid #fff !important;
+            border-radius: 999px;
+            background: #dc2626 !important;
+            color: #fff !important;
+            -webkit-text-fill-color: #fff !important;
+            font-size: 0.625rem;
+            font-weight: 900;
+            line-height: 1;
+            text-align: center;
+            box-shadow: 0 6px 16px rgba(220, 38, 38, 0.35) !important;
+            pointer-events: none;
+        }
+
+        .cart-count-badge.hidden,
+        .cart-count-badge.is-hidden {
+            display: none !important;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+function ensureCartBadgeElements() {
+    document.querySelectorAll('a[href*="/cart/view"]').forEach((link) => {
+        if (link.matches('#btn-go-to-cart, [data-cart-badge="false"]')) {
+            return;
+        }
+
+        const hasCartIcon = Array.from(link.querySelectorAll('.material-symbols-outlined'))
+            .some((icon) => /shopping_(bag|cart)/.test(icon.textContent.trim()));
+
+        if (!hasCartIcon) {
+            return;
+        }
+
+        link.classList.add('cart-link-with-badge');
+
+        if (link.querySelector('.cart-count-badge')) {
+            return;
+        }
+
+        const badge = document.createElement('span');
+        badge.className = 'cart-count-badge is-hidden';
+        badge.textContent = '0';
+        link.appendChild(badge);
+    });
+}
+
+function updateCartBadges() {
+    ensureCartBadgeStyles();
+    ensureCartBadgeElements();
+
+    const totalCount = getCartItemsCount();
+    document.querySelectorAll('.cart-count-badge').forEach((badge) => {
+        badge.textContent = totalCount > 99 ? '99+' : String(totalCount);
+        badge.classList.toggle('hidden', totalCount <= 0);
+        badge.classList.toggle('is-hidden', totalCount <= 0);
+    });
+}
+
+window.updateCartBadges = updateCartBadges;
 
 function ensureAuthToastStyles() {
     if (document.getElementById('auth-toast-styles')) {
@@ -233,6 +334,7 @@ function initAuthMenu() {
     renderLoginMenu();
     setupLogoutButton();
     setupMemberDashboardLink();
+    updateCartBadges();
 }
 
 if (document.readyState === 'loading') {
@@ -240,3 +342,9 @@ if (document.readyState === 'loading') {
 } else {
     initAuthMenu();
 }
+
+window.addEventListener('storage', (event) => {
+    if (event.key === CART_STORAGE_KEY) {
+        updateCartBadges();
+    }
+});
