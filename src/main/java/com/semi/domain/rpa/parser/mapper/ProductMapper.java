@@ -45,6 +45,7 @@ public interface ProductMapper {
     @Mapping(target = "autoOrder", ignore = true)
 
     @Mapping(target = "crawledAt" , expression = "java(LocalDateTime.now())")  
+    @Mapping(target = "syncDate", expression = "java(LocalDate.parse(item.getSyncDate(), DateTimeFormatter.ofPattern(\"yyyyMMdd\")).atStartOfDay())") 
     // @Mapping(source = "isActive", target = "isActive") 
 
     // 리스트 변환도 메서드 한 줄 선언으로 해결 (toVo를 내부적으로 반복 호출함)
