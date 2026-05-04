@@ -39,8 +39,25 @@ RPA 테이블 구조 : \src\main\resources\db\migration\V6__create_rpa_log_and_a
 RPA 로그 저장 장소 : \src\main\resources\static\test\rpa\log
 log파일의 형식은 rpa_parsing_yymmdd_time.log
 
-
 }
+
+[ ]TODO 대시보드 만들기
+    1. admin 로그인 시에만 뜨는 화면
+    2. 각각 trend_keyword, supplier, product의 CRUD 구현
+        2-1. 당일을 기준으로 product, suplier, trend_keyword순으로 삭제하는 기능 구현 필요
+        2-2. 당일을 기준으로 trend_keyword, supplier, product순으로 파싱 하는 기능 필요 
+            2-2-1. 파싱을 할 때 당일 파싱한 trend_keyword list를 기준으로 반복문을 돌면서 파싱하는 기능 필요
+
+    3. 디자인:{
+        - 동적페이지를 기본으로 CRUD api로 정보를 조회함.
+        - 한 화면에 총4개의 뷰를 가지고 각각 trend_keyword, supplier, product, rpa_log 를 설정한 기간 날짜 만큼 보여주고 가 뷰안에서 스크롤이 가능함.
+        - 각 뷰의 상단에는 기본 CRUD가 들어 있으며, rpa_log.status 의 값에 따라 잠기도록 구현 필요, 
+        https://share.google/aimode/heKf5cW2TMk9BMnM3
+        
+    }
+
+
+
 */
 
 @RestController
