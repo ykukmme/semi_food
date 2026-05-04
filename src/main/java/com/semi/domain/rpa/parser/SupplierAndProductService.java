@@ -83,57 +83,6 @@ public class SupplierAndProductService {
         return new ArrayList<>(sapBuildSupplierMap(sapProductItems).values());
     }
 
-    @Transactional
-    public List<Product> saveProductsWithSequentialId(TrendKeyword sapKeyword, SupplierAndProductResponse sapResponse) {
-        if (sapKeyword == null) {
-            throw new IllegalArgumentException("TrendKeyword 정보 없이 Product를 저장할 수 없습니다.");
-        }
-
-        List<ProductItem> sapProductItems = sapGetProductItems(sapResponse);
-        if (sapProductItems.isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        Map<String, Supplier> sapSupplierMap = sapBuildSupplierMap(sapProductItems);
-        Long sapMaxId = productRepository.findMaxId();
-        long sapNextId = (sapMaxId == null) ? 0L : sapMaxId;
-
-        List<Product> sapMappedProducts = productMapper.toVoList(sapProductItems);
-        List<Product> sapNewProducts = new ArrayList<>();
-
-        for (int sapIndex = 0; sapIndex < sapMappedProducts.size(); sapIndex++) {
-            Product sapMappedProduct = sapMappedProducts.get(sapIndex);
-            ProductItem sapSourceItem = sapProductItems.get(sapIndex);
-
-            if (productRepository.existsByCrawledAtAndName(sapMappedProduct.getCrawledAt(), sapMappedProduct.getName())) {
-                continue;
-            }
-
-            String sapSupplierName = sapNormalizeText(sapSourceItem.getMallNm(), Constants.Db.UNKNOWN);
-            Supplier sapSupplier = sapSupplierMap.get(sapSupplierName);
-
-            Product sapProduct = Product.builder()
-                .id(++sapNextId)
-                .keyword(sapKeyword)
-                .supplier(sapSupplier)
-                .name(sapMappedProduct.getName())
-                .description(null)
-                .price(sapMappedProduct.getPrice())
-                .imageUrl(sapMappedProduct.getImageUrl())
-                .productUrl(sapMappedProduct.getProductUrl())
-                .autoOrder(false)
-                .crawledAt(sapMappedProduct.getCrawledAt())
-                .build();
-            sapNewProducts.add(sapProduct);
-        }
-
-        if (!sapNewProducts.isEmpty()) {
-            productRepository.saveAll(sapNewProducts);
-            log.info("{}건의 Product 저장 완료 (마지막 ID: {})", sapNewProducts.size(), sapNextId);
-        }
-
-        return sapNewProducts;
-    }
 
     private Map<String, Supplier> sapBuildSupplierMap(List<ProductItem> sapProductItems) {
         Map<String, Supplier> sapSupplierMap = new LinkedHashMap<>();
@@ -201,6 +150,64 @@ public class SupplierAndProductService {
 
         return new ArrayList<>(sapSupplierItemMap.values());
     }
+
+
+
+
+
+    @Transactional
+    public List<Product> saveProductsWithSequentialId(TrendKeyword sapKeyword, SupplierAndProductResponse sapResponse) {
+        if (sapKeyword == null) {
+            throw new IllegalArgumentException("TrendKeyword 정보 없이 Product를 저장할 수 없습니다.");
+        }
+
+        List<ProductItem> sapProductItems = sapGetProductItems(sapResponse);
+        if (sapProductItems.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        Map<String, Supplier> sapSupplierMap = sapBuildSupplierMap(sapProductItems);
+        Long sapMaxId = productRepository.findMaxId();
+        long sapNextId = (sapMaxId == null) ? 0L : sapMaxId;
+
+        List<Product> sapMappedProducts = productMapper.toVoList(sapProductItems);
+        List<Product> sapNewProducts = new ArrayList<>();
+
+        for (int sapIndex = 0; sapIndex < sapMappedProducts.size(); sapIndex++) {
+            Product sapMappedProduct = sapMappedProducts.get(sapIndex);
+            ProductItem sapSourceItem = sapProductItems.get(sapIndex);
+
+            if (productRepository.existsByCrawledAtAndName(sapMappedProduct.getCrawledAt(), sapMappedProduct.getName())) {
+                continue;
+            }
+
+            String sapSupplierName = sapNormalizeText(sapSourceItem.getMallNm(), Constants.Db.UNKNOWN);
+            Supplier sapSupplier = sapSupplierMap.get(sapSupplierName);
+
+            Product sapProduct = Product.builder()
+                .id(++sapNextId)
+                .keyword(sapKeyword)
+                .supplier(sapSupplier)
+                .name(sapMappedProduct.getName())
+                .description(null)
+                .price(sapMappedProduct.getPrice())
+                .imageUrl(sapMappedProduct.getImageUrl())
+                .productUrl(sapMappedProduct.getProductUrl())
+                .autoOrder(false)
+                .crawledAt(sapMappedProduct.getCrawledAt())
+                .syncDate(sapMappedProduct.getSyncDate())
+                .build();
+            sapNewProducts.add(sapProduct);
+        }
+
+        if (!sapNewProducts.isEmpty()) {
+            productRepository.saveAll(sapNewProducts);
+            log.info("{}건의 Product 저장 완료 (마지막 ID: {})", sapNewProducts.size(), sapNextId);
+        }
+
+        return sapNewProducts;
+    }
+
 
     private List<ProductItem> sapGetProductItems(SupplierAndProductResponse sapResponse) {
         if (sapResponse == null || sapResponse.getProductList() == null) {

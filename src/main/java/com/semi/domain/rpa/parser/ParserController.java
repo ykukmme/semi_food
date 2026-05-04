@@ -1,11 +1,14 @@
 package com.semi.domain.rpa.parser;
 
 import com.semi.domain.keyword.TrendKeyword;
+import com.semi.domain.keyword.TrendKeywordRepository;
+import com.semi.domain.product.Product;
 import com.semi.domain.rpa.parser.response.SupplierAndProductResponse;
 import com.semi.domain.rpa.parser.response.TrendKeywordResponse;
 import com.semi.domain.supplier.Supplier;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -34,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ParserController {
     // TrendKeyord
     private final TrendKeywordService trendKeywordService;
+    private final TrendKeywordRepository trendKeywordRepository;
     private final SupplierAndProductService supplierAndProductService;
     
     @GetMapping("/api/TrandKeywords") // http://localhost:8080/api/TrandKeywords
@@ -59,10 +63,7 @@ public class ParserController {
         SupplierAndProductResponse result = supplierAndProductService.getNaverSuppliers(rankId, syncDate);
 
         return result;
-    }
-
-    
-
+    }    
 
     @GetMapping("/api/Suppliers/saveWithSequentialId") // http://localhost:8080/api/Suppliers/saveWithSequentialId?rankId=2182837573&syncDate=20260429
     public List<Supplier> suppliersSaveWithSequentialId(
@@ -77,7 +78,41 @@ public class ParserController {
 
 
     // Product
+    // Reason: Product parser test data contains products under the supplier/product response root.
+    // Behavior: Fetch the Naver detail response and return only the product list for parser verification.
+    // Source: https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-requestmapping.html
+    @GetMapping("/api/Products") // http://localhost:8080/api/Products?rankId=2182837573&syncDate=20260429
+    public List<SupplierAndProductResponse.ProductItem> productsFetch(
+        @RequestParam @NotNull(message = "rankId는 필수 입력값입니다.") Long rankId,
+        @RequestParam @NotBlank(message = "syncDate는 필수 입력값입니다.") String syncDate
+    ) {
+        SupplierAndProductResponse supplierAndProductResponse = supplierAndProductService.getSupplierAndProducts(rankId, syncDate);
+        List<SupplierAndProductResponse.ProductItem> result = supplierAndProductResponse.getProductList();
 
+        if (result == null) {
+            return List.of();
+        }
+
+        return result;
+    }
+
+    // Reason: Product needs an existing TrendKeyword foreign key before it can be stored.
+    // Behavior: Load TrendKeyword by keywordId, fetch parser products, save related suppliers first, then save products.
+    // Source: https://docs.spring.io/spring-data/jpa/reference/repositories/core-concepts.html
+    // http://localhost:8080/api/Products/saveWithSequentialId?keywordId=160&rankId=2179193963&syncDate=20260428
+    @GetMapping("/api/Products/saveWithSequentialId") // http://localhost:8080/api/Products/saveWithSequentialId?keywordId=160&rankId=2179193963&syncDate=20260428
+    public List<Product> productsSaveWithSequentialId(
+        @RequestParam @NotNull(message = "keywordId는 필수 입력값입니다.") Long keywordId,
+        @RequestParam @NotNull(message = "rankId는 필수 입력값입니다.") Long rankId,
+        @RequestParam @NotBlank(message = "syncDate는 필수 입력값입니다.") String syncDate
+    ) {
+        TrendKeyword trendKeyword = trendKeywordRepository.findById(keywordId)
+            .orElseThrow(() -> new IllegalArgumentException("keywordId에 해당하는 TrendKeyword가 없습니다. keywordId=" + keywordId));
+        SupplierAndProductResponse supplierAndProductResponse = supplierAndProductService.getSupplierAndProducts(rankId, syncDate);
+        List<Product> result = supplierAndProductService.saveProductsWithSequentialId(trendKeyword, supplierAndProductResponse);
+
+        return result;
+    }
 
 
 
