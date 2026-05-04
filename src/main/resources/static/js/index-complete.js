@@ -277,79 +277,7 @@
     }
 
     function setupTrendKeywordImages() {
-        const imageRules = [
-            {
-                words: ["담두만두", "만두", "mandu", "dumpling"],
-                urls: [
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Korean_mandu_dumplings.jpg",
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Korean_Chinese_mandu.jpg"
-                ]
-            },
-            {
-                words: ["유제품", "우유", "요거트", "요구르트", "치즈", "milk", "dairy", "yogurt", "cheese"],
-                urls: [
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Dairy.jpg",
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Llaeth_y_Llan,_Village_Dairy_yogurt.jpg"
-                ]
-            },
-            {
-                words: ["두릅", "dureup", "aralia"],
-                urls: [
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Dureup_(Korean_angelica-tree_shoots).jpg",
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Dureup_2.jpg",
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Blanched_dureup.jpg"
-                ]
-            },
-            {
-                words: ["생선", "멸치", "전복", "굴", "조개", "새우", "미역", "김", "해물", "해산", "수산", "fish", "seafood"],
-                urls: [
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Jagalchi_Fish_Market.jpg",
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Korea-Busan-Jagalchi_Fish_Market-01.jpg"
-                ]
-            },
-            {
-                words: ["시금치", "상추", "채소", "야채", "고추", "마늘", "양파", "깻잎", "나물", "샐러드", "spinach", "vegetable", "salad"],
-                urls: [
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Fresh_Vegetables_2.jpg",
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Fresh_veggies.jpg"
-                ]
-            },
-            {
-                words: ["쌀", "밥", "현미", "찹쌀", "잡곡", "rice"],
-                urls: [
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Rice_grains_(IRRI).jpg",
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Rice_grains.jpg"
-                ]
-            },
-            {
-                words: ["사과", "배", "딸기", "귤", "감", "포도", "복숭아", "블루베리", "토마토", "과일", "fruit", "tomato"],
-                urls: [
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Various_fruits.jpg",
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Strawberries.jpg"
-                ]
-            },
-            {
-                words: ["빵", "쿠키", "케이크", "떡", "베이커", "bread", "bakery", "cake"],
-                urls: [
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Bread_loaf.jpg",
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Freshly_baked_bread_loaves.jpg"
-                ]
-            },
-            {
-                words: ["커피", "차", "음료", "주스", "coffee", "tea", "drink", "juice"],
-                urls: [
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/A_small_cup_of_coffee.JPG",
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Orange_Juice_(13638538444).jpg"
-                ]
-            },
-            {
-                words: ["선물", "세트", "gift", "set"],
-                urls: [
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Gift_box.jpg",
-                    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Exotic_Fruit_Gift_Basket_(4461109309).jpg"
-                ]
-            }
-        ];
+        // Get products from the page - prioritize database images
         const products = Array.from(document.querySelectorAll("#products-grid > .product-item")).map((item) => {
             const image = item.querySelector(".product-card__image");
             const name = item.querySelector(".product-card__name")?.textContent.trim() || "";
@@ -360,11 +288,12 @@
                 name
             };
         }).filter((product) => product.imageUrl);
+
         const fallbackUrls = [
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Fresh_Vegetables_2.jpg",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Korean_mandu_dumplings.jpg",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Dairy.jpg",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Aralia_elata_(2).jpg"
+            "https://placehold.co/640x480/e6f3ff/0066cc?text=채소",
+            "https://placehold.co/640x480/e6f3ff/0066cc?text=과일",
+            "https://placehold.co/640x480/e6f3ff/0066cc?text=해산물",
+            "https://placehold.co/640x480/e6f3ff/0066cc?text=음식"
         ];
         const usedUrls = new Set();
 
@@ -380,31 +309,39 @@
         document.querySelectorAll("[data-keyword-image]").forEach((image) => {
             const rawKeyword = image.dataset.keyword || "";
             const keyword = normalize(rawKeyword);
-            const preferProductImage = ["가죽나물", "쌀국수", "명가삼대떡집"].some((word) => keyword.includes(normalize(word)));
-            const matchedRule = imageRules.find((rule) => rule.words.some((word) => keyword.includes(normalize(word))));
+            
+            // Find products that match the keyword
             const matchedProducts = products.filter((product) => {
                 const productName = normalize(product.name);
                 return productName && keyword && (productName.includes(keyword) || keyword.includes(productName));
             });
+            
+            // Create fallback URL with keyword text
             const keywordFallbackUrl = `https://placehold.co/640x480/e6f3ff/0066cc?text=${encodeURIComponent(rawKeyword || "Food")}`;
-            const imageCandidates = preferProductImage
-                ? [
-                    ...matchedProducts.map((product) => product.imageUrl),
-                    ...(matchedRule?.urls || []),
-                    ...products.map((product) => product.imageUrl),
-                    ...fallbackUrls
-                ]
-                : [
-                    ...(matchedRule?.urls || []),
-                    ...matchedProducts.map((product) => product.imageUrl),
-                    ...products.map((product) => product.imageUrl),
-                    ...fallbackUrls
-                ];
+            
+            // Prioritize: 1. Matched product images, 2. All product images, 3. Fallback URLs
+            const imageCandidates = [
+                ...matchedProducts.map((product) => product.imageUrl),
+                ...products.map((product) => product.imageUrl),
+                ...fallbackUrls
+            ];
+            
             const imageUrl = pickUnused(imageCandidates, keywordFallbackUrl);
 
             if (imageUrl) {
+                // Set the image source
                 image.src = imageUrl;
                 usedUrls.add(imageUrl);
+                
+                // Add error handling - if image fails to load, use fallback
+                image.onerror = function() {
+                    this.src = keywordFallbackUrl;
+                };
+                
+                // Add loading success handler for debugging
+                image.onload = function() {
+                    console.log(`Successfully loaded image for keyword "${rawKeyword}": ${imageUrl}`);
+                };
             }
 
             image.alt = image.dataset.keyword ? `${image.dataset.keyword} 이미지` : "";

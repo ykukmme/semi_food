@@ -43,13 +43,13 @@ public class PurchaseOrderService {
         int totalPrice = lines.stream()
                 .mapToInt(line -> line.product().getPrice() * line.quantity())
                 .sum();
-
         PurchaseOrder order = PurchaseOrder.builder()
                 .orderNumber(nextOrderNumber())
                 .member(member)
                 .supplier(lines.get(0).product().getSupplier())
                 .totalPrice(totalPrice)
                 .shippingFee(0)
+                .shippingAddress(null)
                 .isAuto(false)
                 .build();
 
