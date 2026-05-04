@@ -57,7 +57,7 @@ public class ParserController {
 
     @GetMapping("/api/Suppliers") // http://localhost:8080/api/Suppliers?rankId=2182837573&syncDate=20260429
     public SupplierAndProductResponse suppliersFetch(
-        @RequestParam @NotBlank(message = "rankId는 필수 입력값입니다.") Long rankId,
+        @RequestParam @NotNull (message = "rankId는 필수 입력값입니다.") Long rankId,
         @RequestParam @NotBlank(message = "syncDate는 필수 입력값입니다.") String syncDate
     ) {
         SupplierAndProductResponse result = supplierAndProductService.getNaverSuppliers(rankId, syncDate);
@@ -67,7 +67,7 @@ public class ParserController {
 
     @GetMapping("/api/Suppliers/saveWithSequentialId") // http://localhost:8080/api/Suppliers/saveWithSequentialId?rankId=2182837573&syncDate=20260429
     public List<Supplier> suppliersSaveWithSequentialId(
-        @RequestParam @NotBlank(message = "rankId는 필수 입력값입니다.") Long rankId,
+        @RequestParam @NotNull (message = "rankId는 필수 입력값입니다.") Long rankId,
         @RequestParam @NotBlank(message = "syncDate는 필수 입력값입니다.") String syncDate
     ) {
         SupplierAndProductResponse supplierAndProductResponse = supplierAndProductService.getSupplierAndProducts(rankId, syncDate);

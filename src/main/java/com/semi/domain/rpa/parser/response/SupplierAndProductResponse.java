@@ -42,12 +42,21 @@ public class SupplierAndProductResponse {
         @JsonProperty("mallLinkUrl")
         @JacksonXmlProperty(localName = "mallLinkUrl")
         private String mallLinkUrl; // 공급자 url, smartstore는 파라메터가 없을시 무조건 챕챠를 띄움
+        
+        @JsonProperty("syncDate")
+        @JacksonXmlProperty(localName = "syncDate")
+        private String syncDate; // 수집 날짜 (예: 20260427)
     } 
 
 
     @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ProductItem {
+
+        // 제품
+        // @JsonProperty("rank")
+        // @JacksonXmlProperty(localName = "rank")
+        // private int rank;
 
         @JsonProperty("title")
         @JacksonXmlProperty(localName = "title")
@@ -60,6 +69,14 @@ public class SupplierAndProductResponse {
         @JsonProperty("linkUrl")
         @JacksonXmlProperty(localName = "linkUrl")
         private String linkUrl;
+
+        @JsonProperty("mallNm")
+        @JacksonXmlProperty(localName = "mallNm")
+        private String mallNm; // 공급자
+
+        @JsonProperty("mallLinkUrl")
+        @JacksonXmlProperty(localName = "mallLinkUrl")
+        private String mallLinkUrl; // 공급자 url
 
         @JsonProperty("priceValue")
         @JacksonXmlProperty(localName = "priceValue")
