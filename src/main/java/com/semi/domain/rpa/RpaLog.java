@@ -3,6 +3,7 @@ package com.semi.domain.rpa;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,12 +15,13 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "rpa_log")
-@Getter
+@Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RpaLog {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // [ ]TODO TiDB에서는 AUTO_INCREMENT 지원이 제한적이므로 주석처리, DB 변경시 다시 활성화 필요
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)

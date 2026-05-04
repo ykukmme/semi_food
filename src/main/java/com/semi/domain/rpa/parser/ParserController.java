@@ -22,13 +22,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /*
-시퀀스{
-    1. 트랜드 데이터를 저장 함. size = 20
-    2. DB에 저장된 드랜드 데이터가져오거나, List에 따로 저장해뒀다가 바로 제품+공급자를 받아오기.
-        기존에는 DB를 그대로 유지시키기 위해 넣지 않고 있었으나, 파싱을 원활하게 하려면 필수 같음.
-    3. 트랜드 순위에 따른 제품 및 공급자를 저장함 size = 10
-        각 트랜드(20개)마다 약 10개씩 반복 하면서 저장.
-    }
+[ ]TODO 파싱 RPA 시퀀스 작성하기
+파싱 RPA 시퀀스{
+    1. http://localhost:8080/api/TrandKeywords/saveWithSequentialId 에 접속하여 당일 트랜드 데이터를 저장 함. size = 20
+    2. http://localhost:8080/api/Products/saveWithSequentialId?keywordId=160&rankId=2179193963&syncDate=20260428 에 접속하여 서플라이어와 제품을 저장함.
+        - 1.에서 얻은 keywordId는 size = 20이므로, TrandKeywords 테이블에서 가장 마지막 20개의 항목을 기준으로 keywordId, rankId, syncDate를 조합하여 20회 반복하면서 저장.
+        - 제품과 공급자 데이터는 매번 달라지므로 주의.
+            - RPA에서 금일 실행중인 날짜와 트랜드 순위를 같이 기록해둘 필요가 있음.
+    3. 구현방식
+    
+    4. 로그 저장방식
+        테이블에는 message를 통해서 어떤 데이터가 저장되었는지 기록, 로그파일에는 RPA 실행 시점과 어떤 데이터가 저장되었는지/어떤 디버깅 로그가 출력됐는지 상세히 기록.
+    
+
+RPA 테이블 구조 : \src\main\resources\db\migration\V6__create_rpa_log_and_audit_tables.sql
+RPA 로그 저장 장소 : \src\main\resources\static\test\rpa\log
+log파일의 형식은 rpa_parsing_yymmdd_time.log
+
+
+}
 */
 
 @RestController
