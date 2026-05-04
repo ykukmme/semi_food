@@ -5,11 +5,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.semi.domain.keyword.TrendKeyword;
 import com.semi.domain.product.Product;
 import com.semi.domain.product.ProductRepository;
@@ -33,15 +36,44 @@ public class SupplierAndProductService {
     private final SupplierMapper supplierMapper;
     private final ProductMapper productMapper;
 
-    public SupplierAndProductResponse getSupplierAndProducts(Long sapRankId, String sapSyncDate) {
+    public SupplierAndProductResponse getNaverSuppliers(Long sapRankId, String sapSyncDate) {
         String sapTargetSiteUrl = String.format(Constants.Snxbest.TARGET_SITE_URL_TEMPLATE, sapRankId, sapSyncDate);
-        String sapDataUrl = String.format(Constants.Snxbest.API_V1_FOOD_PRODUCT_DATA_URL_TEMPLATE , sapRankId, sapSyncDate);
+        String sapTargetDataUrl = String.format(Constants.Snxbest.API_V1_FOOD_PRODUCT_DATA_URL_TEMPLATE , sapRankId, sapSyncDate);
 
-        SupplierAndProductResponse sapResponse = restClient.get()
-            .uri(sapDataUrl)
+        final String sapRawData = restClient.get()
+            .uri(sapTargetDataUrl)
             .header("User-Agent", Constants.Http.USER_AGENT)
             .header("Accept", MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE)
-            .header("Accept-Language",  Constants.Http.ACCEPT_LANGUAGE)
+            .header("Referer", sapTargetSiteUrl)
+            .retrieve()
+            .body(String.class);
+
+        System.out.println("네이버 공급자/상품 응답 원문: " + sapRawData);
+
+
+        SupplierAndProductResponse response = restClient.get()
+            .uri(sapTargetDataUrl)
+            .header("User-Agent", Constants.Http.USER_AGENT)
+            .header("Accept",  MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE)
+            .header("Accept-Language", Constants.Http.ACCEPT_LANGUAGE)
+            .header("Referer", sapTargetSiteUrl)
+            .retrieve()
+            .body(SupplierAndProductResponse.class); 
+
+
+        System.out.println("수신된 공급자/상품 데이터: " + response);
+        return response;
+    }
+
+    public SupplierAndProductResponse getSupplierAndProducts(Long sapRankId, String sapSyncDate) {
+        String sapTargetSiteUrl = String.format(Constants.Snxbest.TARGET_SITE_URL_TEMPLATE, sapRankId, sapSyncDate);
+        String sapTargetDataUrl = String.format(Constants.Snxbest.API_V1_FOOD_PRODUCT_DATA_URL_TEMPLATE , sapRankId, sapSyncDate);
+
+        SupplierAndProductResponse sapResponse = restClient.get()
+            .uri(sapTargetDataUrl)
+            .header("User-Agent", Constants.Http.USER_AGENT)
+            .header("Accept", MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE)
+            .header("Accept-Language", Constants.Http.ACCEPT_LANGUAGE)
             .header("Referer", sapTargetSiteUrl)
             .retrieve()
             .body(SupplierAndProductResponse.class);

@@ -19,8 +19,8 @@ public interface SupplierMapper {
 
     // 광고가 아니면 mall(공급자)관련 필드가 누락됨.
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "mallNm", target = "name",  defaultValue = "알 수 없음")
-    @Mapping(source = "mallLinkUrl", target = "url",  defaultValue = "알 수 없음")       
+    @Mapping(source = "mallNm", target = "name",  defaultValue = "unknown")
+    @Mapping(source = "mallLinkUrl", target = "url",  defaultValue = "unknown")       
 
     @Mapping( target = "createdAt" , expression = "java(LocalDateTime.now())" )
     // @Mapping(source = "isActive", target = "isActive") 

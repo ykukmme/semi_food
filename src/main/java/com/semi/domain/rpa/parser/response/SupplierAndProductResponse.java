@@ -3,8 +3,10 @@ package com.semi.domain.rpa.parser.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import lombok.Data;
 
@@ -15,6 +17,8 @@ import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JacksonXmlRootElement(localName = "KeywordRankDetailResult") // XML 최상위 요소명과 매핑, JSON에서는 무시됨
+// @JsonRootName("") // JSON 최상위 요소명과 매핑, XML에서는 무시됨
 public class SupplierAndProductResponse {
 
     @JsonProperty("products")
@@ -41,8 +45,8 @@ public class SupplierAndProductResponse {
         
         @JsonProperty("syncDate")
         @JacksonXmlProperty(localName = "syncDate")
-        private LocalDateTime syncDate; // 수집 날짜 (예: 20260427)
-    }
+        private String syncDate; // 수집 날짜 (예: 20260427)
+    } 
 
 
     @Data
@@ -80,7 +84,7 @@ public class SupplierAndProductResponse {
 
         @JsonProperty("syncDate")
         @JacksonXmlProperty(localName = "syncDate")
-        private LocalDateTime syncDate; // 수집 날짜 (예: 20260427)
+        private String syncDate; // 수집 날짜 (예: 20260427)
 
     }
 

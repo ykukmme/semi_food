@@ -1,7 +1,9 @@
 package com.semi.domain.rpa.parser;
 
 import com.semi.domain.keyword.TrendKeyword;
+import com.semi.domain.rpa.parser.response.SupplierAndProductResponse;
 import com.semi.domain.rpa.parser.response.TrendKeywordResponse;
+import com.semi.domain.supplier.Supplier;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /*
@@ -27,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ParserController {
     // TrendKeyord
     private final TrendKeywordService trendKeywordService;
+    private final SupplierAndProductService supplierAndProductService;
     
     @GetMapping("/api/TrandKeywords") // http://localhost:8080/api/TrandKeywords
     public List<TrendKeywordResponse.TrendKeywordItem> keywordsFetch() {
@@ -43,8 +47,29 @@ public class ParserController {
     }
 
 
+    @GetMapping("/api/Suppliers") // http://localhost:8080/api/Suppliers?rankId=2182837573&syncDate=20260429
+    public SupplierAndProductResponse suppliersFetch(
+        @RequestParam Long rankId,
+        @RequestParam String syncDate
+    ) {
+        SupplierAndProductResponse result = supplierAndProductService.getNaverSuppliers(rankId, syncDate);
 
-    // Supplier
+        return result;
+    }
+
+    
+
+
+    @GetMapping("/api/Suppliers/saveWithSequentialId") // http://localhost:8080/api/Suppliers/saveWithSequentialId?rankId=2182837573&syncDate=20260429
+    public List<Supplier> suppliersSaveWithSequentialId(
+        @RequestParam Long rankId,
+        @RequestParam String syncDate
+    ) {
+        SupplierAndProductResponse supplierAndProductResponse = supplierAndProductService.getSupplierAndProducts(rankId, syncDate);
+        List<Supplier> result = supplierAndProductService.saveSuppliersWithSequentialId(supplierAndProductResponse);
+
+        return result;
+    }
 
 
     // Product
