@@ -16,9 +16,11 @@ import com.semi.domain.rpa.parser.mapper.TrendKeywordMapper;
 import com.semi.domain.rpa.parser.response.TrendKeywordResponse;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TrendKeywordService {
 
     private final RestClient restClient = RestClient.create();
@@ -44,7 +46,7 @@ public class TrendKeywordService {
             .retrieve()
             .body(String.class);
 
-        System.out.println("네이버 응답 원문: " + rawJson);
+        log.info("네이버 응답 원문: " + rawJson);
         
         // data가 json/xml 둘 다 올 수 있기 때문에, Jackson이 자동으로 파싱하도록 설정
         final List<TrendKeywordResponse.TrendKeywordItem> response = restClient.get()
@@ -59,7 +61,7 @@ public class TrendKeywordService {
             .body(new ParameterizedTypeReference<List<TrendKeywordResponse.TrendKeywordItem>>() {});  // 여기서 Jackson MessageConverter가 자동 동작함
             // .body(TrendKeywordResponse.class); // 여기서 Jackson MessageConverter가 자동 동작함
 
-        System.out.println("수신된 데이터: " + response);
+        log.info("수신된 데이터: " + response);
         return response;
     }
 
@@ -127,7 +129,7 @@ public class TrendKeywordService {
         // 4. 최종 저장
         if (!keywordsToSave.isEmpty()) {
             repository.saveAll(keywordsToSave);
-            System.out.println(keywordsToSave.size() + "건 저장 완료 (마지막 ID: " + nextId + ")");
+            log.info("{}건 저장 완료 (마지막 ID: {})", keywordsToSave.size(), nextId);
         }
         return keywordsToSave;
     }

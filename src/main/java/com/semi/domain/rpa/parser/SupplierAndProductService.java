@@ -5,14 +5,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.semi.domain.keyword.TrendKeyword;
 import com.semi.domain.product.Product;
 import com.semi.domain.product.ProductRepository;
@@ -25,9 +22,11 @@ import com.semi.domain.supplier.Supplier;
 import com.semi.domain.supplier.SupplierRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SupplierAndProductService {
 
     private final RestClient restClient = RestClient.create();
@@ -47,9 +46,7 @@ public class SupplierAndProductService {
             .header("Referer", sapTargetSiteUrl)
             .retrieve()
             .body(String.class);
-
-        System.out.println("네이버 공급자/상품 응답 원문: " + sapRawData);
-
+        log.info("네이버 공급자/상품 응답 원문: " + sapRawData);
 
         SupplierAndProductResponse response = restClient.get()
             .uri(sapTargetDataUrl)
@@ -59,9 +56,7 @@ public class SupplierAndProductService {
             .header("Referer", sapTargetSiteUrl)
             .retrieve()
             .body(SupplierAndProductResponse.class); 
-
-
-        System.out.println("수신된 공급자/상품 데이터: " + response);
+        log.info("수신된 공급자/상품 데이터: " + response);
         return response;
     }
 
@@ -78,7 +73,7 @@ public class SupplierAndProductService {
             .retrieve()
             .body(SupplierAndProductResponse.class);
 
-        System.out.println("수신된 공급자/상품 데이터: " + sapResponse);
+        log.info("수신된 공급자/상품 데이터: " + sapResponse);
         return sapResponse;
     }
 
@@ -134,7 +129,7 @@ public class SupplierAndProductService {
 
         if (!sapNewProducts.isEmpty()) {
             productRepository.saveAll(sapNewProducts);
-            System.out.println(sapNewProducts.size() + "건의 Product 저장 완료 (마지막 ID: " + sapNextId + ")");
+            log.info("{}건의 Product 저장 완료 (마지막 ID: {})", sapNewProducts.size(), sapNextId);
         }
 
         return sapNewProducts;
@@ -183,7 +178,7 @@ public class SupplierAndProductService {
 
         if (!sapNewSuppliers.isEmpty()) {
             supplierRepository.saveAll(sapNewSuppliers);
-            System.out.println(sapNewSuppliers.size() + "건의 Supplier 저장 완료 (마지막 ID: " + sapNextId + ")");
+            log.info("{}건의 Supplier 저장 완료 (마지막 ID: {})", sapNewSuppliers.size(), sapNextId);
         }
 
         return sapSupplierMap;

@@ -4,6 +4,8 @@ import com.semi.domain.keyword.TrendKeyword;
 import com.semi.domain.rpa.parser.response.SupplierAndProductResponse;
 import com.semi.domain.rpa.parser.response.TrendKeywordResponse;
 import com.semi.domain.supplier.Supplier;
+
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -11,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Validated // filterChain 설정시 filterChain에서 추가설정 필요, 동작안함
 public class ParserController {
     // TrendKeyord
     private final TrendKeywordService trendKeywordService;
@@ -49,8 +53,8 @@ public class ParserController {
 
     @GetMapping("/api/Suppliers") // http://localhost:8080/api/Suppliers?rankId=2182837573&syncDate=20260429
     public SupplierAndProductResponse suppliersFetch(
-        @RequestParam Long rankId,
-        @RequestParam String syncDate
+        @RequestParam @NotBlank(message = "rankId는 필수 입력값입니다.") Long rankId,
+        @RequestParam @NotBlank(message = "syncDate는 필수 입력값입니다.") String syncDate
     ) {
         SupplierAndProductResponse result = supplierAndProductService.getNaverSuppliers(rankId, syncDate);
 
@@ -62,8 +66,8 @@ public class ParserController {
 
     @GetMapping("/api/Suppliers/saveWithSequentialId") // http://localhost:8080/api/Suppliers/saveWithSequentialId?rankId=2182837573&syncDate=20260429
     public List<Supplier> suppliersSaveWithSequentialId(
-        @RequestParam Long rankId,
-        @RequestParam String syncDate
+        @RequestParam @NotBlank(message = "rankId는 필수 입력값입니다.") Long rankId,
+        @RequestParam @NotBlank(message = "syncDate는 필수 입력값입니다.") String syncDate
     ) {
         SupplierAndProductResponse supplierAndProductResponse = supplierAndProductService.getSupplierAndProducts(rankId, syncDate);
         List<Supplier> result = supplierAndProductService.saveSuppliersWithSequentialId(supplierAndProductResponse);
@@ -73,6 +77,8 @@ public class ParserController {
 
 
     // Product
+
+
 
 
 }
