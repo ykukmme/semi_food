@@ -277,6 +277,8 @@
     }
 
     function setupTrendKeywordImages() {
+        console.log("Setting up trend keyword images...");
+        
         // Get products from the page - prioritize database images
         const products = Array.from(document.querySelectorAll("#products-grid > .product-item")).map((item) => {
             const image = item.querySelector(".product-card__image");
@@ -289,9 +291,11 @@
             };
         }).filter((product) => product.imageUrl);
 
+        console.log("Found products:", products.length, products.map(p => ({ name: p.name, url: p.imageUrl })));
+
         const fallbackUrls = [
             "https://placehold.co/640x480/e6f3ff/0066cc?text=채소",
-            "https://placehold.co/640x480/e6f3ff/0066cc?text=과일",
+            "https://placehold.co/640x480/e6f3ff/0066cc?text=과일", 
             "https://placehold.co/640x480/e6f3ff/0066cc?text=해산물",
             "https://placehold.co/640x480/e6f3ff/0066cc?text=음식"
         ];
@@ -306,15 +310,22 @@
             return validCandidates.find((url) => !usedUrls.has(url)) || fallbackUrl || validCandidates[0] || "";
         }
 
-        document.querySelectorAll("[data-keyword-image]").forEach((image) => {
+        const keywordImages = document.querySelectorAll("[data-keyword-image]");
+        console.log("Found keyword images:", keywordImages.length);
+
+        keywordImages.forEach((image, index) => {
             const rawKeyword = image.dataset.keyword || "";
             const keyword = normalize(rawKeyword);
+            
+            console.log(`Processing keyword ${index + 1}: "${rawKeyword}"`);
             
             // Find products that match the keyword
             const matchedProducts = products.filter((product) => {
                 const productName = normalize(product.name);
                 return productName && keyword && (productName.includes(keyword) || keyword.includes(productName));
             });
+            
+            console.log(`Matched products for "${rawKeyword}":`, matchedProducts.length);
             
             // Create fallback URL with keyword text
             const keywordFallbackUrl = `https://placehold.co/640x480/e6f3ff/0066cc?text=${encodeURIComponent(rawKeyword || "Food")}`;
@@ -327,6 +338,7 @@
             ];
             
             const imageUrl = pickUnused(imageCandidates, keywordFallbackUrl);
+            console.log(`Selected image for "${rawKeyword}":`, imageUrl);
 
             if (imageUrl) {
                 // Set the image source
@@ -335,6 +347,7 @@
                 
                 // Add error handling - if image fails to load, use fallback
                 image.onerror = function() {
+                    console.log(`Failed to load image for "${rawKeyword}", using fallback`);
                     this.src = keywordFallbackUrl;
                 };
                 
@@ -342,6 +355,9 @@
                 image.onload = function() {
                     console.log(`Successfully loaded image for keyword "${rawKeyword}": ${imageUrl}`);
                 };
+            } else {
+                console.log(`No image found for keyword "${rawKeyword}", using fallback`);
+                image.src = keywordFallbackUrl;
             }
 
             image.alt = image.dataset.keyword ? `${image.dataset.keyword} 이미지` : "";
