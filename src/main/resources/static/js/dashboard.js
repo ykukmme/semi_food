@@ -121,13 +121,7 @@ function renderRecentCartItems() {
             ${cards}
         </div>`;
 
-    const welcome = document.getElementById('dashboard-member-welcome');
-    if (welcome && welcome.parentElement === homeContent) {
-        welcome.insertAdjacentElement('afterend', section);
-        return;
-    }
-
-    homeContent.prepend(section);
+    homeContent.append(section);
 }
 
 document.getElementById('dashboard-search-form')?.addEventListener('submit', (event) => {
