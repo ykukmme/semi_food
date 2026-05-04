@@ -676,13 +676,12 @@
           totalPrice: order.totalPrice,
           usedPoints: 0,
           finalTotal: savedOrder.finalTotal || order.totalPrice
-        };
+          };
 
-        localStorage.setItem(NAMHAE_ORDER_KEY, JSON.stringify(orderData));
-        localStorage.removeItem(NAMHAE_CART_KEY);
-        localStorage.removeItem(NAMHAE_CHECKOUT_KEY);
-        localStorage.removeItem(NAMHAE_SELECTED_ITEMS_KEY);
-        window.location.href = `/order_success?status=success&orderNumber=${encodeURIComponent(savedOrder.orderNumber)}`;
+          localStorage.setItem(NAMHAE_ORDER_KEY, JSON.stringify(orderData));
+          localStorage.removeItem(NAMHAE_CHECKOUT_KEY);
+          localStorage.removeItem(NAMHAE_SELECTED_ITEMS_KEY);
+          window.location.href = `/order_success?status=success&orderNumber=${encodeURIComponent(savedOrder.orderNumber)}`;
       } catch (error) {
         alert('주문 저장에 실패했습니다. 잠시 후 다시 시도해주세요.');
         window.location.href = '/order_success?status=fail';

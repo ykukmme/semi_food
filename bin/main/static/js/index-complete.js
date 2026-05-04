@@ -105,8 +105,8 @@
     }
 
     function updateCartBadge() {
-        const badge = document.getElementById("cart-count-badge");
-        if (!badge) {
+        const badges = document.querySelectorAll(".cart-count-badge");
+        if (!badges.length) {
             return;
         }
 
@@ -115,13 +115,11 @@
             return sum + quantity;
         }, 0);
 
-        if (totalCount > 0) {
+        badges.forEach((badge) => {
             badge.textContent = totalCount > 99 ? "99+" : String(totalCount);
-            badge.classList.remove("is-hidden");
-            return;
-        }
-
-        badge.classList.add("is-hidden");
+            badge.classList.toggle("hidden", totalCount <= 0);
+            badge.classList.toggle("is-hidden", totalCount <= 0);
+        });
     }
 
     function updateHeaderBackground() {
@@ -278,6 +276,78 @@
         });
     }
 
+    function setupTrendKeywordImages() {
+        // Get products from the page - prioritize database images
+        const products = Array.from(document.querySelectorAll("#products-grid > .product-item")).map((item) => {
+            const image = item.querySelector(".product-card__image");
+            const name = item.querySelector(".product-card__name")?.textContent.trim() || "";
+
+            return {
+                category: item.dataset.category || "agricultural",
+                imageUrl: image?.getAttribute("src") || image?.currentSrc || "",
+                name
+            };
+        }).filter((product) => product.imageUrl);
+
+        const fallbackUrls = [
+            "https://placehold.co/640x480/e6f3ff/0066cc?text=채소",
+            "https://placehold.co/640x480/e6f3ff/0066cc?text=과일",
+            "https://placehold.co/640x480/e6f3ff/0066cc?text=해산물",
+            "https://placehold.co/640x480/e6f3ff/0066cc?text=음식"
+        ];
+        const usedUrls = new Set();
+
+        function normalize(value) {
+            return String(value || "").replace(/\s+/g, "").toLowerCase();
+        }
+
+        function pickUnused(candidates, fallbackUrl = "") {
+            const validCandidates = candidates.filter(Boolean);
+            return validCandidates.find((url) => !usedUrls.has(url)) || fallbackUrl || validCandidates[0] || "";
+        }
+
+        document.querySelectorAll("[data-keyword-image]").forEach((image) => {
+            const rawKeyword = image.dataset.keyword || "";
+            const keyword = normalize(rawKeyword);
+            
+            // Find products that match the keyword
+            const matchedProducts = products.filter((product) => {
+                const productName = normalize(product.name);
+                return productName && keyword && (productName.includes(keyword) || keyword.includes(productName));
+            });
+            
+            // Create fallback URL with keyword text
+            const keywordFallbackUrl = `https://placehold.co/640x480/e6f3ff/0066cc?text=${encodeURIComponent(rawKeyword || "Food")}`;
+            
+            // Prioritize: 1. Matched product images, 2. All product images, 3. Fallback URLs
+            const imageCandidates = [
+                ...matchedProducts.map((product) => product.imageUrl),
+                ...products.map((product) => product.imageUrl),
+                ...fallbackUrls
+            ];
+            
+            const imageUrl = pickUnused(imageCandidates, keywordFallbackUrl);
+
+            if (imageUrl) {
+                // Set the image source
+                image.src = imageUrl;
+                usedUrls.add(imageUrl);
+                
+                // Add error handling - if image fails to load, use fallback
+                image.onerror = function() {
+                    this.src = keywordFallbackUrl;
+                };
+                
+                // Add loading success handler for debugging
+                image.onload = function() {
+                    console.log(`Successfully loaded image for keyword "${rawKeyword}": ${imageUrl}`);
+                };
+            }
+
+            image.alt = image.dataset.keyword ? `${image.dataset.keyword} 이미지` : "";
+        });
+    }
+
     function setupTrendKeywordAuthLinks() {
         document.querySelectorAll(".js-trend-keyword-link").forEach((link) => {
             link.addEventListener("click", (event) => {
@@ -318,6 +388,7 @@
         updateMemberWelcome();
         setupProductListControls();
         setupTrendKeywordMoreButton();
+        setupTrendKeywordImages();
         setupTrendKeywordAuthLinks();
         setupScrollTopButton();
         updateHeaderBackground();

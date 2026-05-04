@@ -56,7 +56,6 @@
             <div class="member-welcome is-hidden" id="member-welcome" aria-live="polite">
                 <span class="member-welcome__name" id="member-welcome-name"></span>님 반갑습니다
             </div>
-<<<<<<< HEAD
             <section class="trend-keyword-section" aria-labelledby="trend-keyword-title">
                 <div class="trend-keyword-section__header">
                     <div>
@@ -86,10 +85,17 @@
                                 <span class="trend-keyword-card__rank">
                                     <span th:text="${keywordStat.index + 1}">1</span>&#50948;
                                 </span>
-                                <span class="material-symbols-outlined trend-keyword-card__icon" aria-hidden="true">search</span>
                             </div>
-                            <h3 class="trend-keyword-card__name" th:text="${keyword.keyword}">&#53412;&#50892;&#46300;</h3>
-                            <p class="trend-keyword-card__frequency">&#48712;&#46020; <span th:text="${keyword.frequency}">0</span></p>
+                            <div class="trend-keyword-card__name-row">
+                                <h3 class="trend-keyword-card__name" th:text="${keyword.keyword}">&#53412;&#50892;&#46300;</h3>
+                            </div>
+                            <img
+                                class="trend-keyword-card__keyword-image"
+                                data-keyword-image
+                                th:attr="data-keyword=${keyword.keyword}"
+                                src="https://placehold.co/320x240/e6f3ff/0066cc?text=Food"
+                                alt=""
+                                loading="lazy">
                         </a>
                     </article>
                 </div>
@@ -98,8 +104,6 @@
                     <button class="trend-keyword-more__button" id="trend-keyword-more-button" type="button" data-expanded="false">&#45908;&#48372;&#44592;</button>
                 </div>
             </section>
-=======
->>>>>>> 06bd07ce57b7c275cfb7b67c399149dd1ff20276
             <div class="products-section__header">
                 <div>
                     <h2 class="best-section-title">베스트 큐레이션</h2>
