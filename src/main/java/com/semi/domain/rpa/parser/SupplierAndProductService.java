@@ -1,5 +1,6 @@
 package com.semi.domain.rpa.parser;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -80,7 +81,12 @@ public class SupplierAndProductService {
     @Transactional
     public List<Supplier> saveSuppliersWithSequentialId(SupplierAndProductResponse sapResponse) {
         List<ProductItem> sapProductItems = sapGetProductItems(sapResponse);
-        return new ArrayList<>(sapBuildSupplierMap(sapProductItems).values());
+        
+
+        ArrayList<Supplier> result = new ArrayList<>(sapBuildSupplierMap(sapProductItems).values());
+
+
+        return result;
     }
 
 
@@ -94,12 +100,45 @@ public class SupplierAndProductService {
 
         Long sapMaxId = supplierRepository.findMaxId();
         long sapNextId = (sapMaxId == null) ? 0L : sapMaxId;
+
+
+        // 2. DTO -> VO 변환 (MapStruct 사용)
+        final List<Supplier> parsedSuppliers = supplierMapper.toVoList(sapSupplierItems); // 파싱된 데이터
+        if (parsedSuppliers == null || parsedSuppliers.isEmpty()) {
+            log.info("파싱된 공급자 데이터가 없습니다.");
+            return Map.of();
+        }
+
+        final Supplier latestParsedKeyword = parsedSuppliers.get(0);
+        final Supplier latestSavedRecord = supplierRepository.findFirstByOrderByIdDesc();
+
+        // 파싱한 데이터가 기존 데이터보다 최신이 아니라면 안내용 리스트 반환
+        if (latestSavedRecord != null 
+            && !latestParsedKeyword.getCreatedAt().toLocalDate().isAfter(latestSavedRecord.getCreatedAt().toLocalDate())) {
+            
+            final String message = "동일하거나 이전 날짜의 데이터입니다. 저장하지 않습니다. "
+                + "파싱 날짜: " + latestParsedKeyword.getCreatedAt().toLocalDate()
+                + ", DB 최신 날짜: " + latestSavedRecord.getCreatedAt().toLocalDate();
+            
+            return Map.of("no_new_data",
+                new Supplier(
+                    0L,
+                    "",
+                    message,
+                    LocalDateTime.now()
+                )
+            );
+        }
+
+
+
         List<Supplier> sapNewSuppliers = new ArrayList<>();
 
         for (SupplierItem sapSupplierItem : sapSupplierItems) {
             Supplier sapMappedSupplier = supplierMapper.toVo(sapSupplierItem);
             String sapSupplierName = sapNormalizeText(sapMappedSupplier.getName(), Constants.Db.UNKNOWN);
             String sapSupplierUrl = sapNormalizeText(sapMappedSupplier.getUrl(), Constants.Db.UNKNOWN);
+
 
             Supplier sapExistingSupplier = supplierRepository.findByName(sapSupplierName).orElse(null);
             if (sapExistingSupplier != null) {
@@ -121,12 +160,13 @@ public class SupplierAndProductService {
                     .url(sapSupplierUrl)
                     .createdAt(sapMappedSupplier.getCreatedAt())
                     .build();
+                    
             sapNewSuppliers.add(sapNewSupplier);
             sapSupplierMap.put(sapSupplierName, sapNewSupplier);
         }
 
         if (!sapNewSuppliers.isEmpty()) {
-            supplierRepository.saveAll(sapNewSuppliers);
+            supplierRepository.saveAllAndFlush(sapNewSuppliers);
             log.info("{}건의 Supplier 저장 완료 (마지막 ID: {})", sapNewSuppliers.size(), sapNextId);
         }
 
@@ -140,6 +180,10 @@ public class SupplierAndProductService {
             SupplierItem sapSupplierItem = new SupplierItem();
             String sapSupplierName = sapNormalizeText(sapProductItem.getMallNm(), Constants.Db.UNKNOWN);
             String sapSupplierUrl = sapNormalizeText(sapProductItem.getMallLinkUrl(), Constants.Db.UNKNOWN);
+
+            if( ! (sapSupplierUrl.equals(Constants.Db.UNKNOWN))  ){
+                sapSupplierName = sapSupplierUrl.split("/")[sapSupplierUrl.split("/").length - 1] + "_" + sapSupplierName;
+            }
 
             sapSupplierItem.setMallNm(sapSupplierName);
             sapSupplierItem.setMallLinkUrl(sapSupplierUrl);
@@ -156,7 +200,7 @@ public class SupplierAndProductService {
 
 
     @Transactional
-    public List<Product> saveProductsWithSequentialId(TrendKeyword sapKeyword, SupplierAndProductResponse sapResponse) {
+    public List<Product> saveSupplierAndProductsWithSequentialId(TrendKeyword sapKeyword, SupplierAndProductResponse sapResponse) {
         if (sapKeyword == null) {
             throw new IllegalArgumentException("TrendKeyword 정보 없이 Product를 저장할 수 없습니다.");
         }
@@ -166,13 +210,37 @@ public class SupplierAndProductService {
             return new ArrayList<>();
         }
 
+        // List<Supplier> sapSupplierList = saveSuppliersWithSequentialId(sapResponse); // 공급자 먼저 저장하여 제품과의 연관 관계를 보장
         Map<String, Supplier> sapSupplierMap = sapBuildSupplierMap(sapProductItems);
+
         Long sapMaxId = productRepository.findMaxId();
         long sapNextId = (sapMaxId == null) ? 0L : sapMaxId;
+
+        
+        // 2. DTO -> VO 변환 (MapStruct 사용)
+        final List<Product> parsedProducts = productMapper.toVoList(sapProductItems); // 파싱된 데이터
+        if (parsedProducts == null || parsedProducts.isEmpty()) {
+            log.info("파싱된 제품 데이터가 없습니다.");
+            return List.of();
+        }
+
+        final Product latestParsedProduct = parsedProducts.get(0);
+        final Product latestSavedRecord = productRepository.findFirstByOrderByIdDesc();
+
+        // 파싱한 데이터가 기존 데이터보다 최신이 아니라면 안내용 리스트 반환
+        if (latestSavedRecord != null 
+            && !latestParsedProduct.getCrawledAt().toLocalDate().isAfter(latestSavedRecord.getCrawledAt().toLocalDate())) {
+            log.info("동일하거나 이전 날짜의 제품 데이터입니다. 저장하지 않습니다. "
+                + "파싱 날짜: " + latestParsedProduct.getCrawledAt().toLocalDate()
+                + ", DB 최신 날짜: " + latestSavedRecord.getCrawledAt().toLocalDate());            
+            return List.of();
+            
+        }
 
         List<Product> sapMappedProducts = productMapper.toVoList(sapProductItems);
         List<Product> sapNewProducts = new ArrayList<>();
 
+        
         for (int sapIndex = 0; sapIndex < sapMappedProducts.size(); sapIndex++) {
             Product sapMappedProduct = sapMappedProducts.get(sapIndex);
             ProductItem sapSourceItem = sapProductItems.get(sapIndex);
@@ -182,6 +250,12 @@ public class SupplierAndProductService {
             }
 
             String sapSupplierName = sapNormalizeText(sapSourceItem.getMallNm(), Constants.Db.UNKNOWN);
+            String sapSupplierUrl = sapNormalizeText(sapSourceItem.getMallLinkUrl(), Constants.Db.UNKNOWN);
+            if( ! (sapSupplierUrl.equals(Constants.Db.UNKNOWN))  ){
+                sapSupplierName = sapSupplierUrl.split("/")[sapSupplierUrl.split("/").length - 1] + "_" + sapSupplierName;
+            }
+
+            // Supplier sapSupplier = sapSupplierList.get(sapSupplierName);
             Supplier sapSupplier = sapSupplierMap.get(sapSupplierName);
 
             Product sapProduct = Product.builder()
@@ -201,7 +275,7 @@ public class SupplierAndProductService {
         }
 
         if (!sapNewProducts.isEmpty()) {
-            productRepository.saveAll(sapNewProducts);
+            productRepository.saveAllAndFlush(sapNewProducts);
             log.info("{}건의 Product 저장 완료 (마지막 ID: {})", sapNewProducts.size(), sapNextId);
         }
 

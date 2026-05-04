@@ -81,13 +81,13 @@ public class TrendKeywordService {
         final TrendKeyword latestSavedRecord = repository.findFirstByOrderByIdDesc();
 
         // 파싱한 데이터가 기존 데이터보다 최신이 아니라면 안내용 리스트 반환
-        if (latestSavedRecord != null
-            && !latestParsedKeyword.getCollectedAt().isAfter(latestSavedRecord.getCollectedAt())) {
-            final String message = "추가로 저장된 값이 없습니다. 추가 Data CollectedAt:"
-                + latestParsedKeyword.getCollectedAt()
-                + ", 기존 Data CollectedAt:"
-                + latestSavedRecord.getCollectedAt();
-
+        if (latestSavedRecord != null 
+            && !latestParsedKeyword.getCollectedAt().toLocalDate().isAfter(latestSavedRecord.getCollectedAt().toLocalDate())) {
+            
+            final String message = "동일하거나 이전 날짜의 데이터입니다. 저장하지 않습니다. "
+                + "파싱 날짜: " + latestParsedKeyword.getCollectedAt().toLocalDate()
+                + ", DB 최신 날짜: " + latestSavedRecord.getCollectedAt().toLocalDate();
+            
             return List.of(
                 new TrendKeyword(
                     0L,
@@ -128,7 +128,7 @@ public class TrendKeywordService {
 
         // 4. 최종 저장
         if (!keywordsToSave.isEmpty()) {
-            repository.saveAll(keywordsToSave);
+            repository.saveAllAndFlush(keywordsToSave);
             log.info("{}건 저장 완료 (마지막 ID: {})", keywordsToSave.size(), nextId);
         }
         return keywordsToSave;

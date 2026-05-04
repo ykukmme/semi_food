@@ -65,6 +65,7 @@ public class ParserController {
         return result;
     }    
 
+    //[ ]TODO 테스트가 끝나면 막을 것, 제품 공급자 api는 호출 할 때 마다 다른값이 나옴으로 동시에 저장 필요.
     @GetMapping("/api/Suppliers/saveWithSequentialId") // http://localhost:8080/api/Suppliers/saveWithSequentialId?rankId=2182837573&syncDate=20260429
     public List<Supplier> suppliersSaveWithSequentialId(
         @RequestParam @NotNull (message = "rankId는 필수 입력값입니다.") Long rankId,
@@ -109,7 +110,7 @@ public class ParserController {
         TrendKeyword trendKeyword = trendKeywordRepository.findById(keywordId)
             .orElseThrow(() -> new IllegalArgumentException("keywordId에 해당하는 TrendKeyword가 없습니다. keywordId=" + keywordId));
         SupplierAndProductResponse supplierAndProductResponse = supplierAndProductService.getSupplierAndProducts(rankId, syncDate);
-        List<Product> result = supplierAndProductService.saveProductsWithSequentialId(trendKeyword, supplierAndProductResponse);
+        List<Product> result = supplierAndProductService.saveSupplierAndProductsWithSequentialId(trendKeyword, supplierAndProductResponse);
 
         return result;
     }
