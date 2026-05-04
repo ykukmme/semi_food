@@ -227,7 +227,7 @@ button {
     margin: 0 0 1rem;
     color: var(--color-text);
     font-family: "Plus Jakarta Sans", "Inter", sans-serif;
-    font-size: clamp(2.25rem, 4vw, 3.25rem);
+    font-size: clamp(2rem, 3.5vw, 2.85rem);
     font-weight: 900;
     line-height: 1.05;
     letter-spacing: 0;
@@ -241,9 +241,9 @@ button {
 }
 
 .display-price {
-    color: var(--color-secondary);
+    color: #991b1b;
     font-family: "Plus Jakarta Sans", "Inter", sans-serif;
-    font-size: 2rem;
+    font-size: 24px;
     font-weight: 900;
 }
 
