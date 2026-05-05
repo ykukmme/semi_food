@@ -32,7 +32,7 @@ class ProductControllerTemplateTest {
 
         String html = templateEngine.process("index", context);
 
-        assertThat(html).contains("Heritage Namhae");
+        assertThat(html).contains("스마트 식품 이커머스 - 다드림");
         assertThat(html).contains("member-welcome");
     }
 
@@ -68,9 +68,9 @@ class ProductControllerTemplateTest {
                 Locale.KOREA,
                 Map.of());
 
-        assertThat(templateEngine.process("all_orders", context)).contains("Heritage Namhae");
-        assertThat(templateEngine.process("cancel_orders", context)).contains("Heritage Namhae");
-        assertThat(templateEngine.process("mypage", context)).contains("Heritage Namhae");
+        assertThat(templateEngine.process("all_orders", context)).contains("스마트 식품 이커머스 - 다드림");
+        assertThat(templateEngine.process("cancel_orders", context)).contains("스마트 식품 이커머스 - 다드림");
+        assertThat(templateEngine.process("mypage", context)).contains("스마트 식품 이커머스 - 다드림");
     }
 
     @Test
@@ -88,7 +88,7 @@ class ProductControllerTemplateTest {
 
         String html = templateEngine.process("cart", context);
 
-        assertThat(html).contains("Heritage Namhae");
+        assertThat(html).contains("스마트 식품 이커머스 - 다드림");
         assertThat(html).contains("SERVER_CART_ITEMS");
         assertThat(html).contains("NAMHAE_CHECKOUT_KEY");
     }

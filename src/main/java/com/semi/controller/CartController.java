@@ -139,7 +139,7 @@ public class CartController {
                             "cartItemId", cartItem.getId(),
                             "productId", product.getId(),
                             "name", product.getName(),
-                            "collection", "Heritage Namhae",
+                            "collection", "스마트 식품 이커머스 - 다드림",
                             "price", product.getPrice() == null ? 0 : product.getPrice(),
                             "quantity", cartItem.getQuantity(),
                             "image", product.getImageUrl() == null ? "" : product.getImageUrl(),
