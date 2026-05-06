@@ -3,12 +3,14 @@ package com.semi.domain.mail;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MailService {
@@ -22,12 +24,19 @@ public class MailService {
      * 텍스트 메일 발송
      */
     public void sendSimpleMail(String to, String subject, String text) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(fromEmail);
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(text);
-        mailSender.send(message);
+        log.info("메일 발송 시도: to={}, subject={}, from={}", to, subject, fromEmail);
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(fromEmail);
+            message.setTo(to);
+            message.setSubject(subject);
+            message.setText(text);
+            mailSender.send(message);
+            log.info("메일 발송 성공: to={}", to);
+        } catch (Exception e) {
+            log.error("메일 발송 실패: to={}, error={}", to, e.getMessage(), e);
+            throw e;
+        }
     }
 
     /**

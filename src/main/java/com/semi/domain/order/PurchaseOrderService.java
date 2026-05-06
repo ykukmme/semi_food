@@ -60,7 +60,6 @@ public class PurchaseOrderService {
                 .shippingAddress(request.shippingAddress())
                 .paymentMethod(request.paymentMethod())
                 .paymentStatus(request.paymentStatus())
-                .paymentStatus("COMPLETED")
                 .build();
 
         lines.forEach(line -> order.addItem(PurchaseOrderItem.builder()
@@ -73,8 +72,10 @@ public class PurchaseOrderService {
 
         PurchaseOrder savedOrder = purchaseOrderRepository.save(order);
 
-        // ADMIN에게 메일 발송
-        sendOrderCompletedMail(savedOrder);
+        // payment_status가 COMPLETED이면 ADMIN에게 메일 발송
+        if ("COMPLETED".equals(savedOrder.getPaymentStatus())) {
+            sendOrderCompletedMail(savedOrder);
+        }
 
         return savedOrder;
     }
@@ -197,7 +198,9 @@ public class PurchaseOrderService {
     private void sendOrderCompletedMail(PurchaseOrder order) {
         try {
             List<Member> admins = memberRepository.findByRole(MemberRole.ADMIN);
+            log.info("ADMIN 메일 발송 시작: orderNumber={}, adminCount={}", order.getOrderNumber(), admins.size());
             if (admins.isEmpty()) {
+                log.warn("ADMIN 회원이 없어 메일 발송을 건너뜁니다.");
                 return;
             }
 
@@ -217,8 +220,10 @@ public class PurchaseOrderService {
             );
 
             for (Member admin : admins) {
+                log.info("ADMIN 메일 발송 대상: email={}", admin.getEmail());
                 mailService.sendSimpleMail(admin.getEmail(), subject, text);
             }
+            log.info("ADMIN 메일 발송 완료: orderNumber={}", order.getOrderNumber());
         } catch (Exception e) {
             log.error("ADMIN 메일 발송 실패: orderNumber={}", order.getOrderNumber(), e);
         }
