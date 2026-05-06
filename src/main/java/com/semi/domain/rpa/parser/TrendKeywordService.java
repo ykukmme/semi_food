@@ -28,12 +28,6 @@ public class TrendKeywordService {
     private final TrendKeywordMapper trendKeywordMapper; // 매퍼 주입
 
     public List<TrendKeywordResponse.TrendKeywordItem> getNaverKeywords() {
-        // api url 의 경우 RankId와 syncDate 를 조합해서 제품 url api에서 처리가 간헐적으로 가능
-        // [ ]TODO 기존 로직을 일부 수정하기
-        // []TODO 표준에 맞지 않는 구문 수정하기
-        // [x]TODO TrendKeyword에 RankId와 syncDate를 추가
-            // [x]TODO Trend_keyword 테이블에 RankId와 syncDate가 null로 들어가는 문제가 있음=> repo저장단계에서 추가
-        // [ ]TODO 기존 TrendKeywordService 클래스의 내용도 SupplierAndProductService 처럼 수정하기
 
         // final String targetSiteUrl = "https://snxbest.naver.com/keyword/best?categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY&ageType=ALL&activeRankId=2165824835&syncDate=20260423";
         final String targetSiteUrl = "https://snxbest.naver.com/keyword/best?categoryId=50000006&sortType=KEYWORD_POPULAR&periodType=DAILY&ageType=ALL";

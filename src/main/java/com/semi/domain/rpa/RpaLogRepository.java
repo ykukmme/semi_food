@@ -8,4 +8,8 @@ public interface RpaLogRepository extends JpaRepository<RpaLog, Long> {
 
     /** 가장 최근 로그 조회 (대시보드 가동 여부 판별용) */
     Optional<RpaLog> findTopByOrderByStartedAtDesc();
+
+
+    // [ ]TODO 오늘(입력받은) 날짜를 기준으로 하는 CRUD 구현
+        // 참고: findAllByCreatedAtGreaterThanEqual(LocalDateTime start);
 }
