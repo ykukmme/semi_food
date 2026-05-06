@@ -20,6 +20,7 @@ CREATE TABLE product (
     product_url VARCHAR(500) COMMENT '상품 구매처 링크',
     auto_order  BOOLEAN      NOT NULL DEFAULT FALSE COMMENT '자동발주 플래그 (기본 OFF)',
     crawled_at  DATETIME     NOT NULL COMMENT '크롤링 시간',
+    sync_date    DATETIME     DEFAULT NULL COMMENT '네이버 자체 동기화 날짜 추정',
 
     CONSTRAINT fk_product_keyword  FOREIGN KEY (keyword_id)  REFERENCES trend_keyword (id),
     CONSTRAINT fk_product_supplier FOREIGN KEY (supplier_id) REFERENCES supplier (id)

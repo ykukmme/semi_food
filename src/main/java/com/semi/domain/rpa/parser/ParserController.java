@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 /*
 [ ]TODO 파싱 RPA 시퀀스 만들기 ( 작성중 )
 파싱 RPA 시퀀스{
-    1. http://localhost:8080/api/TrandKeywords/saveWithSequentialId 에 접속하여 당일 트랜드 데이터를 저장 함. size = 20
+    1. http://localhost:8080/api/TrendKeywords/saveWithSequentialId 에 접속하여 당일 트랜드 데이터를 저장 함. size = 20
     2. http://localhost:8080/api/Products/saveWithSequentialId?keywordId=160&rankId=2179193963&syncDate=20260428 에 접속하여 서플라이어와 제품을 저장함.
-        - 1.에서 얻은 keywordId는 size = 20이므로, TrandKeywords 테이블에서 가장 마지막 20개의 항목을 기준으로 keywordId, rankId, syncDate를 조합하여 20회 반복하면서 저장.
+        - 1.에서 얻은 keywordId는 size = 20이므로, TrendKeywords 테이블에서 가장 마지막 20개의 항목을 기준으로 keywordId, rankId, syncDate를 조합하여 20회 반복하면서 저장.
         - 제품과 공급자 데이터는 매번 달라지므로 주의.
             - RPA에서 금일 실행중인 날짜와 트랜드 순위를 같이 기록해둘 필요가 있음.
 
@@ -74,13 +74,13 @@ public class ParserController {
     private final TrendKeywordRepository trendKeywordRepository;
     private final SupplierAndProductService supplierAndProductService;
     
-    @GetMapping("/api/TrandKeywords") // http://localhost:8080/api/TrandKeywords
+    @GetMapping("/api/TrendKeywords") // http://localhost:8080/api/TrendKeywords
     public List<TrendKeywordResponse.TrendKeywordItem> keywordsFetch() {
             List<TrendKeywordResponse.TrendKeywordItem> result = trendKeywordService.getNaverKeywords();
         return result;
     }
 
-    @GetMapping("/api/TrandKeywords/saveWithSequentialId") // http://localhost:8080/api/TrandKeywords/saveWithSequentialId
+    @GetMapping("/api/TrendKeywords/saveWithSequentialId") // http://localhost:8080/api/TrendKeywords/saveWithSequentialId
     public List<TrendKeyword> saveWithSequentialId() {
             List<TrendKeywordResponse.TrendKeywordItem> trendList = trendKeywordService.getNaverKeywords();
             List<TrendKeyword> result = trendKeywordService.saveWithSequentialId(trendList);

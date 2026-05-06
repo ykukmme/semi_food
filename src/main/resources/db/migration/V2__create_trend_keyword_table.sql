@@ -7,6 +7,6 @@ CREATE TABLE trend_keyword (
     frequency    INT          NOT NULL DEFAULT 0 COMMENT '키워드 빈도수 (대시보드 표시용)',
     collected_at DATETIME     NOT NULL COMMENT '수집 시간',
     is_active    BOOLEAN      NOT NULL DEFAULT TRUE COMMENT '현재 활성 여부',
-    `ranking_id` bigint DEFAULT NULL COMMENT '네이버 자체 랭킹ID 추정' ,
-    `sync_date` date DEFAULT NULL COMMENT '네이버 자체 동기화 날짜 추정'
+    `ranking_id` BIGINT DEFAULT NULL COMMENT '네이버 자체 랭킹ID 추정' ,
+    `sync_date` DATETIME DEFAULT NULL COMMENT '네이버 자체 동기화 날짜 추정'
 );

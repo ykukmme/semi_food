@@ -6,3 +6,8 @@
 [2026-05-06 11:08:18 - 2026-05-06 11:08:18] RPA TODO 문서 생성: `src/main/resources/static/test/rpa/TODO_LIST.md`에 현재 프로젝트의 RPA 도메인 기준으로 DB 설계, 백엔드 로직, 기아 상태 방지, UI/UX, 고도화 항목을 정리하고 작업 기록을 남김.
 [2026-05-06 11:14:38 - 2026-05-06 11:14:38] RPA TODO 상세 항목 보강: `TODO_LIST.md`에 TODO 파싱 RPA 시퀀스와 관리자 대시보드 설계 항목을 추가하고, 실행 흐름/로그 저장 방식/CRUD 범위/SSE 실시간 갱신 기준을 현재 프로젝트 용어에 맞춰 정리함.
 [2026-05-06 11:22:33 - 2026-05-06 11:22:33] RPA TODO 문서 재구성: `TODO_LIST.md`를 AI가 읽기 쉬운 형식으로 다시 정리해 기준 정보, 파싱 시퀀스, 대시보드, CRUD 안전 규칙, 구현 우선순위, 주의사항을 분리하고 예시와 실제 구현 기준을 구분함.
+[2026-05-06 11:34:40 - 2026-05-06 11:34:40] RPA TODO 구현 순서 재정렬: `TODO_LIST.md`의 내용을 실제 구현 순서에 맞춰 `RPA 파싱 시퀀스 -> CRUD 안전 규칙 -> 관리자 대시보드 -> 구현 방식 -> 복구 및 고도화` 순서로 재배치하고 완료 기준을 추가함.
+[2026-05-06 11:39:56 - 2026-05-06 11:39:56] RPA TODO 기능 단위 분해: `TODO_LIST.md`를 `RPA 파싱 준비`, `공급자/상품 파싱 실행`, `로그 저장`, `CRUD 안전장치`, `관리자 대시보드`, `비동기와 동시성 제어`, `복구 및 고도화`처럼 독립 구현 가능한 단위로 세분화함.
+[2026-05-06 11:45:42 - 2026-05-06 11:45:42] RPA TODO 개별 문서 분리: `src/main/resources/static/test/rpa/TODO_LIST` 폴더에 `TODO_LIST.md` 내용을 실제 구현 순서에 맞춰 `000_기준정보.md`부터 `008_완료기준_주의사항.md`까지 기능별 구현 단위 문서로 분리 저장함.
+[2026-05-06 11:52:50 - 2026-05-06 11:52:50] RPA TODO 구현 상태 반영: 현재 프로젝트의 RPA 엔티티, Repository, ParserController, TrendKeywordService, SupplierAndProductService, RpaRestController, 마이그레이션, 대시보드 파일 상태를 확인하고 `TODO_LIST` 폴더의 9개 문서에 현재 구현 상태와 추가 구현 필요사항을 보강함.
+[2026-05-06 12:02:56 - 2026-05-06 12:02:56] RPA TODO 마이그레이션 변경 반영: 변경된 `V2__create_trend_keyword_table.sql`과 `V3__create_supplier_and_product_table.sql`을 확인해 `trend_keyword.sync_date` 및 `product.sync_date`가 `DATETIME`으로 정리된 내용을 `TODO_LIST` 폴더 문서에 반영하고, 공급자 날짜 기준 정책 필요사항을 보강함.
