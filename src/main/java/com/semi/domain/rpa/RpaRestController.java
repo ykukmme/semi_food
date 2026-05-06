@@ -3,6 +3,7 @@ package com.semi.domain.rpa;
 import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.semi.domain.rpa.response.RpaDailyDataSummary;
 import com.semi.domain.rpa.response.RpaDailyDeleteResponse;
+import com.semi.domain.rpa.response.RpaDashboardDataResponse;
 import com.semi.domain.rpa.response.RpaRunResponse;
 import com.semi.domain.rpa.response.RpaStatusResponse;
 
@@ -29,9 +31,10 @@ public class RpaRestController {
     private final RpaDailyDataService rpaDailyDataService;
 
     @GetMapping("/dashboard")
-    public ResponseEntity<String> getDashboard() {
-        // [ ]TODO: 실제 대시보드 데이터를 반환하도록 수정
-        return ResponseEntity.ok("RPA Dashboard placeholder");
+    public ResponseEntity<Void> getDashboard() {
+        return ResponseEntity.status(HttpStatus.FOUND)
+            .header("Location", "/rpa/dashboard.html")
+            .build();
     }
 
     @GetMapping("/status")
@@ -47,6 +50,16 @@ public class RpaRestController {
     ) {
         LocalDate targetDate = date == null ? LocalDate.now() : date;
         return ResponseEntity.ok(rpaDailyDataService.summarizeDailyData(targetDate));
+    }
+
+    @GetMapping("/data/daily/details")
+    public ResponseEntity<RpaDashboardDataResponse> getDailyDashboardData(
+        @RequestParam(required = false)
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+        LocalDate date
+    ) {
+        LocalDate targetDate = date == null ? LocalDate.now() : date;
+        return ResponseEntity.ok(rpaDailyDataService.getDailyDashboardData(targetDate));
     }
 
     @DeleteMapping("/data/daily")

@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>semi_food RPA Dashboard</title>
+    <style>
+        :root {
+            --bg: #f4f7f6;
+            --panel: #ffffff;
+            --line: #d9e2df;
+            --ink: #17211f;
+            --muted: #697773;
+            --accent: #0f766e;
+            --accent-dark: #115e59;
+            --danger: #b42318;
+            --warn: #b45309;
+            --ok: #15803d;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(180deg, #edf5f2 0%, var(--bg) 38%, #eef2f1 100%);
+            color: var(--ink);
+            font-family: "Segoe UI", "Noto Sans KR", sans-serif;
+            font-size: 14px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.86);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 20px;
+            letter-spacing: 0;
+        }
+
+        main {
+            padding: 20px 24px 28px;
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        input,
+        button {
+            height: 36px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: #fff;
+            color: var(--ink);
+            padding: 0 11px;
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-weight: 650;
+        }
+
+        button.primary {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: #fff;
+        }
+
+        button.primary:hover {
+            background: var(--accent-dark);
+        }
+
+        button.danger {
+            border-color: #f4b8b1;
+            color: var(--danger);
+        }
+
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.45;
+        }
+
+        .status-line {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .metric,
+        .view {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+        }
+
+        .metric {
+            padding: 13px 14px;
+        }
+
+        .metric span {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+        .metric strong {
+            font-size: 19px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            min-height: 24px;
+            padding: 2px 9px;
+            border-radius: 999px;
+            font-weight: 700;
+            background: #e5e7eb;
+        }
+
+        .status-badge.RUNNING {
+            color: var(--warn);
+            background: #fff7ed;
+        }
+
+        .status-badge.COMPLETED {
+            color: var(--ok);
+            background: #ecfdf3;
+        }
+
+        .status-badge.FAILED {
+            color: var(--danger);
+            background: #fff1f1;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .view h2 {
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .view-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .table-wrap {
+            max-height: 310px;
+            overflow: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 720px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            border-bottom: 1px solid #edf1f0;
+            padding: 8px 10px;
+            white-space: nowrap;
+            vertical-align: top;
+        }
+
+        th {
+            color: var(--muted);
+            font-size: 12px;
+            background: #f8fbfa;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        td.message {
+            max-width: 460px;
+            white-space: normal;
+        }
+
+        .empty {
+            padding: 18px 14px;
+            color: var(--muted);
+        }
+
+        @media (max-width: 980px) {
+            header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .status-line,
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div>
+        <h1>semi_food RPA Dashboard</h1>
+        <div id="lastUpdated">-</div>
+    </div>
+    <div class="toolbar">
+        <input id="targetDate" type="date">
+        <button id="refreshButton">새로고침</button>
+        <button id="runButton" class="primary">RPA 실행</button>
+        <button id="deleteButton" class="danger">당일 삭제</button>
+    </div>
+</header>
+
+<main>
+    <section class="status-line">
+        <div class="metric"><span>RPA 상태</span><strong id="rpaStatus" class="status-badge">-</strong></div>
+        <div class="metric"><span>TrendKeyword</span><strong id="keywordCount">0</strong></div>
+        <div class="metric"><span>Supplier</span><strong id="supplierCount">0</strong></div>
+        <div class="metric"><span>Product</span><strong id="productCount">0</strong></div>
+        <div class="metric"><span>삭제 가능</span><strong id="deletableCount">0</strong></div>
+    </section>
+
+    <section class="grid">
+        <article class="view">
+            <div class="view-head"><h2>trend_keyword</h2><span id="keywordLabel">0 rows</span></div>
+            <div class="table-wrap"><table><thead><tr><th>ID</th><th>Keyword</th><th>Rank</th><th>Ranking ID</th><th>Sync Date</th><th>Collected</th></tr></thead><tbody id="keywordRows"></tbody></table></div>
+        </article>
+        <article class="view">
+            <div class="view-head"><h2>supplier</h2><span id="supplierLabel">0 rows</span></div>
+            <div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>URL</th><th>Created</th></tr></thead><tbody id="supplierRows"></tbody></table></div>
+        </article>
+        <article class="view">
+            <div class="view-head"><h2>product</h2><span id="productLabel">0 rows</span></div>
+            <div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Keyword</th><th>Supplier</th><th>Price</th><th>Sync Date</th><th>Crawled</th></tr></thead><tbody id="productRows"></tbody></table></div>
+        </article>
+        <article class="view">
+            <div class="view-head"><h2>rpa_log</h2><span id="logLabel">0 rows</span></div>
+            <div class="table-wrap"><table><thead><tr><th>ID</th><th>Status</th><th>Started</th><th>Ended</th><th>Keywords</th><th>Products</th><th>Message</th></tr></thead><tbody id="logRows"></tbody></table></div>
+        </article>
+    </section>
+</main>
+
+<script>
+    const state = { running: false };
+    const dateInput = document.getElementById("targetDate");
+    const today = new Date();
+    dateInput.value = today.toISOString().slice(0, 10);
+
+    document.getElementById("refreshButton").addEventListener("click", refreshDashboard);
+    document.getElementById("runButton").addEventListener("click", runRpa);
+    document.getElementById("deleteButton").addEventListener("click", deleteDailyData);
+
+    function formatDateTime(value) {
+        if (!value) return "-";
+        return String(value).replace("T", " ").slice(0, 19);
+    }
+
+    function text(value) {
+        return value === null || value === undefined || value === "" ? "-" : String(value);
+    }
+
+    function setRows(tbodyId, rows, renderRow) {
+        const tbody = document.getElementById(tbodyId);
+        tbody.innerHTML = "";
+        if (!rows || rows.length === 0) {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `<td class="empty" colspan="8">조회된 데이터가 없습니다.</td>`;
+            tbody.appendChild(tr);
+            return;
+        }
+        rows.forEach(row => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = renderRow(row);
+            tbody.appendChild(tr);
+        });
+    }
+
+    function updateRunningLock(status) {
+        state.running = status === "RUNNING";
+        document.getElementById("runButton").disabled = state.running;
+        document.getElementById("deleteButton").disabled = state.running;
+    }
+
+    async function refreshDashboard() {
+        const date = dateInput.value;
+        const [statusResponse, dataResponse] = await Promise.all([
+            fetch("/rpa/status"),
+            fetch(`/rpa/data/daily/details?date=${date}`)
+        ]);
+        const status = await statusResponse.json();
+        const data = await dataResponse.json();
+        const summary = data.summary || {};
+
+        const statusEl = document.getElementById("rpaStatus");
+        statusEl.textContent = text(status.status);
+        statusEl.className = `status-badge ${text(status.status)}`;
+        updateRunningLock(status.status);
+
+        document.getElementById("keywordCount").textContent = text(summary.trendKeywordCount || 0);
+        document.getElementById("supplierCount").textContent = text(summary.supplierCount || 0);
+        document.getElementById("productCount").textContent = text(summary.productCount || 0);
+        document.getElementById("deletableCount").textContent = text((summary.deletableTrendKeywordCount || 0) + (summary.deletableSupplierCount || 0) + (summary.deletableProductCount || 0));
+        document.getElementById("lastUpdated").textContent = `조회 기준 ${date} / ${new Date().toLocaleString()}`;
+
+        document.getElementById("keywordLabel").textContent = `${data.trendKeywords.length} rows`;
+        document.getElementById("supplierLabel").textContent = `${data.suppliers.length} rows`;
+        document.getElementById("productLabel").textContent = `${data.products.length} rows`;
+        document.getElementById("logLabel").textContent = `${data.rpaLogs.length} rows`;
+
+        setRows("keywordRows", data.trendKeywords, row => `<td>${text(row.id)}</td><td>${text(row.keyword)}</td><td>${text(row.rank)}</td><td>${text(row.rankingId)}</td><td>${formatDateTime(row.syncDate)}</td><td>${formatDateTime(row.collectedAt)}</td>`);
+        setRows("supplierRows", data.suppliers, row => `<td>${text(row.id)}</td><td>${text(row.name)}</td><td>${text(row.url)}</td><td>${formatDateTime(row.createdAt)}</td>`);
+        setRows("productRows", data.products, row => `<td>${text(row.id)}</td><td>${text(row.name)}</td><td>${text(row.keyword)}</td><td>${text(row.supplierName)} (${text(row.supplierId)})</td><td>${text(row.price)}</td><td>${formatDateTime(row.syncDate)}</td><td>${formatDateTime(row.crawledAt)}</td>`);
+        setRows("logRows", data.rpaLogs, row => `<td>${text(row.id)}</td><td><span class="status-badge ${text(row.status)}">${text(row.status)}</span></td><td>${formatDateTime(row.startedAt)}</td><td>${formatDateTime(row.endedAt)}</td><td>${text(row.keywordCount)}</td><td>${text(row.productCount)}</td><td class="message">${text(row.message)}</td>`);
+    }
+
+    async function runRpa() {
+        const response = await fetch("/rpa/run?size=20", { method: "POST" });
+        if (!response.ok && response.status !== 409) {
+            alert("RPA 실행 요청에 실패했습니다.");
+        }
+        await refreshDashboard();
+    }
+
+    async function deleteDailyData() {
+        if (state.running) return;
+        if (!confirm(`${dateInput.value} 기준 삭제 가능 데이터를 삭제할까요?`)) return;
+        const response = await fetch(`/rpa/data/daily?date=${dateInput.value}&confirm=true`, { method: "DELETE" });
+        if (!response.ok) {
+            const message = await response.text();
+            alert(message || "삭제 요청에 실패했습니다.");
+        }
+        await refreshDashboard();
+    }
+
+    refreshDashboard();
+    setInterval(() => {
+        if (state.running) refreshDashboard();
+    }, 5000);
+</script>
+</body>
+</html>

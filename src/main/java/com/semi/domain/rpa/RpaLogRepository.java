@@ -3,6 +3,8 @@ package com.semi.domain.rpa;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface RpaLogRepository extends JpaRepository<RpaLog, Long> {
@@ -13,6 +15,8 @@ public interface RpaLogRepository extends JpaRepository<RpaLog, Long> {
     /** TiDB 수동 ID 부여를 위한 최신 ID 조회 */
     @Query("SELECT MAX(r.id) FROM RpaLog r")
     Long findMaxId();
+
+    List<RpaLog> findAllByStartedAtGreaterThanEqualOrderByStartedAtDesc(LocalDateTime start);
 
 
     // [ ]TODO 오늘(입력받은) 날짜를 기준으로 하는 CRUD 구현
