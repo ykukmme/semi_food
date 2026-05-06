@@ -74,7 +74,7 @@
                             <div class="flex-1">
                                 <h4 class="font-bold" th:text="${item.productName}">상품명</h4>
                                 <p class="mt-1 text-sm text-gray-500">&#49688;&#47049; <span th:text="${item.quantity}">1</span>&#44060;</p>
-                                <p class="mt-2 font-bold text-[#0066cc]" th:text="${'&#8361;' + #numbers.formatInteger(item.subtotal, 0, 'COMMA')}">&#8361;0</p>
+                                <p class="mt-2 font-bold text-[#991b1b]" th:text="${'&#8361;' + #numbers.formatInteger(item.subtotal, 0, 'COMMA')}">&#8361;0</p>
                             </div>
                         </article>
                         </th:block>
@@ -85,9 +85,9 @@
             <aside class="rounded-2xl border bg-white p-6 shadow-sm h-fit">
                 <h2 class="text-lg font-bold mb-4">&#44208;&#51228; &#44552;&#50529;</h2>
                 <div th:if="${order != null}" class="space-y-3 text-sm">
-                    <div class="flex justify-between"><span>&#49345;&#54408; &#44552;&#50529;</span><strong th:text="${'&#8361;' + #numbers.formatInteger(order.totalPrice, 0, 'COMMA')}">&#8361;0</strong></div>
-                    <div class="flex justify-between"><span>&#48176;&#49569;&#48708;</span><strong th:text="${'&#8361;' + #numbers.formatInteger(order.shippingFee, 0, 'COMMA')}">&#8361;0</strong></div>
-                    <div class="flex justify-between border-t pt-3 text-lg"><span>&#52509; &#44208;&#51228;</span><strong class="text-[#0066cc]" th:text="${'&#8361;' + #numbers.formatInteger(order.totalPrice + order.shippingFee, 0, 'COMMA')}">&#8361;0</strong></div>
+                    <div class="flex justify-between"><span>&#49345;&#54408; &#44552;&#50529;</span><strong class="text-[#991b1b]" th:text="${'&#8361;' + #numbers.formatInteger(order.totalPrice, 0, 'COMMA')}">&#8361;0</strong></div>
+                    <div class="flex justify-between"><span>&#48176;&#49569;&#48708;</span><strong class="text-[#991b1b]" th:text="${'&#8361;' + #numbers.formatInteger(order.shippingFee, 0, 'COMMA')}">&#8361;0</strong></div>
+                    <div class="flex justify-between border-t pt-3 text-lg"><span>&#52509; &#44208;&#51228;</span><strong class="text-[#991b1b]" th:text="${'&#8361;' + #numbers.formatInteger(order.totalPrice + order.shippingFee, 0, 'COMMA')}">&#8361;0</strong></div>
                 </div>
                 <div class="mt-6 space-y-3">
                     <a href="/member" th:href="@{/member}" class="block w-full rounded-full border border-[#0066cc] px-5 py-3 text-center font-bold text-[#0066cc]">&#51452;&#47928;&#54788;&#54889; &#48372;&#44592;</a>

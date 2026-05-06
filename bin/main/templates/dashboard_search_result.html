@@ -11,7 +11,6 @@
 </head>
 <body class="min-h-screen text-gray-800">
     <header class="bg-white border-b border-gray-200">
-<<<<<<< HEAD
         <div class="result-header-inner max-w-7xl mx-auto px-6 h-20 flex items-center justify-between gap-6">
             <div class="result-header-links">
                 <a id="member-dashboard-link" th:href="@{/member}" href="/member" class="inline-flex items-center gap-2 text-sm font-bold text-emerald-700 hover:text-emerald-800 transition-colors">
@@ -23,13 +22,6 @@
                     &#54856;&#51004;&#47196; &#46028;&#50500;&#44032;&#44592;
                 </a>
             </div>
-=======
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between gap-6">
-            <a id="member-dashboard-link" th:href="@{/member}" href="/member" class="inline-flex items-center gap-2 text-sm font-bold text-emerald-700 hover:text-emerald-800 transition-colors">
-                <span class="material-symbols-outlined text-[18px]">arrow_back</span>
-                &#45824;&#49884;&#48372;&#46300;&#47196; &#46028;&#50500;&#44032;&#44592;
-            </a>
->>>>>>> 06bd07ce57b7c275cfb7b67c399149dd1ff20276
             <form id="dashboard-search-form" th:action="@{/dashboard_search_result}" action="/dashboard_search_result" method="get" class="result-search-form" role="search">
                 <span class="material-symbols-outlined result-search-icon">search</span>
                 <input
@@ -82,7 +74,7 @@
                         <p class="mt-1 text-sm text-gray-500">
                             <span>수량 </span><strong th:text="${orderResult.quantity}">1</strong>
                             <span class="mx-2 text-gray-300">|</span>
-                            <span th:text="${#numbers.formatInteger(orderResult.subtotal, 0, 'COMMA')}">0</span><span>원</span>
+                            <span class="text-[18px] font-bold text-[#991b1b]" th:text="${#numbers.formatInteger(orderResult.subtotal, 0, 'COMMA')}">0</span><span class="text-[18px] font-bold text-[#991b1b]">원</span>
                         </p>
                     </div>
                     <span class="material-symbols-outlined text-gray-400 group-hover:text-blue-700">chevron_right</span>
@@ -111,7 +103,7 @@
                     <div class="p-3">
                         <h3 class="font-bold text-gray-900 mb-1" th:text="${product.name}">&#49345;&#54408;&#47749;</h3>
                         <p class="text-sm text-gray-500 mb-2" th:text="${product.description}">&#49345;&#54408; &#49444;&#47749;</p>
-                        <span class="font-bold text-emerald-700">
+                        <span class="font-bold text-[18px] text-[#991b1b]">
                             <span th:if="${product.price != null}" th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}">0</span><span th:if="${product.price != null}">&#50896;</span>
                             <span th:if="${product.price == null}">&#44032;&#44201; &#47928;&#51032;</span>
                         </span>
