@@ -21,22 +21,26 @@ public class RpaAsyncExecutionService {
     private final RpaLogRepository rpaLogRepository;
     private final RpaSupplierProductParsingService rpaSupplierProductParsingService;
 
-    public boolean canStart() {
-        if (running.get()) {
+    public boolean tryStartSupplierProductParsing(int requestedSize) {
+        if (!running.compareAndSet(false, true)) {
             return false;
         }
 
-        return rpaLogRepository.findTopByOrderByStartedAtDesc()
+        boolean databaseAllowsStart = rpaLogRepository.findTopByOrderByStartedAtDesc()
             .map(log -> log.getStatus() != RpaStatus.RUNNING)
             .orElse(true);
+
+        if (!databaseAllowsStart) {
+            running.set(false);
+            return false;
+        }
+
+        runSupplierProductParsingAsync(requestedSize);
+        return true;
     }
 
     @Async
     public void runSupplierProductParsingAsync(int requestedSize) {
-        if (!running.compareAndSet(false, true)) {
-            return;
-        }
-
         try {
             rpaSupplierProductParsingService.parseTodaySupplierAndProducts(requestedSize);
         } catch (RuntimeException exception) {

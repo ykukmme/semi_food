@@ -36,7 +36,7 @@ public class RpaRestController {
     public ResponseEntity<RpaRunResponse> triggerRpaJob(
         @RequestParam(defaultValue = "20") int size
     ) {
-        if (!rpaAsyncExecutionService.canStart()) {
+        if (!rpaAsyncExecutionService.tryStartSupplierProductParsing(size)) {
             return ResponseEntity.status(409)
                 .body(new RpaRunResponse(
                     RpaStatus.RUNNING.name(),
@@ -45,7 +45,6 @@ public class RpaRestController {
                 ));
         }
 
-        rpaAsyncExecutionService.runSupplierProductParsingAsync(size);
         return ResponseEntity.accepted()
             .body(new RpaRunResponse(
                 RpaStatus.RUNNING.name(),

@@ -46,9 +46,10 @@ public class RpaParsingLogFileService {
         List<RpaSupplierProductParseResult> results
     ) {
         List<String> lines = new java.util.ArrayList<>();
+        LocalDateTime safeEndedAt = endedAt == null ? LocalDateTime.now() : endedAt;
         lines.add("RPA parsing log");
         lines.add("started_at=" + startedAt.format(LOG_TIME_FORMATTER));
-        lines.add("ended_at=" + endedAt.format(LOG_TIME_FORMATTER));
+        lines.add("ended_at=" + safeEndedAt.format(LOG_TIME_FORMATTER));
         lines.add("target_count=" + results.size());
         lines.add("");
 

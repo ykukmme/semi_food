@@ -5,7 +5,6 @@ import java.util.List;
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.semi.domain.keyword.TrendKeyword;
 import com.semi.domain.keyword.TrendKeywordRepository;
@@ -29,7 +28,6 @@ public class RpaSupplierProductParsingService {
     private final RpaLogRepository rpaLogRepository;
     private final RpaParsingLogFileService rpaParsingLogFileService;
 
-    @Transactional
     public List<RpaSupplierProductParseResult> parseTodaySupplierAndProducts(int requestedSize) {
         LocalDateTime rpaStartedAt = LocalDateTime.now();
         RpaLog rpaLog = startRpaLog(rpaStartedAt);
