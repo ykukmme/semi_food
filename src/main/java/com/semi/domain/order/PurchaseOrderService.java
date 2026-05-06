@@ -1,7 +1,9 @@
 package com.semi.domain.order;
 
+import com.semi.domain.mail.MailService;
 import com.semi.domain.member.Member;
 import com.semi.domain.member.MemberRepository;
+import com.semi.domain.member.MemberRole;
 import com.semi.domain.order.dto.CreatePurchaseOrderRequest;
 import com.semi.domain.product.Product;
 import com.semi.domain.product.ProductRepository;
@@ -11,9 +13,11 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PurchaseOrderService {
@@ -22,6 +26,7 @@ public class PurchaseOrderService {
     private final PurchaseOrderItemRepository purchaseOrderItemRepository;
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;
+    private final MailService mailService;
 
     @Transactional
     public PurchaseOrder createOrder(Long memberId, CreatePurchaseOrderRequest request) {
@@ -55,6 +60,7 @@ public class PurchaseOrderService {
                 .shippingAddress(request.shippingAddress())
                 .paymentMethod(request.paymentMethod())
                 .paymentStatus(request.paymentStatus())
+                .paymentStatus("COMPLETED")
                 .build();
 
         lines.forEach(line -> order.addItem(PurchaseOrderItem.builder()
@@ -66,6 +72,10 @@ public class PurchaseOrderService {
                 .build()));
 
         PurchaseOrder savedOrder = purchaseOrderRepository.save(order);
+
+        // ADMIN에게 메일 발송
+        sendOrderCompletedMail(savedOrder);
+
         return savedOrder;
     }
 
@@ -182,5 +192,35 @@ public class PurchaseOrderService {
     }
 
     private record OrderLine(Product product, int quantity) {
+    }
+
+    private void sendOrderCompletedMail(PurchaseOrder order) {
+        try {
+            List<Member> admins = memberRepository.findByRole(MemberRole.ADMIN);
+            if (admins.isEmpty()) {
+                return;
+            }
+
+            String subject = "[DaDream] 새로운 구매주문이 접수되었습니다 - " + order.getOrderNumber();
+            String text = String.format(
+                "새로운 구매주문이 접수되었습니다.\n\n" +
+                "주문번호: %s\n" +
+                "주문자: %s\n" +
+                "결제금액: %,d원\n" +
+                "결제상태: %s\n" +
+                "주문일시: %s\n",
+                order.getOrderNumber(),
+                order.getMember().getName(),
+                order.getTotalPrice(),
+                order.getPaymentStatus(),
+                order.getOrderedAt()
+            );
+
+            for (Member admin : admins) {
+                mailService.sendSimpleMail(admin.getEmail(), subject, text);
+            }
+        } catch (Exception e) {
+            log.error("ADMIN 메일 발송 실패: orderNumber={}", order.getOrderNumber(), e);
+        }
     }
 }
