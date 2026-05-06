@@ -4,6 +4,7 @@ import com.semi.domain.keyword.TrendKeyword;
 import com.semi.domain.keyword.TrendKeywordRepository;
 import com.semi.domain.product.Product;
 import com.semi.domain.rpa.parser.response.SupplierAndProductResponse;
+import com.semi.domain.rpa.parser.response.RpaSupplierProductParseResult;
 import com.semi.domain.rpa.parser.response.RpaTrendKeywordParseTarget;
 import com.semi.domain.rpa.parser.response.TrendKeywordResponse;
 import com.semi.domain.supplier.Supplier;
@@ -71,6 +72,7 @@ public class ParserController {
     private final TrendKeywordService trendKeywordService;
     private final TrendKeywordRepository trendKeywordRepository;
     private final SupplierAndProductService supplierAndProductService;
+    private final RpaSupplierProductParsingService rpaSupplierProductParsingService;
     
     @GetMapping("/api/TrendKeywords") // http://localhost:8080/api/TrendKeywords
     public List<TrendKeywordResponse.TrendKeywordItem> keywordsFetch() {
@@ -91,6 +93,13 @@ public class ParserController {
         @RequestParam(defaultValue = "20") int size
     ) {
         return trendKeywordService.getTodayRpaParseTargets(size);
+    }
+
+    @GetMapping("/api/Products/rpaSaveToday") // http://localhost:8080/api/Products/rpaSaveToday?size=20
+    public List<RpaSupplierProductParseResult> productsRpaSaveToday(
+        @RequestParam(defaultValue = "20") int size
+    ) {
+        return rpaSupplierProductParsingService.parseTodaySupplierAndProducts(size);
     }
 
 

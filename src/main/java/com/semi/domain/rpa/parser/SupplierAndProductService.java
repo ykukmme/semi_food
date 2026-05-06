@@ -114,7 +114,7 @@ public class SupplierAndProductService {
 
         // 파싱한 데이터가 기존 데이터보다 최신이 아니라면 안내용 리스트 반환
         if (latestSavedRecord != null 
-            && !latestParsedKeyword.getCreatedAt().toLocalDate().isAfter(latestSavedRecord.getCreatedAt().toLocalDate())) {
+            && latestParsedKeyword.getCreatedAt().toLocalDate().isBefore(latestSavedRecord.getCreatedAt().toLocalDate())) {
             
             final String message = "동일하거나 이전 날짜의 데이터입니다. 저장하지 않습니다. "
                 + "파싱 날짜: " + latestParsedKeyword.getCreatedAt().toLocalDate()
@@ -229,7 +229,7 @@ public class SupplierAndProductService {
 
         // 파싱한 데이터가 기존 데이터보다 최신이 아니라면 안내용 리스트 반환
         if (latestSavedRecord != null 
-            && !latestParsedProduct.getCrawledAt().toLocalDate().isAfter(latestSavedRecord.getCrawledAt().toLocalDate())) {
+            && latestParsedProduct.getCrawledAt().toLocalDate().isBefore(latestSavedRecord.getCrawledAt().toLocalDate())) {
             log.info("동일하거나 이전 날짜의 제품 데이터입니다. 저장하지 않습니다. "
                 + "파싱 날짜: " + latestParsedProduct.getCrawledAt().toLocalDate()
                 + ", DB 최신 날짜: " + latestSavedRecord.getCrawledAt().toLocalDate());            
