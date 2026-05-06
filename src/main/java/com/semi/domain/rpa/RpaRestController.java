@@ -19,6 +19,9 @@ import com.semi.domain.rpa.response.RpaRecoveryResponse;
 import com.semi.domain.rpa.response.RpaRunResponse;
 import com.semi.domain.rpa.response.RpaStatusResponse;
 import com.semi.domain.rpa.response.RpaViewDeleteResponse;
+import com.semi.domain.rpa.response.RpaConfigResponse;
+import com.semi.domain.rpa.request.RpaConfigUpdateRequest;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +35,7 @@ public class RpaRestController {
     private final RpaAsyncExecutionService rpaAsyncExecutionService;
     private final RpaDailyDataService rpaDailyDataService;
     private final RpaRecoveryService rpaRecoveryService;
+    private final RpaAutoRunService rpaAutoRunService;
 
     @GetMapping("/dashboard")
     public ResponseEntity<Void> getDashboard() {
@@ -126,5 +130,17 @@ public class RpaRestController {
         @RequestParam(defaultValue = "60") long staleMinutes
     ) {
         return ResponseEntity.ok(rpaRecoveryService.recoverStaleRunningLogs(staleMinutes));
+    }
+
+    @GetMapping("/config")
+    public ResponseEntity<RpaConfigResponse> getConfig() {
+        RpaConfig config = rpaAutoRunService.getConfig();
+        return ResponseEntity.ok(new RpaConfigResponse(config.isAutoRunEnabled(), config.getRunTimes()));
+    }
+
+    @PostMapping("/config")
+    public ResponseEntity<RpaConfigResponse> updateConfig(@RequestBody RpaConfigUpdateRequest request) {
+        RpaConfig config = rpaAutoRunService.updateConfig(request.enabled(), request.runTimes());
+        return ResponseEntity.ok(new RpaConfigResponse(config.isAutoRunEnabled(), config.getRunTimes()));
     }
 }

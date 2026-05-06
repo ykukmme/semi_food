@@ -110,6 +110,12 @@
             background-color: #fff1f1;
         }
 
+        button#autoRunToggle.on {
+            background-color: var(--ok);
+            color: #fff;
+            border-color: var(--ok);
+        }
+
         button:disabled {
             cursor: not-allowed;
             opacity: 0.45;
@@ -273,11 +279,19 @@
         <h1>semi_food RPA Dashboard</h1>
         <div id="lastUpdated">-</div>
     </div>
-    <div class="toolbar">
-        <input id="targetDate" type="date">
-        <button id="refreshButton">새로고침</button>
-        <button id="runButton" class="primary">RPA 실행</button>
-        <button id="deleteButton" class="danger">당일 삭제</button>
+    <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-end;">
+        <div class="toolbar">
+            <span style="font-weight: 650; color: var(--muted); font-size: 13px;">자동실행</span>
+            <button id="autoRunToggle">OFF</button>
+            <input id="autoRunTimes" type="text" placeholder="07:00, 19:00" style="width: 130px;" title="콤마(,)로 여러 시간 입력 가능">
+            <button id="saveConfigButton">설정 저장</button>
+        </div>
+        <div class="toolbar">
+            <input id="targetDate" type="date">
+            <button id="refreshButton">새로고침</button>
+            <button id="runButton" class="primary">RPA 실행</button>
+            <button id="deleteButton" class="danger">당일 삭제</button>
+        </div>
     </div>
 </header>
 
@@ -380,6 +394,56 @@
 
     Object.values(viewConfigs).forEach(config => {
         document.getElementById(config.dateId).value = dateInput.value;
+    });
+
+    let autoRunEnabled = false;
+
+    async function loadConfig() {
+        try {
+            const response = await fetch("/rpa/config");
+            if (response.ok) {
+                const config = await response.json();
+                autoRunEnabled = config.enabled;
+                document.getElementById("autoRunTimes").value = config.runTimes;
+                updateAutoRunToggleButton();
+            }
+        } catch (e) {
+            console.error("Failed to load auto-run config", e);
+        }
+    }
+
+    function updateAutoRunToggleButton() {
+        const btn = document.getElementById("autoRunToggle");
+        if (autoRunEnabled) {
+            btn.textContent = "ON";
+            btn.classList.add("on");
+        } else {
+            btn.textContent = "OFF";
+            btn.classList.remove("on");
+        }
+    }
+
+    document.getElementById("autoRunToggle").addEventListener("click", () => {
+        autoRunEnabled = !autoRunEnabled;
+        updateAutoRunToggleButton();
+    });
+
+    document.getElementById("saveConfigButton").addEventListener("click", async () => {
+        const times = document.getElementById("autoRunTimes").value;
+        try {
+            const response = await fetch("/rpa/config", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ enabled: autoRunEnabled, runTimes: times })
+            });
+            if (response.ok) {
+                alert("자동실행 설정이 저장되었습니다.");
+            } else {
+                alert("설정 저장에 실패했습니다.");
+            }
+        } catch (e) {
+            alert("설정 저장 중 오류가 발생했습니다.");
+        }
     });
 
     document.getElementById("refreshButton").addEventListener("click", refreshDashboard);
@@ -517,6 +581,7 @@
         await refreshDashboard();
     }
 
+    loadConfig();
     refreshDashboard();
     setInterval(() => {
         if (state.running) refreshDashboard();
