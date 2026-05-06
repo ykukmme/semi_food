@@ -53,7 +53,7 @@
                         <p><span class="font-bold">&#51452;&#47928;&#51088;</span> <span th:text="${order.buyerName}">김남해</span> <span th:text="${order.buyerPhone}">010-1234-5678</span></p>
                         <p><span class="font-bold">&#48176;&#49569;&#51452;&#49548;</span> <span th:text="${order.shippingAddress}">서울특별시 강남구 테헤란로 123</span></p>
                         <p><span class="font-bold">&#44208;&#51228;&#48169;&#48277;</span> <span th:text="${order.paymentMethod}">card</span></p>
-                        <p><span class="font-bold">&#44208;&#51228;&#49345;&#53468;</span> <span th:class="${order.paymentStatus == 'completed' ? 'text-green-600 font-semibold' : 'text-yellow-600 font-semibold'}" th:text="${order.paymentStatus == 'completed' ? '&#44208;&#51228; &#50756;&#47308;' : '&#51200;&#51089; &#51473;'}" class="text-green-600 font-semibold">&#44208;&#51228; &#50756;&#47308;</span></p>
+                        <p><span class="font-bold">&#44208;&#51228;&#49345;&#53468;</span> <span th:class="${#strings.equalsIgnoreCase(order.paymentStatus, 'COMPLETED') ? 'text-green-600 font-semibold' : (#strings.equalsIgnoreCase(order.paymentStatus, 'REFUND') ? 'text-red-600 font-semibold' : 'text-yellow-600 font-semibold')}" th:text="${#strings.equalsIgnoreCase(order.paymentStatus, 'COMPLETED') ? '&#44208;&#51228;&#49457;&#44277;' : (#strings.equalsIgnoreCase(order.paymentStatus, 'REFUND') ? '&#54872;&#48520;&#50756;&#47308;' : '&#45824;&#44592; &#51473;')}" class="text-green-600 font-semibold">&#44208;&#51228;&#49457;&#44277;</span></p>
                         <p><span class="font-bold">&#48176;&#49569; &#50696;&#51221;&#51068;</span> <span th:text="${order.estimatedArrival}">4월 30일(목)</span></p>
                         <p><span class="font-bold">&#48176;&#49569; &#52628;&#51201;</span> <span class="text-primary font-semibold" th:text="${order.trackingNumber}">TRK12345678</span> <span class="text-xs text-gray-400">(CJ&#45824;&#54620;&#53685;&#50868;)</span></p>
                     </div>
@@ -108,6 +108,34 @@
                 .replaceAll("'", '&#39;');
         }
 
+        function isPaymentCompleted(paymentStatus) {
+            return String(paymentStatus || '').toUpperCase() === 'COMPLETED';
+        }
+
+        function isPaymentRefunded(paymentStatus) {
+            return String(paymentStatus || '').toUpperCase() === 'REFUND';
+        }
+
+        function paymentStatusLabel(paymentStatus) {
+            if (isPaymentCompleted(paymentStatus)) {
+                return '결제성공';
+            }
+            if (isPaymentRefunded(paymentStatus)) {
+                return '환불완료';
+            }
+            return '대기 중';
+        }
+
+        function paymentStatusClass(paymentStatus) {
+            if (isPaymentCompleted(paymentStatus)) {
+                return 'text-green-600 font-semibold';
+            }
+            if (isPaymentRefunded(paymentStatus)) {
+                return 'text-red-600 font-semibold';
+            }
+            return 'text-yellow-600 font-semibold';
+        }
+
         const params = new URLSearchParams(window.location.search);
         const status = params.get('status');
         const requestedOrderNumber = params.get('orderNumber');
@@ -137,7 +165,7 @@
                 <p><span class="font-bold">주문자</span> ${escapeHtml(order.buyerName)} ${escapeHtml(order.buyerPhone)}</p>
                 <p><span class="font-bold">배송주소</span> ${escapeHtml(order.shippingAddress)}</p>
                 <p><span class="font-bold">결제방법</span> ${escapeHtml(order.paymentMethod || 'card')}</p>
-                <p><span class="font-bold">결제상태</span> <span class="${order.paymentStatus === 'completed' ? 'text-green-600 font-semibold' : 'text-yellow-600 font-semibold'}">${order.paymentStatus === 'completed' ? '결제 완료' : '대기 중'}</span></p>
+                <p><span class="font-bold">결제상태</span> <span class="${paymentStatusClass(order.paymentStatus)}">${paymentStatusLabel(order.paymentStatus)}</span></p>
                 <p><span class="font-bold">배송 예정일</span> ${escapeHtml(order.estimatedArrival)}</p>
                 <p><span class="font-bold">배송 추적</span> <span class="text-primary font-semibold">${escapeHtml(order.trackingNumber || '준비중')}</span> <span class="text-xs text-gray-400">(CJ대한통운)</span></p>
             `;

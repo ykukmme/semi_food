@@ -95,6 +95,11 @@ public class PurchaseOrder {
         this.status = newStatus;
     }
 
+    /** 결제 상태 변경 */
+    public void updatePaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
     /** 발주 아이템 추가 */
     public void addItem(PurchaseOrderItem item) {
         this.items.add(item);

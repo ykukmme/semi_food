@@ -45,7 +45,7 @@
             <a href="/member" class="dashboard-return-link">대시보드로 돌아가기</a>
         </div>
 
-        <section class="bg-surface rounded-2xl shadow-sm border border-outline-variant overflow-hidden">
+        <section class="bg-surface rounded-2xl shadow-sm border border-outline-variant overflow-hidden" style="margin-bottom: 50px;">
             <div class="px-6 py-5 border-b border-outline-variant/20 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
                     <h2 class="text-lg font-bold text-on-surface">주문 목록</h2>
@@ -100,7 +100,7 @@
                     </tbody>
                 </table>
             </div>
-            <div th:if="${orders != null and #lists.size(orders) > 3}" class="px-6 py-5 border-t border-outline-variant/20 text-center">
+            <div th:if="${orders != null and #lists.size(orders) > 10}" class="px-6 py-5 border-t border-outline-variant/20 text-center">
                 <button id="load-more-orders" type="button" data-expanded="false" class="inline-flex items-center justify-center rounded-full border border-primary px-6 py-3 text-sm font-extrabold text-primary hover:bg-primary/10 transition">
                     &#45908;&#48372;&#44592;
                 </button>
@@ -109,16 +109,10 @@
     </main>
     <script>
         (() => {
-            const pageSize = 3;
+            const pageSize = 10;
             const rows = Array.from(document.querySelectorAll('[data-order-row]'));
             const button = document.getElementById('load-more-orders');
             let visibleCount = pageSize;
-
-            function updatePageScroll() {
-                const allowScroll = visibleCount > pageSize;
-                document.documentElement.style.overflowY = allowScroll ? 'auto' : 'hidden';
-                document.body.style.overflowY = allowScroll ? 'auto' : 'hidden';
-            }
 
             function renderRows() {
                 rows.forEach((row, index) => {
@@ -132,12 +126,11 @@
                     button.hidden = rows.length <= pageSize;
                 }
 
-                updatePageScroll();
             }
 
             button?.addEventListener('click', () => {
                 const isExpanded = button.dataset.expanded === 'true';
-                visibleCount = isExpanded ? pageSize : Math.min(visibleCount + pageSize, rows.length);
+                visibleCount = isExpanded ? pageSize : rows.length;
                 renderRows();
             });
 

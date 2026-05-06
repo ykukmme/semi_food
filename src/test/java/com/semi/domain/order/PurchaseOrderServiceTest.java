@@ -93,6 +93,110 @@ class PurchaseOrderServiceTest {
     }
 
     @Test
+    @DisplayName("주문 취소 시 주문 상태와 결제 상태를 함께 변경한다")
+    void cancelOrder_updatesOrderStatusAndPaymentStatus() {
+        // given
+        Long memberId = 7L;
+        String orderNumber = "PO-20260506-0001";
+        Member member = Member.builder()
+                .memberId("buyer")
+                .password("password")
+                .email("buyer@example.com")
+                .name("buyer")
+                .build();
+        Supplier supplier = Supplier.builder()
+                .name("supplier")
+                .url("https://example.com")
+                .build();
+        PurchaseOrder order = PurchaseOrder.builder()
+                .orderNumber(orderNumber)
+                .member(member)
+                .supplier(supplier)
+                .totalPrice(10000)
+                .shippingFee(0)
+                .isAuto(false)
+                .subtotal(10000)
+                .shippingAddress("Gyeongsangnam-do, Namhae-gun")
+                .paymentMethod("EASY_PAY")
+                .paymentStatus("COMPLETED")
+                .build();
+
+        given(purchaseOrderRepository.findByMemberIdAndOrderNumber(memberId, orderNumber))
+                .willReturn(Optional.of(order));
+        given(purchaseOrderRepository.updateCancelAndPaymentStatus(
+                memberId,
+                orderNumber,
+                OrderStatus.CANCELLED.name(),
+                "REFUND"
+        )).willAnswer(invocation -> {
+            order.updateStatus(OrderStatus.CANCELLED);
+            order.updatePaymentStatus("REFUND");
+            return 1;
+        });
+        given(purchaseOrderRepository.findByMemberIdAndOrderNumber(memberId, orderNumber))
+                .willReturn(Optional.of(order));
+
+        // when
+        PurchaseOrder cancelledOrder = purchaseOrderService.cancelOrder(memberId, orderNumber);
+
+        // then
+        assertThat(cancelledOrder.getStatus()).isEqualTo(OrderStatus.CANCELLED);
+        assertThat(cancelledOrder.getPaymentStatus()).isEqualTo("REFUND");
+    }
+
+    @Test
+    @DisplayName("이미 취소된 주문도 결제 상태를 환불로 보정한다")
+    void cancelOrder_updatesPaymentStatusWhenOrderAlreadyCancelled() {
+        // given
+        Long memberId = 7L;
+        String orderNumber = "PO-20260506-0002";
+        Member member = Member.builder()
+                .memberId("buyer")
+                .password("password")
+                .email("buyer@example.com")
+                .name("buyer")
+                .build();
+        Supplier supplier = Supplier.builder()
+                .name("supplier")
+                .url("https://example.com")
+                .build();
+        PurchaseOrder order = PurchaseOrder.builder()
+                .orderNumber(orderNumber)
+                .member(member)
+                .supplier(supplier)
+                .totalPrice(10000)
+                .shippingFee(0)
+                .isAuto(false)
+                .subtotal(10000)
+                .shippingAddress("Gyeongsangnam-do, Namhae-gun")
+                .paymentMethod("EASY_PAY")
+                .paymentStatus("COMPLETED")
+                .build();
+        order.updateStatus(OrderStatus.CANCELLED);
+
+        given(purchaseOrderRepository.findByMemberIdAndOrderNumber(memberId, orderNumber))
+                .willReturn(Optional.of(order));
+        given(purchaseOrderRepository.updateCancelAndPaymentStatus(
+                memberId,
+                orderNumber,
+                OrderStatus.CANCELLED.name(),
+                "REFUND"
+        )).willAnswer(invocation -> {
+            order.updatePaymentStatus("REFUND");
+            return 1;
+        });
+        given(purchaseOrderRepository.findByMemberIdAndOrderNumber(memberId, orderNumber))
+                .willReturn(Optional.of(order));
+
+        // when
+        PurchaseOrder cancelledOrder = purchaseOrderService.cancelOrder(memberId, orderNumber);
+
+        // then
+        assertThat(cancelledOrder.getStatus()).isEqualTo(OrderStatus.CANCELLED);
+        assertThat(cancelledOrder.getPaymentStatus()).isEqualTo("REFUND");
+    }
+
+    @Test
     @DisplayName("회원 재구매율은 2회 이상 구매한 상품 종류 수를 전체 구매 상품 종류 수로 나눈다")
     void getRepeatPurchaseRateByMember_usesRepeatedProductShare() {
         // given

@@ -74,7 +74,7 @@
                             <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">&#51452;&#47928;&#48264;&#54840;</th>
                             <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">&#49345;&#53468;</th>
                             <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">&#44208;&#51228;&#44552;&#50529;</th>
-                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">&#50836;&#52397;&#51068;</th>
+                            <th class="py-4 px-6 text-[11px] font-bold text-outline-variant uppercase tracking-widest">&#51452;&#47928;&#51068;</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -91,8 +91,8 @@
                     </tbody>
                 </table>
             </div>
-            <div th:if="${orders != null and #lists.size(orders) > 4}" class="px-6 py-5 border-t border-outline-variant/20 text-center">
-                <button id="load-more-orders" type="button" class="inline-flex items-center justify-center rounded-full border border-primary px-6 py-3 text-sm font-extrabold text-primary hover:bg-primary/10 transition">
+            <div th:if="${orders != null and #lists.size(orders) > 10}" class="px-6 py-5 border-t border-outline-variant/20 text-center">
+                <button id="load-more-orders" type="button" data-expanded="false" class="inline-flex items-center justify-center rounded-full border border-primary px-6 py-3 text-sm font-extrabold text-primary hover:bg-primary/10 transition">
                     &#45908;&#48372;&#44592;
                 </button>
             </div>
@@ -100,16 +100,10 @@
     </main>
     <script>
         (() => {
-            const pageSize = 4;
+            const pageSize = 10;
             const rows = Array.from(document.querySelectorAll('[data-order-row]'));
             const button = document.getElementById('load-more-orders');
             let visibleCount = pageSize;
-
-            function updatePageScroll() {
-                const allowScroll = visibleCount > pageSize;
-                document.documentElement.style.overflowY = allowScroll ? 'auto' : 'hidden';
-                document.body.style.overflowY = allowScroll ? 'auto' : 'hidden';
-            }
 
             function renderRows() {
                 rows.forEach((row, index) => {
@@ -117,14 +111,16 @@
                 });
 
                 if (button) {
-                    button.hidden = visibleCount >= rows.length;
+                    const isExpanded = visibleCount >= rows.length;
+                    button.dataset.expanded = String(isExpanded);
+                    button.textContent = isExpanded ? '\uB2EB\uAE30' : '\uB354\uBCF4\uAE30';
+                    button.hidden = rows.length <= pageSize;
                 }
-
-                updatePageScroll();
             }
 
             button?.addEventListener('click', () => {
-                visibleCount += pageSize;
+                const isExpanded = button.dataset.expanded === 'true';
+                visibleCount = isExpanded ? pageSize : rows.length;
                 renderRows();
             });
 

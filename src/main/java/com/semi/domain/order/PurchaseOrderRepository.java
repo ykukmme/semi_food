@@ -1,6 +1,7 @@
 package com.semi.domain.order;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -30,6 +31,21 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Lo
     Optional<PurchaseOrder> findByMemberIdAndOrderNumber(
             @Param("memberId") Long memberId,
             @Param("orderNumber") String orderNumber
+    );
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query(value = """
+            UPDATE purchase_order
+            SET status = :status,
+                payment_status = :paymentStatus
+            WHERE member_id = :memberId
+              AND order_number = :orderNumber
+            """, nativeQuery = true)
+    int updateCancelAndPaymentStatus(
+            @Param("memberId") Long memberId,
+            @Param("orderNumber") String orderNumber,
+            @Param("status") String status,
+            @Param("paymentStatus") String paymentStatus
     );
 
     @Query("""

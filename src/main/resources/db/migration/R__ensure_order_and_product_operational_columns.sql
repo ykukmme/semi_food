@@ -144,3 +144,8 @@ SET @order_payment_status_ddl = IF(
 PREPARE order_payment_status_stmt FROM @order_payment_status_ddl;
 EXECUTE order_payment_status_stmt;
 DEALLOCATE PREPARE order_payment_status_stmt;
+
+UPDATE purchase_order
+SET payment_status = 'REFUND'
+WHERE status = 'CANCELLED'
+  AND (payment_status IS NULL OR payment_status <> 'REFUND');

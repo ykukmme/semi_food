@@ -74,12 +74,24 @@ public class PurchaseOrderService {
         PurchaseOrder order = purchaseOrderRepository.findByMemberIdAndOrderNumber(memberId, orderNumber)
                 .orElseThrow(() -> new IllegalArgumentException("order not found. orderNumber=" + orderNumber));
 
-        if (order.getStatus() != OrderStatus.RECEIVED && order.getStatus() != OrderStatus.IN_PROGRESS) {
+        if (order.getStatus() != OrderStatus.RECEIVED
+                && order.getStatus() != OrderStatus.IN_PROGRESS
+                && order.getStatus() != OrderStatus.CANCELLED) {
             throw new IllegalStateException("order cannot be cancelled. orderNumber=" + orderNumber);
         }
 
-        order.updateStatus(OrderStatus.CANCELLED);
-        return order;
+        int updatedCount = purchaseOrderRepository.updateCancelAndPaymentStatus(
+                memberId,
+                orderNumber,
+                OrderStatus.CANCELLED.name(),
+                "REFUND"
+        );
+        if (updatedCount != 1) {
+            throw new IllegalStateException("order cancellation update failed. orderNumber=" + orderNumber);
+        }
+
+        return purchaseOrderRepository.findByMemberIdAndOrderNumber(memberId, orderNumber)
+                .orElseThrow(() -> new IllegalArgumentException("order not found. orderNumber=" + orderNumber));
     }
 
     @Transactional(readOnly = true)
