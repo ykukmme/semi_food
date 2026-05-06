@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>쇼핑 카트 | Heritage Namhae</title>
+    <title>쇼핑 카트 | 스마트 식품 이커머스 - 다드림</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Work+Sans:wght@300;400;500;600&amp;family=Inter:wght@400;500;600&amp;display=swap"
@@ -63,7 +63,7 @@
             class="fixed top-0 left-0 right-0 z-50 bg-white/10 backdrop-blur-md border-b border-outline-variant/20 transition-all duration-300">
             <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
                 <div class="text-2xl font-black tracking-tighter text-[#0066cc]">
-                    <a th:href="@{/}" href="/">Heritage Namhae</a>
+                    <a th:href="@{/}" href="/">스마트 식품 이커머스 - 다드림</a>
                 </div>
                 <div class="cart-nav">
                     <div id="guestMenu">
@@ -217,7 +217,7 @@
                 <div class="col-span-1 md:col-span-1">
                     <div class="text-lg font-bold text-white mb-6 font-headline">Heritage Namhae</div>
                     <p class="text-white/80 mb-8 max-w-xs">
-                        남해군 공식 헤리티지 몰, 우리 해안 낙원의 진짜 맛을 당신의 집으로 바로 전달합니다.
+                        오늘 먹는 스마트한 한 끼가 내일의 건강한 에너지가 됩니다.
                     </p>
                     <div class="flex gap-4">
                         <a class="footer-social-link" href="https://www.instagram.com/" target="_blank"
@@ -246,15 +246,15 @@
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-bold text-white mb-6">연락처</h4>
+                    <h4 class="font-bold text-white mb-6">고객센터</h4>
                     <ul class="space-y-4">
-                        <li class="text-white/70">전화: 055-123-4567</li>
-                        <li class="text-white/70">이메일: help@namhaeheritage.kr</li>
+                        <li class="text-white/70">전화: 000-000-0000</li>
+                        <li class="text-white/70">이메일: help@dadream.com</li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="font-bold text-white mb-6">위치</h4>
-                    <p class="text-white/70 mb-4">대한민국 경상남도 남해군청</p>
+                    <p class="text-white/70 mb-4">13618 경기 성남시 분당구 돌마로 73 (금곡동), 7층</p>
                     <div class="h-32 w-full rounded-xl bg-[#0066cc]/20 overflow-hidden">
                         <img alt="Location Map" class="w-full h-full object-cover"
                             style="filter: grayscale(100%) sepia(100%) hue-rotate(200deg) saturate(150%);"
@@ -264,7 +264,7 @@
             </div>
             <div
                 class="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-zinc-200/50 flex flex-col md:flex-row justify-between gap-4">
-                <p class="text-white/60">© 2024 에디토리얼 헤리티지 남해. 모든 권리 보유.</p>
+                <p class="text-white/60">&copy;2026 1조 다드림. 모든 권리 보유.</p>
                 <div class="flex gap-6">
                     <a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">개인정보 처리방침</a>
                     <a class="text-white/70 hover:text-white underline-offset-4 hover:underline" href="#">라이선스 정보</a>
@@ -315,7 +315,7 @@
                     cartItemId: Number(serverItem.cartItemId || serverItem.id),
                     productId: serverItem.productId,
                     name: serverItem.name || "상품",
-                    collection: serverItem.collection || "Heritage Namhae",
+                    collection: serverItem.collection || "스마트 식품 이커머스 - 다드림",
                     price: Number(serverItem.price) || 0,
                     quantity: Number(serverItem.quantity) || 1,
                     image: serverItem.image || "",
@@ -378,7 +378,7 @@
                 cartItemId: item.cartItemId ? toNumber(item.cartItemId) : null,
                 productId,
                 name: item.name || "상품",
-                collection: item.collection || "Heritage Namhae",
+                collection: item.collection || "스마트 식품 이커머스 - 다드림",
                 image: item.image || "",
                 price,
                 quantity,

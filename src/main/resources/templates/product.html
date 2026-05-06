@@ -3,15 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${product.name} + ' | Heritage Namhae'">Product Detail | Heritage Namhae</title>
+    <title th:text="${product.name} + ' | 스마트 식품 이커머스 - 다드림'">Product Detail | 스마트 식품 이커머스 - 다드림</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Work+Sans:wght@300;400;500;600&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/product.css}" href="../static/css/product.css">
-    <script th:src="@{/js/auth-guard.js}" src="../static/js/auth-guard.js"></script>
 </head>
 <body>
 <header class="product-header">
     <div class="product-header__inner">
-        <div class="product-brand"><a th:href="@{/}">Heritage Namhae</a></div>
+        <div class="product-brand"><a th:href="@{/}">스마트 식품 이커머스 - 다드림</a></div>
         <nav class="product-nav" aria-label="상단 메뉴">
             <div id="guestMenu">
                 <a class="product-nav__icon-link" th:href="@{/login.html}" href="/login.html" aria-label="로그인">
@@ -72,8 +71,8 @@
                 <span class="display-price"
                       id="display-price"
                       th:data-unit-price="${product.price != null ? product.price : 0}"
-                      th:text="${product.price != null} ? |${#numbers.formatInteger(product.price, 0, 'COMMA')}원| : '가격 미정'">
-                    0원
+                      th:text="${product.price != null} ? |₩${#numbers.formatInteger(product.price, 0, 'COMMA')}| : '가격 미정'">
+                    ₩0
                 </span>
             </div>
 
@@ -148,9 +147,9 @@
 <footer class="site-footer">
     <div class="site-footer__grid">
         <div>
-            <div class="site-footer__brand">Heritage Namhae</div>
+            <div class="site-footer__brand">스마트 식품 이커머스 - 다드림</div>
             <p class="site-footer__copy">
-                남해군 공식 헤리티지 몰, 우리 해안 낙원의 진짜 맛을 당신의 집으로 바로 전달합니다.
+                오늘 먹는 스마트한 한 끼가 내일의 건강한 에너지가 됩니다.
             </p>
             <div class="footer-socials">
                 <a class="footer-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img class="footer-social-icon" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="Instagram" /></a>
@@ -162,31 +161,31 @@
         <div>
             <h4 class="site-footer__title">서비스</h4>
             <ul class="site-footer__list">
-                <li><a href="#">회사 소개</a></li>
-                <li><a href="#">배송 및 추적</a></li>
-                <li><a href="#">이용 약관</a></li>
+                <li><a href="#" onclick="event.preventDefault();">회사 소개</a></li>
+                <li><a href="#" onclick="event.preventDefault();">배송 및 추적</a></li>
+                <li><a href="#" onclick="event.preventDefault();">이용 약관</a></li>
             </ul>
         </div>
         <div>
-            <h4 class="site-footer__title">연락처</h4>
+            <h4 class="site-footer__title">고객센터</h4>
             <ul class="site-footer__list">
-                <li>전화: 055-123-4567</li>
-                <li>이메일: help@namhaeheritage.kr</li>
+                <li>전화: 000-000-0000</li>
+                <li>이메일: help@dadream.com</li>
             </ul>
         </div>
         <div>
             <h4 class="site-footer__title">위치</h4>
-            <p class="site-footer__text">대한민국 경상남도 남해군</p>
+            <p class="site-footer__text">13618 경기 성남시 분당구 돌마로 73 (금곡동), 7층</p>
             <div class="footer-map">
                 <img alt="Location Map" class="footer-map-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2F8UAsYBf8f-PXSCkWz8tPMj1yPAwzNqFnUHdLvbP3NxWzmKZvO52Qb76KLXKdR7GifJMom5TfallzE3oUiWx6wj1VUqfQ-OWmzQVYplGPmVjO52jxg3e8NQdFOU-O_t0DJrzvtWD0uaWIpCc4fRIYzS0-oPNzSMqm3dfpC4iojREb1bO_k-endojrJHEh2Vek1i1HWAgmAM27qGPEC2EUe-1x_hxNJOM3j_NI-TicipehzW-arsFab0btwNoZOq5wXODkjGdXZM"/>
             </div>
         </div>
     </div>
     <div class="site-footer__bottom">
-        <p>&copy; 2024 에디토리얼 헤리티지 남해. 모든 권리 보유.</p>
+        <p>&copy;2026 1조 다드림. 모든 권리 보유.</p>
         <div class="site-footer__links">
-            <a href="#">개인정보 처리방침</a>
-            <a href="#">라이선스 정보</a>
+            <a href="#" onclick="event.preventDefault();">개인정보 처리방침</a>
+            <a href="#" onclick="event.preventDefault();">라이선스 정보</a>
         </div>
     </div>
 </footer>

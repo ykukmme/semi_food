@@ -282,8 +282,6 @@ function updateWordCloud(keywords) {
     const wordCloud = document.getElementById('wordCloud');
     if (!wordCloud) return;
     
-<<<<<<< HEAD
-=======
     // Randomize display order so high-frequency words are not grouped by rank.
     const shuffledKeywords = [...keywords];
     for (let i = shuffledKeywords.length - 1; i > 0; i--) {
@@ -291,24 +289,12 @@ function updateWordCloud(keywords) {
         [shuffledKeywords[i], shuffledKeywords[j]] = [shuffledKeywords[j], shuffledKeywords[i]];
     }
     
->>>>>>> 06bd07ce57b7c275cfb7b67c399149dd1ff20276
     // Calculate font size based on frequency range
     const frequencies = keywords.map(k => k.frequency);
     const maxFreq = Math.max(...frequencies);
     const minFreq = Math.min(...frequencies);
     const freqRange = maxFreq - minFreq || 1;
     
-<<<<<<< HEAD
-    wordCloud.innerHTML = keywords.map(keyword => {
-        // Normalize frequency to font size range (14px to 32px)
-        const normalizedFreq = (keyword.frequency - minFreq) / freqRange;
-        const fontSize = 14 + normalizedFreq * 18; // 14px to 32px range
-        
-        const fontWeight = normalizedFreq > 0.7 ? '800' : normalizedFreq > 0.4 ? '700' : '500';
-        const color = normalizedFreq > 0.7 ? '#1a7a4a' : normalizedFreq > 0.4 ? '#2d6a4f' : '#999';
-
-        return `<span style="font-size:${fontSize}px;font-weight:${fontWeight};color:${color};cursor:default;margin:4px">${keyword.name}</span>`;
-=======
     wordCloud.innerHTML = shuffledKeywords.map((keyword, index) => {
         // Normalize frequency to font size range (16px to 36px)
         const normalizedFreq = (keyword.frequency - minFreq) / freqRange;
@@ -324,7 +310,6 @@ function updateWordCloud(keywords) {
         const animationDelay = index * 40;
         
         return `<span style="font-size:${fontSize}px;font-weight:${fontWeight};color:${color};cursor:default;animation:fadeInUp 0.3s ease-out ${animationDelay}ms both;order:${index};${positionStyle}">${keyword.name}</span>`;
->>>>>>> 06bd07ce57b7c275cfb7b67c399149dd1ff20276
     }).join('');
 }
 

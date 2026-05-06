@@ -137,7 +137,7 @@ function getCurrentProductLine() {
         id: `${productId}-${selectedSizeLabel}`,
         productId,
         name: `${productTitle} (${selectedSizeLabel})`,
-        collection: "Heritage Namhae",
+        collection: "스마트 식품 이커머스 - 다드림",
         price: currentUnitPrice,
         quantity,
         image: imageSrc,
