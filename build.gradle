@@ -35,6 +35,8 @@ dependencies {
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
     implementation "org.mapstruct:mapstruct:1.5.2.Final"
     // lombok과 mapstruct의 순서를 바꿀 경우 충돌 발생 할 수 있음
     annotationProcessor 'org.projectlombok:lombok' 
@@ -51,13 +53,31 @@ dependencies {
     // XML 파싱을 위한 라이브러리 (XML 응답 시 자동으로 객체 변환)
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
     
+    // Apache POI for Excel export
+    implementation 'org.apache.poi:poi:5.2.4'
+    implementation 'org.apache.poi:poi-ooxml:5.2.4'
+
+    // Mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+
+    // Apache POI - 엑셀 파일 처리를 위한 라이브러리
+    implementation 'org.apache.poi:poi:5.2.5'
+    implementation 'org.apache.poi:poi-ooxml:5.2.5'
+    
+    // 로그 출력을 위해 log4j-core가 추가로 필요할 수 있습니다 (POI 5.x 버전 기준)
+    implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += '-parameters'
 }
 
 // Keep Gradle bootRun friendly for teammates who run the app from the terminal.

@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,42 +45,62 @@ public class SecurityConfig {
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(AbstractHttpConfigurer::disable)
+            .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
 
                 // 회원가입·로그인은 인증 없이 허용
-                .requestMatchers("/api/auth/**").permitAll()
-                // 관리자 API — ADMIN 역할 필수
+                .requestMatchers(
+                    "/",
+                    "/member",
+                    "/favicon.ico",
+                    "/error",
+                    "/trend/**",
+                    "/product/**",
+                    "/cart/view",
+                    "/checkout",
+                    "/order_detail",
+                    "/all_orders",
+                    "/cancel_orders",
+                    "/mypage",
+                    "/api/auth/**"
+                ).permitAll()
+                // 관리자 페이지 및 API — ADMIN 역할 필수
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 // 정적 파일 허용 (루트 + 하위 디렉토리 HTML 모두 포함)
-                .requestMatchers("/*.html", "/**/*.html", "/css/**", "/js/**").permitAll()
-                                //[ ]TODO 배포시 주석처리 할 것, 모든 페이지 허용
+                .requestMatchers("/index.html", "/*.html", "/**/*.html", "/css/**", "/js/**","/images/**").permitAll()
+                //[ ]TODO 배포시 주석처리 할 것, 모든 페이지 허용
                 .anyRequest().permitAll()
                 // .anyRequest().authenticated()
             )
             // 401 응답을 일관된 JSON 형식으로 반환
             .exceptionHandling(ex -> ex
                 .authenticationEntryPoint((request, response, authException) -> {
-                    response.setStatus(401);
-                    response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
-                    response.getWriter().write("{\"message\":\"인증이 필요합니다.\"}");
+                    if (request.getRequestURI().startsWith("/api")) {
+                        response.setStatus(401);
+                        response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
+                        response.getWriter().write("{\"message\":\"인증이 필요합니다.\"}");
+                    } else {
+                        response.sendRedirect("/login.html");
+                    }
                 })
                 .accessDeniedHandler((request, response, accessDeniedException) -> {
-                    response.setStatus(403);
-                    response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
-                    response.getWriter().write("{\"message\":\"접근 권한이 없습니다.\"}");
+                    if (request.getRequestURI().startsWith("/api")) {
+                        response.setStatus(403);
+                        response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
+                        response.getWriter().write("{\"message\":\"접근 권한이 없습니다.\"}");
+                    } else {
+                        response.sendRedirect("/login.html");
+                    }
                 })
             )
-            .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(new JwtFilter(jwtProvider, memberDetailsService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    @Bean
-    public JwtFilter jwtFilter() {
-        return new JwtFilter(jwtProvider, memberDetailsService);
-    }
-
+    
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();

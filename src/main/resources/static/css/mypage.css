@@ -1,0 +1,49 @@
+/* mypage.html Styles */
+.profile-section {
+    margin-bottom: 24px;
+}
+
+.profile-section input[readonly] {
+    background-color: var(--color-bg-warm);
+    cursor: not-allowed;
+    color: var(--color-text-secondary);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.btn-edit {
+    flex: 1;
+    background-color: var(--color-blue);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-edit:hover {
+    background-color: var(--color-blue-active);
+}
+
+.btn-logout {
+    flex: 1;
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-logout:hover {
+    background-color: var(--color-bg-warm);
+    border-color: var(--color-text-muted);
+}

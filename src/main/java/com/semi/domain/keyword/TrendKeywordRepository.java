@@ -60,4 +60,17 @@ public interface TrendKeywordRepository extends JpaRepository<TrendKeyword, Long
         @Param("start") LocalDateTime start,
         Pageable pageable
     );
+    List<TrendKeyword> findByIsActiveTrueOrderByIdAsc();
+
+    @Query(value = """
+            SELECT *
+            FROM trend_keyword
+            WHERE collected_at >= :start
+              AND collected_at < :end
+            ORDER BY id ASC
+            LIMIT 20
+            """, nativeQuery = true)
+    List<TrendKeyword> findTop20KeywordsCollectedBetweenOrderById(
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end);
 }

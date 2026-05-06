@@ -236,6 +236,65 @@ input.error:focus {
     text-decoration: underline;
 }
 
+/* 액션 버튼 */
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.btn-edit, .btn-logout {
+    flex: 1;
+    padding: 10px 16px;
+    background-color: var(--color-blue);
+    color: #ffffff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.33;
+    cursor: pointer;
+    transition: background-color 0.15s, transform 0.1s;
+}
+
+.btn-edit:hover, .btn-logout:hover {
+    background-color: var(--color-blue-active);
+}
+
+.btn-edit:active, .btn-logout:active {
+    transform: scale(0.98);
+    background-color: var(--color-blue-active);
+}
+
+.btn-edit:focus-visible, .btn-logout:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+}
+
+/* 프로필 섹션 */
+.profile-section {
+    background: var(--color-bg-warm);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.profile-section .form-group {
+    margin-bottom: 12px;
+}
+
+.profile-section .form-group:last-child {
+    margin-bottom: 0;
+}
+
+.profile-section input[readonly] {
+    background: var(--color-bg);
+    color: var(--color-text-secondary);
+    cursor: not-allowed;
+}
+
 /* 반응형 */
 @media (max-width: 480px) {
     .register-container {
@@ -246,5 +305,10 @@ input.error:focus {
     .register-header h1 {
         font-size: 22px;
         letter-spacing: -0.25px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 8px;
     }
 }

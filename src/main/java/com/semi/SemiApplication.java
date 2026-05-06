@@ -14,3 +14,4 @@ public class SemiApplication {
         SpringApplication.run(SemiApplication.class, args);
     }
 }
+ 
