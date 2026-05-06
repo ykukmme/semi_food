@@ -3297,10 +3297,10 @@ body {
 
     .orders-layout {
         flex-direction: column;
-        overflow-y: auto;
-        overflow-x: hidden;
+        overflow: visible;
         gap: 12px;
         padding: 12px;
+        height: auto;
     }
 
     .orders-page .order-list {
@@ -3322,6 +3322,7 @@ body {
     .orders-page .invoice-area {
         padding: 0;
         overflow: visible;
+        width: 100%;
     }
 
     .orders-page .pagination-container {
@@ -3349,7 +3350,8 @@ body {
     }
 
     .orders-page .inv-table {
-        min-width: 520px;
+        min-width: auto;
+        width: 100%;
     }
 }
 
@@ -3378,6 +3380,7 @@ body {
 
     .orders-page .invoice-card {
         padding: 14px;
+        max-width: 100%;
     }
 
     .orders-page .inv-header-bar {

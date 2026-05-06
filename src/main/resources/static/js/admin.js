@@ -2,6 +2,24 @@
 
 let selectedOrderId = null;
 
+// Authentication helper
+function getAdminToken() {
+    return localStorage.getItem('accessToken');
+}
+
+function adminFetch(url, options = {}) {
+    const token = getAdminToken();
+    const headers = {
+        ...(options.headers || {}),
+        'Authorization': `Bearer ${token}`
+    };
+    
+    return fetch(url, {
+        ...options,
+        headers
+    });
+}
+
 // Mobile menu toggle functionality
 function initMobileMenu() {
     const mobileMenuToggle = document.getElementById('mobileMenuToggle');
@@ -282,49 +300,34 @@ function updateWordCloud(keywords) {
     const wordCloud = document.getElementById('wordCloud');
     if (!wordCloud) return;
     
-<<<<<<< HEAD
-=======
-    // Randomize display order so high-frequency words are not grouped by rank.
-    const shuffledKeywords = [...keywords];
-    for (let i = shuffledKeywords.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffledKeywords[i], shuffledKeywords[j]] = [shuffledKeywords[j], shuffledKeywords[i]];
-    }
-    
->>>>>>> 06bd07ce57b7c275cfb7b67c399149dd1ff20276
-    // Calculate font size based on frequency range
-    const frequencies = keywords.map(k => k.frequency);
-    const maxFreq = Math.max(...frequencies);
-    const minFreq = Math.min(...frequencies);
-    const freqRange = maxFreq - minFreq || 1;
-    
-<<<<<<< HEAD
-    wordCloud.innerHTML = keywords.map(keyword => {
-        // Normalize frequency to font size range (14px to 32px)
-        const normalizedFreq = (keyword.frequency - minFreq) / freqRange;
-        const fontSize = 14 + normalizedFreq * 18; // 14px to 32px range
-        
-        const fontWeight = normalizedFreq > 0.7 ? '800' : normalizedFreq > 0.4 ? '700' : '500';
-        const color = normalizedFreq > 0.7 ? '#1a7a4a' : normalizedFreq > 0.4 ? '#2d6a4f' : '#999';
+// Randomize display order so high-frequency words are not grouped by rank.
+const shuffledKeywords = [...keywords];
+for (let i = shuffledKeywords.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledKeywords[i], shuffledKeywords[j]] = [shuffledKeywords[j], shuffledKeywords[i]];
+}
 
-        return `<span style="font-size:${fontSize}px;font-weight:${fontWeight};color:${color};cursor:default;margin:4px">${keyword.name}</span>`;
-=======
-    wordCloud.innerHTML = shuffledKeywords.map((keyword, index) => {
-        // Normalize frequency to font size range (16px to 36px)
-        const normalizedFreq = (keyword.frequency - minFreq) / freqRange;
-        const fontSize = 16 + normalizedFreq * 20; // 16px to 36px range
-        
-        const fontWeight = normalizedFreq > 0.7 ? '800' : normalizedFreq > 0.4 ? '700' : '500';
-        const color = normalizedFreq > 0.7 ? '#1a7a4a' : normalizedFreq > 0.4 ? '#2d6a4f' : '#999';
-        
-        // Natural organic positioning - no fixed positions
-        let positionStyle = 'position:relative;';
-        
-        // Add slight animation delay for staggered appearance
-        const animationDelay = index * 40;
-        
-        return `<span style="font-size:${fontSize}px;font-weight:${fontWeight};color:${color};cursor:default;animation:fadeInUp 0.3s ease-out ${animationDelay}ms both;order:${index};${positionStyle}">${keyword.name}</span>`;
->>>>>>> 06bd07ce57b7c275cfb7b67c399149dd1ff20276
+// Calculate font size based on frequency range
+const frequencies = keywords.map(k => k.frequency);
+const maxFreq = Math.max(...frequencies);
+const minFreq = Math.min(...frequencies);
+const freqRange = maxFreq - minFreq || 1;
+
+wordCloud.innerHTML = shuffledKeywords.map((keyword, index) => {
+    // Normalize frequency to font size range (16px to 36px)
+    const normalizedFreq = (keyword.frequency - minFreq) / freqRange;
+    const fontSize = 16 + normalizedFreq * 20; // 16px to 36px range
+    
+    const fontWeight = normalizedFreq > 0.7 ? '800' : normalizedFreq > 0.4 ? '700' : '500';
+    const color = normalizedFreq > 0.7 ? '#1a7a4a' : normalizedFreq > 0.4 ? '#2d6a4f' : '#999';
+    
+    // Natural organic positioning - no fixed positions
+    let positionStyle = 'position:relative;';
+    
+    // Add slight animation delay for staggered appearance
+    const animationDelay = index * 40;
+    
+    return `<span style="font-size:${fontSize}px;font-weight:${fontWeight};color:${color};cursor:default;animation:fadeInUp 0.3s ease-out ${animationDelay}ms both;order:${index};${positionStyle}">${keyword.name}</span>`;
     }).join('');
 }
 
@@ -455,31 +458,10 @@ function selectOrder(orderId, scrollToDetails = true) {
     document.querySelector(`[data-order-id="${orderId}"]`).classList.add('sel');
 
     // Load order details
-    fetch(`/api/admin/orders/${orderId}`)
+    adminFetch(`/api/admin/orders/${orderId}`)
         .then(response => response.json())
         .then(order => {
-            console.log('=== JavaScript DEBUG: Received Order Data ===');
-            console.log('Order ID:', order.id);
-            console.log('Order Items Count:', order.items ? order.items.length : 0);
-            
-            if (order.items && order.items.length > 0) {
-                order.items.forEach((item, index) => {
-                    console.log(`Item ${index + 1}:`);
-                    console.log('  - productName:', item.productName);
-                    console.log('  - quantity:', item.quantity);
-                    console.log('  - unitPrice:', item.unitPrice);
-                    console.log('  - totalPrice:', item.totalPrice);
-                    console.log('  - typeof unitPrice:', typeof item.unitPrice);
-                    console.log('  - typeof totalPrice:', typeof item.totalPrice);
-                });
-            }
-            
-            console.log('Order subtotal:', order.subtotal);
-            console.log('Order shippingFee:', order.shippingFee);
-            console.log('Order totalPrice:', order.totalPrice);
-            console.log('===========================================');
-            
-            displayOrderDetails(order, scrollToDetails);
+            displayOrderDetails(order, true);
         })
         .catch(error => {
             console.error('Error loading order details:', error);
@@ -1380,126 +1362,126 @@ function confirmAutoOrder() {
 }
 
     // Orders functions
-    let currentOrderId = null;
-    let currentOrderNumber = null;
-    let currentCustomerName = null;
+let currentOrderId = null;
+let currentOrderNumber = null;
+let currentCustomerName = null;
 
-    // Pagination variables for orders
-    let currentOrderPage = 0;
-    const orderPageSize = 10;
-    let hasMoreOrders = true;
-    let isLoadingOrders = false;
+// Pagination variables for orders
+let currentOrderPage = 0;
+const orderPageSize = 10;
+let hasMoreOrders = true;
+let isLoadingOrders = false;
 
-    function loadOrders() {
-        currentOrderPage = 0;
-        hasMoreOrders = true;
+function loadOrders() {
+    currentOrderPage = 0;
+    hasMoreOrders = true;
 
-        const orderItems = document.getElementById('orderItems');
-        if (orderItems) {
-            orderItems.innerHTML = '';
-        }
-
-        loadOrdersPage(true);
+    const orderItems = document.getElementById('orderItems');
+    if (orderItems) {
+        orderItems.innerHTML = '';
     }
 
-    function updateOrderCounts(orders) {
-        const activeCount = orders.filter(o => o.status === 'PROCESSING').length;
-        const todayCount = orders.filter(o => isToday(o.orderDate)).length;
-        
-        document.getElementById('activeCount').textContent = activeCount;
-        document.getElementById('todayCount').textContent = todayCount;
-    }
+    loadOrdersPage(true);
+}
+
+function updateOrderCounts(orders) {
+    const activeCount = orders.filter(o => o.status === 'PROCESSING').length;
+    const todayCount = orders.filter(o => isToday(o.orderDate)).length;
+    
+    document.getElementById('activeCount').textContent = activeCount;
+    document.getElementById('todayCount').textContent = todayCount;
+}
 
     function updateOrderPaginationControls() {
-        let paginationContainer = document.getElementById('orderPaginationControls');
-        if (!paginationContainer) {
+    let paginationContainer = document.getElementById('orderPaginationControls');
+    if (!paginationContainer) {
+        const orderItems = document.getElementById('orderItems');
+        paginationContainer = document.createElement('div');
+        paginationContainer.id = 'orderPaginationControls';
+        paginationContainer.className = 'pagination-container';
+        orderItems.parentNode.insertBefore(paginationContainer, orderItems.nextSibling);
+    }
+    
+    if (hasMoreOrders) {
+        paginationContainer.innerHTML = `
+            <button class="load-more-btn" onclick="loadOrdersPage()" ${isLoadingOrders ? 'disabled' : ''}>
+                ${isLoadingOrders ? '로딩 중...' : '더 보기'}
+            </button>
+        `;
+    } else {
+        paginationContainer.innerHTML = `
+            <div class="no-more-orders">모든 주문을 불러왔습니다.</div>
+        `;
+    }
+}
+
+function loadOrdersPage(reset = false) {
+    if (isLoadingOrders) {
+        return;
+    }
+
+    isLoadingOrders = true;
+    updateOrderPaginationControls();
+
+    fetch(`/api/admin/orders/list/paged?page=${currentOrderPage}&size=${orderPageSize}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
             const orderItems = document.getElementById('orderItems');
-            paginationContainer = document.createElement('div');
-            paginationContainer.id = 'orderPaginationControls';
-            paginationContainer.className = 'pagination-container';
-            orderItems.parentNode.insertBefore(paginationContainer, orderItems.nextSibling);
-        }
-        
-        if (hasMoreOrders) {
-            paginationContainer.innerHTML = `
-                <button class="load-more-btn" onclick="loadOrdersPage()" ${isLoadingOrders ? 'disabled' : ''}>
-                    ${isLoadingOrders ? '로딩 중...' : '더 보기'}
-                </button>
-            `;
-        } else {
-            paginationContainer.innerHTML = `
-                <div class="no-more-orders">모든 주문을 불러왔습니다.</div>
-            `;
-        }
-    }
+            if (!orderItems) {
+                return;
+            }
 
-    function loadOrdersPage(reset = false) {
-        if (isLoadingOrders) {
-            return;
-        }
+            const orders = data.orders || [];
 
-        isLoadingOrders = true;
-        updateOrderPaginationControls();
+            if (reset) {
+                orderItems.innerHTML = '';
+            }
 
-        fetch(`/api/admin/orders/list/paged?page=${currentOrderPage}&size=${orderPageSize}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                const orderItems = document.getElementById('orderItems');
-                if (!orderItems) {
-                    return;
-                }
+            orderItems.insertAdjacentHTML('beforeend', orders.map(order => createOrderItem(order)).join(''));
+            hasMoreOrders = Boolean(data.hasMore);
 
-                const orders = data.orders || [];
+            if (orders.length > 0) {
+                currentOrderPage += 1;
+            }
 
-                if (reset) {
-                    orderItems.innerHTML = '';
-                }
+            document.getElementById('activeCount').textContent = data.activeCount ?? 0;
+            document.getElementById('todayCount').textContent = data.todayCount ?? 0;
 
-                orderItems.insertAdjacentHTML('beforeend', orders.map(order => createOrderItem(order)).join(''));
-                hasMoreOrders = Boolean(data.hasMore);
+        })
+        .catch(error => {
+            console.error('Error loading orders:', error);
+            showToast('Failed to load orders');
+        })
+        .finally(() => {
+            isLoadingOrders = false;
+            updateOrderPaginationControls();
+        });
+}
 
-                if (orders.length > 0) {
-                    currentOrderPage += 1;
-                }
-
-                document.getElementById('activeCount').textContent = data.activeCount ?? 0;
-                document.getElementById('todayCount').textContent = data.todayCount ?? 0;
-
-            })
-            .catch(error => {
-                console.error('Error loading orders:', error);
-                showToast('Failed to load orders');
-            })
-            .finally(() => {
-                isLoadingOrders = false;
-                updateOrderPaginationControls();
-            });
-    }
-
-    function displayOrderDetails(order) {
-        const invoiceArea = document.getElementById('invoiceArea');
-        
-        invoiceArea.innerHTML = `
-            <div class="invoice-card">
-                <div class="inv-header-bar">
-                    <div>
-                        <div class="inv-brand">DaDream</div>
-                        <div class="inv-addr">123 Food Street, Seoul, Korea</div>
-                    </div>
-                    <div class="inv-title-right">
-                        <div class="inv-title">INVOICE</div>
-                        <div class="inv-num">#${order.orderNumber}</div>
-                        <div class="inv-date">${formatDate(order.orderedAt)}</div>
-                    </div>
+function displayOrderDetails(order, scrollToDetails = true) {
+    const invoiceArea = document.getElementById('invoiceArea');
+    
+    invoiceArea.innerHTML = `
+        <div class="invoice-card">
+            <div class="inv-header-bar">
+                <div>
+                    <div class="inv-brand">DaDream</div>
+                    <div class="inv-addr">123 Food Street, Seoul, Korea</div>
                 </div>
-            
-            <div class="inv-section">
-                <div class="inv-lbl">Bill To</div>
+                <div class="inv-title-right">
+                    <div class="inv-title">INVOICE</div>
+                    <div class="inv-num">#${order.orderNumber}</div>
+                    <div class="inv-date">${formatDate(order.orderedAt)}</div>
+                </div>
+            </div>
+        
+        <div class="inv-section">
+            <div class="inv-lbl">Bill To</div>
                 <div style="font-weight:600;color:#1a2e22;margin-bottom:4px">${order.customerName}</div>
                 <div style="font-size:12px;color:#666">${order.customerEmail}</div>
                 <div style="font-size:12px;color:#666">${order.customerPhone}</div>
@@ -1543,7 +1525,7 @@ function confirmAutoOrder() {
                     </tr>
                     <tr>
                         <td><strong>Total</strong></td>
-                        <td><span class="total-pill">${formatPrice(order.subtotal + order.shippingFee)}</span></td>
+                        <td><span class="total-pill">${formatPrice(order.totalPrice)}</span></td>
                     </tr>
                 </table>
             </div>
@@ -1567,7 +1549,9 @@ function confirmAutoOrder() {
         `;
 
         if (scrollToDetails && window.innerWidth <= 768) {
-            invoiceArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setTimeout(() => {
+                invoiceArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
         }
     }
 
