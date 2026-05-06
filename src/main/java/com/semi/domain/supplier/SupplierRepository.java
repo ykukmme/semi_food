@@ -24,10 +24,16 @@ public interface SupplierRepository extends JpaRepository<Supplier, Long> {
 
     List<Supplier> findAllByCreatedAtGreaterThanEqualOrderByCreatedAtDesc(LocalDateTime start);
 
+    List<Supplier> findAllByCreatedAtGreaterThanEqualAndCreatedAtLessThanOrderByCreatedAtDesc(
+        LocalDateTime start,
+        LocalDateTime end
+    );
+
     @Query("""
         SELECT s
         FROM Supplier s
         WHERE s.createdAt >= :start
+          AND s.createdAt < :end
           AND NOT EXISTS (
               SELECT p.id
               FROM Product p
@@ -40,6 +46,9 @@ public interface SupplierRepository extends JpaRepository<Supplier, Long> {
           )
         ORDER BY s.createdAt DESC
         """)
-    List<Supplier> findRpaDeletableSuppliers(@Param("start") LocalDateTime start);
+    List<Supplier> findRpaDeletableSuppliers(
+        @Param("start") LocalDateTime start,
+        @Param("end") LocalDateTime end
+    );
 
 }

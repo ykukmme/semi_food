@@ -24,10 +24,16 @@ public interface TrendKeywordRepository extends JpaRepository<TrendKeyword, Long
 
     List<TrendKeyword> findAllByCollectedAtGreaterThanEqualOrderByCollectedAtDesc(LocalDateTime start);
 
+    List<TrendKeyword> findAllByCollectedAtGreaterThanEqualAndCollectedAtLessThanOrderByCollectedAtDesc(
+        LocalDateTime start,
+        LocalDateTime end
+    );
+
     @Query("""
         SELECT t
         FROM TrendKeyword t
         WHERE t.collectedAt >= :start
+          AND t.collectedAt < :end
           AND NOT EXISTS (
               SELECT p.id
               FROM Product p
@@ -35,7 +41,10 @@ public interface TrendKeywordRepository extends JpaRepository<TrendKeyword, Long
           )
         ORDER BY t.collectedAt DESC
         """)
-    List<TrendKeyword> findRpaDeletableKeywords(@Param("start") LocalDateTime start);
+    List<TrendKeyword> findRpaDeletableKeywords(
+        @Param("start") LocalDateTime start,
+        @Param("end") LocalDateTime end
+    );
 
     /** RPA 후속 파싱에 사용할 당일 키워드 조회 */
     @Query("""

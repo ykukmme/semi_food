@@ -171,6 +171,23 @@
             border-bottom: 1px solid var(--line);
         }
 
+        .view-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .view-actions input {
+            width: 142px;
+        }
+
+        .view-actions button {
+            height: 32px;
+            padding: 0 9px;
+        }
+
         .table-wrap {
             max-height: 310px;
             overflow: auto;
@@ -220,6 +237,15 @@
             .grid {
                 grid-template-columns: 1fr;
             }
+
+            .view-head {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .view-actions {
+                justify-content: flex-start;
+            }
         }
     </style>
 </head>
@@ -248,19 +274,51 @@
 
     <section class="grid">
         <article class="view">
-            <div class="view-head"><h2>trend_keyword</h2><span id="keywordLabel">0 rows</span></div>
+            <div class="view-head">
+                <h2>trend_keyword</h2>
+                <div class="view-actions">
+                    <input id="keywordDate" type="date">
+                    <button data-view-refresh="trend_keyword">조회</button>
+                    <button class="danger" data-view-delete="trend_keyword">삭제</button>
+                    <span id="keywordLabel">0 rows</span>
+                </div>
+            </div>
             <div class="table-wrap"><table><thead><tr><th>ID</th><th>Keyword</th><th>Rank</th><th>Ranking ID</th><th>Sync Date</th><th>Collected</th></tr></thead><tbody id="keywordRows"></tbody></table></div>
         </article>
         <article class="view">
-            <div class="view-head"><h2>supplier</h2><span id="supplierLabel">0 rows</span></div>
+            <div class="view-head">
+                <h2>supplier</h2>
+                <div class="view-actions">
+                    <input id="supplierDate" type="date">
+                    <button data-view-refresh="supplier">조회</button>
+                    <button class="danger" data-view-delete="supplier">삭제</button>
+                    <span id="supplierLabel">0 rows</span>
+                </div>
+            </div>
             <div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>URL</th><th>Created</th></tr></thead><tbody id="supplierRows"></tbody></table></div>
         </article>
         <article class="view">
-            <div class="view-head"><h2>product</h2><span id="productLabel">0 rows</span></div>
+            <div class="view-head">
+                <h2>product</h2>
+                <div class="view-actions">
+                    <input id="productDate" type="date">
+                    <button data-view-refresh="product">조회</button>
+                    <button class="danger" data-view-delete="product">삭제</button>
+                    <span id="productLabel">0 rows</span>
+                </div>
+            </div>
             <div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Keyword</th><th>Supplier</th><th>Price</th><th>Sync Date</th><th>Crawled</th></tr></thead><tbody id="productRows"></tbody></table></div>
         </article>
         <article class="view">
-            <div class="view-head"><h2>rpa_log</h2><span id="logLabel">0 rows</span></div>
+            <div class="view-head">
+                <h2>rpa_log</h2>
+                <div class="view-actions">
+                    <input id="logDate" type="date">
+                    <button data-view-refresh="rpa_log">조회</button>
+                    <button class="danger" data-view-delete="rpa_log">삭제</button>
+                    <span id="logLabel">0 rows</span>
+                </div>
+            </div>
             <div class="table-wrap"><table><thead><tr><th>ID</th><th>Status</th><th>Started</th><th>Ended</th><th>Keywords</th><th>Products</th><th>Message</th></tr></thead><tbody id="logRows"></tbody></table></div>
         </article>
     </section>
@@ -271,10 +329,50 @@
     const dateInput = document.getElementById("targetDate");
     const today = new Date();
     dateInput.value = today.toISOString().slice(0, 10);
+    const viewConfigs = {
+        trend_keyword: {
+            dateId: "keywordDate",
+            labelId: "keywordLabel",
+            rowsId: "keywordRows",
+            rowsKey: "trendKeywords",
+            renderRow: row => `<td>${text(row.id)}</td><td>${text(row.keyword)}</td><td>${text(row.rank)}</td><td>${text(row.rankingId)}</td><td>${formatDateTime(row.syncDate)}</td><td>${formatDateTime(row.collectedAt)}</td>`
+        },
+        supplier: {
+            dateId: "supplierDate",
+            labelId: "supplierLabel",
+            rowsId: "supplierRows",
+            rowsKey: "suppliers",
+            renderRow: row => `<td>${text(row.id)}</td><td>${text(row.name)}</td><td>${text(row.url)}</td><td>${formatDateTime(row.createdAt)}</td>`
+        },
+        product: {
+            dateId: "productDate",
+            labelId: "productLabel",
+            rowsId: "productRows",
+            rowsKey: "products",
+            renderRow: row => `<td>${text(row.id)}</td><td>${text(row.name)}</td><td>${text(row.keyword)}</td><td>${text(row.supplierName)} (${text(row.supplierId)})</td><td>${text(row.price)}</td><td>${formatDateTime(row.syncDate)}</td><td>${formatDateTime(row.crawledAt)}</td>`
+        },
+        rpa_log: {
+            dateId: "logDate",
+            labelId: "logLabel",
+            rowsId: "logRows",
+            rowsKey: "rpaLogs",
+            renderRow: row => `<td>${text(row.id)}</td><td><span class="status-badge ${text(row.status)}">${text(row.status)}</span></td><td>${formatDateTime(row.startedAt)}</td><td>${formatDateTime(row.endedAt)}</td><td>${text(row.keywordCount)}</td><td>${text(row.productCount)}</td><td class="message">${text(row.message)}</td>`
+        }
+    };
+
+    Object.values(viewConfigs).forEach(config => {
+        document.getElementById(config.dateId).value = dateInput.value;
+    });
 
     document.getElementById("refreshButton").addEventListener("click", refreshDashboard);
     document.getElementById("runButton").addEventListener("click", runRpa);
     document.getElementById("deleteButton").addEventListener("click", deleteDailyData);
+    document.querySelectorAll("[data-view-refresh]").forEach(button => {
+        button.addEventListener("click", () => refreshView(button.dataset.viewRefresh));
+    });
+    document.querySelectorAll("[data-view-delete]").forEach(button => {
+        button.addEventListener("click", () => deleteViewData(button.dataset.viewDelete));
+    });
 
     function formatDateTime(value) {
         if (!value) return "-";
@@ -305,10 +403,27 @@
         state.running = status === "RUNNING";
         document.getElementById("runButton").disabled = state.running;
         document.getElementById("deleteButton").disabled = state.running;
+        document.querySelectorAll("[data-view-delete]").forEach(button => {
+            button.disabled = state.running;
+        });
+    }
+
+    function syncViewDates(date) {
+        Object.values(viewConfigs).forEach(config => {
+            document.getElementById(config.dateId).value = date;
+        });
+    }
+
+    function renderView(viewName, data) {
+        const config = viewConfigs[viewName];
+        const rows = data[config.rowsKey] || [];
+        document.getElementById(config.labelId).textContent = `${rows.length} rows`;
+        setRows(config.rowsId, rows, config.renderRow);
     }
 
     async function refreshDashboard() {
         const date = dateInput.value;
+        syncViewDates(date);
         const [statusResponse, dataResponse] = await Promise.all([
             fetch("/rpa/status"),
             fetch(`/rpa/data/daily/details?date=${date}`)
@@ -328,22 +443,48 @@
         document.getElementById("deletableCount").textContent = text((summary.deletableTrendKeywordCount || 0) + (summary.deletableSupplierCount || 0) + (summary.deletableProductCount || 0));
         document.getElementById("lastUpdated").textContent = `조회 기준 ${date} / ${new Date().toLocaleString()}`;
 
-        document.getElementById("keywordLabel").textContent = `${data.trendKeywords.length} rows`;
-        document.getElementById("supplierLabel").textContent = `${data.suppliers.length} rows`;
-        document.getElementById("productLabel").textContent = `${data.products.length} rows`;
-        document.getElementById("logLabel").textContent = `${data.rpaLogs.length} rows`;
+        Object.keys(viewConfigs).forEach(viewName => renderView(viewName, data));
+    }
 
-        setRows("keywordRows", data.trendKeywords, row => `<td>${text(row.id)}</td><td>${text(row.keyword)}</td><td>${text(row.rank)}</td><td>${text(row.rankingId)}</td><td>${formatDateTime(row.syncDate)}</td><td>${formatDateTime(row.collectedAt)}</td>`);
-        setRows("supplierRows", data.suppliers, row => `<td>${text(row.id)}</td><td>${text(row.name)}</td><td>${text(row.url)}</td><td>${formatDateTime(row.createdAt)}</td>`);
-        setRows("productRows", data.products, row => `<td>${text(row.id)}</td><td>${text(row.name)}</td><td>${text(row.keyword)}</td><td>${text(row.supplierName)} (${text(row.supplierId)})</td><td>${text(row.price)}</td><td>${formatDateTime(row.syncDate)}</td><td>${formatDateTime(row.crawledAt)}</td>`);
-        setRows("logRows", data.rpaLogs, row => `<td>${text(row.id)}</td><td><span class="status-badge ${text(row.status)}">${text(row.status)}</span></td><td>${formatDateTime(row.startedAt)}</td><td>${formatDateTime(row.endedAt)}</td><td>${text(row.keywordCount)}</td><td>${text(row.productCount)}</td><td class="message">${text(row.message)}</td>`);
+    async function refreshView(viewName) {
+        const config = viewConfigs[viewName];
+        const date = document.getElementById(config.dateId).value;
+        const response = await fetch(`/rpa/data/daily/details?date=${date}`);
+        const data = await response.json();
+        renderView(viewName, data);
+        document.getElementById("lastUpdated").textContent = `${viewName} 조회 기준 ${date} / ${new Date().toLocaleString()}`;
     }
 
     async function runRpa() {
+        document.getElementById("runButton").disabled = true;
+        const keywordResponse = await fetch("/api/TrendKeywords/saveWithSequentialId");
+        if (!keywordResponse.ok) {
+            alert("트렌드 키워드 저장에 실패해 RPA 실행을 중단했습니다.");
+            await refreshDashboard();
+            return;
+        }
+
         const response = await fetch("/rpa/run?size=20", { method: "POST" });
         if (!response.ok && response.status !== 409) {
             alert("RPA 실행 요청에 실패했습니다.");
         }
+        await refreshDashboard();
+    }
+
+    async function deleteViewData(viewName) {
+        if (state.running) return;
+        const config = viewConfigs[viewName];
+        const date = document.getElementById(config.dateId).value;
+        if (!confirm(`${date} 기준 ${viewName} view의 삭제 가능 데이터를 삭제할까요?`)) return;
+        const response = await fetch(`/rpa/data/daily/view?view=${viewName}&date=${date}&confirm=true`, { method: "DELETE" });
+        if (!response.ok) {
+            const message = await response.text();
+            alert(message || `${viewName} 삭제 요청에 실패했습니다.`);
+            return;
+        }
+
+        const result = await response.json();
+        alert(result.message || `${result.deletedCount || 0}건 삭제 완료`);
         await refreshDashboard();
     }
 

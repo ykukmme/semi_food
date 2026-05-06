@@ -18,6 +18,7 @@ import com.semi.domain.rpa.response.RpaLogRow;
 import com.semi.domain.rpa.response.RpaProductRow;
 import com.semi.domain.rpa.response.RpaSupplierRow;
 import com.semi.domain.rpa.response.RpaTrendKeywordRow;
+import com.semi.domain.rpa.response.RpaViewDeleteResponse;
 import com.semi.domain.supplier.Supplier;
 import com.semi.domain.supplier.SupplierRepository;
 
@@ -36,12 +37,13 @@ public class RpaDailyDataService {
     @Transactional(readOnly = true)
     public RpaDailyDataSummary summarizeDailyData(LocalDate targetDate) {
         LocalDateTime start = targetDate.atStartOfDay();
-        List<TrendKeyword> keywords = trendKeywordRepository.findAllByCollectedAtGreaterThanEqualOrderByCollectedAtDesc(start);
-        List<Product> products = productRepository.findAllByCrawledAtGreaterThanEqualOrderByCrawledAtDesc(start);
-        List<Supplier> suppliers = supplierRepository.findAllByCreatedAtGreaterThanEqualOrderByCreatedAtDesc(start);
-        List<TrendKeyword> deletableKeywords = trendKeywordRepository.findRpaDeletableKeywords(start);
-        List<Product> deletableProducts = productRepository.findRpaDeletableProducts(start);
-        List<Supplier> deletableSuppliers = supplierRepository.findRpaDeletableSuppliers(start);
+        LocalDateTime end = targetDate.plusDays(1).atStartOfDay();
+        List<TrendKeyword> keywords = trendKeywordRepository.findAllByCollectedAtGreaterThanEqualAndCollectedAtLessThanOrderByCollectedAtDesc(start, end);
+        List<Product> products = productRepository.findAllByCrawledAtGreaterThanEqualAndCrawledAtLessThanOrderByCrawledAtDesc(start, end);
+        List<Supplier> suppliers = supplierRepository.findAllByCreatedAtGreaterThanEqualAndCreatedAtLessThanOrderByCreatedAtDesc(start, end);
+        List<TrendKeyword> deletableKeywords = trendKeywordRepository.findRpaDeletableKeywords(start, end);
+        List<Product> deletableProducts = productRepository.findRpaDeletableProducts(start, end);
+        List<Supplier> deletableSuppliers = supplierRepository.findRpaDeletableSuppliers(start, end);
 
         return new RpaDailyDataSummary(
             targetDate,
@@ -59,8 +61,9 @@ public class RpaDailyDataService {
     @Transactional(readOnly = true)
     public RpaDashboardDataResponse getDailyDashboardData(LocalDate targetDate) {
         LocalDateTime start = targetDate.atStartOfDay();
+        LocalDateTime end = targetDate.plusDays(1).atStartOfDay();
         RpaDailyDataSummary summary = summarizeDailyData(targetDate);
-        List<RpaTrendKeywordRow> keywordRows = trendKeywordRepository.findAllByCollectedAtGreaterThanEqualOrderByCollectedAtDesc(start)
+        List<RpaTrendKeywordRow> keywordRows = trendKeywordRepository.findAllByCollectedAtGreaterThanEqualAndCollectedAtLessThanOrderByCollectedAtDesc(start, end)
             .stream()
             .map(keyword -> new RpaTrendKeywordRow(
                 keyword.getId(),
@@ -73,7 +76,7 @@ public class RpaDailyDataService {
                 keyword.getSyncDate()
             ))
             .toList();
-        List<RpaSupplierRow> supplierRows = supplierRepository.findAllByCreatedAtGreaterThanEqualOrderByCreatedAtDesc(start)
+        List<RpaSupplierRow> supplierRows = supplierRepository.findAllByCreatedAtGreaterThanEqualAndCreatedAtLessThanOrderByCreatedAtDesc(start, end)
             .stream()
             .map(supplier -> new RpaSupplierRow(
                 supplier.getId(),
@@ -82,7 +85,7 @@ public class RpaDailyDataService {
                 supplier.getCreatedAt()
             ))
             .toList();
-        List<RpaProductRow> productRows = productRepository.findAllByCrawledAtGreaterThanEqualOrderByCrawledAtDesc(start)
+        List<RpaProductRow> productRows = productRepository.findAllByCrawledAtGreaterThanEqualAndCrawledAtLessThanOrderByCrawledAtDesc(start, end)
             .stream()
             .map(product -> new RpaProductRow(
                 product.getId(),
@@ -97,7 +100,7 @@ public class RpaDailyDataService {
                 product.getSyncDate()
             ))
             .toList();
-        List<RpaLogRow> logRows = rpaLogRepository.findAllByStartedAtGreaterThanEqualOrderByStartedAtDesc(start)
+        List<RpaLogRow> logRows = rpaLogRepository.findAllByStartedAtGreaterThanEqualAndStartedAtLessThanOrderByStartedAtDesc(start, end)
             .stream()
             .map(log -> new RpaLogRow(
                 log.getId(),
@@ -125,13 +128,14 @@ public class RpaDailyDataService {
         rpaCrudSafetyService.assertRpaNotRunning();
 
         LocalDateTime start = targetDate.atStartOfDay();
-        List<Product> deletableProducts = productRepository.findRpaDeletableProducts(start);
+        LocalDateTime end = targetDate.plusDays(1).atStartOfDay();
+        List<Product> deletableProducts = productRepository.findRpaDeletableProducts(start, end);
         productRepository.deleteAllInBatch(deletableProducts);
 
-        List<Supplier> deletableSuppliers = supplierRepository.findRpaDeletableSuppliers(start);
+        List<Supplier> deletableSuppliers = supplierRepository.findRpaDeletableSuppliers(start, end);
         supplierRepository.deleteAllInBatch(deletableSuppliers);
 
-        List<TrendKeyword> deletableKeywords = trendKeywordRepository.findRpaDeletableKeywords(start);
+        List<TrendKeyword> deletableKeywords = trendKeywordRepository.findRpaDeletableKeywords(start, end);
         trendKeywordRepository.deleteAllInBatch(deletableKeywords);
 
         return new RpaDailyDeleteResponse(
@@ -141,5 +145,50 @@ public class RpaDailyDataService {
             deletableKeywords.size(),
             "RPA 당일 데이터 삭제 완료"
         );
+    }
+
+    @Transactional
+    public RpaViewDeleteResponse deleteDailyViewData(LocalDate targetDate, String viewName) {
+        rpaCrudSafetyService.assertRpaNotRunning();
+
+        LocalDateTime start = targetDate.atStartOfDay();
+        LocalDateTime end = targetDate.plusDays(1).atStartOfDay();
+        String normalizedViewName = viewName == null ? "" : viewName.trim().toLowerCase();
+
+        return switch (normalizedViewName) {
+            case "product" -> deleteDailyProducts(targetDate, start, end);
+            case "supplier" -> deleteDailySuppliers(targetDate, start, end);
+            case "trend_keyword" -> deleteDailyTrendKeywords(targetDate, start, end);
+            case "rpa_log" -> deleteDailyRpaLogs(targetDate, start, end);
+            default -> throw new IllegalArgumentException("지원하지 않는 RPA view입니다. view=" + viewName);
+        };
+    }
+
+    private RpaViewDeleteResponse deleteDailyProducts(LocalDate targetDate, LocalDateTime start, LocalDateTime end) {
+        List<Product> deletableProducts = productRepository.findRpaDeletableProducts(start, end);
+        productRepository.deleteAllInBatch(deletableProducts);
+        return new RpaViewDeleteResponse(targetDate, "product", deletableProducts.size(), "상품 view 삭제 완료");
+    }
+
+    private RpaViewDeleteResponse deleteDailySuppliers(LocalDate targetDate, LocalDateTime start, LocalDateTime end) {
+        List<Supplier> deletableSuppliers = supplierRepository.findRpaDeletableSuppliers(start, end);
+        supplierRepository.deleteAllInBatch(deletableSuppliers);
+        return new RpaViewDeleteResponse(targetDate, "supplier", deletableSuppliers.size(), "공급자 view 삭제 완료");
+    }
+
+    private RpaViewDeleteResponse deleteDailyTrendKeywords(LocalDate targetDate, LocalDateTime start, LocalDateTime end) {
+        List<TrendKeyword> deletableKeywords = trendKeywordRepository.findRpaDeletableKeywords(start, end);
+        trendKeywordRepository.deleteAllInBatch(deletableKeywords);
+        return new RpaViewDeleteResponse(targetDate, "trend_keyword", deletableKeywords.size(), "트렌드 키워드 view 삭제 완료");
+    }
+
+    private RpaViewDeleteResponse deleteDailyRpaLogs(LocalDate targetDate, LocalDateTime start, LocalDateTime end) {
+        List<RpaLog> deletableLogs = rpaLogRepository.findAllByStartedAtGreaterThanEqualAndStartedAtLessThanAndStatusNotOrderByStartedAtDesc(
+            start,
+            end,
+            RpaStatus.RUNNING
+        );
+        rpaLogRepository.deleteAllInBatch(deletableLogs);
+        return new RpaViewDeleteResponse(targetDate, "rpa_log", deletableLogs.size(), "RPA 로그 view 삭제 완료");
     }
 }

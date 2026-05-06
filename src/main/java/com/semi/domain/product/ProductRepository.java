@@ -23,14 +23,56 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     // 중복 체크용 (데이터가 이미 있는지 확인)
     boolean existsByCrawledAtAndName(LocalDateTime crawledAt, String name);
 
+    @Query("""
+        SELECT COUNT(p) > 0
+        FROM Product p
+        WHERE p.keyword.keyword = :keyword
+          AND p.keyword.rank = :rank
+          AND p.name = :name
+          AND p.syncDate = :syncDate
+          AND p.crawledAt >= :crawledAtStart
+          AND p.crawledAt < :crawledAtEnd
+        """)
+    boolean existsRpaProductToday(
+        @Param("keyword") String keyword,
+        @Param("rank") Integer rank,
+        @Param("name") String name,
+        @Param("syncDate") LocalDateTime syncDate,
+        @Param("crawledAtStart") LocalDateTime crawledAtStart,
+        @Param("crawledAtEnd") LocalDateTime crawledAtEnd
+    );
+
+    @Query("""
+        SELECT COUNT(p) > 0
+        FROM Product p
+        WHERE p.keyword.keyword = :keyword
+          AND p.keyword.rank = :rank
+          AND p.syncDate = :syncDate
+          AND p.crawledAt >= :crawledAtStart
+          AND p.crawledAt < :crawledAtEnd
+        """)
+    boolean existsRpaCategoryProcessedToday(
+        @Param("keyword") String keyword,
+        @Param("rank") Integer rank,
+        @Param("syncDate") LocalDateTime syncDate,
+        @Param("crawledAtStart") LocalDateTime crawledAtStart,
+        @Param("crawledAtEnd") LocalDateTime crawledAtEnd
+    );
+
     Product findFirstByOrderByIdDesc();
 
     List<Product> findAllByCrawledAtGreaterThanEqualOrderByCrawledAtDesc(LocalDateTime start);
+
+    List<Product> findAllByCrawledAtGreaterThanEqualAndCrawledAtLessThanOrderByCrawledAtDesc(
+        LocalDateTime start,
+        LocalDateTime end
+    );
 
     @Query("""
         SELECT p
         FROM Product p
         WHERE p.crawledAt >= :start
+          AND p.crawledAt < :end
           AND NOT EXISTS (
               SELECT item.id
               FROM PurchaseOrderItem item
@@ -38,6 +80,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
           )
         ORDER BY p.crawledAt DESC
         """)
-    List<Product> findRpaDeletableProducts(@Param("start") LocalDateTime start);
+    List<Product> findRpaDeletableProducts(
+        @Param("start") LocalDateTime start,
+        @Param("end") LocalDateTime end
+    );
 
 }

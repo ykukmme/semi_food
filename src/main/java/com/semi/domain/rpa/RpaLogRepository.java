@@ -18,6 +18,17 @@ public interface RpaLogRepository extends JpaRepository<RpaLog, Long> {
 
     List<RpaLog> findAllByStartedAtGreaterThanEqualOrderByStartedAtDesc(LocalDateTime start);
 
+    List<RpaLog> findAllByStartedAtGreaterThanEqualAndStartedAtLessThanOrderByStartedAtDesc(
+        LocalDateTime start,
+        LocalDateTime end
+    );
+
+    List<RpaLog> findAllByStartedAtGreaterThanEqualAndStartedAtLessThanAndStatusNotOrderByStartedAtDesc(
+        LocalDateTime start,
+        LocalDateTime end,
+        RpaStatus status
+    );
+
     List<RpaLog> findAllByStatusAndStartedAtBefore(RpaStatus status, LocalDateTime startedAt);
 
 

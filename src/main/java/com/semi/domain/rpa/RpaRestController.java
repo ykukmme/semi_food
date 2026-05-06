@@ -18,6 +18,7 @@ import com.semi.domain.rpa.response.RpaDashboardDataResponse;
 import com.semi.domain.rpa.response.RpaRecoveryResponse;
 import com.semi.domain.rpa.response.RpaRunResponse;
 import com.semi.domain.rpa.response.RpaStatusResponse;
+import com.semi.domain.rpa.response.RpaViewDeleteResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -78,6 +79,24 @@ public class RpaRestController {
 
         LocalDate targetDate = date == null ? LocalDate.now() : date;
         RpaDailyDeleteResponse response = rpaDailyDataService.deleteDailyData(targetDate);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/data/daily/view")
+    public ResponseEntity<?> deleteDailyViewData(
+        @RequestParam String view,
+        @RequestParam(required = false)
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+        LocalDate date,
+        @RequestParam(defaultValue = "false") boolean confirm
+    ) {
+        if (!confirm) {
+            return ResponseEntity.badRequest()
+                .body("삭제하려면 confirm=true 파라미터가 필요합니다.");
+        }
+
+        LocalDate targetDate = date == null ? LocalDate.now() : date;
+        RpaViewDeleteResponse response = rpaDailyDataService.deleteDailyViewData(targetDate, view);
         return ResponseEntity.ok(response);
     }
 

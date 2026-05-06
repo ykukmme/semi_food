@@ -1,6 +1,8 @@
 package com.semi.domain.rpa.parser;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -78,6 +80,23 @@ public class SupplierAndProductService {
         return sapResponse;
     }
 
+    @Transactional(readOnly = true)
+    public boolean hasTodayProductsForKeywordAndSyncDate(TrendKeyword sapKeyword, String sapSyncDate) {
+        LocalDate sapToday = LocalDate.now();
+        LocalDateTime sapCrawledStart = sapToday.atStartOfDay();
+        LocalDateTime sapCrawledEnd = sapToday.plusDays(1).atStartOfDay();
+        LocalDateTime sapParsedSyncDate = LocalDate.parse(sapSyncDate, DateTimeFormatter.BASIC_ISO_DATE)
+            .atStartOfDay();
+
+        return productRepository.existsRpaCategoryProcessedToday(
+            sapKeyword.getKeyword(),
+            sapKeyword.getRank(),
+            sapParsedSyncDate,
+            sapCrawledStart,
+            sapCrawledEnd
+        );
+    }
+
     @Transactional
     public List<Supplier> saveSuppliersWithSequentialId(SupplierAndProductResponse sapResponse) {
         List<ProductItem> sapProductItems = sapGetProductItems(sapResponse);
@@ -108,29 +127,6 @@ public class SupplierAndProductService {
             log.info("파싱된 공급자 데이터가 없습니다.");
             return Map.of();
         }
-
-        final Supplier latestParsedKeyword = parsedSuppliers.get(0);
-        final Supplier latestSavedRecord = supplierRepository.findFirstByOrderByIdDesc();
-
-        // 파싱한 데이터가 기존 데이터보다 최신이 아니라면 안내용 리스트 반환
-        if (latestSavedRecord != null 
-            && latestParsedKeyword.getCreatedAt().toLocalDate().isBefore(latestSavedRecord.getCreatedAt().toLocalDate())) {
-            
-            final String message = "동일하거나 이전 날짜의 데이터입니다. 저장하지 않습니다. "
-                + "파싱 날짜: " + latestParsedKeyword.getCreatedAt().toLocalDate()
-                + ", DB 최신 날짜: " + latestSavedRecord.getCreatedAt().toLocalDate();
-            
-            return Map.of("no_new_data",
-                new Supplier(
-                    0L,
-                    "",
-                    message,
-                    LocalDateTime.now()
-                )
-            );
-        }
-
-
 
         List<Supplier> sapNewSuppliers = new ArrayList<>();
 
@@ -245,7 +241,7 @@ public class SupplierAndProductService {
             Product sapMappedProduct = sapMappedProducts.get(sapIndex);
             ProductItem sapSourceItem = sapProductItems.get(sapIndex);
 
-            if (productRepository.existsByCrawledAtAndName(sapMappedProduct.getCrawledAt(), sapMappedProduct.getName())) {
+            if (sapProductAlreadySavedToday(sapKeyword, sapMappedProduct)) {
                 continue;
             }
 
@@ -280,6 +276,25 @@ public class SupplierAndProductService {
         }
 
         return sapNewProducts;
+    }
+
+    private boolean sapProductAlreadySavedToday(TrendKeyword sapKeyword, Product sapMappedProduct) {
+        if (sapMappedProduct.getCrawledAt() == null || sapMappedProduct.getSyncDate() == null) {
+            return false;
+        }
+
+        LocalDate sapCrawledDate = sapMappedProduct.getCrawledAt().toLocalDate();
+        LocalDateTime sapCrawledStart = sapCrawledDate.atStartOfDay();
+        LocalDateTime sapCrawledEnd = sapCrawledDate.plusDays(1).atStartOfDay();
+
+        return productRepository.existsRpaProductToday(
+            sapKeyword.getKeyword(),
+            sapKeyword.getRank(),
+            sapMappedProduct.getName(),
+            sapMappedProduct.getSyncDate(),
+            sapCrawledStart,
+            sapCrawledEnd
+        );
     }
 
 

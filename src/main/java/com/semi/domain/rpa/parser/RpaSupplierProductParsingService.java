@@ -107,6 +107,18 @@ public class RpaSupplierProductParsingService {
             TrendKeyword rpaKeyword = trendKeywordRepository.findById(rpaTarget.keywordId())
                 .orElseThrow(() -> new IllegalArgumentException("TrendKeyword가 없습니다. keywordId=" + rpaTarget.keywordId()));
 
+            if (supplierAndProductService.hasTodayProductsForKeywordAndSyncDate(rpaKeyword, rpaTarget.syncDate())) {
+                return new RpaSupplierProductParseResult(
+                    rpaTarget.keywordId(),
+                    rpaTarget.rankId(),
+                    rpaTarget.syncDate(),
+                    rpaTarget.trendRank(),
+                    "SKIPPED",
+                    0,
+                    "오늘 이미 처리한 keyword/rank/syncDate 분류이므로 공급자/상품 API 호출을 건너뜁니다."
+                );
+            }
+
             SupplierAndProductResponse rpaResponse = supplierAndProductService.getSupplierAndProducts(
                 rpaTarget.rankId(),
                 rpaTarget.syncDate()
