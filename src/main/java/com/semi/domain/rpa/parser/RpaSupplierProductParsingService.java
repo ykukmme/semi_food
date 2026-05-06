@@ -33,14 +33,20 @@ public class RpaSupplierProductParsingService {
     public List<RpaSupplierProductParseResult> parseTodaySupplierAndProducts(int requestedSize) {
         LocalDateTime rpaStartedAt = LocalDateTime.now();
         RpaLog rpaLog = startRpaLog(rpaStartedAt);
-        List<RpaTrendKeywordParseTarget> rpaTargets = trendKeywordService.getTodayRpaParseTargets(requestedSize);
         List<RpaSupplierProductParseResult> rpaResults = new ArrayList<>();
 
-        for (RpaTrendKeywordParseTarget rpaTarget : rpaTargets) {
-            rpaResults.add(parseSupplierAndProducts(rpaTarget));
-        }
+        try {
+            List<RpaTrendKeywordParseTarget> rpaTargets = trendKeywordService.getTodayRpaParseTargets(requestedSize);
 
-        finishRpaLog(rpaLog, rpaStartedAt, rpaResults);
+            for (RpaTrendKeywordParseTarget rpaTarget : rpaTargets) {
+                rpaResults.add(parseSupplierAndProducts(rpaTarget));
+            }
+
+            finishRpaLog(rpaLog, rpaStartedAt, rpaResults);
+        } catch (RuntimeException exception) {
+            failRpaLog(rpaLog, rpaStartedAt, rpaResults, exception);
+            throw exception;
+        }
         return rpaResults;
     }
 
@@ -74,6 +80,24 @@ public class RpaSupplierProductParsingService {
             rpaLog.complete(results.size(), productCount);
             rpaLog.setMessage("RPA 공급자/상품 파싱 완료");
         }
+
+        String fileLogPath = rpaParsingLogFileService.writeParsingLog(startedAt, rpaLog.getEndedAt(), results);
+        rpaLog.setMessage(rpaLog.getMessage() + " / fileLog=" + fileLogPath);
+        rpaLogRepository.saveAndFlush(rpaLog);
+    }
+
+    private void failRpaLog(
+        RpaLog rpaLog,
+        LocalDateTime startedAt,
+        List<RpaSupplierProductParseResult> results,
+        RuntimeException exception
+    ) {
+        int productCount = results.stream()
+            .mapToInt(result -> result.productCount() == null ? 0 : result.productCount())
+            .sum();
+        rpaLog.fail("RPA 공급자/상품 파싱 중단: " + exception.getMessage());
+        rpaLog.setKeywordCount(results.size());
+        rpaLog.setProductCount(productCount);
 
         String fileLogPath = rpaParsingLogFileService.writeParsingLog(startedAt, rpaLog.getEndedAt(), results);
         rpaLog.setMessage(rpaLog.getMessage() + " / fileLog=" + fileLogPath);

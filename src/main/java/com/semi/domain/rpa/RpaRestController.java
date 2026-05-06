@@ -3,15 +3,23 @@ package com.semi.domain.rpa;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.semi.domain.rpa.response.RpaRunResponse;
+import com.semi.domain.rpa.response.RpaStatusResponse;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/rpa")
+@RequiredArgsConstructor
 @Slf4j
 public class RpaRestController {
+
+    private final RpaAsyncExecutionService rpaAsyncExecutionService;
 
     @GetMapping("/dashboard")
     public ResponseEntity<String> getDashboard() {
@@ -20,14 +28,29 @@ public class RpaRestController {
     }
 
     @GetMapping("/status")
-    public ResponseEntity<String> getStatus() {
-        // [ ]TODO: RPA 프로세스 상태 정보를 조회하도록 구현
-        return ResponseEntity.ok("RPA status placeholder");
+    public ResponseEntity<RpaStatusResponse> getStatus() {
+        return ResponseEntity.ok(rpaAsyncExecutionService.getLatestStatus());
     }
 
     @PostMapping("/run")
-    public ResponseEntity<String> triggerRpaJob() {
-        // [ ]TODO: RPA 작업 실행 로직을 연결
-        return ResponseEntity.ok("RPA job triggered placeholder");
+    public ResponseEntity<RpaRunResponse> triggerRpaJob(
+        @RequestParam(defaultValue = "20") int size
+    ) {
+        if (!rpaAsyncExecutionService.canStart()) {
+            return ResponseEntity.status(409)
+                .body(new RpaRunResponse(
+                    RpaStatus.RUNNING.name(),
+                    "이미 실행 중인 RPA 작업이 있습니다.",
+                    size
+                ));
+        }
+
+        rpaAsyncExecutionService.runSupplierProductParsingAsync(size);
+        return ResponseEntity.accepted()
+            .body(new RpaRunResponse(
+                RpaStatus.RUNNING.name(),
+                "RPA 공급자/상품 파싱 작업을 비동기로 시작했습니다.",
+                size
+            ));
     }
 }
