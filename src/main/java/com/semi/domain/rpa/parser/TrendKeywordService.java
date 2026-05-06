@@ -1,9 +1,13 @@
 package com.semi.domain.rpa.parser;
 
 import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,7 @@ import org.springframework.web.client.RestClient;
 import com.semi.domain.keyword.TrendKeyword;
 import com.semi.domain.keyword.TrendKeywordRepository;
 import com.semi.domain.rpa.parser.mapper.TrendKeywordMapper;
+import com.semi.domain.rpa.parser.response.RpaTrendKeywordParseTarget;
 import com.semi.domain.rpa.parser.response.TrendKeywordResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -142,5 +147,29 @@ public class TrendKeywordService {
 
         repository.saveAll(keywords);
         return keywords;
+    }
+
+    @Transactional(readOnly = true)
+    public List<RpaTrendKeywordParseTarget> getTodayRpaParseTargets(int requestedSize) {
+        int targetSize = requestedSize <= 0 ? 20 : requestedSize;
+        LocalDateTime start = LocalDate.now().atStartOfDay();
+
+        return repository.findRecentRpaReadyKeywords(start, PageRequest.of(0, targetSize))
+            .stream()
+            .sorted(Comparator
+                .comparing(TrendKeyword::getRank, Comparator.nullsLast(Integer::compareTo))
+                .thenComparing(TrendKeyword::getId))
+            .map(this::toRpaTrendKeywordParseTarget)
+            .toList();
+    }
+
+    private RpaTrendKeywordParseTarget toRpaTrendKeywordParseTarget(TrendKeyword keyword) {
+        return new RpaTrendKeywordParseTarget(
+            keyword.getId(),
+            keyword.getRankingId(),
+            keyword.getSyncDate().format(DateTimeFormatter.BASIC_ISO_DATE),
+            keyword.getRank(),
+            keyword.getCollectedAt()
+        );
     }
 }

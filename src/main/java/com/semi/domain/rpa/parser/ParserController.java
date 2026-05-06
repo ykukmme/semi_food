@@ -4,6 +4,7 @@ import com.semi.domain.keyword.TrendKeyword;
 import com.semi.domain.keyword.TrendKeywordRepository;
 import com.semi.domain.product.Product;
 import com.semi.domain.rpa.parser.response.SupplierAndProductResponse;
+import com.semi.domain.rpa.parser.response.RpaTrendKeywordParseTarget;
 import com.semi.domain.rpa.parser.response.TrendKeywordResponse;
 import com.semi.domain.supplier.Supplier;
 
@@ -11,10 +12,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -86,6 +84,13 @@ public class ParserController {
             List<TrendKeyword> result = trendKeywordService.saveWithSequentialId(trendList);
 
         return result;
+    }
+
+    @GetMapping("/api/TrendKeywords/rpaTargets") // http://localhost:8080/api/TrendKeywords/rpaTargets?size=20
+    public List<RpaTrendKeywordParseTarget> rpaTargets(
+        @RequestParam(defaultValue = "20") int size
+    ) {
+        return trendKeywordService.getTodayRpaParseTargets(size);
     }
 
 

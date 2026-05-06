@@ -1,7 +1,9 @@
 package com.semi.domain.keyword;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,4 +21,19 @@ public interface TrendKeywordRepository extends JpaRepository<TrendKeyword, Long
     boolean existsByCollectedAtAndKeyword(LocalDateTime collectedAt, String keyword);
 
     TrendKeyword findFirstByOrderByIdDesc();
+
+    /** RPA 후속 파싱에 사용할 당일 키워드 조회 */
+    @Query("""
+        SELECT t
+        FROM TrendKeyword t
+        WHERE t.collectedAt >= :start
+          AND t.id > 0
+          AND t.rankingId IS NOT NULL
+          AND t.syncDate IS NOT NULL
+        ORDER BY t.id DESC
+        """)
+    List<TrendKeyword> findRecentRpaReadyKeywords(
+        @Param("start") LocalDateTime start,
+        Pageable pageable
+    );
 }
