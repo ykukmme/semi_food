@@ -22,6 +22,21 @@ public interface TrendKeywordRepository extends JpaRepository<TrendKeyword, Long
 
     TrendKeyword findFirstByOrderByIdDesc();
 
+    List<TrendKeyword> findAllByCollectedAtGreaterThanEqualOrderByCollectedAtDesc(LocalDateTime start);
+
+    @Query("""
+        SELECT t
+        FROM TrendKeyword t
+        WHERE t.collectedAt >= :start
+          AND NOT EXISTS (
+              SELECT p.id
+              FROM Product p
+              WHERE p.keyword = t
+          )
+        ORDER BY t.collectedAt DESC
+        """)
+    List<TrendKeyword> findRpaDeletableKeywords(@Param("start") LocalDateTime start);
+
     /** RPA 후속 파싱에 사용할 당일 키워드 조회 */
     @Query("""
         SELECT t

@@ -2,10 +2,10 @@ package com.semi.domain.supplier;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import com.semi.domain.keyword.TrendKeyword;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface SupplierRepository extends JpaRepository<Supplier, Long> {
@@ -21,5 +21,25 @@ public interface SupplierRepository extends JpaRepository<Supplier, Long> {
     boolean existsByCreatedAtAndName(LocalDateTime createdAt, String name);
     
     Supplier findFirstByOrderByIdDesc();
+
+    List<Supplier> findAllByCreatedAtGreaterThanEqualOrderByCreatedAtDesc(LocalDateTime start);
+
+    @Query("""
+        SELECT s
+        FROM Supplier s
+        WHERE s.createdAt >= :start
+          AND NOT EXISTS (
+              SELECT p.id
+              FROM Product p
+              WHERE p.supplier = s
+          )
+          AND NOT EXISTS (
+              SELECT o.id
+              FROM PurchaseOrder o
+              WHERE o.supplier = s
+          )
+        ORDER BY s.createdAt DESC
+        """)
+    List<Supplier> findRpaDeletableSuppliers(@Param("start") LocalDateTime start);
 
 }

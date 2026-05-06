@@ -39,6 +39,10 @@ public class RpaAsyncExecutionService {
         return true;
     }
 
+    public boolean isRunningInMemory() {
+        return running.get();
+    }
+
     @Async
     public void runSupplierProductParsingAsync(int requestedSize) {
         try {

@@ -2,6 +2,7 @@ package com.semi.domain.product;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,5 +24,20 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     boolean existsByCrawledAtAndName(LocalDateTime crawledAt, String name);
 
     Product findFirstByOrderByIdDesc();
+
+    List<Product> findAllByCrawledAtGreaterThanEqualOrderByCrawledAtDesc(LocalDateTime start);
+
+    @Query("""
+        SELECT p
+        FROM Product p
+        WHERE p.crawledAt >= :start
+          AND NOT EXISTS (
+              SELECT item.id
+              FROM PurchaseOrderItem item
+              WHERE item.product = p
+          )
+        ORDER BY p.crawledAt DESC
+        """)
+    List<Product> findRpaDeletableProducts(@Param("start") LocalDateTime start);
 
 }
