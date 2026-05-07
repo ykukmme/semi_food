@@ -3,6 +3,7 @@ package com.semi.domain.product;
 public enum ProductCategory {
     AGRICULTURAL("agricultural"),
     MARINE("marine"),
+    MEAT("meat"),
     PROCESSED("processed"),
     GIFT("gift");
 
