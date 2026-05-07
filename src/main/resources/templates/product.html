@@ -13,22 +13,22 @@
         <div class="product-brand"><a th:href="@{/}">스마트 식품 이커머스 - 다드림</a></div>
         <nav class="product-nav" aria-label="상단 메뉴">
             <div id="guestMenu">
-                <a class="product-nav__icon-link" th:href="@{/login.html}" href="/login.html" aria-label="로그인">
+                <a class="product-nav__icon-link" th:href="@{/login.html}" href="/login.html" aria-label="로그인" title="로그인">
                     <span class="material-symbols-outlined" aria-hidden="true">person</span>
                 </a>
-                <a class="product-nav__icon-link" th:href="@{/register.html}" href="/register.html" aria-label="회원가입">
+                <a class="product-nav__icon-link" th:href="@{/register.html}" href="/register.html" aria-label="회원가입" title="회원가입">
                     <span class="material-symbols-outlined" aria-hidden="true">person_add</span>
                 </a>
             </div>
             <div id="memberMenu" style="display: none;">
-                <a class="product-nav__icon-link cart-link" th:href="@{/cart/view}" href="/cart/view" aria-label="장바구니">
+                <a class="product-nav__icon-link cart-link" th:href="@{/cart/view}" href="/cart/view" aria-label="장바구니" title="장바구니">
                     <span class="material-symbols-outlined" aria-hidden="true">shopping_bag</span>
                     <span id="cart-count-badge" class="cart-count-badge is-hidden">0</span>
                 </a>
-                <a class="product-nav__icon-link" id="member-dashboard-link" th:href="@{/member}" href="/member" aria-label="회원페이지">
+                <a class="product-nav__icon-link" id="member-dashboard-link" th:href="@{/member}" href="/member" aria-label="회원페이지" title="회원페이지">
                     <span class="material-symbols-outlined" aria-hidden="true">person</span>
                 </a>
-                <a class="product-nav__icon-link" id="logoutBtn" href="#" aria-label="로그아웃">
+                <a class="product-nav__icon-link" id="logoutBtn" href="#" aria-label="로그아웃" title="로그아웃">
                     <span class="material-symbols-outlined" aria-hidden="true">person_remove</span>
                 </a>
             </div>

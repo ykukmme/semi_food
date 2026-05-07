@@ -9,6 +9,15 @@
 <link rel="stylesheet" href="../static/css/common.css" th:href="@{/css/common.css}">
 <link rel="stylesheet" href="../static/css/index.css" th:href="@{/css/index.css}">
 <style>
+  /* search 페이지는 본문 배경이 흰색이라 헤더(반투명 fixed)와 구분이 약함. 명시적 배경/경계 부여 */
+  body { padding-top: 5rem; }
+  .site-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    backdrop-filter: none;
+  }
+
   .search-hero {
     padding: 48px 24px 24px;
     text-align: center;
@@ -112,16 +121,16 @@
         <input id="nav-search-input" class="nav-search-input" type="search" name="q" th:value="${query}" placeholder="상품명 검색" autocomplete="off"/>
       </form>
       <div id="guestMenu">
-        <a class="site-nav__icon-link material-symbols-outlined" th:href="@{/login.html}" aria-label="로그인">person</a>
-        <a class="site-nav__icon-link material-symbols-outlined" th:href="@{/register.html}" aria-label="회원가입">person_add</a>
+        <a class="site-nav__icon-link material-symbols-outlined" th:href="@{/login.html}" aria-label="로그인" title="로그인">person</a>
+        <a class="site-nav__icon-link material-symbols-outlined" th:href="@{/register.html}" aria-label="회원가입" title="회원가입">person_add</a>
       </div>
       <div id="memberMenu" style="display: none;">
-        <a class="site-nav__icon-link cart-link" href="/cart/view" aria-label="장바구니">
+        <a class="site-nav__icon-link cart-link" href="/cart/view" aria-label="장바구니" title="장바구니">
           <span class="material-symbols-outlined" aria-hidden="true">shopping_bag</span>
           <span id="cart-count-badge" class="cart-count-badge is-hidden">0</span>
         </a>
-        <a class="site-nav__icon-link material-symbols-outlined" href="/member" id="member-dashboard-link" aria-label="회원페이지">person</a>
-        <a class="site-nav__icon-link material-symbols-outlined" type="button" id="logoutBtn">person_remove</a>
+        <a class="site-nav__icon-link material-symbols-outlined" href="/member" id="member-dashboard-link" aria-label="회원페이지" title="회원페이지">person</a>
+        <a class="site-nav__icon-link material-symbols-outlined" type="button" id="logoutBtn" aria-label="로그아웃" title="로그아웃">person_remove</a>
       </div>
     </nav>
   </div>
