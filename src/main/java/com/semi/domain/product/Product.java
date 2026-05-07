@@ -123,6 +123,14 @@ public class Product {
         this.autoOrder = newValue;
     }
 
+    /**
+     * 현재 상품명을 기반으로 카테고리 재분류.
+     * 분류 룰(ProductCategoryClassifier) 변경 후 기존 row 일괄 보정 시 호출.
+     */
+    public void reclassifyCategory() {
+        this.category = ProductCategoryClassifier.classify(this.name);
+    }
+
     /** 크롤링 재수집 시 정보 갱신 */
     public void updateCrawledInfo(String name, String description, Integer price,
                                    String imageUrl, String productUrl, LocalDateTime crawledAt,

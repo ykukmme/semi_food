@@ -2,6 +2,7 @@ package com.semi.controller;
 
 import com.semi.domain.product.Product;
 import com.semi.domain.product.ProductRepository;
+import com.semi.domain.product.ProductService;
 import com.semi.domain.product.dto.UpdateAutoOrderRequest;
 import com.semi.security.MemberDetails;
 import jakarta.validation.Valid;
@@ -19,6 +20,7 @@ import java.util.List;
 public class AdminProductController {
 
     private final ProductRepository productRepository;
+    private final ProductService productService;
 
     @GetMapping("/list")
     @PreAuthorize("hasRole('ADMIN')")
@@ -83,5 +85,15 @@ public class AdminProductController {
                 "autoOrder", updatedProduct.getAutoOrder(),
                 "message", "Auto order status updated successfully"
         ));
+    }
+
+    /**
+     * 모든 상품의 카테고리를 현재 분류 룰로 재계산.
+     * 분류 룰(ProductCategoryClassifier) 변경 후 1회 호출용.
+     */
+    @PostMapping("/reclassify")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ProductService.ReclassifyResult> reclassifyCategories() {
+        return ResponseEntity.ok(productService.reclassifyAllCategories());
     }
 }
