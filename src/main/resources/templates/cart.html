@@ -67,15 +67,15 @@
                 </div>
                 <div class="cart-nav">
                     <div id="guestMenu">
-                        <a class="cart-nav__icon-link" th:href="@{/login.html}" href="/login.html" aria-label="로그인">
+                        <a class="cart-nav__icon-link" th:href="@{/login.html}" href="/login.html" aria-label="로그인" title="로그인">
                             <span class="material-symbols-outlined" aria-hidden="true">person</span>
                         </a>
-                        <a class="cart-nav__icon-link" th:href="@{/register.html}" href="/register.html" aria-label="회원가입">
+                        <a class="cart-nav__icon-link" th:href="@{/register.html}" href="/register.html" aria-label="회원가입" title="회원가입">
                             <span class="material-symbols-outlined" aria-hidden="true">person_add</span>
                         </a>
                     </div>
                     <div id="memberMenu" style="display: none;">
-                        <a class="cart-nav__icon-link cart-link" th:href="@{/cart/view}" href="/cart/view" aria-label="장바구니">
+                        <a class="cart-nav__icon-link cart-link" th:href="@{/cart/view}" href="/cart/view" aria-label="장바구니" title="장바구니">
                             <span class="material-symbols-outlined" aria-hidden="true">shopping_bag</span>
                             <span
                                 class="cart-count-badge"
@@ -83,10 +83,10 @@
                                 {{ totalItemsCount > 99 ? '99+' : totalItemsCount }}
                             </span>
                         </a>
-                        <a class="cart-nav__icon-link" id="member-dashboard-link" th:href="@{/member}" href="/member" aria-label="회원페이지">
+                        <a class="cart-nav__icon-link" id="member-dashboard-link" th:href="@{/member}" href="/member" aria-label="회원페이지" title="회원페이지">
                             <span class="material-symbols-outlined" aria-hidden="true">person</span>
                         </a>
-                        <a class="cart-nav__icon-link" id="logoutBtn" href="#" aria-label="로그아웃">
+                        <a class="cart-nav__icon-link" id="logoutBtn" href="#" aria-label="로그아웃" title="로그아웃">
                             <span class="material-symbols-outlined" aria-hidden="true">person_remove</span>
                         </a>
                     </div>

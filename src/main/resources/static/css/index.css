@@ -67,9 +67,10 @@ input {
     position: fixed;
     inset: 0 0 auto;
     z-index: 50;
-    border-bottom: 1px solid rgba(153, 194, 255, 0.2);
-    background: rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(153, 194, 255, 0.35);
+    background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(12px);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
     transition: background-color 0.5s ease, backdrop-filter 0.5s ease, border-bottom-color 0.5s ease, opacity 0.5s ease;
 }
 
@@ -642,6 +643,13 @@ header .nav-search input.nav-search-input[type="search"]:focus {
     font-size: 1.125rem;
     font-weight: 900;
     line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: keep-all;
+    min-height: calc(1.125rem * 1.35 * 2);
 }
 
 .product-card__price {
@@ -826,7 +834,7 @@ header .nav-search input.nav-search-input[type="search"]:focus {
 
 .scroll-top-btn {
     position: fixed;
-    top: 50%;
+    bottom: 1.5rem;
     right: 1.5rem;
     z-index: 45;
     display: inline-flex;
@@ -842,7 +850,7 @@ header .nav-search input.nav-search-input[type="search"]:focus {
     backdrop-filter: blur(12px);
     opacity: 0;
     pointer-events: none;
-    transform: translateY(-50%) translateX(0.75rem) scale(0.92);
+    transform: translateX(0.75rem) scale(0.92);
     transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.2s ease, box-shadow 0.2s ease;
     cursor:pointer;
 }
@@ -850,7 +858,7 @@ header .nav-search input.nav-search-input[type="search"]:focus {
 .scroll-top-btn.is-visible {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(-50%) translateX(0) scale(1);
+    transform: translateX(0) scale(1);
 }
 
 .scroll-top-btn:hover,

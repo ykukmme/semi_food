@@ -16,6 +16,10 @@ public interface TrendKeywordRepository extends JpaRepository<TrendKeyword, Long
     // 서버에서 ID를 수동처리하기 위한 코드
     @Query("SELECT MAX(t.id) FROM TrendKeyword t")
     Long findMaxId();
+
+    /** 가장 최근 수집된 키워드의 collected_at (없으면 null) */
+    @Query("SELECT MAX(t.collectedAt) FROM TrendKeyword t")
+    LocalDateTime findMaxCollectedAt();
     // 서버에서 ID를 수동처리하기 위한 코드
     // 중복 체크용 (데이터가 이미 있는지 확인)
     boolean existsByCollectedAtAndKeyword(LocalDateTime collectedAt, String keyword);

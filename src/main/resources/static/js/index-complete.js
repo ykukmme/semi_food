@@ -231,11 +231,15 @@
         });
 
         if (form) {
+            // 검색어가 있으면 별도 페이지(/search)로 이동, 빈 검색어 시 기존 in-place 필터 유지
             form.addEventListener("submit", (event) => {
-                event.preventDefault();
-                visibleLimit = initialVisibleCount;
-                filterProducts();
-                document.getElementById("best")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                const q = input ? input.value.trim() : "";
+                if (!q) {
+                    event.preventDefault();
+                    visibleLimit = initialVisibleCount;
+                    filterProducts();
+                    document.getElementById("best")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
             });
         }
 
@@ -372,6 +376,25 @@
             return String(value || "").replace(/\s+/g, "").toLowerCase();
         }
 
+        // 키워드 매칭 실패 시 외부 placeholder 대신 사용하는 인라인 SVG 카드.
+        // 디자인 팔레트: bg #e6f3ff, text #0066cc (기존 placehold.co 색과 동일)
+        function buildKeywordSvgFallback(keyword) {
+            const safe = String(keyword || "키워드")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&apos;");
+            const fontSize = safe.length > 8 ? 22 : (safe.length > 5 ? 28 : 36);
+            const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 240'>`
+                + `<rect width='100%' height='100%' fill='#e6f3ff'/>`
+                + `<text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' `
+                + `font-family='Inter, system-ui, -apple-system, sans-serif' font-size='${fontSize}' `
+                + `font-weight='700' fill='#0066cc'>${safe}</text>`
+                + `</svg>`;
+            return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+        }
+
         function pickUnused(candidates, fallbackUrl = "") {
             const validCandidates = candidates.filter(Boolean);
             return validCandidates.find((url) => !usedUrls.has(url)) || fallbackUrl || validCandidates[0] || "";
@@ -386,19 +409,17 @@
                 const productName = normalize(product.name);
                 return productName && keyword && (productName.includes(keyword) || keyword.includes(productName));
             });
-            const keywordFallbackUrl = `https://placehold.co/640x480/e6f3ff/0066cc?text=${encodeURIComponent(rawKeyword || "Food")}`;
+            const keywordFallbackUrl = buildKeywordSvgFallback(rawKeyword);
+            // 매칭 룰/상품에 해당하는 키워드만 실사진을 사용. 무관한 키워드는 SVG 카드로 대체해
+            // 의미 어긋남(예: 돈까스→만두) 방지.
             const imageCandidates = preferProductImage
                 ? [
                     ...matchedProducts.map((product) => product.imageUrl),
-                    ...(matchedRule?.urls || []),
-                    ...products.map((product) => product.imageUrl),
-                    ...fallbackUrls
+                    ...(matchedRule?.urls || [])
                 ]
                 : [
                     ...(matchedRule?.urls || []),
-                    ...matchedProducts.map((product) => product.imageUrl),
-                    ...products.map((product) => product.imageUrl),
-                    ...fallbackUrls
+                    ...matchedProducts.map((product) => product.imageUrl)
                 ];
             const imageUrl = pickUnused(imageCandidates, keywordFallbackUrl);
 

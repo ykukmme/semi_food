@@ -1,6 +1,5 @@
 package com.semi.controller;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -34,15 +33,14 @@ public class ProductController {
     
     @GetMapping({"/", "/index.html"})
     public String getAllProduct(Model model) {
-        List<Product> products = productService.getAllProduct();
-        LocalDate keywordCollectedDate = LocalDate.of(2026, 4, 27);
-        List<TrendKeyword> keywords = trendKeywordService.getKeywordsCollectedOnOrderById(keywordCollectedDate);
-        keywords.stream()
+        // 상단 키워드 카드와 베스트 큐레이션이 같은 기준일/키워드 집합을 공유하도록 한 번에 조회
+        ProductService.CurationView view = productService.getCuratedView(40);
+        view.keywords().stream()
                 .filter(keyword -> keyword.getCollectedAt() != null)
                 .max((left, right) -> left.getCollectedAt().compareTo(right.getCollectedAt()))
                 .ifPresent(keyword -> model.addAttribute("keywordCollectedAt", keyword.getCollectedAt()));
-        model.addAttribute("products", products);
-        model.addAttribute("keywords", keywords);
+        model.addAttribute("products", view.products());
+        model.addAttribute("keywords", view.keywords());
         return "index";
     }
 
@@ -60,6 +58,31 @@ public class ProductController {
         System.out.println(product.toString());
         model.addAttribute("product", product);
         return "product";
+    }
+
+    @GetMapping("/search")
+    public String searchPage(
+            @RequestParam(name = "q", required = false) String query,
+            Model model
+    ) {
+        String trimmedQuery = query == null ? "" : query.trim();
+
+        List<TrendKeyword> keywords = trendKeywordService.getKeywordsCollectedOnLatestDate();
+
+        List<Product> products;
+        boolean isEmptyQuery = trimmedQuery.isEmpty();
+        if (isEmptyQuery) {
+            // 빈 쿼리: 최신 트렌드 키워드 큐레이션 12개
+            products = productService.getCuratedProductsByLatestKeywords(12);
+        } else {
+            products = productService.searchProductsByNameOrDescription(trimmedQuery);
+        }
+
+        model.addAttribute("query", trimmedQuery);
+        model.addAttribute("isEmptyQuery", isEmptyQuery);
+        model.addAttribute("products", products);
+        model.addAttribute("keywords", keywords);
+        return "search";
     }
 
     @GetMapping("/dashboard_search_result")
