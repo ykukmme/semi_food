@@ -356,6 +356,16 @@
     </section>
 </main>
 
+<div id="yesNoModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
+    <div style="background:var(--panel); padding:24px; border-radius:8px; border:1px solid var(--line); min-width:320px; text-align:center;">
+        <p id="yesNoMessage" style="margin:0 0 20px; font-size:15px; color:var(--ink); font-weight:600;"></p>
+        <div style="display:flex; justify-content:center; gap:12px;">
+            <button id="yesNoBtnYes" class="danger" style="width:100px;">예</button>
+            <button id="yesNoBtnNo" style="width:100px;">아니오</button>
+        </div>
+    </div>
+</div>
+
 <script>
     const state = { running: false };
     const dateInput = document.getElementById("targetDate");
@@ -553,11 +563,32 @@
         await refreshDashboard();
     }
 
+    function showYesNoDialog(message) {
+        return new Promise(resolve => {
+            const modal = document.getElementById('yesNoModal');
+            document.getElementById('yesNoMessage').textContent = message;
+            modal.style.display = 'flex';
+            
+            const btnYes = document.getElementById('yesNoBtnYes');
+            const btnNo = document.getElementById('yesNoBtnNo');
+            
+            const cleanup = () => {
+                modal.style.display = 'none';
+                btnYes.onclick = null;
+                btnNo.onclick = null;
+            };
+            
+            btnYes.onclick = () => { cleanup(); resolve(true); };
+            btnNo.onclick = () => { cleanup(); resolve(false); };
+        });
+    }
+
     async function deleteViewData(viewName) {
         if (state.running) return;
         const config = viewConfigs[viewName];
         const date = document.getElementById(config.dateId).value;
-        if (!confirm(`${date} 기준 ${viewName} view의 삭제 가능 데이터를 삭제할까요?`)) return;
+        const confirmed = await showYesNoDialog(`${date} 기준 ${viewName} view의 삭제 가능 데이터를 삭제할까요?`);
+        if (!confirmed) return;
         const response = await fetch(`/rpa/data/daily/view?view=${viewName}&date=${date}&confirm=true`, { method: "DELETE" });
         if (!response.ok) {
             const message = await response.text();
