@@ -1,6 +1,8 @@
 package com.semi.domain.keyword;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -30,5 +32,15 @@ public class TrendKeywordService {
                 collectedDate.plusDays(1).atStartOfDay()
         );
     }
-    
+
+    /** DB에 적재된 가장 최근 수집일자의 키워드 Top20 (없으면 빈 리스트) */
+    @Transactional(readOnly = true)
+    public List<TrendKeyword> getKeywordsCollectedOnLatestDate() {
+        LocalDateTime latest = trendKeywordRepository.findMaxCollectedAt();
+        if (latest == null) {
+            return Collections.emptyList();
+        }
+        return getKeywordsCollectedOnOrderById(latest.toLocalDate());
+    }
+
 }

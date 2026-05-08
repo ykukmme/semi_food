@@ -1,6 +1,5 @@
 package com.semi.controller;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -34,15 +33,14 @@ public class ProductController {
     
     @GetMapping({"/", "/index.html"})
     public String getAllProduct(Model model) {
-        List<Product> products = productService.getAllProduct();
-        LocalDate keywordCollectedDate = LocalDate.of(2026, 4, 27);
-        List<TrendKeyword> keywords = trendKeywordService.getKeywordsCollectedOnOrderById(keywordCollectedDate);
-        keywords.stream()
+        // 상단 키워드 카드와 베스트 큐레이션이 같은 기준일/키워드 집합을 공유하도록 한 번에 조회
+        ProductService.CurationView view = productService.getCuratedView(40);
+        view.keywords().stream()
                 .filter(keyword -> keyword.getCollectedAt() != null)
                 .max((left, right) -> left.getCollectedAt().compareTo(right.getCollectedAt()))
                 .ifPresent(keyword -> model.addAttribute("keywordCollectedAt", keyword.getCollectedAt()));
-        model.addAttribute("products", products);
-        model.addAttribute("keywords", keywords);
+        model.addAttribute("products", view.products());
+        model.addAttribute("keywords", view.keywords());
         return "index";
     }
 
@@ -69,15 +67,13 @@ public class ProductController {
     ) {
         String trimmedQuery = query == null ? "" : query.trim();
 
-        LocalDate keywordCollectedDate = LocalDate.of(2026, 4, 27);
-        List<TrendKeyword> keywords = trendKeywordService.getKeywordsCollectedOnOrderById(keywordCollectedDate);
+        List<TrendKeyword> keywords = trendKeywordService.getKeywordsCollectedOnLatestDate();
 
         List<Product> products;
         boolean isEmptyQuery = trimmedQuery.isEmpty();
         if (isEmptyQuery) {
-            // 빈 쿼리: 인기 상품 (현재는 전체 상품 상위 12개로 대체, 향후 주문 빈도 기반 교체 예정)
-            List<Product> all = productService.getAllProduct();
-            products = all.size() > 12 ? all.subList(0, 12) : all;
+            // 빈 쿼리: 최신 트렌드 키워드 큐레이션 12개
+            products = productService.getCuratedProductsByLatestKeywords(12);
         } else {
             products = productService.searchProductsByNameOrDescription(trimmedQuery);
         }

@@ -86,6 +86,23 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         @Param("end") LocalDateTime end
     );
 
+    /** 트렌드 키워드 큐레이션 — 주어진 키워드 ID 집합에 속한 미삭제 상품. 키워드 rank → 이미지 유무 → 가격 순.
+     *  현재 RPA가 stock/available_stock을 채우지 않아 가용재고 필터는 임시 미적용. */
+    @Query("""
+            SELECT p FROM Product p
+            LEFT JOIN FETCH p.keyword k
+            LEFT JOIN FETCH p.supplier
+            WHERE k.id IN :keywordIds
+              AND p.delDate IS NULL
+            ORDER BY
+              k.rank ASC,
+              CASE WHEN p.imageUrl IS NOT NULL AND p.imageUrl <> '' THEN 0 ELSE 1 END,
+              p.price ASC
+            """)
+    List<Product> findCuratedByKeywordIds(
+            @Param("keywordIds") List<Long> keywordIds,
+            org.springframework.data.domain.Pageable pageable);
+
     /** 성능 최적화 상품 목록 조회 - N+1 문제 해결 */
     @Query("SELECT p FROM Product p " +
            "LEFT JOIN FETCH p.keyword " +

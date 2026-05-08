@@ -15,6 +15,7 @@ import org.springframework.web.client.RestClient;
 
 import com.semi.domain.keyword.TrendKeyword;
 import com.semi.domain.product.Product;
+import com.semi.domain.product.ProductCategoryClassifier;
 import com.semi.domain.product.ProductRepository;
 import com.semi.domain.rpa.parser.mapper.ProductMapper;
 import com.semi.domain.rpa.parser.mapper.SupplierMapper;
@@ -266,6 +267,7 @@ public class SupplierAndProductService {
                 .autoOrder(false)
                 .crawledAt(sapMappedProduct.getCrawledAt())
                 .syncDate(sapMappedProduct.getSyncDate())
+                .category(ProductCategoryClassifier.classify(sapMappedProduct.getName()))
                 .build();
             sapNewProducts.add(sapProduct);
         }
