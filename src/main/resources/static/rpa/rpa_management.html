@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>semi_food RPA Dashboard</title>
+    <title>semi_food RPA Management</title>
     <style>
         :root {
             --bg: #f4f7f6;
@@ -276,7 +276,18 @@
 <body>
 <header>
     <div>
-        <h1>semi_food RPA Dashboard</h1>
+
+        <div style="background: #2d9a5e; color: white; padding: 8px 12px; width: 170px; border-radius: 4px; cursor: pointer;"  onclick="window.open('/admin/dashboard', '_blank')">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+            <rect x="1" y="1" width="6" height="6" rx="1.5" />
+            <rect x="9" y="1" width="6" height="6" rx="1.5" />
+            <rect x="1" y="9" width="6" height="6" rx="1.5" />
+            <rect x="9" y="9" width="6" height="6" rx="1.5" />
+        </svg>
+        Admin Dashboard
+        </div>
+
+        <h1>semi_food RPA Management</h1>
         <div id="lastUpdated">-</div>
     </div>
     <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-end;">
@@ -370,7 +381,14 @@
     const state = { running: false };
     const dateInput = document.getElementById("targetDate");
     const today = new Date();
-    dateInput.value = today.toISOString().slice(0, 10);
+    
+    // 로컬 시간을 유지한 채로 YYYY-MM-DD 형식 만들기
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    
+    dateInput.value = `${year}-${month}-${day}`;
+    // dateInput.value = today.toISOString().slice(0, 10);
     const viewConfigs = {
         trend_keyword: {
             dateId: "keywordDate",

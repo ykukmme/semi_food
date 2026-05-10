@@ -37,10 +37,10 @@ public class RpaRestController {
     private final RpaRecoveryService rpaRecoveryService;
     private final RpaAutoRunService rpaAutoRunService;
 
-    @GetMapping("/dashboard")
+    @GetMapping("/management")
     public ResponseEntity<Void> getDashboard() {
         return ResponseEntity.status(HttpStatus.FOUND)
-            .header("Location", "/rpa/dashboard.html")
+            .header("Location", "/rpa/rpa_management.html")
             .build();
     }
 
