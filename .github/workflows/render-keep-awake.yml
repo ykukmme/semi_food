@@ -24,5 +24,5 @@ jobs:
 
 # TARGET_URL: ${{ secrets.RENDER_URL }} 은 
 # 개인(본인소유) GitHub 저장소의 Settings > Secrets에 가서 RENDER_URL이라는 이름으로 https:// 본인 URL .onrender.com을 등록해야 합니다.
-# ( 별도의 개인 저장소 필요 )
+# ( 별도의 개인 저장소 필요 , 예시 https://github.com/ 유저명 / 리포명 /settings/secrets/actions 에서 Repository secrets ->  new Repository secrets )
 
