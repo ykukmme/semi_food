@@ -1,0 +1,28 @@
+name: Render Keep Awake
+
+on:
+  schedule:
+    # 10분마다 실행 (Render의 15분 제한 및 깃허브의 오차를 포함해 더 짧게 설정)
+    - cron: '*/9 * * * *'
+  workflow_dispatch: # 수동 실행을 위한 버튼 활성화
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # jobs 레벨이나 step 레벨에서 env(secrets)를 연결해줘야 합니다.
+    env:
+      TARGET_URL: ${{ secrets.RENDER_URL }} 
+    
+    steps:
+      - name: 서버 깨우기
+        # 위에서 정의한 TARGET_URL 환경변수를 사용
+        run: curl -X GET "$TARGET_URL/load"
+
+# 주의
+# Render 무료 티어는 한 달에 750시간의 가동 시간을 줍니다.
+# 한 달(31일)을 24시간 풀가동하면 744시간이 소요됩니다.
+
+# TARGET_URL: ${{ secrets.RENDER_URL }} 은 
+# 개인(본인소유) GitHub 저장소의 Settings > Secrets에 가서 RENDER_URL이라는 이름으로 https:// 본인 URL .onrender.com을 등록해야 합니다.
+# ( 별도의 개인 저장소 필요 )
+
